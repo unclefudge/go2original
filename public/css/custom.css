@@ -1,0 +1,19 @@
+
+span.m-menu__link-text{
+    /*color: #FF0000 !important;*/
+}
+
+.m-menu__link-text a:hover{
+    color: #00FF00 !important;
+}
+
+li.m-menu__item.m-menu__item--active {
+    color: #00FF00 !important;
+}
+
+/* Override Metronic Sticky Topmenu and Hide on Scroll */
+@media (min-width: 1025px) {
+    .m-header--fixed .m-header .m-header__top {
+        z-index: 0;
+    }
+}
