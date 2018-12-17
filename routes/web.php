@@ -25,6 +25,9 @@ Route::get('/metronic', 'HomeController@metronic');
 Route::get('/fudge', 'HomeController@fudge');
 
 
-Route::get('/people', 'HomeController@people');
+//Route::get('/people', 'HomeController@people');
+Route::resource('/people', 'People\PeopleController');
+
 Route::get('/event', 'HomeController@event');
 Route::get('/group', 'HomeController@group');
+Route::get('/import-students', 'HomeController@importStudents');

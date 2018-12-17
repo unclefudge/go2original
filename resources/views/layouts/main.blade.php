@@ -22,14 +22,16 @@
 
     <!--begin::Global Theme Styles -->
     <link href="/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/demo/demo2/base/style.bundle.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/demo/demo5/base/style.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles -->
 
     <!--begin::Page Vendors Styles -->
     <link href="/css/custom.css" rel="stylesheet" type="text/css"/>
+    <!--<link href="/css/reseller.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="//framework.dreamscape.cloud/scripts/reseller/framework/vendors.bundle.js?vendors_timestamp=1539856691"></script>-->
     @yield('page-styles')
     <!--end::Page Vendors Styles -->
-    <link rel="shortcut icon" href="/assets/demo/demo2/media/img/logo/favicon.ico"/>
+    <link rel="shortcut icon" href="/assets/demo/demo5/media/img/logo/favicon.ico"/>
 </head>
 <!-- end::Head -->
 
@@ -37,8 +39,9 @@
 <body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default">
 
 <!-- begin:: Page -->
-<div class="m-grid m-grid--hor m-grid--root m-page">
+<div class="m-grid m-grid--hor m-grid--root m-page" style="background: #F7F7F7">
 
+    {{--}}@include('layouts/section/header')--}}
     <!-- begin::Header -->
     <header id="m_header" class="m-grid__item m-header " m-minimize="minimize" m-minimize-offset="200" m-minimize-mobile-offset="200">
 
@@ -80,7 +83,7 @@
 
 <!--begin::Global Theme Bundle -->
 <script src="/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
-<script src="/assets/demo/demo2/base/scripts.bundle.js" type="text/javascript"></script>
+<script src="/assets/demo/demo5/base/scripts.bundle.js" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors -->

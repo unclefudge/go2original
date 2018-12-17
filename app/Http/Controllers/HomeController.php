@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller {
@@ -47,5 +48,51 @@ class HomeController extends Controller {
     public function group()
     {
         return view('group/index');
+    }
+
+    public function importStudents()
+    {
+
+        // Import Students
+        echo "Importing Students<br><br>";
+        $row = 0;
+        if (($handle = fopen(public_path("students.csv"), "r")) !== false) {
+            while (($data = fgetcsv($handle, 5000, ",")) !== false) {
+                $row ++;
+                if ($row == 1) continue;
+                $num = count($data);
+
+                $minhub = $data[0];
+                $firstname = $data[1];
+                $lastname = $data[2];
+                $nickname = $data[3];
+                $dob = Carbon::parse($data[4]);
+                if ($data[5] == 'male') $gender = 'Male';
+                if ($data[5] == 'female') $gender = 'Female';
+                if ($data[5] == 'not selected') $gender = '';
+                $phone = $data[6];
+                $texts = $data[7];
+                $email = (validEmail($data[8])) ? $data[8] : null;
+                $created = $data[9];
+                $status = ($data[10] == 'YES') ? 0 : 1;
+                $school_name = $data[11];
+                $grade = $data[12];
+
+                echo "<br>$minhub -  $firstname - $lastname - $dob - $gender - $phone - $email - $school_name - $grade - $status<br>";
+
+                $school = \App\Models\People\School::where('name', $school_name)->first();
+                if (!$school)
+                    $school = \App\Models\People\School::create(['name' => $school_name, 'aid' => 1])->first();
+
+                $people = \App\Models\People\People::where('firstname', $firstname)->where('lastname', $lastname)->first();
+                if (!$people) {
+                    $people = \App\Models\People\People::create(
+                        ['firstname' => $firstname, 'lastname' => $lastname, 'dob' => $dob, 'gender' => $gender, 'email' => $email,
+                         'school_id' => $school->id, 'grade' => $grade, 'status' => $status, 'minhub' => $minhub, 'aid' => 1])->first();
+                }
+            }
+            fclose($handle);
+        }
+        echo "<br><br>Completed<br>-------------<br>";
     }
 }
