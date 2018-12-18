@@ -3,6 +3,7 @@
 namespace App\Models\People;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class People extends Model
@@ -44,6 +45,14 @@ class People extends Model
     public function getNameAttribute()
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * Get Age (getter)
+     */
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->attributes['dob'])->age;
     }
 
     /**
