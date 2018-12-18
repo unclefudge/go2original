@@ -14,7 +14,8 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "5.7.*",
         "yajra/laravel-datatables-oracle": "^8.3",
-        "oriceon/toastr-5-laravel": "dev-master"
+        "oriceon/toastr-5-laravel": "dev-master",
+        "jenssegers/agent": "dev-master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

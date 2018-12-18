@@ -35,17 +35,17 @@
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_student">
-                                <i class="fa fa-user-graduate"></i> Students &nbsp; ({{ count($people->where('type', 'Student')) }})
+                                <i class="fa fa-user-graduate"></i> Students &nbsp; ({{ count($people->whereIn('type', ['Student', 'Student/Volunteer'])) }})
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_parent">
-                                <i class="fa fa-user-tie"></i> Parents &nbsp; ({{ count($people->whereIn('type', ['P', 'PV'])) }})
+                                <i class="fa fa-user-tie"></i> Parents &nbsp; ({{ count($people->whereIn('type', ['Parent', 'Parent/Volunteer'])) }})
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_volunteer">
-                                <i class="fa fa-user-friends"></i> Volunteers ({{ count($people->whereIn('type', ['V', 'PV'])) }})
+                                <i class="fa fa-user-friends"></i> Volunteers ({{ count($people->whereIn('type', ['Volunteer', 'Parent/Volunteer'])) }})
                             </a>
                         </li>
                     </ul>
@@ -56,14 +56,24 @@
                 </div>
             </div>
             {!! Form::hidden('type', null, ['id' => 'type']) !!}
+            @if ($agent->isMobile())
+                Mobile
+                @else
+                Bigger
+            @endif
             <table class="table table-hover table-sm table-checkable table-responsive m-table--head-bg-brand m-table" id="datatable1">
                 <thead>
                 <tr>
                     <th width="5%"> #</th>
                     <th> Name</th>
+                    <th> Type</th>
                     <th> Phone</th>
                     <th> Email</th>
                     <th> Address</th>
+                    <th> Grade</th>
+                    <th> School</th>
+                    <th> Media</th>
+                    <th> WWC Expiry</th>
                     <th width="5%"> Actions</th>
                 </tr>
                 </thead>
@@ -94,6 +104,25 @@
         serverSide: true,
         //bFilter: false,
         //bLengthChange: false,
+        responsive: true,
+        select: true,
+        dom: "<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+        //buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
+        //dom: 'Bfrtip',
+        buttons: [
+            {
+                text: "<i class='fa fa-cloud-download-alt' style='padding-right: 5px'></i> Export",
+                action: function (e, dt, node, config) {
+                    alert('Export');
+                }
+            },
+            {
+                text: "<i class='fa fa-cloud-upload-alt' style='padding-right: 5px'></i> Import",
+                action: function (e, dt, node, config) {
+                    alert('Import');
+                }
+            }
+        ],
         ajax: {
             'url': '/data/people',
             'type': 'GET',
@@ -104,11 +133,16 @@
             }
         },
         columns: [
-            {data: 'id', name: 'people.id', orderable: false, searchable: false},
+            {data: 'id', name: 'people.id', visible: false},
             {data: 'full_name', name: 'full_name', orderable: true, searchable: false},
+            {data: 'type', name: 'people.type', orderable: false},
             {data: 'phone', name: 'people.phone', orderable: false},
             {data: 'email', name: 'people.email', orderable: false},
             {data: 'address', name: 'people.address', orderable: false},
+            {data: 'grade', name: 'people.grade', orderable: true},
+            {data: 'school_name', name: 'schools.name', orderable: true},
+            {data: 'media_consent', name: 'people.media_consent', orderable: true},
+            {data: 'wwc_exp2', name: 'people.wwc_exp', visible: false, orderable: true},
             {data: 'action', name: 'action', orderable: false, searchable: false},
             {data: 'firstname', name: 'people.firstname', visible: false},
             {data: 'lastname', name: 'people.lastname', visible: false},
@@ -118,6 +152,18 @@
         ]
     });
 
+    datatable1.on('select', function (e, dt, type, indexes) {
+                var rowData = datatable1.rows(indexes).data().toArray();
+                //events.prepend('<div><b>' + type + ' selection</b> - ' + JSON.stringify(rowData) + '</div>');
+                //alert(JSON.stringify(rowData));
+                var id = rowData[0][Object.keys(rowData[0])[0]];
+                window.location.href = "/people/" + id;
+            })
+            .on('deselect', function (e, dt, type, indexes) {
+                var rowData = datatable1.rows(indexes).data().toArray();
+                //events.prepend('<div><b>' + type + ' <i>de</i>selection</b> - ' + JSON.stringify(rowData) + '</div>');
+            });
+
     datatable1.on('click', '.btn-delete[data-remote]', function (e) {
         e.preventDefault();
         var url = $(this).data('remote');
@@ -126,9 +172,9 @@
         swal({
             title: "Are you sure?",
             html: "You will not be able to recover this profile!<br><b>" + name + "</b>",
-            cancelButtonText:"Cancel!",
+            cancelButtonText: "Cancel!",
             confirmButtonText: "Yes, delete it!",
-            confirmButtonClass:"btn btn-danger",
+            confirmButtonClass: "btn btn-danger",
             showCancelButton: true,
             reverseButtons: true,
             allowOutsideClick: true,
@@ -147,29 +193,48 @@
         });
     });
 
-/*
-    $("#m_sweetalert_demo_9").click(function(e){swal({title:"Are you sure ? ",text:"Youwon't be able to revert this!",type:"warning",showCancelButton:!0,confirmButtonText:"Yes, deleteit!",
-        cancelButtonText:"No, cancel!",
-        reverseButtons:!0}).then(function(e){e.value?swal("Deleted!",
-            "Your file has been deleted.",
-            "Success"):"cancel"===e.dismiss&&swal("Cancelled","Your imaginary file is safe:)",
-            "error")})})
-*/
-
+    /*
+     $("#m_sweetalert_demo_9").click(function(e){swal({title:"Are you sure ? ",text:"Youwon't be able to revert this!",type:"warning",showCancelButton:!0,confirmButtonText:"Yes, deleteit!",
+     cancelButtonText:"No, cancel!",
+     reverseButtons:!0}).then(function(e){e.value?swal("Deleted!",
+     "Your file has been deleted.",
+     "Success"):"cancel"===e.dismiss&&swal("Cancelled","Your imaginary file is safe:)",
+     "error")})})
+     */
     $("#type_all").click(function () {
         $("#type").val('');
+        datatable1.column(2).visible(true);  // Type
+        datatable1.column(6).visible(true);  // Grade
+        datatable1.column(7).visible(true);  // School
+        datatable1.column(8).visible(true);  // Media
+        datatable1.column(9).visible(false);   // WWC Exp
         datatable1.ajax.reload();
     });
     $("#type_student").click(function () {
         $("#type").val('Student');
+        datatable1.column(2).visible(false);  // Type
+        datatable1.column(6).visible(true);   // Grade
+        datatable1.column(7).visible(true);   // School
+        datatable1.column(8).visible(true);   // Media
+        datatable1.column(9).visible(false);  // WWC Exp
         datatable1.ajax.reload();
     });
     $("#type_parent").click(function () {
         $("#type").val('Parent');
+        datatable1.column(2).visible(false);  // Type
+        datatable1.column(6).visible(false);  // Grade
+        datatable1.column(7).visible(false);  // School
+        datatable1.column(8).visible(false);  // Media
+        datatable1.column(9).visible(false);  // WWC Exp
         datatable1.ajax.reload();
     });
     $("#type_volunteer").click(function () {
         $("#type").val('Volunteer');
+        datatable1.column(2).visible(false);  // Type
+        datatable1.column(6).visible(false);  // Grade
+        datatable1.column(7).visible(false);  // School
+        datatable1.column(8).visible(false);  // Media
+        datatable1.column(9).visible(true);   // WWC Exp
         datatable1.ajax.reload();
     });
 
@@ -177,169 +242,77 @@
         datatable1.init()
     });
 
-/*
-    var SweetAlert2Demo = {
+
+    var DatatablesExtensionButtons = {
         init: function () {
-            $("#m_sweetalert_demo_1").click(function (e) {
-                swal("Good job!")
-            }), $("#m_sweetalert_demo_2").click(function (e) {
-                swal("Here's the title!", "...and here's the text!")
-            }), $("#m_sweetalert_demo_3_1").click(function (e) {
-                swal("Good job!", "You clicked the button!", "warning")
-            }), $("#m_sweetalert_demo_3_2").click(function (e) {
-                swal("Good job!", "You clicked the button!", "error")
-            }), $("#m_sweetalert_demo_3_3").click(function (e) {
-                swal("Good job!", "You clicked the button!", "success")
-            }), $("#m_sweetalert_demo_3_4").click(function (e) {
-                swal("Good job!", "You clicked the button!", "info")
-            }), $("#m_sweetalert_demo_3_5").click(function (e) {
-                swal("Good job!", "You clicked the button!", "question")
-            }), $("#m_sweetalert_demo_4").click(function (e) {
-                swal({title: "Good job!", text: "You clicked the button!", icon: "success", confirmButtonText: "Confirm me!", confirmButtonClass: "btn btn-focus m-btn m-btn--pill m-btn--air"})
-            }), $("#m_sweetalert_demo_5").click(function (e) {
-                swal({
-                    title: "Good job!", text: "You clicked the button!", icon: "success", confirmButtonText: "
-                    < span > < i class = 'la la-headphones' > < / i > < span > I
-                am
-                game
-                !< / span >
-                < / span > ",confirmButtonClass:"
-                btn
-                btn - danger
-                m - btn
-                m - btn--
-                pill
-                m - btn--
-                air
-                m - btn--
-                icon
-                ",showCancelButton:!0,cancelButtonText:"
-                < span >
-                    < i
-                            class
-                                    ='la la-thumbs-down'>
-                        <
-                        / i >
-                        < span >No, thanks
-                            <
-                            / span >
-                            <
-                            / span >",cancelButtonClass:"
-                            btn
-                            btn - secondary
-                            m - btn
-                            m - btn--
-                            pill
-                            m - btn--
-                            icon
-                            "})}),$("#m_sweetalert_demo_6
-                            ").click(function(e){swal({
-                                position: "
-                                top -right
-                                ",type:"
-                                success
-                                ",title:"
-                                Your
-                                work
-                                has
-                                been
-                                saved
-                                ",showConfirmButton:!1,timer:1500})}),$("#m_sweetalert_demo_7
-                            ").click(function(e){swal({
-                                title: "
-                                jQuery
-                                HTML
-                                example
-                                ",html:$("
-                                < div > ").addClass("
-                                some -class
-                                ").text("
-                                jQuery
-                                is
-                                everywhere.
-                                "),animation:!1,customClass:"
-                                animated
-                                tada
-                                        "})}),$("#m_sweetalert_demo_8
-                            ").click(function(e){swal({
-                                title: "
-                                Are
-                                you
-                                sure ? ",text:"You
-                                won
-                                        't be able to revert this!",type:"warning",showCancelButton:!0,confirmButtonText:"Yes, delete
-                                it
-                                        !"}).then(function(e){e.value&&swal("
-                                Deleted
-                                        !","
-                                Your
-                                file
-                                has
-                                been
-                                deleted.
-                                ","
-                                success
-                                ")})}),$("#m_sweetalert_demo_9
-                            ").click(function(e){swal({
-                                title: "
-                                Are
-                                you
-                                sure ? ",text:"You
-                                won
-                                        't be able to revert this!",type:"warning",showCancelButton:!0,confirmButtonText:"Yes, delete
-                                it
-                                        !",cancelButtonText:"
-                                No, cancel
-                                        !",reverseButtons:!0}).then(function(e){e.value?swal("
-                                Deleted
-                                        !","
-                                Your
-                                file
-                                has
-                                been
-                                deleted.
-                                ","
-                                success
-                                "):"
-                                cancel
-                                "===e.dismiss&&swal("
-                                Cancelled
-                                ","
-                                Your
-                                imaginary
-                                file
-                                is
-                                safe
-                                :)
-                                ","
-                                error
-                                ")})}),$("#m_sweetalert_demo_10
-                            ").click(function(e){swal({
-                                title: "
-                                Sweet
-                                        !",text:"
-                                Modal
-                                with a custom
-                                image.
-                                ",imageUrl:"
-                                https://unsplash.it/400/200",imageWidth:400,imageHeight:200,imageAlt:"Custom image",animation:!1})}),$("#m_sweetalert_demo_11").click(function(e){swal({
-                                title: "Auto close
-                                alert
-                                        !",text:"
-                                I
-                                will
-                                close in 5
-                                seconds.
-                                ",timer:5e3,onOpen:function(){swal.showLoading()}}).then(function(e){"
-                                timer
-                                "===e.dismiss&&console.log("
-                                I
-                                was
-                                closed
-                                by
-                                the
-                                timer
-                                ")})})}};jQuery(document).ready(function(){SweetAlert2Demo.init()}); */
+            var t;
+            $("#m_table_1").DataTable({
+                responsive: !0,
+                dom: "<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+                buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
+                columnDefs: [{
+                    targets: 6, render: function (t, e, a, n) {
+                        var s = {
+                            1: {title: "Pending", class: "m-badge--brand"},
+                            2: {title: "Delivered", class: " m-badge--metal"},
+                            3: {title: "Canceled", class: " m-badge--primary"},
+                            4: {title: "Success", class: " m-badge--success"},
+                            5: {title: "Info", class: " m-badge--info"},
+                            6: {title: "Danger", class: " m-badge--danger"},
+                            7: {title: "Warning", class: " m-badge--warning"}
+                        };
+                        return void 0 === s[t] ? t : '<span class="m-badge ' + s[t].class + ' m-badge--wide">' + s[t].title + "</span>"
+                    }
+                }, {
+                    targets: 7, render: function (t, e, a, n) {
+                        var s = {1: {title: "Online", state: "danger"}, 2: {title: "Retail", state: "primary"}, 3: {title: "Direct", state: "accent"}};
+                        return void 0 === s[t] ? t : '<span class="m-badge m-badge--' + s[t].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' + s[t].state + '">' + s[t].title + "</span>"
+                    }
+                }]
+            }), t = $("#m_table_2").DataTable({
+                responsive: !0,
+                buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
+                processing: !0,
+                serverSide: !0,
+                ajax: {url: "https://keenthemes.com/metronic/themes/themes/metronic/dist/preview/inc/api/datatables/demos/server.php", type: "POST", data: {columnsDef: ["OrderID", "Country", "ShipCity", "ShipAddress", "CompanyAgent", "CompanyName", "Status", "Type"]}},
+                columns: [{data: "OrderID"}, {data: "Country"}, {data: "ShipCity"}, {data: "ShipAddress"}, {data: "CompanyAgent"}, {data: "CompanyName"}, {data: "Status"}, {data: "Type"}],
+                columnDefs: [{
+                    targets: 6, render: function (t, e, a, n) {
+                        var s = {
+                            1: {title: "Pending", class: "m-badge--brand"},
+                            2: {title: "Delivered", class: " m-badge--metal"},
+                            3: {title: "Canceled", class: " m-badge--primary"},
+                            4: {title: "Success", class: " m-badge--success"},
+                            5: {title: "Info", class: " m-badge--info"},
+                            6: {title: "Danger", class: " m-badge--danger"},
+                            7: {title: "Warning", class: " m-badge--warning"}
+                        };
+                        return void 0 === s[t] ? t : '<span class="m-badge ' + s[t].class + ' m-badge--wide">' + s[t].title + "</span>"
+                    }
+                }, {
+                    targets: 7, render: function (t, e, a, n) {
+                        var s = {1: {title: "Online", state: "danger"}, 2: {title: "Retail", state: "primary"}, 3: {title: "Direct", state: "accent"}};
+                        return void 0 === s[t] ? t : '<span class="m-badge m-badge--' + s[t].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' + s[t].state + '">' + s[t].title + "</span>"
+                    }
+                }]
+            }), $("#export_print").on("click", function (e) {
+                e.preventDefault(), t.button(0).trigger()
+            }), $("#export_copy").on("click", function (e) {
+                e.preventDefault(), t.button(1).trigger()
+            }), $("#export_excel").on("click", function (e) {
+                e.preventDefault(), t.button(2).trigger()
+            }), $("#export_csv").on("click", function (e) {
+                e.preventDefault(), t.button(3).trigger()
+            }), $("#export_pdf").on("click", function (e) {
+                e.preventDefault(), t.button(4).trigger()
+            })
+        }
+    };
+    jQuery(document).ready(function () {
+        DatatablesExtensionButtons.init()
+    });
+
+
 </script>
 @stop
 

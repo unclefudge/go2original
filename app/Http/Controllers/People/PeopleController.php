@@ -7,6 +7,7 @@ use Validator;
 use App\Models\People\People;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
+use Jenssegers\Agent\Agent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -20,9 +21,10 @@ class PeopleController extends Controller {
     public function index()
     {
         // Check authorisation
-        $people = People::all()->sortBy('firstname');
+        $people = People::where('status', 1)->get()->sortBy('firstname');
+        $agent = new Agent();
 
-        return view('people/index', compact('people'));
+        return view('people/index', compact('people', 'agent'));
     }
 
     /**
@@ -131,13 +133,18 @@ class PeopleController extends Controller {
                 $types = ['Parent', 'Parent/Volunteer', 'P', 'PV'];
             elseif (request('type') == 'Volunteer')
                 $types = ['Volunteer', 'Parent/Volunteer', 'V', 'PV'];
+            else
+                $types = [request('type')];
         }
 
         //dd($types);
         $people = People::select([
-            'people.id', 'people.type', 'people.firstname', 'people.lastname', 'people.phone', 'people.email',
-            'people.address', 'people.suburb', 'people.state', 'people.postcode', 'people.status', 'people.aid',
-            DB::raw('CONCAT(people.firstname, " ", people.lastname) AS full_name')])
+            'people.id', 'people.type', 'people.firstname', 'people.lastname', 'people.phone', 'people.email', 'people.address', 'people.suburb', 'people.state', 'people.postcode',
+            'people.grade', 'people.school_id', 'people.media_consent', 'people.wwc_no', 'people.wwc_verified', 'people.status', 'people.aid',
+            'schools.id', 'schools.name AS school_name',
+            DB::raw('CONCAT(people.firstname, " ", people.lastname) AS full_name'),
+            DB::raw('DATE_FORMAT(people.wwc_exp, "%b %Y") AS wwc_exp2')])
+            ->leftJoin('schools', 'people.school_id', '=', 'schools.id')
             ->whereIn('people.type', $types)
             ->where('people.aid', 1)
             ->where('people.status', 1); // request('status')
@@ -146,39 +153,37 @@ class PeopleController extends Controller {
 
         $dt = Datatables::of($people)
             //->filterColumn('full_name', 'whereRaw', "CONCAT(firstname,' ',lastname) like ?", ["%$1%"])
-            ->editColumn('id', function ($people) {
-                //if (in_array(Auth::user()->id, [3,109]) || Auth::user()->allowed2('view.user', $user))
-                return '<div class="text-center"><a href="/people/' . $people->id . '"><i class="fa fa-search"></i></a></div>';
-
-                return '';
-            })
+            //->addColumn('view2', function ($people) {
+            //    return '<div class="text-center"><a href="/people/' . $people->id . '"><i class="fa fa-search"></i></a></div>';
+            //})
             ->editColumn('full_name', function ($people) {
                 $string = $people->firstname . ' ' . $people->lastname;
 
                 return $string;
             })
-            ->editColumn('phone', function ($people) {
-                return $people->phone;
-                return '<a href="tel:' . preg_replace("/[^0-9]/", "", $people->phone) . '">' . $people->phone . '</a>';
-            })
-            ->editColumn('email', function ($people) {
-                //return '<a href="mailto:' . $user->email . '">' . '<i class="fa fa-envelope-o"></i>' . '</a>';
-                return '<a href="mailto:' . $people->email . '">' . $people->email . '</a>';
-            })
             ->editColumn('address', function ($people) {
                 $address = '';
                 if ($people->address) $address .= "$people->address, ";
-                if ($people->suburb) $address .= strtoupper($people->suburb).", ";
+                if ($people->suburb) $address .= strtoupper($people->suburb) . ", ";
                 if ($people->state) $address .= "$people->state ";
                 if ($people->postcode) $address .= "$people->postcode";
+
                 return $address;
+            })
+            ->editColumn('media_consent', function ($people) {
+                if (!in_array($people->type, ['Student', 'Student/Volenteer'])) return "<i class='fa fa-user m--font-metal'>";
+                return ($people->media_consent) ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
+            })
+            ->editColumn('wwc_exp2', function ($people) {
+                return ($people->wwc_verified) ? $people->wwc_exp2 :  $people->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash m--font-danger'>";
             })
             ->addColumn('action', function ($people) {
                 $actions = '';
                 $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete' data-remote='/people/$people->id' data-name='$people->firstname $people->lastname'><i class='fa fa-trash'></i></button>";
+
                 return $actions;
             })
-            ->rawColumns(['id', 'full_name', 'name', 'phone', 'email', 'action'])
+            ->rawColumns(['id', 'view', 'full_name', 'name', 'phone', 'email', 'media_consent', 'wwc_exp2', 'action'])
             ->make(true);
 
         return $dt;

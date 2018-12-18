@@ -37,7 +37,7 @@ class CreatePeopleTables extends Migration
             $table->increments('id');
             $table->string('firstname', 50)->nullable();
             $table->string('lastname', 50)->nullable();
-            $table->string('type', 10)->nullable();
+            $table->string('type', 50)->nullable();
             $table->string('gender', 10)->nullable();
             $table->dateTime('dob')->nullable();
 

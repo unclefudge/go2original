@@ -235,6 +235,7 @@ return [
          */
         'Datatables' => Yajra\Datatables\Datatables::class,
         'Toastr' => Kamaln7\Toastr\Facades\Toastr::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];
