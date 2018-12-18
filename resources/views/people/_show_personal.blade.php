@@ -68,7 +68,7 @@
                             <i class="fa fa-user" style="padding-right: 5px"></i>
                         @endif
                     </div>
-                    <div class="col col-md-11">
+                    <div class="col col-sm-11 col-md-11">
                         {{ $people->type }} <br>
                         {!! ($people->dob) ? "$people->age years old &nbsp; (".$people->dob->format('M d Y').") <br>" : '' !!}
                     </div>
@@ -77,7 +77,7 @@
             </div>
             <div class="col-md-6">
                 <div class="row" style="padding: 5px 0px">
-                    <div class="col-1 col-md-3"><i class="fa fa-envelope" style="padding-right: 5px"></i> <span class="d-none d-md-inline">Email</span></div>
+                    <div class="col-1 col-md-3"><i class="fa fa-envelope" style="padding-right: 5px"></i> <span class="d-none d-sm-inline">Email</span></div>
                     <div class="col col-md-9">{!! ($people->email) ? "<a href='mailto:$people->email'> $people->email</a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">

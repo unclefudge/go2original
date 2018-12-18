@@ -130,7 +130,21 @@
                 action: function (e, dt, node, config) {
                     alert('Import');
                 }
-            }
+            },
+                @endif
+                @if (false)
+            {
+                text: "<i class='fa fa-cloud-upload-alt' style='padding-right: 5px'></i> Hide/Show Columns",
+                action: function (e, dt, node, config) {
+                    alert('Columns');
+                }
+            },
+            {
+                text: '<div class="dropdown"><button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown button </button> <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> <a class="dropdown-item" href="#" data-toggle="m-tooltip" title="Tooltip title" data-placement="right" data-skin="dark" 	data-container="body">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#" data-toggle="m-tooltip" title="Tooltip title" data-placement="left">Something else here</a></div></div>',
+                action: function (e, dt, node, config) {
+                    //alert('Columns');
+                }
+            },
             @endif
         ],
         ajax: {
