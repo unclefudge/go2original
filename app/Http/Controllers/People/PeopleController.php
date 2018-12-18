@@ -184,7 +184,7 @@ class PeopleController extends Controller {
             })
             ->addColumn('action', function ($people) {
                 $actions = '';
-                $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete' data-remote='/people/$people->id' data-name='$people->firstname $people->lastname'><i class='fa fa-trash'></i></button>";
+                $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete' data-remote='/people/$people->id' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt'></i></button>";
 
                 return $actions;
             })

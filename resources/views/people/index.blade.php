@@ -56,7 +56,15 @@
                 </div>
             </div>
             {!! Form::hidden('type', null, ['id' => 'type']) !!}
-            <table class="table table-hover table-sm table-checkable table-responsive m-table--head-bg-brand m-table" id="datatable1">
+            {!! Form::hidden('pagelength', ($agent->isMobile() ? 100 : 25), ['id' => 'pagelength']) !!}
+
+            <style>
+                #datatable1 tbody td.selected {
+                    color: black;
+                    background-color: #F8F9FB;
+                }
+            </style>
+            <table class="table table-hover table-sm table-checkable table-bordered table-responsive m-table--head-bg-brand m-table" id="datatable1">
                 <thead>
                 <tr>
                     <th width="5%"> #</th>
@@ -96,14 +104,15 @@
     // Datatable
     //
     var datatable1 = $('#datatable1').DataTable({
-        pageLength: 25,
+        pageLength: $('#pagelength').val(),
         processing: true,
         serverSide: true,
         //bFilter: false,
         //bLengthChange: false,
         responsive: true,
+        //select: true,
         select: {
-            style: 'os',
+            style: 'single',
             items: 'cell'
         },
         dom: "<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
@@ -148,22 +157,7 @@
         ],
         order: [
             [1, "asc"]
-        ]
-    });
-
-    //
-    // View selected profile on click
-    //
-    datatable1.on('select', function (e, dt, type, indexes) {
-        var colnum = indexes[0].column;
-        var rownum = indexes[0].row;
-        var cell_data = datatable1.cell(indexes).data();
-        //console.log('R:'+rownum+' C:'+colnum+' D:'+cell_data);
-        //var rowData = datatable1.rows(indexes).data().toArray(); // For row select
-        var rowData = datatable1.rows(rownum).data().toArray(); // for cell selection
-        var id = rowData[0][Object.keys(rowData[0])[0]];
-        if (colnum != 10)
-            window.location.href = "/people/" + id;
+        ],
     });
 
 
@@ -183,20 +177,38 @@
             confirmButtonClass: "btn btn-danger",
             showCancelButton: true,
             reverseButtons: true,
-            allowOutsideClick: true,
-        }).then(function (e) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                dataType: 'json',
-                data: {method: '_DELETE', submit: true},
-                success: function (data) {
-                    toastr.error('Deleted profile');
-                },
-            }).always(function (data) {
-                $('#datatable1').DataTable().draw(false);
-            });
+            allowOutsideClick: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    data: {method: '_DELETE', submit: true},
+                    success: function (data) {
+                        toastr.error('Deleted profile');
+                    },
+                }).always(function (data) {
+                    $('#datatable1').DataTable().draw(false);
+                });
+            }
         });
+    });
+
+    //
+    // View selected profile on click
+    //
+    datatable1.on('select', function (e, dt, type, indexes) {
+        var colnum = indexes[0].column;
+        var rownum = indexes[0].row;
+        var cell_data = datatable1.cell(indexes).data();
+        //console.log('R:'+rownum+' C:'+colnum+' D:'+cell_data);
+        //var rowData = datatable1.rows(indexes).data().toArray(); // For row select
+        var rowData = datatable1.rows(rownum).data().toArray(); // for cell selection
+        //console.log(rowData);
+        var id = rowData[0][Object.keys(rowData[0])[0]];
+        if (colnum != 10)
+            window.location.href = "/people/" + id;
     });
 
 
@@ -243,7 +255,6 @@
     jQuery(document).ready(function () {
         datatable1.init()
     });
-
 </script>
 @stop
 
