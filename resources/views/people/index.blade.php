@@ -76,7 +76,7 @@
                     <th> Grade</th>
                     <th> School</th>
                     <th> Media</th>
-                    <th> WWC Expiry</th>
+                    <th width="10%"> WWC Expiry</th>
                     <th width="5%"> Actions</th>
                 </tr>
                 </thead>
