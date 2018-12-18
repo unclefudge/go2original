@@ -7,6 +7,8 @@
     <title>Go2Youth</title>
     <meta name="description" content="Event and Attendance for Youth Ministries">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta id="token" name="token" value="{{ csrf_token() }}" />
 
     <!--begin::Web font -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>

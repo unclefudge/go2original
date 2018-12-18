@@ -117,9 +117,14 @@ class PeopleController extends Controller {
      * @param  \App\Models\People\People $people
      * @return \Illuminate\Http\Response
      */
-    public function destroy(People $people)
+    public function destroy($id)
     {
-        //
+        $people = People::findOrFail($id);
+        $people->status = 0;
+        $people->save();
+
+        return response()->json(['success', '200']);
+        //return Response::json('success', 200);
     }
 
     /**
@@ -141,7 +146,7 @@ class PeopleController extends Controller {
         $people = People::select([
             'people.id', 'people.type', 'people.firstname', 'people.lastname', 'people.phone', 'people.email', 'people.address', 'people.suburb', 'people.state', 'people.postcode',
             'people.grade', 'people.school_id', 'people.media_consent', 'people.wwc_no', 'people.wwc_verified', 'people.status', 'people.aid',
-            'schools.id', 'schools.name AS school_name',
+            'schools.id As sid', 'schools.name AS school_name',
             DB::raw('CONCAT(people.firstname, " ", people.lastname) AS full_name'),
             DB::raw('DATE_FORMAT(people.wwc_exp, "%b %Y") AS wwc_exp2')])
             ->leftJoin('schools', 'people.school_id', '=', 'schools.id')

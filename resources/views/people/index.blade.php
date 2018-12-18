@@ -90,9 +90,11 @@
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    });
+    //
+    // Datatable
+    //
     var datatable1 = $('#datatable1').DataTable({
         pageLength: 25,
         processing: true,
@@ -100,7 +102,10 @@
         //bFilter: false,
         //bLengthChange: false,
         responsive: true,
-        select: true,
+        select: {
+            style: 'os',
+            items: 'cell'
+        },
         dom: "<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
         //buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
         buttons: [
@@ -123,9 +128,7 @@
             'url': '/data/people',
             'type': 'GET',
             'data': function (d) {
-                //d.company_id = {{ $people }};
                 d.type = $('#type').val();
-                //d.status = $('#status').val();
             }
         },
         columns: [
@@ -148,18 +151,25 @@
         ]
     });
 
+    //
+    // View selected profile on click
+    //
     datatable1.on('select', function (e, dt, type, indexes) {
-                var rowData = datatable1.rows(indexes).data().toArray();
-                //events.prepend('<div><b>' + type + ' selection</b> - ' + JSON.stringify(rowData) + '</div>');
-                //alert(JSON.stringify(rowData));
-                var id = rowData[0][Object.keys(rowData[0])[0]];
-                window.location.href = "/people/" + id;
-            })
-            .on('deselect', function (e, dt, type, indexes) {
-                var rowData = datatable1.rows(indexes).data().toArray();
-                //events.prepend('<div><b>' + type + ' <i>de</i>selection</b> - ' + JSON.stringify(rowData) + '</div>');
-            });
+        var colnum = indexes[0].column;
+        var rownum = indexes[0].row;
+        var cell_data = datatable1.cell(indexes).data();
+        //console.log('R:'+rownum+' C:'+colnum+' D:'+cell_data);
+        //var rowData = datatable1.rows(indexes).data().toArray(); // For row select
+        var rowData = datatable1.rows(rownum).data().toArray(); // for cell selection
+        var id = rowData[0][Object.keys(rowData[0])[0]];
+        if (colnum != 10)
+            window.location.href = "/people/" + id;
+    });
 
+
+    //
+    // Delete select profile on trashcan
+    //
     datatable1.on('click', '.btn-delete[data-remote]', function (e) {
         e.preventDefault();
         var url = $(this).data('remote');
@@ -174,29 +184,25 @@
             showCancelButton: true,
             reverseButtons: true,
             allowOutsideClick: true,
-        }, function () {
+        }).then(function (e) {
             $.ajax({
                 url: url,
                 type: 'DELETE',
                 dataType: 'json',
                 data: {method: '_DELETE', submit: true},
                 success: function (data) {
-                    toastr.error('Deleted document');
+                    toastr.error('Deleted profile');
                 },
             }).always(function (data) {
-                $('#table1').DataTable().draw(false);
+                $('#datatable1').DataTable().draw(false);
             });
         });
     });
 
-    /*
-     $("#m_sweetalert_demo_9").click(function(e){swal({title:"Are you sure ? ",text:"Youwon't be able to revert this!",type:"warning",showCancelButton:!0,confirmButtonText:"Yes, deleteit!",
-     cancelButtonText:"No, cancel!",
-     reverseButtons:!0}).then(function(e){e.value?swal("Deleted!",
-     "Your file has been deleted.",
-     "Success"):"cancel"===e.dismiss&&swal("Cancelled","Your imaginary file is safe:)",
-     "error")})})
-     */
+
+    //
+    //  View profiles of 'Type' + hide/show columns for select type
+    //
     $("#type_all").click(function () {
         $("#type").val('');
         datatable1.column(2).visible(true);  // Type
@@ -237,77 +243,6 @@
     jQuery(document).ready(function () {
         datatable1.init()
     });
-
-
-    var DatatablesExtensionButtons = {
-        init: function () {
-            var t;
-            $("#m_table_1").DataTable({
-                responsive: !0,
-                dom: "<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
-                buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
-                columnDefs: [{
-                    targets: 6, render: function (t, e, a, n) {
-                        var s = {
-                            1: {title: "Pending", class: "m-badge--brand"},
-                            2: {title: "Delivered", class: " m-badge--metal"},
-                            3: {title: "Canceled", class: " m-badge--primary"},
-                            4: {title: "Success", class: " m-badge--success"},
-                            5: {title: "Info", class: " m-badge--info"},
-                            6: {title: "Danger", class: " m-badge--danger"},
-                            7: {title: "Warning", class: " m-badge--warning"}
-                        };
-                        return void 0 === s[t] ? t : '<span class="m-badge ' + s[t].class + ' m-badge--wide">' + s[t].title + "</span>"
-                    }
-                }, {
-                    targets: 7, render: function (t, e, a, n) {
-                        var s = {1: {title: "Online", state: "danger"}, 2: {title: "Retail", state: "primary"}, 3: {title: "Direct", state: "accent"}};
-                        return void 0 === s[t] ? t : '<span class="m-badge m-badge--' + s[t].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' + s[t].state + '">' + s[t].title + "</span>"
-                    }
-                }]
-            }), t = $("#m_table_2").DataTable({
-                responsive: !0,
-                buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
-                processing: !0,
-                serverSide: !0,
-                ajax: {url: "https://keenthemes.com/metronic/themes/themes/metronic/dist/preview/inc/api/datatables/demos/server.php", type: "POST", data: {columnsDef: ["OrderID", "Country", "ShipCity", "ShipAddress", "CompanyAgent", "CompanyName", "Status", "Type"]}},
-                columns: [{data: "OrderID"}, {data: "Country"}, {data: "ShipCity"}, {data: "ShipAddress"}, {data: "CompanyAgent"}, {data: "CompanyName"}, {data: "Status"}, {data: "Type"}],
-                columnDefs: [{
-                    targets: 6, render: function (t, e, a, n) {
-                        var s = {
-                            1: {title: "Pending", class: "m-badge--brand"},
-                            2: {title: "Delivered", class: " m-badge--metal"},
-                            3: {title: "Canceled", class: " m-badge--primary"},
-                            4: {title: "Success", class: " m-badge--success"},
-                            5: {title: "Info", class: " m-badge--info"},
-                            6: {title: "Danger", class: " m-badge--danger"},
-                            7: {title: "Warning", class: " m-badge--warning"}
-                        };
-                        return void 0 === s[t] ? t : '<span class="m-badge ' + s[t].class + ' m-badge--wide">' + s[t].title + "</span>"
-                    }
-                }, {
-                    targets: 7, render: function (t, e, a, n) {
-                        var s = {1: {title: "Online", state: "danger"}, 2: {title: "Retail", state: "primary"}, 3: {title: "Direct", state: "accent"}};
-                        return void 0 === s[t] ? t : '<span class="m-badge m-badge--' + s[t].state + ' m-badge--dot"></span>&nbsp;<span class="m--font-bold m--font-' + s[t].state + '">' + s[t].title + "</span>"
-                    }
-                }]
-            }), $("#export_print").on("click", function (e) {
-                e.preventDefault(), t.button(0).trigger()
-            }), $("#export_copy").on("click", function (e) {
-                e.preventDefault(), t.button(1).trigger()
-            }), $("#export_excel").on("click", function (e) {
-                e.preventDefault(), t.button(2).trigger()
-            }), $("#export_csv").on("click", function (e) {
-                e.preventDefault(), t.button(3).trigger()
-            }), $("#export_pdf").on("click", function (e) {
-                e.preventDefault(), t.button(4).trigger()
-            })
-        }
-    };
-    jQuery(document).ready(function () {
-        DatatablesExtensionButtons.init()
-    });
-
 
 </script>
 @stop
