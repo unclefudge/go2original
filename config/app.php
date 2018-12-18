@@ -175,6 +175,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Ones I added
+         */
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Kamaln7\Toastr\ToastrServiceProvider::class,
+
     ],
 
     /*
@@ -224,6 +230,11 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        /*
+         * Ones I added
+         */
+        'Datatables' => Yajra\Datatables\Datatables::class,
+        'Toastr' => Kamaln7\Toastr\Facades\Toastr::class,
     ],
 
 ];

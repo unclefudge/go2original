@@ -56,9 +56,13 @@ class CreatePeopleTables extends Migration
             // Additional fields
             $table->string('grade', 25)->nullable();
             $table->unsignedInteger('school_id')->nullable();
+            $table->dateTime('media_consent')->nullable();
+            $table->unsignedInteger('media_consent_by')->nullable();
             $table->string('photo', 255)->nullable();
             $table->string('wwc_no', 50)->nullable();
             $table->dateTime('wwc_exp')->nullable();
+            $table->dateTime('wwc_verified')->nullable();
+            $table->unsignedInteger('wwc_verified_by')->nullable();
 
             $table->string('minhub', 50)->nullable();
             $table->text('notes')->nullable();

@@ -36,10 +36,10 @@
 <!-- end::Head -->
 
 <!-- begin::Body -->
-<body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default">
+<body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default" style="background: #F7F7F7">
 
 <!-- begin:: Page -->
-<div class="m-grid m-grid--hor m-grid--root m-page" style="background: #F7F7F7">
+<div class="m-grid m-grid--hor m-grid--root m-page">
 
     {{--}}@include('layouts/section/header')--}}
     <!-- begin::Header -->
@@ -93,6 +93,9 @@
 <!--begin::Page Scripts -->
 @yield('page-scripts')
 <!--end::Page Scripts -->
+
+{!! Toastr::render() !!}
+
 </body>
 
 <!-- end::Body -->

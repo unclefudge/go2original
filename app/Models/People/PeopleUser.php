@@ -6,15 +6,11 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class People extends Model
+class PeopleUser extends Model
 {
-    protected $table = 'people';
+    protected $table = 'users_people';
     protected $fillable = [
-        'firstname', 'lastname', 'type', 'gender', 'dob', 'email', 'phone', 'instagram',
-        'address', 'address2', 'suburb', 'state', 'postcode', 'country',
-        'grade', 'school_id', 'photo', 'wwc_no', 'wwc_exp', 'notes', 'consultant_name',
-        'status', 'aid',  'created_by', 'updated_by'];
-    protected $dates = ['dob', 'wwc_exp'];
+        'uid', 'pid', 'created_by', 'updated_by'];
 
     /**
      * A People belongs to a account
@@ -28,13 +24,13 @@ class People extends Model
 
 
     /**
-     * A People May have many users (who own this profile)
+     * A User has many trades (trades they are skilled in).
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function users()
+    public function tradesSkilledIn()
     {
-        return $this->belongsToMany('App\User', 'users_people', 'pid', 'uid');
+        return $this->belongsToMany('App\Models\Site\Planner\Trade', 'user_trade', 'user_id', 'trade_id');
     }
 
     /**

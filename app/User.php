@@ -20,6 +20,33 @@ class User extends Authenticatable
     ];
 
     /**
+     * A User May have many people profiles they own this.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'users_people', 'pid', 'uid');
+    }
+
+    /**
+     * A User May have many people (profiles they may own)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function people()
+    {
+        return $this->belongsToMany('App\Models\People\People', 'users_people', 'uid', 'pid');
+    }
+
+    /**
+     * Get user fullname if linked to person else username  (getter)
+     */
+    public function getNameAttribute()
+    {
+        return ($this->people->first()) ? $this->people->first()->name : $this->attributes['username'];
+    }
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

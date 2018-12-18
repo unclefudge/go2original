@@ -26,6 +26,7 @@ Route::get('/fudge', 'HomeController@fudge');
 
 
 //Route::get('/people', 'HomeController@people');
+Route::get('/data/people', 'People\PeopleController@getPeople');
 Route::resource('/people', 'People\PeopleController');
 
 Route::get('/event', 'HomeController@event');

@@ -69,8 +69,14 @@
 
 
         <div class="col-lg-8 col-xs-12 col-sm-12">
-            {{-- Security Details --}}
-            @include('people/_show-contact2')
+            {{-- Personal Info --}}
+            @include('people/_show_personal')
+            @include('people/_edit_personal')
+
+        </div>
+        <div class="col-lg-4 col-xs-12 col-sm-12">
+            {{-- Houshold --}}
+            @include('people/_show_household')
 
         </div>
 

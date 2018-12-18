@@ -55,6 +55,7 @@ class HomeController extends Controller {
 
         // Import Students
         echo "Importing Students<br><br>";
+        $account = \App\Models\Account\Account::create(['name' => 'Young Life Hobart', 'slug' => 'yl'])->first();
         $row = 0;
         if (($handle = fopen(public_path("students.csv"), "r")) !== false) {
             while (($data = fgetcsv($handle, 5000, ",")) !== false) {
@@ -88,7 +89,7 @@ class HomeController extends Controller {
                 if (!$people) {
                     $people = \App\Models\People\People::create(
                         ['firstname' => $firstname, 'lastname' => $lastname, 'dob' => $dob, 'gender' => $gender, 'email' => $email,
-                         'school_id' => $school->id, 'grade' => $grade, 'status' => $status, 'minhub' => $minhub, 'aid' => 1])->first();
+                         'school_id' => $school->id, 'grade' => $grade, 'status' => $status, 'minhub' => $minhub, 'type' => 'Student', 'aid' => $account->id,])->first();
                 }
             }
             fclose($handle);
