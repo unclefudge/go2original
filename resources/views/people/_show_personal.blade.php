@@ -68,7 +68,7 @@
                             <i class="fa fa-user" style="padding-right: 5px"></i>
                         @endif
                     </div>
-                    <div class="col col-sm-11 col-md-11">
+                    <div class="col">
                         {{ $people->type }} <br>
                         {!! ($people->dob) ? "$people->age years old &nbsp; (".$people->dob->format('M d Y').") <br>" : '' !!}
                     </div>
