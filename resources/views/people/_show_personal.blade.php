@@ -104,7 +104,7 @@
                     </div>
                     <div class="row">
                         <div class="col-1"><i class="fa fa-apple-alt"></i></div>
-                        <div class="col">Grade {{ $people->grade }}</div>
+                        <div class="col">{!! ($people->grade) ? "Grade $people->grade" : '-' !!} {!! ($people->school) ? '<br>'.$people->school->name : '' !!}</div>
                     </div>
                 </div>
 

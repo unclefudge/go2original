@@ -38,6 +38,16 @@ class People extends Model
     }
 
     /**
+     * A People May belongs to a school
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function school()
+    {
+        return $this->belongsTo('App\Models\People\School', 'school_id');
+    }
+
+    /**
      * Get the Full name (first + last)   (getter)
      *
      * @return string;

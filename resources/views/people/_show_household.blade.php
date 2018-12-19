@@ -3,7 +3,7 @@
         {{-- Personal Info --}}
         <div class="row" style="padding-bottom: 10px">
             <div class="col-8"><h4>Household</h4></div>
-            <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> <i class="fa fa-edit" style="padding-right: 3px"></i><span class="d-none d-md-inline">Edit</span></a></div>
+            <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> <i class="fa fa-edit" style="padding-right: 3px"></i><span class="d-none d-lg-inline">Edit</span></a></div>
         </div>
         @if (false)
             <div class="row">
