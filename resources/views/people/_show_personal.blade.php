@@ -81,8 +81,8 @@
                     <div class="col col-lg-9">{!! ($people->email) ? "<a href='mailto:$people->email'> $people->email</a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">
-                    <div class="col-1 col-md-3" style="padding-right: 4px"><i class="fa fa-phone" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Phone</span></div>
-                    <div class="col col-md-9">{!! ($people->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $people->phone)."> $people->phone </a>" : '-' !!}</div>
+                    <div class="col-1 col-lg-3" style="padding-right: 4px"><i class="fa fa-phone" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Phone</span></div>
+                    <div class="col col-lg-9">{!! ($people->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $people->phone)."> $people->phone </a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">
                     <div class="col-1 col-lg-3" style="padding-right: 4px"><i class="fa fa-map-marker-alt" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Address</span></div>
