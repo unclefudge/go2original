@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Account;
 
+use DB;
+use Validator;
 use App\Models\Account\Account;
+use Yajra\Datatables\Datatables;
+use Kamaln7\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -10,18 +14,24 @@ class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        // Check authorisation
+        return view('account/index', compact('people'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $account = Account::findOrFail($id);
+        return view('account/show', compact('account'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -29,57 +39,52 @@ class AccountController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Account\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Account $account)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Account\Account  $account
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Account $account)
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store()
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param \App\Models\Account\Account  $account
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Account $account)
+    public function update($id)
     {
-        //
+        $account = Account::findOrFail($id);
+
+        // Validate
+        $rules = ['name' => 'required', 'slug' => 'required'];
+        $mesgs = [];
+        $validator = Validator::make(request()->all(), $rules, $mesgs);
+
+        if ($validator->fails()) {
+            $validator->errors()->add('FORM', 'account');
+
+            return back()->withErrors($validator)->withInput();
+        }
+        //dd(request()->all());
+
+        $account_request = request()->all();
+        $account->update($account_request);
+
+        Toastr::success("Saved changes");
+
+        return redirect("/account/$account->id");
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Account\Account  $account
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Account $account)
+    public function destroy($id)
     {
         //
     }

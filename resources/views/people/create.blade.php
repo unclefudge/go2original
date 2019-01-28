@@ -3,37 +3,16 @@
 @extends('layouts/main')
 
 @section('content')
-    @include('people/_header')
+
 
     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
     <div class="row">
-        {{--}}
-        <div class="col-lg-6 col-xs-12 col-sm-12">
-            @include('people/_show-contact')
-        </div>--}}
-
-
-        <div class="col-lg-9 col-xs-12 col-sm-12">
-            {{-- Personal Info --}}
-            @include('people/_show_personal')
-            @include('people/_edit_personal')
+        <div class="col-12">
 
         </div>
-        <div class="col-lg-3 col-xs-12 col-sm-12">
-            {{-- Houshold --}}
-            @include('people/_show_household')
-            @include('people/_edit_household')
-
-        </div>
-
     </div>
 
-    <div>
-        <div class="pull-right" style="font-size: 12px; font-weight: 200; padding: 10px 10px 0 0">
-            {!! $people->displayUpdatedBy() !!}
-        </div>
-    </div>
 @stop
 
 

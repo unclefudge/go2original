@@ -83,13 +83,15 @@ class CreatePeopleTables extends Migration
         // People Medical
         Schema::create('people_medical', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('emergency_name', 255)->nullable();
-            $table->string('emergency_phone', 50)->nullable();
+            $table->string('emergency_name1', 255)->nullable();
+            $table->string('emergency_phone1', 50)->nullable();
+            $table->string('emergency_name2', 255)->nullable();
+            $table->string('emergency_phone2', 50)->nullable();
             $table->string('medicare_num', 50)->nullable();
             $table->string('medicare_pos', 10)->nullable();
             $table->dateTime('medicare_exp')->nullable();
-            $table->string('private_name', 255)->nullable();
-            $table->string('private_num', 50)->nullable();
+            $table->string('privatehealth_name', 255)->nullable();
+            $table->string('privatehealth_num', 50)->nullable();
             $table->string('allergies')->nullable();
             $table->tinyInteger('anaphylactic')->nullable();
             $table->string('dietary')->nullable();
@@ -131,6 +133,7 @@ class CreatePeopleTables extends Migration
             $table->unsignedInteger('pid')->nullable();
             $table->string('relationship', 50)->nullable();
             $table->unsignedInteger('related2')->nullable();
+            $table->tinyInteger('primary')->default(0);
 
             // Foreign keys
             $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
@@ -165,6 +168,7 @@ class CreatePeopleTables extends Migration
             $table->increments('id');
             $table->unsignedInteger('uid')->nullable();
             $table->unsignedInteger('pid')->nullable();
+            $table->tinyInteger('primary')->default(1);
 
             // Foreign keys
             $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');

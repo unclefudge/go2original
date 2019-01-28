@@ -1,10 +1,10 @@
-{{-- Edit Profile Modal --}}
+{{-- Create Profile Modal --}}
 <div class="modal fade" id="modal_personal" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="background-color: #F7F7F7">
-            {!! Form::model($people, ['method' => 'PATCH', 'action' => ['People\PeopleController@update', $people->id]]) !!}
+            {!! Form::model('people', ['action' => ['People\PeopleController@store']]) !!}
             <div class="modal-header" style="background: #32c5d2">
-                <h5 class="modal-title text-white" id="ModalLabel">Edit Profile</h5>
+                <h5 class="modal-title text-white" id="ModalLabel">Create Profile</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -94,7 +94,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', ($people->dob) ? $people->dob->format('d/m/Y') : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
+                                {!! Form::text('dob', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
                                 <!--<input type="text" name="dob" class="form-control m-input" readonly="" style="background-color: #fff" placeholder="Select date" id="m_datepicker_2"> -->
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group {!! fieldHasError('type', $errors) !!}">
                             {!! Form::label('type', 'Type', ['class' => 'control-label']) !!}
-                            {!! Form::select('type', $people_types, null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('type', $people_types, null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
                             {!! fieldErrorMessage('type', $errors) !!}
                         </div>
                     </div>
@@ -140,9 +140,10 @@
                             <div class="form-group">
                                 <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
                                 <select name="school_id" class="form-control select2" id="school_id">
+                                    {{--}}
                                     @foreach (\App\Models\Account\Account::find(1)->schools->sortBy('name') as $key => $value)
-                                        <option value="{{ $key }}" {{ ($people->school_id == $key) ? 'selected' : '' }}>{{ $value }}</option>
-                                    @endforeach
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -150,7 +151,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('media_consent', $errors) !!}">
                                 {!! Form::label('media_consent', 'Media Consent', ['class' => 'control-label']) !!}
-                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], ($people->media_consent) ? 1 : 0, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], 0, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
                                 {!! fieldErrorMessage('media_consent', $errors) !!}
                             </div>
                         </div>
@@ -187,7 +188,7 @@
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', ($people->wwc_exp) ? $people->wwc_exp->format('d/m/Y') : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
+                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
                                 </div>
                             </div>
                         </div>

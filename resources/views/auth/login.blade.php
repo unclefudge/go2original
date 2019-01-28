@@ -11,6 +11,27 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
+                        @if(session()->has('login_error'))
+                            <div class="alert alert-success">
+                                {{ session()->get('login_error') }}
+                            </div>
+                        @endif
+
+                        <div class="row form-group {{ $errors->has('identity') ? ' has-error' : '' }}">
+                            <label for="identity" class="col-md-4 col-form-label text-md-right">Email or Username</label>
+
+                            <div class="col-md-6">
+                                <input id="identity" type="identity" class="form-control {{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" required autofocus>
+
+                                @if ($errors->has('identity'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('identity') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{--}}
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
@@ -23,9 +44,9 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div>--}}
 
-                        <div class="form-group row">
+                        <div class="row form-group">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

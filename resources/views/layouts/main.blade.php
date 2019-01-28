@@ -33,7 +33,7 @@
     <script type="text/javascript" src="//framework.dreamscape.cloud/scripts/reseller/framework/vendors.bundle.js?vendors_timestamp=1539856691"></script>-->
     @yield('page-styles')
     <!--end::Page Vendors Styles -->
-    <link rel="shortcut icon" href="/assets/demo/demo5/media/img/logo/favicon.ico"/>
+    <link rel="shortcut icon" href="/img/favicon.ico"/>
 </head>
 <!-- end::Head -->
 

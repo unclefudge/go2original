@@ -923,6 +923,7 @@ li.m-menu__item.m-menu__item--active {
         width: 100%;
         position: relative;
         z-index: 2;
+        text-align: center !important; /* attempt to center all buttons */
     }
 
     .member-bar .member-bar-item {

@@ -101,6 +101,8 @@
         </div>
     </div>
 
+    {{ session('tz') }}<br>
+    {{ Auth::user()->username }}
     <div>
         1 <br>
         2 <br>

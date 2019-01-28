@@ -1,7 +1,26 @@
-@inject('ozstates', 'App\Http\Utilities\Ozstates')
-<?php $people_types = ['Student' => 'Student', 'Student/Volunteer' => 'Student/Volunteer', 'Parent' => 'Parent', 'Parent/Volunteer' => 'Parent/Volunteer', 'Volunteer' => 'Volunteer'] ?>
-
 @extends('layouts/main')
+
+@section('subheader')
+    {{--}}
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title ">People</h3>
+            </div>
+            <div>
+            <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
+                <span class="m-subheader__daterange-label">
+                    <span class="m-subheader__daterange-title"></span>
+                    <span class="m-subheader__daterange-date m--font-brand"></span>
+                </span>
+                <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+                    <i class="la la-angle-down"></i>
+                </a>
+            </span>
+            </div>
+        </div>
+    </div>--}}
+@stop
 
 @section('content')
     <div class="m-portlet">
@@ -32,11 +51,11 @@
                     </ul>
                 </div>
                 <div class="col-1" style="padding-left: 0px">
-                    <button type="button" class="btn btn-sm m-btn--pill btn-brand pull-right" data-toggle="modal" data-target="#modal_personal">Add</button>
+                    <button type="button" class="btn btn-sm m-btn--pill btn-brand pull-right">Add</button>
                     <hr class="d-none d-md-block" style="padding-top: 20px; margin-top: 48px">
                 </div>
             </div>
-            {!! Form::hidden('show_type', null, ['id' => 'show_type']) !!}
+            {!! Form::hidden('type', null, ['id' => 'type']) !!}
             {!! Form::hidden('pagelength', ($agent->isMobile() ? 100 : 25), ['id' => 'pagelength']) !!}
 
             <style>
@@ -45,7 +64,7 @@
                     background-color: #F8F9FB;
                 }
             </style>
-            <table class="table table-hover table-sm table-checkable table-bordered table-responsive m-table--head-bg-brand m-table" id="datatable1" width="100%">
+            <table class="table table-hover table-sm table-checkable table-bordered table-responsive m-table--head-bg-brand m-table" id="datatable1">
                 <thead>
                 <tr>
                     <th width="5%"> #</th>
@@ -65,7 +84,6 @@
         </div>
     </div>
 
-    @include('people/_create_personal')
 @stop
 
 
@@ -78,9 +96,6 @@
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
-<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
-<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
-<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <script type="text/javascript">
 
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
@@ -136,7 +151,7 @@
             'url': '/data/people',
             'type': 'GET',
             'data': function (d) {
-                d.show_type = $('#show_type').val();
+                d.type = $('#type').val();
             }
         },
         columns: [
@@ -215,7 +230,7 @@
     //  View profiles of 'Type' + hide/show columns for select type
     //
     $("#type_all").click(function () {
-        $("#show_type").val('');
+        $("#type").val('');
         datatable1.column(2).visible(true);  // Type
         datatable1.column(6).visible(true);  // Grade
         datatable1.column(7).visible(true);  // School
@@ -224,7 +239,7 @@
         datatable1.ajax.reload();
     });
     $("#type_student").click(function () {
-        $("#show_type").val('Student');
+        $("#type").val('Student');
         datatable1.column(2).visible(false);  // Type
         datatable1.column(6).visible(true);   // Grade
         datatable1.column(7).visible(true);   // School
@@ -233,7 +248,7 @@
         datatable1.ajax.reload();
     });
     $("#type_parent").click(function () {
-        $("#show_type").val('Parent');
+        $("#type").val('Parent');
         datatable1.column(2).visible(false);  // Type
         datatable1.column(6).visible(false);  // Grade
         datatable1.column(7).visible(false);  // School
@@ -242,7 +257,7 @@
         datatable1.ajax.reload();
     });
     $("#type_volunteer").click(function () {
-        $("#show_type").val('Volunteer');
+        $("#type").val('Volunteer');
         datatable1.column(2).visible(false);  // Type
         datatable1.column(6).visible(false);  // Grade
         datatable1.column(7).visible(false);  // School
@@ -254,95 +269,6 @@
     jQuery(document).ready(function () {
         datatable1.init()
     });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        // Form errors - show modal
-        if ($('#formerrors').val() == 'personal')
-            $('#modal_personal').modal('show');
-
-        display_fields();
-
-        function display_fields() {
-            var type = $("#type").val();
-            $('#fields_student').hide();
-            $('#fields_volunteer').hide();
-
-            if (type == 'Student' || type == 'Student/Volunteer') {
-                $('#fields_student').show();
-            }
-            if (type == 'Volunteer' || type == 'Student/Volunteer' || type == 'Parent/Volunteer') {
-                $('#fields_volunteer').show();
-            }
-
-            // Dynamic School dropdown from Grade
-            $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
-            var grade = $("#grade").val();
-            var school = $("#school_id").val();
-            if (grade) {
-                $.ajax({
-                    url: '/data/schools-by-grade/' + grade,
-                    type: "GET",
-                    dataType: "json",
-                    beforeSend: function () {
-                        $('#loader').css("visibility", "visible");
-                    },
-
-                    success: function (data) {
-                        $("#school_id").empty();
-                        $("#school_id").append('<option value="">Select school</option>');
-
-                        var school_names = [];
-                        $.each(data, function (key, value) {
-                            school_names.push(value);
-                        });
-                        school_names.sort();
-                        var other_key = 0;
-                        for (var i = 0; i < school_names.length; i++) {
-                            var val = school_names[i];
-                            var key = Object.keys(data)[Object.values(data).indexOf(school_names[i])];
-                            if (val == 'Other') {
-                                other_key = key;
-                            } else {
-                                if (school == key)
-                                    $("#school_id").append('<option value="' + key + '" selected>' + val + '</option>');
-                                else
-                                    $("#school_id").append('<option value="' + key + '">' + val + '</option>');
-                            }
-                        }
-                        // Append Other to end of list
-                        if (school == 'Other')
-                            $("#school_id").append('<option value="' + other_key + '" selected>Other</option>');
-                        else
-                            $("#school_id").append('<option value="' + other_key + '">Other</option>');
-                    },
-                    complete: function () {
-                        $('#loader').css("visibility", "hidden");
-                    }
-                });
-            } else {
-                $("#school_id").empty();
-            }
-        }
-
-        $("#type").change(function () {
-            alert($("#type").val());
-            display_fields();
-        });
-
-        $("#grade").change(function () {
-            display_fields();
-        });
-
-        $('.date-picker').datepicker({
-            autoclose: true,
-            clearBtn: true,
-            format: 'dd/mm/yyyy',
-        });
-
-    });
-
 </script>
 @stop
 

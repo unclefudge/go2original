@@ -12,9 +12,9 @@ class People extends Model
     protected $fillable = [
         'firstname', 'lastname', 'type', 'gender', 'dob', 'email', 'phone', 'instagram',
         'address', 'address2', 'suburb', 'state', 'postcode', 'country',
-        'grade', 'school_id', 'photo', 'wwc_no', 'wwc_exp', 'notes', 'consultant_name',
-        'status', 'aid',  'created_by', 'updated_by'];
-    protected $dates = ['dob', 'wwc_exp'];
+        'grade', 'school_id', 'photo', 'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by',
+        'notes', 'minhub', 'status', 'aid',  'created_by', 'updated_by'];
+    protected $dates = ['dob', 'wwc_exp', 'wwc_verified'];
 
     /**
      * A People belongs to a account
@@ -48,6 +48,16 @@ class People extends Model
     }
 
     /**
+     * A People WWC May be Verified by a User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function wwcVerifiedBy()
+    {
+        return People::find($this->wwc_verified_by);
+    }
+
+    /**
      * Get the Full name (first + last)   (getter)
      *
      * @return string;
@@ -63,6 +73,16 @@ class People extends Model
     public function getAgeAttribute()
     {
         return Carbon::parse($this->attributes['dob'])->age;
+    }
+
+    /**
+     * Get Timezone  (getter)
+     *
+     * @return string;
+     */
+    public function getTimezoneAttribute()
+    {
+        return $this->account->timezone;
     }
 
     /**

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -36,4 +38,50 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * The user has been authenticated.   *** OVERRIDE DEFAULT ***
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        session(['tz' => 'Aussie']);
+        //return redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * Check either username or email.    *** OVERRIDE DEFAULT ***
+     * @return string
+     */
+    public function username()
+    {
+        $identity  = request('identity');
+        $fieldName = filter_var($identity, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        request()->merge([$fieldName => $identity]);
+        return $fieldName;
+    }
+    /**
+     * Validate the user login.     *** OVERRIDE DEFAULT ***
+     * @param Request $request
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request,
+            ['identity' => 'required|string', 'password' => 'required|string'],
+            ['identity.required' => 'Username or email is required', 'password.required' => 'Password is required']
+        );
+    }
+    /**
+     * @param Request $request         *** OVERRIDE DEFAULT ***
+     * @throws ValidationException
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $request->session()->put('login_error', trans('auth.failed'));
+        throw ValidationException::withMessages(['error' => [trans('auth.failed')]]);
+    }
 }
+

@@ -21,14 +21,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/signup', 'HomeController@index')->name('home')->middleware('guest');
 
 
-Route::get('/metronic', 'HomeController@metronic');
-Route::get('/fudge', 'HomeController@fudge');
+// Logged in Routes
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/metronic', 'HomeController@metronic');
+    Route::get('/fudge', 'HomeController@fudge');
 
+    //Route::get('/data/people', 'Account\AccountController@getPeople');
+    Route::resource('/account', 'Account\AccountController');
 
-//Route::get('/people', 'HomeController@people');
-Route::get('/data/people', 'People\PeopleController@getPeople');
-Route::resource('/people', 'People\PeopleController');
+    Route::get('/data/people', 'People\PeopleController@getPeople');
+    Route::resource('/people', 'People\PeopleController');
 
-Route::get('/event', 'HomeController@event');
-Route::get('/group', 'HomeController@group');
-Route::get('/import-students', 'HomeController@importStudents');
+    Route::get('/data/schools-by-grade/{grade}', 'People\SchoolController@schoolsByGrade');
+
+    Route::get('/event', 'HomeController@event');
+    Route::get('/group', 'HomeController@group');
+    Route::get('/import-students', 'HomeController@importStudents');
+});

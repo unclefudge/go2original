@@ -57,7 +57,7 @@
             <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a></div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="row" style="padding: 5px 0px">
                     <div class="col-1">
                         @if ($people->gender == 'Male')
@@ -70,22 +70,22 @@
                     </div>
                     <div class="col">
                         {{ $people->type }} <br>
-                        {!! ($people->dob) ? "$people->age years old &nbsp; (".$people->dob->format('M d Y').") <br>" : '' !!}
+                        {!! ($people->dob) ? "$people->age years old &nbsp; (".$people->dob->format('j M Y').") <br>" : '' !!}
                     </div>
                 </div>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="row" style="padding: 5px 0px">
-                    <div class="col-1 col-lg-3" style="padding-right: 4px"><i class="fa fa-envelope" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Email</span></div>
+                    <div class="col-1 col-lg-3"><i class="fa fa-envelope" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Email</span></div>
                     <div class="col col-lg-9">{!! ($people->email) ? "<a href='mailto:$people->email'> $people->email</a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">
-                    <div class="col-1 col-lg-3" style="padding-right: 4px"><i class="fa fa-phone" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Phone</span></div>
+                    <div class="col-1 col-lg-3"><i class="fa fa-phone" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Phone</span></div>
                     <div class="col col-lg-9">{!! ($people->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $people->phone)."> $people->phone </a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">
-                    <div class="col-1 col-lg-3" style="padding-right: 4px"><i class="fa fa-map-marker-alt" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Address</span></div>
+                    <div class="col-1 col-lg-3"><i class="fa fa-map-marker-alt" style="padding-right: 5px"></i><span class="d-none d-lg-inline">Address</span></div>
                     <div class="col col-lg-9">{!! $people->address_formatted !!}</div>
                 </div>
 
@@ -94,10 +94,11 @@
 
         <hr class="field-hr">
 
+        {{-- Student --}}
         @if ($people->type == 'Student')
             <div class="row">
                 {{-- School --}}
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="row" style="padding: 5px 0px">
                         <div class="col-10"><h5>School</h5></div>
                         <div class="col-2"></div>
@@ -109,7 +110,7 @@
                 </div>
 
                 {{-- Media --}}
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="row" style="padding: 5px 0px">
                         <div class="col-10"><h5>Media Consent</h5></div>
                         <div class="col-2"><!--<a href="#" class="pull-right" data-toggle="modal" data-target="#modal_profile"> <i class="fa fa-edit"></i></a>--></div>
@@ -117,6 +118,30 @@
                     <div class="row">
                         <div class="col-1"><i class="fa fa-user-slash"></i></div>
                         <div class="col">Media Consent</div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        {{-- Volunteer --}}
+        @if ($people->type == 'Volunteer' || $people->type == 'Parent/Volunteer')
+            <div class="row">
+                {{-- School --}}
+                <div class="col-md-12">
+                    <div class="row" style="padding: 5px 0px">
+                        <div class="col-10"><h5>WWC Registration</h5></div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">No.</div>
+                        <div class="col">{!! ($people->wwc_no) ? "$people->wwc_no" : '-' !!}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">Expiry</div>
+                        <div class="col">{!! ($people->wwc_exp) ? $people->wwc_exp->format('d/m/Y') : '' !!}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">{!! ($people->wwc_verified_by) ? "<br>Verified by ".$people->wwcVerifiedBy()->name." on ".$people->wwc_verified->format('d/m/Y') : '<br><span class="m--font-danger">Not Verified Yet</span>' !!} </div>
                     </div>
                 </div>
             </div>

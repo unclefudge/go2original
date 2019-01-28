@@ -6,12 +6,10 @@ use App\Models\People\School;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SchoolController extends Controller
-{
+class SchoolController extends Controller {
+
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -20,8 +18,6 @@ class SchoolController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -30,57 +26,58 @@ class SchoolController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        $school = School::create($request);
+        $school = School::create(request()->all());
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\People\School  $school
-     * @return \Illuminate\Http\Response
      */
-    public function show(School $school)
+    public function show($id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\People\School  $school
-     * @return \Illuminate\Http\Response
      */
-    public function edit(School $school)
+    public function edit($id)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\People\School  $school
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, People $people)
+    public function update($id)
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\People\School  $school
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(School $school)
+    public function destroy($id)
     {
         //
+    }
+
+    /**
+     * List of Schools by Grade (ajax)
+     */
+    public function schoolsByGrade($grade)
+    {
+        $list = [];
+        $schools = School::where('aid', 1)->orderBy('name')->get();
+        if ($schools) {
+            foreach ($schools as $school) {
+                if ($school->grade_from <= $grade && $school->grade_to >= $grade)
+                    $list[$school->id] = $school->name;
+            }
+        }
+
+        return json_encode($list);
     }
 }

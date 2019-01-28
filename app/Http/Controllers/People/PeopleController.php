@@ -5,6 +5,7 @@ namespace App\Http\Controllers\People;
 use DB;
 use Validator;
 use App\Models\People\People;
+use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
 use Jenssegers\Agent\Agent;
@@ -15,8 +16,6 @@ class PeopleController extends Controller {
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -28,31 +27,8 @@ class PeopleController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param  \App\Models\People\People $people
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -62,37 +38,48 @@ class PeopleController extends Controller {
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\People\People $people
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new resource.
      */
-    public function edit(People $people)
+    public function create()
+    {
+        return view('people/create');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
     {
         //
     }
 
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\People\People $people
-     * @return \Illuminate\Http\Response
      */
     public function update($id)
     {
         $people = People::findOrFail($id);
 
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required'];
+        $rules = ['type' => 'required', 'firstname' => 'required', 'lastname' => 'required'];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
-            'firstname.required' => 'The last name is required.',
+            'lastname.required' => 'The last name is required.',
         ];
         $validator = Validator::make(request()->all(), $rules, $mesgs);
 
         if ($validator->fails()) {
-            $validator->errors()->add('FORM', 'profile');
+            $validator->errors()->add('FORM', 'personal');
 
             return back()->withErrors($validator)->withInput();
         }
@@ -104,6 +91,27 @@ class PeopleController extends Controller {
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat('d/m/Y H:i', request('dob') . '00:00')->toDateTimeString() : null;
+
+
+        // Student details
+        if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
+            // Media Consent
+            if (request('media_consent') != !$people->media_consent) {
+                $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
+                $people_request['media_consent_by'] = Auth::user()->id;
+            }
+        } else {
+            $people_request['grade'] = $people_request['school_id'] = null;
+            $people_request['media_consent'] = $people_request['media_consent_by'] = null;
+        }
+
+        // Volunteer details
+        if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer'])) {
+            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat('d/m/Y H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+        }
+
+        //dd($people_request);
         $people->update($people_request);
 
         Toastr::success("Saved changes");
@@ -113,9 +121,6 @@ class PeopleController extends Controller {
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\People\People $people
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
@@ -133,13 +138,13 @@ class PeopleController extends Controller {
     public function getPeople()
     {
         $types = ['Student', 'Parent', 'Parent/Volunteer', 'Volunteer', 'S', 'P', 'PV', 'V'];
-        if (request('type')) {
-            if (request('type') == 'Parent')
+        if (request('show_type')) {
+            if (request('show_type') == 'Parent')
                 $types = ['Parent', 'Parent/Volunteer', 'P', 'PV'];
-            elseif (request('type') == 'Volunteer')
+            elseif (request('show_type') == 'Volunteer')
                 $types = ['Volunteer', 'Parent/Volunteer', 'V', 'PV'];
             else
-                $types = [request('type')];
+                $types = [request('show_type')];
         }
 
         //dd($types);
