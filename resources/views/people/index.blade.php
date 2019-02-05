@@ -32,7 +32,7 @@
                     </ul>
                 </div>
                 <div class="col-1" style="padding-left: 0px">
-                    <button type="button" class="btn btn-sm m-btn--pill btn-brand pull-right" data-toggle="modal" data-target="#modal_personal">Add</button>
+                    <button type="button" class="btn btn-sm m-btn--pill btn-brand pull-right" data-toggle="modal" data-target="#modal_create_person">Add</button>
                     <hr class="d-none d-md-block" style="padding-top: 20px; margin-top: 48px">
                 </div>
             </div>
@@ -66,6 +66,67 @@
     </div>
 
     @include('people/_create_personal')
+
+    {{-- Create Person Modal --}}
+    <div class="modal fade" id="modal_create_person" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                {!! Form::model('people', ['action' => ['People\PeopleController@store']]) !!}
+                <div class="modal-header" style="background: #32c5d2; padding: 20px">
+                    <h3 class="modal-title text-white" id="ModalLabel" style="font-size: 20px">Add a Person</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <style>
+                    .twitter-typeahead,
+                    .tt-hint,
+                    .tt-input,
+                    .tt-menu{
+                       /* width: auto ! important;
+                        font-weight: normal; */
+                    }
+                    .tt-suggestion, .tt-selectable {
+                        width: 100% !important;
+                    }
+                </style>
+                <div class="modal-body" style="background-color: #F7F7F7">
+                    {{-- Search Name --}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group m-form__group row m--margin-top-20">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="m-typeahead">
+                                        <input class="form-control m-input" id="search" dir="ltr" type="text" placeholder="Search for someone">
+                                    </div>
+                                    {{--}}
+                                    <form id="form-user_v1" name="form-user_v1">
+                                        <div class="typeahead__container">
+                                            <div class="typeahead__field">
+                                                <div class="typeahead__query">
+                                                    <input class="js-typeahead-user_v1" name="user_v1[query]" type="search" placeholder="Search" autocomplete="off" id="search">
+                                                </div>
+                                                <div class="typeahead__button">
+                                                    <button type="submit">
+                                                        <i class="typeahead__search-icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>--}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+
 @stop
 
 
@@ -343,6 +404,310 @@
 
     });
 
+    /*
+     var Typeahead = function () {
+     var e = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+     return {
+     init: function () {
+     var a, n, o, t, i, s;
+     $("#m_typeahead_1, #m_typeahead_1_modal, #m_typeahead_1_validate, #m_typeahead_2_validate, #m_typeahead_3_validate").typeahead({hint: !0, highlight: !0, minLength: 1}, {
+     name: "states", source: (a = e, function (e, n) {
+     var o;
+     o = [], substrRegex = new RegExp(e, "i"), $.each(a, function (e, a) {
+     substrRegex.test(a) && o.push(a)
+     }), n(o)
+     })
+     }), n = new Bloodhound({datumTokenizer: Bloodhound.tokenizers.whitespace, queryTokenizer: Bloodhound.tokenizers.whitespace, local: e}), $("#m_typeahead_2, #m_typeahead_2_modal").typeahead({hint: !0, highlight: !0, minLength: 1}, {
+     name: "states",
+     source: n
+     }), o = new Bloodhound({
+     datumTokenizer: Bloodhound.tokenizers.whitespace,
+     queryTokenizer: Bloodhound.tokenizers.whitespace,
+     prefetch: "https://keenthemes.com/metronic/themes/themes/metronic/dist/preview/inc/api/typeahead/countries.json"
+     }), $("#m_typeahead_3, #m_typeahead_3_modal").typeahead(null, {name: "countries", source: o}), t = new Bloodhound({
+     datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
+     queryTokenizer: Bloodhound.tokenizers.whitespace,
+     prefetch: "inc/api/typeahead/movies.json"
+     }), $("#m_typeahead_4").typeahead(null, {
+     name: "best-pictures",
+     display: "value",
+     source: t,
+     templates: {empty: ['<div class="empty-message" style="padding: 10px 15px; text-align: center;">', "unable to find any Best Picture winners that match the current query", "</div>"].join("\n"), suggestion: Handlebars.compile("<div><strong>{value}</strong> â€“ {year}</div>")}
+     }), i = new Bloodhound({datumTokenizer: Bloodhound.tokenizers.obj.whitespace("team"), queryTokenizer: Bloodhound.tokenizers.whitespace, prefetch: "inc/api/typeahead/nba.json"}), s = new Bloodhound({
+     datumTokenizer: Bloodhound.tokenizers.obj.whitespace("team"),
+     queryTokenizer: Bloodhound.tokenizers.whitespace,
+     prefetch: "inc/api/typeahead/nhl.json"
+     }), $("#m_typeahead_5").typeahead({highlight: !0}, {name: "nba-teams", display: "team", source: i, templates: {header: '<h3 class="league-name" style="padding: 5px 15px; font-size: 1.2rem; margin:0;">NBA Teams</h3>'}}, {
+     name: "nhl-teams",
+     display: "team",
+     source: s,
+     templates: {header: '<h3 class="league-name" style="padding: 5px 15px; font-size: 1.2rem; margin:0;">NHL Teams</h3>'}
+     })
+     }
+     }
+     }();
+     jQuery(document).ready(function () {
+     Typeahead.init()
+     });
+     */
+
+
+
+        var bloodhound = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/user/find?q=%QUERY%',
+                wildcard: '%QUERY%'
+            },
+        });
+
+        $('#search').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            name: 'users',
+            source: bloodhound,
+            display: function(data) {
+                return data.firstname  //Input value to be set when you select a suggestion.
+            },
+            templates: {
+                empty: [
+                    '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                ],
+                header: [
+                    '<div class="list-group search-results-dropdown">'
+                ],
+                suggestion: function(data) {
+                    //return '<div>' + data.firstname + ' ' + data.lastname + '</div></div>'
+                    var color = "#777";
+                    if (data.status === "owner") {
+                        color = "#ff1493";
+                    }
+                    data.avatar = '/img/avatar-user.jpg'
+                    return '<span class="row">' +
+                            '<span class="avatar">' + '<img src="'+data.avatar+'">' + "</span>" +
+                            '<span class="username">'+data.firstname+' '+data.lastname+'</span><br><br>' +
+                            '<span class="id">('+data.type+')</span>' +
+                            "</span>"
+                }
+            }
+        });
+
+/*
+    $.typeahead({
+        input: '.js-typeahead-user_v1',
+        minLength: 1,
+        order: "asc",
+        dynamic: true,
+        delay: 500,
+        backdrop: {
+            "background-color": "#fff"
+        },
+        template: function (query, item) {
+
+            var color = "#777";
+            if (item.status === "owner") {
+                color = "#ff1493";
+            }
+
+            return '<span class="row">' +
+                    '<span class="avatar">' +
+                    '<img src="'+item.avatar+'">' +
+                    "</span>" +
+                    '<span class="username">'+item.username+' <small style="color: ' + color + ';">('+item.status+')</small></span>' +
+                    '<span class="id">('+item.id+')</span>' +
+                    "</span>"
+        },
+        emptyTemplate: "no result for "+query,
+        source: {
+            user: {
+                display: "username",
+                href: "https://www.github.com/"+item.username,
+                data: [{
+                    "id": 415849,
+                    "username": "an inserted user that is not inside the database",
+                    "avatar": "https://avatars3.githubusercontent.com/u/415849",
+                    "status": "contributor"
+                }],
+                ajax: function (query) {
+                    return {
+                        type: "GET",
+                        //url: "/jquerytypeahead/user_v1.json",
+                        url: "/data/people/search-add",
+                        path: "data.user",
+                        data: {
+                            q: query
+                        },
+                        callback: {
+                            done: function (data) {
+                                for (var i = 0; i < data.data.user.length; i++) {
+                                    if (data.data.user[i].username === 'running-coder') {
+                                        data.data.user[i].status = 'owner';
+                                    } else {
+                                        data.data.user[i].status = 'contributor';
+                                    }
+                                }
+                                return data;
+                            }
+                        }
+                    }
+                }
+
+            },
+            project: {
+                display: "project",
+                href: function (item) {
+                    return '/' + item.project.replace(/\s+/g, '').toLowerCase() + '/documentation/'
+                },
+                ajax: [{
+                    type: "GET",
+                    //url: "/jquerytypeahead/user_v1.json",
+                    url: "/data/people/search-add",
+                    data: {
+                        q: query
+                    }
+                }, "data.project"],
+                template: '<span>' +
+                '<span class="project-logo">' +
+                '<img src="'+item.image+'">' +
+                '</span>' +
+                '<span class="project-information">' +
+                '<span class="project">'+item.project+' <small>'+item.version+'</small></span>' +
+                '<ul>' +
+                '<li>'+item.demo+' Demos</li>' +
+                '<li>'+item.option+'+ Options</li>' +
+                '<li>'+item.callback+'+ Callbacks</li>' +
+                '</ul>' +
+                '</span>' +
+                '</span>'
+            }
+        },
+        callback: {
+            onClick: function (node, a, item, event) {
+
+                // You can do a simple window.location of the item.href
+                alert(JSON.stringify(item));
+
+            },
+            onSendRequest: function (node, query) {
+                console.log('request is sent')
+            },
+            onReceiveRequest: function (node, query) {
+                console.log('request is received')
+            }
+        },
+        debug: true
+    });
+    */
+
+    {{--
+    $.typeahead({
+        input: '.js-typeahead-user_v1',
+        minLength: 1,
+        order: "asc",
+        dynamic: true,
+        delay: 500,
+        backdrop: {
+            "background-color": "#fff"
+        },
+        template: function (query, item) {
+
+            var color = "#777";
+            if (item.status === "owner") {
+                color = "#ff1493";
+            }
+
+            return '<span class="row">' +
+                    '<span class="avatar">' +
+                    '<img src="{{avatar}}">' +
+                    "</span>" +
+                    '<span class="username">{{username}} <small style="color: ' + color + ';">({{status}})</small></span>' +
+                    '<span class="id">({{id}})</span>' +
+                    "</span>"
+        },
+        emptyTemplate: "no result for {{query}}",
+        source: {
+            user: {
+                display: "username",
+                href: "https://www.github.com/{{username|slugify}}",
+                data: [{
+                    "id": 415849,
+                    "username": "an inserted user that is not inside the database",
+                    "avatar": "https://avatars3.githubusercontent.com/u/415849",
+                    "status": "contributor"
+                }],
+                ajax: function (query) {
+                    return {
+                        type: "GET",
+                        //url: "/jquerytypeahead/user_v1.json",
+                        url: "/data/people/search-add",
+                        path: "data.user",
+                        data: {
+                            q: "{{query}}"
+                        },
+                        callback: {
+                            done: function (data) {
+                                for (var i = 0; i < data.data.user.length; i++) {
+                                    if (data.data.user[i].username === 'running-coder') {
+                                        data.data.user[i].status = 'owner';
+                                    } else {
+                                        data.data.user[i].status = 'contributor';
+                                    }
+                                }
+                                return data;
+                            }
+                        }
+                    }
+                }
+
+            },
+            project: {
+                display: "project",
+                href: function (item) {
+                    return '/' + item.project.replace(/\s+/g, '').toLowerCase() + '/documentation/'
+                },
+                ajax: [{
+                    type: "GET",
+                    //url: "/jquerytypeahead/user_v1.json",
+                    url: "/data/people/search-add",
+                    data: {
+                        q: "{{query}}"
+                    }
+                }, "data.project"],
+                template: '<span>' +
+                '<span class="project-logo">' +
+                '<img src="{{image}}">' +
+                '</span>' +
+                '<span class="project-information">' +
+                '<span class="project">{{project}} <small>{{version}}</small></span>' +
+                '<ul>' +
+                '<li>{{demo}} Demos</li>' +
+                '<li>{{option}}+ Options</li>' +
+                '<li>{{callback}}+ Callbacks</li>' +
+                '</ul>' +
+                '</span>' +
+                '</span>'
+            }
+        },
+        callback: {
+            onClick: function (node, a, item, event) {
+
+                // You can do a simple window.location of the item.href
+                alert(JSON.stringify(item));
+
+            },
+            onSendRequest: function (node, query) {
+                console.log('request is sent')
+            },
+            onReceiveRequest: function (node, query) {
+                console.log('request is received')
+            }
+        },
+        debug: true
+    });
+--}}
 </script>
 @stop
 

@@ -1,7 +1,7 @@
 {{-- Edit Profile Modal --}}
 <div class="modal fade" id="modal_personal" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="background-color: #F7F7F7">
+        <div class="modal-content">
             {!! Form::model($people, ['method' => 'PATCH', 'action' => ['People\PeopleController@update', $people->id]]) !!}
             <div class="modal-header" style="background: #32c5d2">
                 <h5 class="modal-title text-white" id="ModalLabel">Edit Profile</h5>
@@ -9,7 +9,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="background-color: #F7F7F7; padding:20px; border-bottom: 1px solid #ddd">
                 {{-- First + Last Name --}}
                 <div class="row">
                     <div class="col-md-6">
@@ -77,15 +77,15 @@
                         </div>
                     </div>
                 </div>
-
-                <hr>
+            </div>
+            <div class="modal-body" style="padding:20px; border-bottom: 1px solid #ddd">
                 {{-- Additional Info --}}
                 <div class="row">
                     {{-- Gender --}}
                     <div class="col-lg-3 col-md-6">
                         <div class="form-group {!! fieldHasError('gender', $errors) !!}">
                             {!! Form::label('gender', 'Gender', ['class' => 'control-label']) !!}
-                            {!! Form::select('gender', ['Male', 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                            {!! Form::select('gender', ['' => 'Gender', 'Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
                             {!! fieldErrorMessage('gender', $errors) !!}
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
                                 {!! Form::text('dob', ($people->dob) ? $people->dob->format('d/m/Y') : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
-                                <!--<input type="text" name="dob" class="form-control m-input" readonly="" style="background-color: #fff" placeholder="Select date" id="m_datepicker_2"> -->
+                                        <!--<input type="text" name="dob" class="form-control m-input" readonly="" style="background-color: #fff" placeholder="Select date" id="m_datepicker_2"> -->
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #F7F7F7; padding: 20px">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>

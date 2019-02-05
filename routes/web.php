@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/account', 'Account\AccountController');
 
     Route::get('/data/people', 'People\PeopleController@getPeople');
+    Route::get('/data/people/search-add', 'People\PeopleController@searchAddPeople');
     Route::resource('/people', 'People\PeopleController');
 
     Route::get('/data/schools-by-grade/{grade}', 'People\SchoolController@schoolsByGrade');
@@ -37,4 +38,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/event', 'HomeController@event');
     Route::get('/group', 'HomeController@group');
     Route::get('/import-students', 'HomeController@importStudents');
+
+
+    // Search
+    Route::view('/search', 'search');
+    Route::get('/user/find', 'People\SearchController@searchUsers');
 });

@@ -62,7 +62,7 @@
                     <div class="col-1">
                         @if ($people->gender == 'Male')
                             <i class="fa fa-2x fa-male"></i>
-                        @elseif ($people->gender == 'Male')
+                        @elseif ($people->gender == 'Female')
                             <i class="fa fa-2x fa-female" style="padding-right: 5px"></i>
                         @else
                             <i class="fa fa-user" style="padding-right: 5px"></i>
@@ -116,8 +116,8 @@
                         <div class="col-2"><!--<a href="#" class="pull-right" data-toggle="modal" data-target="#modal_profile"> <i class="fa fa-edit"></i></a>--></div>
                     </div>
                     <div class="row">
-                        <div class="col-1"><i class="fa fa-user-slash"></i></div>
-                        <div class="col">Media Consent</div>
+                        <div class="col-1">{!! ($people->media_consent) ? '<i class="fa fa-user m--font-success"></i>' : '<i class="fa fa-user-slash m--font-danger"></i>'!!}</div>
+                        <div class="col">{!! ($people->media_consent) ? 'Consent given by '.$people->mediaConsentBy()->name.' ('.$people->media_consent->format('d/m/Y').')' : 'No Media Consent' !!}</div>
                     </div>
                 </div>
             </div>
