@@ -38,6 +38,7 @@
             </div>
             {!! Form::hidden('show_type', null, ['id' => 'show_type']) !!}
             {!! Form::hidden('pagelength', ($agent->isMobile() ? 100 : 25), ['id' => 'pagelength']) !!}
+            {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
             <style>
                 #datatable1 tbody td.selected {
@@ -68,7 +69,7 @@
     @include('people/_create_personal')
 
     {{-- Create Person Modal --}}
-    <div class="modal fade" id="modal_create_person" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
+    <div class="modal fade" id="modal_create_person2" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 {!! Form::model('people', ['action' => ['People\PeopleController@store']]) !!}
@@ -317,11 +318,11 @@
     });
 </script>
 <script type="text/javascript">
-    $(document).ready(function () {
+    // Form errors - show modal
+    if ($('#formerrors').val() == 'personal')
+        $('#modal_create_person').modal('show');
 
-        // Form errors - show modal
-        if ($('#formerrors').val() == 'personal')
-            $('#modal_personal').modal('show');
+    $(document).ready(function () {
 
         display_fields();
 
@@ -384,11 +385,11 @@
                 });
             } else {
                 $("#school_id").empty();
+                $("#school_id").append('<option value="">Select grade first</option>');
             }
         }
 
         $("#type").change(function () {
-            alert($("#type").val());
             display_fields();
         });
 

@@ -125,7 +125,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('grade', $errors) !!}">
                                 {!! Form::label('grade', 'Grade', ['class' => 'control-label']) !!}
-                                {!! Form::select('grade', ['5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                                {!! Form::select('grade', ['' => 'Grade', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
                                 {!! fieldErrorMessage('grade', $errors) !!}
                             </div>
                         </div>
@@ -196,7 +196,7 @@
 
             </div>
             <div class="modal-footer" style="background-color: #F7F7F7; padding: 20px">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" style="border: 0; background: #F7F7F7" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
             {!! Form::close() !!}

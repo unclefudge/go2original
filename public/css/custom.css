@@ -11,6 +11,37 @@ li.m-menu__item.m-menu__item--active {
     color: #00FF00 !important;
 }
 
+/* Loading Spinner */
+.loadSpinnerOverlay {
+    position: fixed;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: Black;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    -moz-opacity: 0.8;
+}
+
+.loadSpinner {
+    z-index: 1000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 150px;
+    /*height: 130px; */
+    background-color: White;
+    border-radius: 10px;
+    filter: alpha(opacity=100);
+    opacity: 1;
+    -moz-opacity: 1;
+}
+
 /* Override Metronic Sticky Topmenu and Hide on Scroll */
 @media (min-width: 1025px) {
     .m-header--fixed .m-header .m-header__top {
@@ -74,6 +105,9 @@ li.m-menu__item.m-menu__item--active {
 .project-jquerytypeahead.page-demo #form-user_v1 .typeahead__result .project-information li {
     font-size: 12px;
 }
+
+
+
 
 /* People Header */
 

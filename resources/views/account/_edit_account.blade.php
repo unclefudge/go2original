@@ -2,15 +2,15 @@
 {{-- Edit Account Modal --}}
 <div class="modal fade" id="modal_account" tabindex="-1" role="dialog" aria-labelledby="Account" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="background-color: #F7F7F7">
+        <div class="modal-content">
             {!! Form::model($account, ['method' => 'PATCH', 'action' => ['Account\AccountController@update', $account->id]]) !!}
-            <div class="modal-header" style="background: #32c5d2">
+            <div class="modal-header" style="background: #32c5d2; padding: 20px;">
                 <h5 class="modal-title text-white" id="ModalLabel">Edit Account</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="background-color: #F7F7F7; padding:20px;">
                 {{-- Name + Slug --}}
                 <div class="row">
                     <div class="col-md-7">
@@ -58,8 +58,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="modal-footer" style="padding: 20px">
+                <button type="button" class="btn btn-secondary" style="border: 0" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
             {!! Form::close() !!}

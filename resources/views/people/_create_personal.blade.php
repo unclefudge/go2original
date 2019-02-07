@@ -1,5 +1,5 @@
 {{-- Create Profile Modal --}}
-<div class="modal fade" id="modal_personal" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
+<div class="modal fade" id="modal_create_person" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="background-color: #F7F7F7">
             {!! Form::model('people', ['action' => ['People\PeopleController@store']]) !!}
@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                         <div class="form-group m-form__group {!! fieldHasError('firstname', $errors) !!}">
                             {!! Form::label('firstname', 'First Name', ['class' => 'form-control-label']) !!}
-                            {!! Form::text('firstname', null, ['class' => 'form-control', 'required']) !!}
+                            {!! Form::text('firstname', null, ['class' => 'form-control']) !!}
                             {!! fieldErrorMessage('firstname', $errors) !!}
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('grade', $errors) !!}">
                                 {!! Form::label('grade', 'Grade', ['class' => 'control-label']) !!}
-                                {!! Form::select('grade', ['5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                                {!! Form::select('grade', ['' => 'Grade', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
                                 {!! fieldErrorMessage('grade', $errors) !!}
                             </div>
                         </div>
@@ -197,7 +197,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" style="border: 0" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
             {!! Form::close() !!}
