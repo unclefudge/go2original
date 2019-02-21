@@ -14,22 +14,25 @@
         }
 
         .people-cell {
-             font-size: 11px;
-             height: 100px;
-             width: 110px;
-             display: inline-block;
-             margin: 10px;
-             cursor: pointer;
+            font-size: 11px;
+            /*height: 100px;
+            width: 110px;*/
+            height: 80px;
+            width: 90px;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
 
-             position: relative;
-             background-color: #f6f6f6;
+            position: relative;
+            /*background-color: #f6f6f6;*/
+            background-color: #eee;
 
-             background-position: 50% 50%;
-             background-position-x: 50%;
-             background-position-y: 50%;
-             background-size: cover;
-             overflow: hidden;
-         }
+            background-position: 50% 50%;
+            background-position-x: 50%;
+            background-position-y: 50%;
+            background-size: cover;
+            overflow: hidden;
+        }
 
         .people-in {
             opacity: 0.5;
@@ -78,7 +81,7 @@
         <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
             <div class="col text-center">
                 <img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px">
-                <h1 style="padding-top: 10px">{{ $event->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span> </h1>
+                <h1 style="padding-top: 10px">{{ $event->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
             </div>
         </div>
 
@@ -112,7 +115,8 @@
             </div>
         </div>
 
-        <pre>@{{ $data }}</pre>-->
+        <pre>@{{ $data }}</pre>
+        -->
     </div>
 
 
@@ -124,10 +128,10 @@
             </div>
             <div v-else>
                 <template v-for="person in filteredData">
-                    <div v-if="!person.in" class="people-cell" v-on:click="cellSelect(person)" style="background-image: url('/img/d90.jpg');">
+                    <div v-if="!person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: url('/img/d90.jpg');" --}}
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
-                    <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');">
+                    <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
                         <img src="/img/check-64.png" style="margin: 10px">
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
@@ -197,6 +201,15 @@
                 if (person.in != null)
                     str = str + ' people-in';
                 return str;
+            },
+            backgroundImage: function (person) {
+                var str;
+                if (person.in)
+                    str = "background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('" + person.photo + "')";
+                else
+                    str = "background-image: url('" + person.photo + "')";
+                return str;
+
             },
         }
     })

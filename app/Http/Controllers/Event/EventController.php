@@ -232,7 +232,7 @@ class EventController extends Controller {
                 'type'   => $person->type,
                 'grade'  => $person->grade,
                 'school' => ($person->school_id) ? $person->school->name : '',
-                'photo'  => ($person->photo) ? asset("storage/people/thumbs/t30-$person->photo") : '/img/avatar-user.png',
+                'photo'  => ($person->photo) ? "/storage/people/thumbs/t30-$person->photo" : '/img/avatar-user.png',
                 'status' => $person->status,
                 'method' => $method,
                 'eid'    => $instance->id

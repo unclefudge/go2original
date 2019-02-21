@@ -27,6 +27,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/metronic', 'HomeController@metronic');
     Route::get('/fudge', 'HomeController@fudge');
 
+
+    // Protect access the People photos + thumbs
+    Route::get('/storage/people/photos/{filename}', 'Misc\FileController@getFile'); //->where('filename', '^(.+)\/([^\/]+)$');
+    Route::get('/storage/people/thumbs/{filename}', 'Misc\FileController@getThumb'); //->where('filename', '^(.+)\/([^\/]+)$');
+
     //Route::get('/data/people', 'Account\AccountController@getPeople');
     Route::resource('/account', 'Account\AccountController');
 

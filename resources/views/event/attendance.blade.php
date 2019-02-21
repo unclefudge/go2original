@@ -63,7 +63,7 @@
         }
 
     </style>
-    
+
     <div id="vue-app">
         <div class="row">
             <div class="col">

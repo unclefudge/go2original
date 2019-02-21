@@ -192,10 +192,11 @@ class CheckinController extends Controller {
         $people_array = [];
         foreach ($people as $person) {
             $checked_in = $checked_in2 = null;
+            $photo = ($person->photo) ? "/storage/people/thumbs/t90-$person->photo" : "/img/avatar-user.png";
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             if ($instance && $attended)
                 $checked_in = $attended->in->format('Y-m-d H:i:s');
-            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'photo' => Storage::url('app/people/thumbs/t90-190.jpg') ,'eid' => $instance->id];
+            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'photo' => $photo ,'eid' => $instance->id];
         }
 
         return $people_array;
