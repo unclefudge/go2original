@@ -46,7 +46,7 @@
                     background-color: #F8F9FB;
                 }
             </style>
-            <table class="table table-hover table-sm table-checkable table-bordered table-responsive m-table--head-bg-brand m-table" id="datatable1" width="100%">
+            <table class="table table-hover table-checkable table-bordered table-responsive m-table--head-bg-brand m-table" id="datatable1" width="100%">
                 <thead>
                 <tr>
                     <th width="5%"> #</th>
@@ -98,7 +98,7 @@
                             <div class="form-group m-form__group row m--margin-top-20">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="m-typeahead">
-                                        <input class="form-control m-input" id="search" dir="ltr" type="text" placeholder="Search for someone">
+                                        <input class="form-control m-input" id="search" dir="ltr" type="text" placeholder="Search for someone" width="200px">
                                     </div>
                                     {{--}}
                                     <form id="form-user_v1" name="form-user_v1">
@@ -147,6 +147,11 @@
 
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
+    $(document).ready(function () {
+        $('.dataTables_filter input[type="search"]').attr('placeholder', 'Search for something').css(
+                {'width': '350px', 'height': '40px', 'font-size': '14px', 'margin-left': '0px', 'display': 'inline-block'});
+    });
+
     //
     // Datatable
     //
@@ -158,6 +163,7 @@
         //bLengthChange: false,
         responsive: true,
         //select: true,
+        language: { search: "" },
         select: {
             style: 'single',
             items: 'cell'
@@ -221,6 +227,39 @@
         ],
     });
 
+    //
+    // Delete select profile on trashcan
+    //
+    datatable1.on('click', '.btn-archive[data-remote]', function (e) {
+        e.preventDefault();
+        var url = $(this).data('remote');
+        var name = $(this).data('name');
+
+        swal({
+            title: "Are you sure?",
+            html: "All information and check-ins will be archived for<br><b>" + name + "</b><br>",
+            cancelButtonText: "Cancel!",
+            confirmButtonText: "Yes, archive it!",
+            confirmButtonClass: "btn btn-accent",
+            showCancelButton: true,
+            reverseButtons: true,
+            allowOutsideClick: true
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {submit: true},
+                    success: function (data) {
+                        toastr.error('Archived person');
+                    },
+                }).always(function (data) {
+                    $('#datatable1').DataTable().draw(false);
+                });
+            }
+        });
+    });
 
     //
     // Delete select profile on trashcan
@@ -232,7 +271,7 @@
 
         swal({
             title: "Are you sure?",
-            html: "You will not be able to recover this profile!<br><b>" + name + "</b>",
+            html: "All information and check-ins will be deleted for<br><b>" + name + "</b><br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i>You will not be able to recover this person!</span> ",
             cancelButtonText: "Cancel!",
             confirmButtonText: "Yes, delete it!",
             confirmButtonClass: "btn btn-danger",
@@ -247,7 +286,7 @@
                     dataType: 'json',
                     data: {method: '_DELETE', submit: true},
                     success: function (data) {
-                        toastr.error('Deleted profile');
+                        toastr.error('Deleted person');
                     },
                 }).always(function (data) {
                     $('#datatable1').DataTable().draw(false);
@@ -396,13 +435,6 @@
         $("#grade").change(function () {
             display_fields();
         });
-
-        $('.date-picker').datepicker({
-            autoclose: true,
-            clearBtn: true,
-            format: 'dd/mm/yyyy',
-        });
-
     });
 
     /*

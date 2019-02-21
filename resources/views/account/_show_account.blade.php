@@ -25,7 +25,11 @@
         </div>
         <div class="row" style="padding: 5px 0px">
             <div class="col-3">Timezone</div>
-            <div class="col">{!! $timezones::name($account->timezone) !!}  {{ $account->updated_at->timezone($account->timezone)->format("$account->dateformat g:i a") }}</div>
+            <div class="col">
+                @if ($account->timezone)
+                    {!! $timezones::name($account->timezone)  !!}  {{ $account->updated_at->timezone(Auth::user()->timezone)->format(Auth::user()->dateformat." g:i a") }}
+                @endif
+            </div>
         </div>
         <div class="row" style="padding: 5px 0px">
             <div class="col-3">Dateformat</div>

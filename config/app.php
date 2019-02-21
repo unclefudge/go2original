@@ -180,6 +180,7 @@ return [
          */
         Yajra\Datatables\DatatablesServiceProvider::class,
         Kamaln7\Toastr\ToastrServiceProvider::class,
+        Camroncade\Timezone\TimezoneServiceProvider::class,
 
     ],
 

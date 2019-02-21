@@ -7,6 +7,7 @@ use Auth;
 use Validator;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
+use App\Models\Event\Attendance;
 use App\Models\People\People;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
@@ -23,7 +24,7 @@ class EventController extends Controller {
     public function index()
     {
         // Check authorisation
-        $events = Event::where('status', 1)->get()->sortBy('name');
+        $events = Event::all()->sortBy('name');
 
         //$agent = new Agent();
 
@@ -36,9 +37,9 @@ class EventController extends Controller {
      */
     public function show($id)
     {
-        $people = People::findOrFail($id);
+        $event = Event::findOrFail($id);
 
-        return view('people/show', compact('people'));
+        return view('event/overview', compact('event'));
     }
 
     /**
@@ -56,9 +57,46 @@ class EventController extends Controller {
     {
         $event = Event::findOrFail($id);
 
-        //dd($event->name);
-
         return view('event/edit', compact('event'));
+    }
+
+    /**
+     * Event Settings
+     */
+    public function settings($id)
+    {
+        $event = Event::findOrFail($id);
+
+        return view('event/settings', compact('event'));
+    }
+
+    /**
+     * Event Attendance
+     */
+    public function attendance($id, $date)
+    {
+        $event = Event::findOrFail($id);
+        $instances = EventInstance::where('eid', $event->id)->get();
+
+        if ($date == 0) {
+            $instance = EventInstance::where('eid', $event->id)->orderBy('start', 'desc')->first();
+            $date = ($instance) ? $instance->start->format('Y-m-d') : '';
+        } else {
+            $instance = EventInstance::where('eid', $event->id)->whereDate('start', $date)->first();
+            // Redirect if invalid instance date
+            if (!$instance)
+                return abort(404);
+        }
+
+
+        $dates = [];
+        foreach ($instances as $inst)
+            $dates[$inst->start->format('Y-m-d')] = $inst->start->format(session('df'));
+
+        krsort($dates);
+
+        //dd($instance);
+        return view('event/attendance', compact('event', 'instance', 'date', 'dates'));
     }
 
 
@@ -98,54 +136,50 @@ class EventController extends Controller {
      */
     public function update($id)
     {
-        $people = People::findOrFail($id);
+        $event = Event::findOrFail($id);
 
+        //dd(request()->all());
         // Validate
-        $rules = ['type' => 'required', 'firstname' => 'required', 'lastname' => 'required'];
-        $mesgs = [
-            'firstname.required' => 'The first name is required.',
-            'lastname.required'  => 'The last name is required.',
-        ];
+        $rules = ['name' => 'required'];
+        $mesgs = ['name.required' => 'The event name is required.',];
         $validator = Validator::make(request()->all(), $rules, $mesgs);
 
         if ($validator->fails()) {
-            $validator->errors()->add('FORM', 'personal');
+            $validator->errors()->add('FORM', 'event');
 
             return back()->withErrors($validator)->withInput();
         }
-        //dd(request()->all());
+        $event_request = request()->all();
 
-        $people_request = request()->all();
-
-        // Empty State field if rest of address fields are empty
-        if (!request('address') && !request('suburb') && !request('postcode'))
-            $people_request['state'] = null;
-
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat('d/m/Y H:i', request('dob') . '00:00')->toDateTimeString() : null;
-
-
-        // Student details
-        if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
-            // Media Consent
-            if (request('media_consent') != $people->media_consent) {
-                $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
-                $people_request['media_consent_by'] = Auth::user()->id;
-            }
-        } else {
-            $people_request['grade'] = $people_request['school_id'] = null;
-            $people_request['media_consent'] = $people_request['media_consent_by'] = null;
+        // Convert Grades to CSV
+        if (request('grades')) {
+            $string = '';
+            foreach (request('grades') as $grade)
+                $string .= "$grade<>";
+            $event_request['grades'] = rtrim($string, '<>');
         }
 
-        // Volunteer details
-        if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat('d/m/Y H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
-
-        //dd($people_request);
-        $people->update($people_request);
+        //dd($event_request);
+        $event->update($event_request);
 
         Toastr::success("Saved changes");
 
-        return redirect("/people/$people->id");
+        return redirect("/event/$event->id/settings");
+    }
+
+    /**
+     * Toggle Eevent Status
+     */
+    public function status($id, $status)
+    {
+        $event = Event::findOrFail($id);
+        $event->status = request('status');
+        $event->save();
+
+        if (request()->ajax())
+            return response()->json(['success', '200']);
+
+        return redirect()->back();
     }
 
     /**
@@ -153,13 +187,61 @@ class EventController extends Controller {
      */
     public function destroy($id)
     {
-        $people = People::findOrFail($id);
-        $people->status = 0;
-        $people->save();
+        $event = Event::findOrFail($id)->delete();
 
-        return response()->json(['success', '200']);
-        //return Response::json('success', 200);
+        if (request()->ajax())
+            return response()->json(['success', '200']);
+
+        return redirect("/event");
     }
+
+
+    /**
+     * Get Dates (ajax)
+     */
+    public function getDates($id)
+    {
+        $instances = EventInstance::where('eid', $id)->get();
+        $dates_array = [0 => 'Select date'];
+        foreach ($instances as $instance) {
+            $dates_array[] = ['id' => $instance->id, 'text' => $instance->start->format(session('df'))];
+        }
+
+        return $dates_array;
+    }
+
+    /**
+     * Get People (ajax)
+     */
+    public function getPeople($id)
+    {
+        $people = People::where('aid', 1)->orderBy('firstname')->get();
+        $instance = EventInstance::find($id);
+        $people_array = [];
+        foreach ($people as $person) {
+            $checked_in = $method = null;
+            $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
+            if ($instance && $attended) {
+                $checked_in = $attended->in->format('Y-m-d H:i:s');
+                $method = $attended->method;
+            }
+            $people_array[] = [
+                'pid'    => $person->id,
+                'in'     => $checked_in,
+                'name'   => $person->name,
+                'type'   => $person->type,
+                'grade'  => $person->grade,
+                'school' => ($person->school_id) ? $person->school->name : '',
+                'photo'  => ($person->photo) ? $person->photo : '/img/avatar-user.png',
+                'status' => $person->status,
+                'method' => $method,
+                'eid'    => $instance->id
+            ];
+        }
+
+        return $people_array;
+    }
+
 
     public function search()
     {
@@ -288,71 +370,4 @@ class EventController extends Controller {
         ));
     }
 
-    /**
-     * Get People for specific account + Process datatables ajax request.
-     */
-    public function getPeople()
-    {
-        $types = ['Student', 'Parent', 'Parent/Volunteer', 'Volunteer', 'S', 'P', 'PV', 'V'];
-        if (request('show_type')) {
-            if (request('show_type') == 'Parent')
-                $types = ['Parent', 'Parent/Volunteer', 'P', 'PV'];
-            elseif (request('show_type') == 'Volunteer')
-                $types = ['Volunteer', 'Parent/Volunteer', 'V', 'PV'];
-            else
-                $types = [request('show_type')];
-        }
-
-        //dd($types);
-        $people = People::select([
-            'people.id', 'people.type', 'people.firstname', 'people.lastname', 'people.phone', 'people.email', 'people.address', 'people.suburb', 'people.state', 'people.postcode',
-            'people.grade', 'people.school_id', 'people.media_consent', 'people.wwc_no', 'people.wwc_verified', 'people.status', 'people.aid',
-            'schools.id As sid', 'schools.name AS school_name',
-            DB::raw('CONCAT(people.firstname, " ", people.lastname) AS full_name'),
-            DB::raw('DATE_FORMAT(people.wwc_exp, "%b %Y") AS wwc_exp2')])
-            ->leftJoin('schools', 'people.school_id', '=', 'schools.id')
-            ->whereIn('people.type', $types)
-            ->where('people.aid', 1)
-            ->where('people.status', 1); // request('status')
-
-        //$people = People::whereIn('people.type', $types)->where('people.aid', 1)->where('people.status', 1); // request('status')
-
-        $dt = Datatables::of($people)
-            //->filterColumn('full_name', 'whereRaw', "CONCAT(firstname,' ',lastname) like ?", ["%$1%"])
-            //->addColumn('view2', function ($people) {
-            //    return '<div class="text-center"><a href="/people/' . $people->id . '"><i class="fa fa-search"></i></a></div>';
-            //})
-            ->editColumn('full_name', function ($people) {
-                $string = $people->firstname . ' ' . $people->lastname;
-
-                return $string;
-            })
-            ->editColumn('address', function ($people) {
-                $address = '';
-                if ($people->address) $address .= "$people->address, ";
-                if ($people->suburb) $address .= strtoupper($people->suburb) . ", ";
-                if ($people->state) $address .= "$people->state ";
-                if ($people->postcode) $address .= "$people->postcode";
-
-                return $address;
-            })
-            ->editColumn('media_consent', function ($people) {
-                if (!in_array($people->type, ['Student', 'Student/Volenteer'])) return "<i class='fa fa-user m--font-metal'>";
-
-                return ($people->media_consent) ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
-            })
-            ->editColumn('wwc_exp2', function ($people) {
-                return ($people->wwc_verified) ? $people->wwc_exp2 : $people->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash m--font-danger'>";
-            })
-            ->addColumn('action', function ($people) {
-                $actions = '';
-                $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete' data-remote='/people/$people->id' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt'></i></button>";
-
-                return $actions;
-            })
-            ->rawColumns(['id', 'view', 'full_name', 'name', 'phone', 'email', 'media_consent', 'wwc_exp2', 'action'])
-            ->make(true);
-
-        return $dt;
-    }
 }

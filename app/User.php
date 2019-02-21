@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Account\Account;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,7 +21,16 @@ class User extends Authenticatable
     ];
 
     /**
-     * A User May have many people profiles they own this.
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    /**
+     * A User May have many people profiles they own.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
@@ -46,12 +56,23 @@ class User extends Authenticatable
     {
         return ($this->people->first()) ? $this->people->first()->name : $this->attributes['username'];
     }
+
+
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * Get user timezone  (getter)
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    public function getDateformatAttribute()
+    {
+        return Account::find(1)->dateformat;
+    }
+
+    /**
+     * Get users Timezone  (getter)
+     */
+    public function getTimezoneAttribute()
+    {
+        return Account::find(1)->timezone;
+        return ($this->people->first()) ? $this->people->first()->name : $this->attributes['username'];
+    }
+
 }

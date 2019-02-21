@@ -94,8 +94,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', ($people->dob) ? $people->dob->format('d/m/Y') : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
-                                        <!--<input type="text" name="dob" class="form-control m-input" readonly="" style="background-color: #fff" placeholder="Select date" id="m_datepicker_2"> -->
+                                {!! Form::text('dob', ($people->dob) ? $people->dob->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'dob']) !!}
                             </div>
                         </div>
                     </div>
@@ -187,7 +186,7 @@
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', ($people->wwc_exp) ? $people->wwc_exp->format('d/m/Y') : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
+                                    {!! Form::text('wwc_exp', ($people->wwc_exp) ? $people->wwc_exp->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
                                 </div>
                             </div>
                         </div>

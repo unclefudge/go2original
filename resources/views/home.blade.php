@@ -102,6 +102,8 @@
     </div>
 
     {{ session('tz') }}<br>
+    {{ session('df') }}<br>
+    {{ session('df-datepicker') }}<br>
     {{ Auth::user()->username }}
     <div>
         1 <br>

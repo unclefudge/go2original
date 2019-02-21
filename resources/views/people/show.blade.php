@@ -118,10 +118,42 @@
         display_fields();
     });
 
-    $('.date-picker').datepicker({
+    // DOB
+    $("#dob").datepicker({
+        todayHighlight: !0,
+        orientation: "bottom left",
         autoclose: true,
         clearBtn: true,
-        format: 'dd/mm/yyyy',
+        format: "{{ session('df-datepicker') }}",
+    });
+
+    // WWC Exp
+    $("#wwc_exp").datepicker({
+        todayHighlight: !0,
+        orientation: "bottom left",
+        autoclose: true,
+        clearBtn: true,
+        format: "{{ session('df-datepicker') }}",
+    });
+
+    //
+    // Delete Person
+    //
+    $("#but_del_person").click(function (e) {
+        swal({
+            title: "Are you sure?",
+            html: "All information and check-ins will be deleted for<br><b>" + "{{ $people->name }}" + "</b><br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i>You will not be able to recover this person!</span> ",
+            cancelButtonText: "Cancel!",
+            confirmButtonText: "Yes, delete it!",
+            confirmButtonClass: "btn btn-danger",
+            showCancelButton: true,
+            reverseButtons: true,
+            allowOutsideClick: true
+        }).then(function (result) {
+            if (result.value) {
+                window.location.href = "/people/" + "{{ $people->id }}" + '/del';
+            }
+        });
     });
 
 

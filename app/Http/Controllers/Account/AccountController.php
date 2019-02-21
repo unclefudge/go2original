@@ -7,6 +7,7 @@ use Validator;
 use App\Models\Account\Account;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
+use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,7 @@ class AccountController extends Controller
     public function show($id)
     {
         $account = Account::findOrFail($id);
+        //$timezone_select = Timezone::selectForm('Europe/London', '', ['class' => 'form-control m-bootstrap-select m_selectpicker', 'name' => 'timezone']);
         return view('account/show', compact('account'));
     }
 

@@ -1,26 +1,22 @@
-<div class="member-bar">
-    <!--<i class="fa fa-user ppicon-user-member-bar" style="font-size: 80px; opacity: .5; padding:5px"></i>-->
-    {{--}}
-    <div class="m-card-profile">
-        <div class="m-card-profile__title m--hide">Your Profile</div>
-        <div class="m-card-profile__pic">
-            <div class="m-card-profile__pic-wrapper">
-                <img src="/assets/app/media/img/users/user4.jpg" alt="">
-            </div>
-        </div>
-        <div class="m-card-profile__details">
-            <span class="m-card-profile__name">Mark Andre</span>
-            <a href="" class="m-card-profile__email m-link">mark.andre@gmail.com</a>
-        </div>
-    </div>
-    --}}
+<div class="member-bar {{ (!$people->status) ? 'member-inactive' : '' }}">
     <i class="iicon-user-member-bar hidden-xs-down"></i>
     <div class="member-name">
         <div class="member-fullname">{{ $people->firstname }} {{ $people->lastname }}</div>
         <span class="member-number">{{ $people->type }}</span>
         <span class="member-split">&nbsp;|&nbsp;</span>
-        <span class="member-number">{{ ($people->type == 'Student') ? "Grade $people->grade" : '' }} {!! (!$people->status) ? 'ACTIVE' : '<span class="label label-sm label-danger">ARCHIVED</span>' !!}</span>
-        <!--<a href="/reseller/member/member_account_status/?member_id=8013759" class="member-status">Active</a>-->
+        <span class="dropdown" style="text-transform: none">
+            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" style="padding: 1px 1px 1px 8px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ ($people->status) ? 'Active' : 'Inactive' }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ ($people->status) ? '#' : "/people/$people->id/status/1" }}">Active</a>
+                <a class="dropdown-item" href="{{ (!$people->status) ? '#' : "/people/$people->id/status/0" }}">Inactive</a>
+                @if (!$people->status)
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" id="but_del_person">Delete</a>
+                @endif
+            </div>
+        </span>
     </div>
 
     <ul class="member-bar-menu">

@@ -117,7 +117,7 @@
                     </div>
                     <div class="row">
                         <div class="col-1">{!! ($people->media_consent) ? '<i class="fa fa-user m--font-success"></i>' : '<i class="fa fa-user-slash m--font-danger"></i>'!!}</div>
-                        <div class="col">{!! ($people->media_consent) ? 'Consent given by '.$people->mediaConsentBy()->name.' ('.$people->media_consent->format('d/m/Y').')' : 'No Media Consent' !!}</div>
+                        <div class="col">{!! ($people->media_consent) ? 'Consent given by '.$people->mediaConsentBy()->name.' ('.$people->media_consent->format(session('df')).')' : 'No Media Consent' !!}</div>
                     </div>
                 </div>
             </div>
@@ -138,10 +138,10 @@
                     </div>
                     <div class="row">
                         <div class="col-2">Expiry</div>
-                        <div class="col">{!! ($people->wwc_exp) ? $people->wwc_exp->format('d/m/Y') : '' !!}</div>
+                        <div class="col">{!! ($people->wwc_exp) ? $people->wwc_exp->format(session('df')) : '' !!}</div>
                     </div>
                     <div class="row">
-                        <div class="col">{!! ($people->wwc_verified_by) ? "<br>Verified by ".$people->wwcVerifiedBy()->name." on ".$people->wwc_verified->format('d/m/Y') : '<br><span class="m--font-danger">Not Verified Yet</span>' !!} </div>
+                        <div class="col">{!! ($people->wwc_verified_by) ? "<br>Verified by ".$people->wwcVerifiedBy()->name." on ".$people->wwc_verified->format(session('df')) : '<br><span class="m--font-danger">Not Verified Yet</span>' !!} </div>
                     </div>
                 </div>
             </div>

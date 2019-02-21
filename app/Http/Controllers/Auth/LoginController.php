@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -48,7 +49,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        session(['tz' => 'Aussie']);
+        session(['tz' => Auth::user()->timezone]);
+        session(['df' => Auth::user()->dateformat]);
+        session(['df-datepicker' => (Auth::user()->dateformat == 'd/m/Y') ? 'dd/mm/yyyy' : 'mm/dd/yyyy']);
         //return redirect()->intended($this->redirectPath());
     }
 

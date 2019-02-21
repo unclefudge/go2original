@@ -5,12 +5,7 @@ namespace App\Http\Controllers\Event;
 use DB;
 use Auth;
 use Validator;
-use App\Models\Event\Event;
-use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
-use App\Models\People\People;
-use Carbon\Carbon;
-use Kamaln7\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -55,26 +50,32 @@ class AttendanceController extends Controller {
      */
     public function store()
     {
-        if (request()->ajax())
-            return Attendance::create(request()->all());
+        //dd(request('method'));
+        if (request()->ajax()) {
+            // Ensure we don't check someone in who's already checked in
+            $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->first();
+            if (!$attend)
+                $attend = Attendance::create(request()->all());
 
+            return $attend;
+        }
 
-        return view('errors/404');
+        return abort(404);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        if ($request->ajax()) {
+        if (request()->ajax()) {
             $attend = Attendance::findOrFail($id);
-            $attend->update($request->all());
+            $attend->update(request()->all());
 
             return $attend;
         }
 
-        return view('errors/404');
+        return abort(404);
     }
 
     /**
@@ -84,12 +85,12 @@ class AttendanceController extends Controller {
     {
 
         if (request()->ajax()) {
-            //dd(request()->all());
             $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->delete();
-            return $attend;
+
+            return response()->json(['success', '200']);
         }
 
-        return view('errors/404');
+        return abort(404);
     }
 
 

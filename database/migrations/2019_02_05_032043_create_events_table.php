@@ -104,9 +104,10 @@ class CreateEventsTable extends Migration
             $table->unsignedInteger('pid')->nullable();
             $table->dateTime('in')->nullable();
             $table->dateTime('out')->nullable();
+            $table->string('method', 25)->nullable();
 
             // Foreign keys
-            $table->foreign('eid')->references('id')->on('events')->onDelete('cascade');
+            $table->foreign('eid')->references('id')->on('events_instance')->onDelete('cascade');
             $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
 
             // Modify info

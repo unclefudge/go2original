@@ -110,7 +110,7 @@ li.m-menu__item.m-menu__item--active {
 
 
 /* People Header */
-
+/*
 .person-header {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -776,7 +776,7 @@ li.m-menu__item.m-menu__item--active {
         text-align: center
     }
 }
-
+*/
 
 
 /***************************************************************************
@@ -787,7 +787,7 @@ li.m-menu__item.m-menu__item--active {
     background: #32c5d2;
     margin-bottom: 30px;
     padding: 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
     color: #fff;
     position: relative;
 }
@@ -838,6 +838,10 @@ li.m-menu__item.m-menu__item--active {
     background: #24ACBA;
 }
 
+.member-inactive {
+    background: #777;
+}
+
 @media screen and (max-width: 825px) {
     .member-bar .member-bar-item:hover {
         background-color: transparent;
@@ -845,6 +849,10 @@ li.m-menu__item.m-menu__item--active {
 
     .member-bar .member-bar-item:hover .member-bar-link:hover, .member-bar .member-bar-item:hover i {
         opacity: 0.5;
+    }
+
+    .member-bar {
+        overflow: hidden;
     }
 }
 
@@ -915,14 +923,14 @@ li.m-menu__item.m-menu__item--active {
     text-transform: uppercase;
 }
 
-.member-bar .member-name a {
+/*.member-bar .member-name a {
     color: #fff;
     font-size: 30px;
 }
 
 .member-bar .member-name a:hover {
     color: #fff;
-}
+}*/
 
 .member-bar .member-name a.member-status {
     font-size: 13px;
@@ -1060,7 +1068,20 @@ li.m-menu__item.m-menu__item--active {
     z-index: 1;
 }
 
-.iicon-profile:before, .iicon-document:before, .iicon-staff:before, .iicon-lock:before {
+.iicon-event-member-bar:before {
+    background: url("/img/icon-event.png") no-repeat;
+    background-position: 0 0;
+    width: 101px;
+    height: 108px;
+    opacity: 0.4;
+    position: absolute;
+    bottom: -22px;
+    left: -15px;
+    z-index: 1;
+}
+
+.iicon-profile:before, .iicon-document:before, .iicon-staff:before, .iicon-lock:before, .iicon-people:before,
+.iicon-peoplechart:before, .iicon-settings:before, .iicon-stats:before {
     width: 40px;
     height: 40px;
     margin-left: -10px;
@@ -1081,6 +1102,22 @@ li.m-menu__item.m-menu__item--active {
 
 .iicon-lock:before {
     background: url("/img/icon-lock.png") no-repeat;
+}
+
+.iicon-people:before {
+    background: url("/img/icon-people.png") no-repeat;
+}
+
+.iicon-peoplechart:before {
+    background: url("/img/icon-peoplechart.png") no-repeat;
+}
+
+.iicon-settings:before {
+    background: url("/img/icon-settings.png") no-repeat;
+}
+
+.iicon-stats:before {
+    background: url("/img/icon-stats.png") no-repeat;
 }
 
 .tabs .tabs-item {

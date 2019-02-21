@@ -4,14 +4,15 @@ namespace App\Models\Event;
 
 use App\User;
 use Carbon\Carbon;
+use Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
 {
     protected $table = 'events_attendance';
     protected $fillable = [
-        'eid', 'pid', 'in', 'out', 'end', 'aid',  'created_by', 'updated_by'];
-    protected $dates = ['start', 'end'];
+        'eid', 'pid', 'in', 'out', 'method', 'aid',  'created_by', 'updated_by'];
+    protected $dates = ['in', 'out'];
 
     /**
      * A EventRecur belongs to a account
@@ -44,6 +45,25 @@ class Attendance extends Model
         return $this->account->timezone;
     }
 
+    /**
+     * Set date to UTC format for Timezone localization
+     * @param $input
+     */
+    public function setInAttribute($input)
+    {
+        $this->attributes['in'] = ($input) ? Timezone::convertToUTC($input, auth()->user()->timezone, 'Y-m-d H:i:s') : null;
+    }
+
+    /**
+     * Convert date to User Local Timezone format
+     * @param $input
+     *
+     * @return string
+     */
+    //public function getInAttribute($input)
+    //{
+    //    return ($input) ? Timezone::convertFromUTC($input, auth()->user()->timezone, 'Y-m-d H:i:s') : '';
+    //}
 
     /**
      * Display records last update_by + date

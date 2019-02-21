@@ -1,34 +1,43 @@
-<div class="member-bar">
-    <!--<i class="fa fa-user ppicon-user-member-bar" style="font-size: 80px; opacity: .5; padding:5px"></i>-->
-    {{--}}
-    <div class="m-card-profile">
-        <div class="m-card-profile__title m--hide">Your Profile</div>
-        <div class="m-card-profile__pic">
-            <div class="m-card-profile__pic-wrapper">
-                <img src="/assets/app/media/img/users/user4.jpg" alt="">
-            </div>
-        </div>
-        <div class="m-card-profile__details">
-            <span class="m-card-profile__name">Mark Andre</span>
-            <a href="" class="m-card-profile__email m-link">mark.andre@gmail.com</a>
-        </div>
-    </div>
-    --}}
-    <i class="iicon-user-member-bar hidden-xs-down"></i>
+<div class="member-bar {{ (!$event->status) ? 'member-inactive' : '' }}"">
+    <i class="iicon-event-member-bar hidden-xs-down"></i>
     <div class="member-name">
         <div class="member-fullname">{{ $event->name }}</div>
-        <span class="member-number">{{ $event->recur }}</span>
+        <span class="member-number">
+            @if ($event->recur)
+                <i class="fa fa-redo" style="padding-right: 5px"></i> Recurring
+            @else
+                <i class="fa fa-calendar" style="padding-right: 5px"></i> One-time
+            @endif</span>
         <span class="member-split">&nbsp;|&nbsp;</span>
-        <span class="member-number">Grade</span>
-        <!--<a href="/reseller/member/member_account_status/?member_id=8013759" class="member-status">Active</a>-->
+        <span class="dropdown" style="text-transform: none">
+            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" style="padding: 1px 1px 1px 8px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ ($event->status) ? 'Active' : 'Inactive' }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ ($event->status) ? '#' : "/event/$event->id/status/1" }}">Active</a>
+                <a class="dropdown-item" href="{{ (!$event->status) ? '#' : "/event/$event->id/status/0" }}">Inactive</a>
+                @if (!$event->status)
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-name="{{ $event->name }}" id="but_del_event">Delete</a>
+                @endif
+            </div>
+        </span>
     </div>
+    <?php
+    $active_overview = $active_settings = $active_attendance = '';
+    list($first, $rest) = explode('/', Request::path(), 2);
+    if (!ctype_digit($rest)) {
+        list($uid, $rest) = explode('/', $rest, 2);
+        $active_settings = (preg_match('/^settings*/', $rest)) ? 'active' : '';
+        $active_attendance = (preg_match('/^attendance*/', $rest)) ? 'active' : '';
+    } else
+        $active_overview = 'active';
+    ?>
 
-    <ul class="member-bar-menu">
-        <li class="member-bar-item "><i class="iicon-profile"></i><a class="member-bar-link" href="/user/" title="Profile">SETTINGS</a></li>
-
-        <li class="member-bar-item "><i class="iicon-document"></i><a class="member-bar-link" href="/user//doc" title="Documents">
+    <ul class="member-bar-menu" style="padding-right: 20px">
+        <li class="member-bar-item {{ $active_overview }}"><i class="iicon-peoplechart"></i><a class="member-bar-link" href="/event/{{ $event->id }}" title="Overview">OVERVIEW</a></li>
+        <li class="member-bar-item {{ $active_settings }}"><i class="iicon-settings"></i><a class="member-bar-link" href="/event/{{ $event->id }}/settings" title="Settings">SETTINGS</a></li>
+        <li class="member-bar-item {{ $active_attendance }}"><i class="iicon-people"></i><a class="member-bar-link" href="/event/{{ $event->id }}/attendance/0" title="Attendance">
                 <span class="d-none d-md-block">ATTENDANCE</span><span class="d-md-none">ATTEND</span></a></li>
-
-        <li class="member-bar-item "><i class="iicon-lock"></i><a class="member-bar-link" href="/user//security" title="Security">STATS</a></li>
     </ul>
 </div>

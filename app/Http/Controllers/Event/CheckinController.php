@@ -9,6 +9,7 @@ use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
 use App\Models\People\People;
+use App\Http\Utilities\Slim;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
@@ -19,26 +20,19 @@ use Illuminate\Http\Request;
 class CheckinController extends Controller {
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      */
     public function show($id)
     {
-        $today = Carbon::now()->format('Y-m-d');
+        $now_local = Carbon::now()->timezone(Auth::user()->timezone)->format('Y-m-d');
         $event = Event::findOrFail($id);
-        $instance = EventInstance::where('eid', $id)->whereDate('start', $today)->first();
+        $instance = EventInstance::where('eid', $id)->whereDate('start', $now_local)->first();
+
         if (!$instance) {
             $instance = EventInstance::create([
                 'name'       => $event->name,
-                'start'      => Carbon::today()->toDateTimeString(),
+                'start'      => Carbon::now()->timezone(Auth::user()->timezone)->toDateTimeString(),
                 'code'       => $event->code,
                 'grades'     => $event->grades,
                 'background' => $event->background,
@@ -46,116 +40,142 @@ class CheckinController extends Controller {
                 'aid'        => $event->aid
             ]);
         }
-        return view('event/checkin', compact('event', 'instance'));
+        //echo($today_local);
+        //dd($instance);
+
+        return view('checkin/index', compact('event', 'instance'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for Registering a Student.
      */
-    public function create()
+    public function studentForm($id)
     {
-        //
+        $instance = EventInstance::findOrFail($id);
+
+        return view('checkin/register_student', compact('instance'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for Registering a Volunteer.
      */
-    public function edit($id)
+    public function volunteerForm($id)
     {
-        $event = Event::findOrFail($id);
-
-        //dd($event->name);
-
-        return view('event/edit', compact('event'));
+        echo 'volunteer';
     }
-
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function studentRegister($id)
     {
-        // Validate
-        $rules = ['name' => 'required', 'frequency' => 'required',];
-        $mesgs = [
-            'name.required'      => 'The event name is required.',
-            'frequency.required' => 'The frequency is required.',
-        ];
-        $validator = Validator::make(request()->all(), $rules, $mesgs);
-
-        if ($validator->fails()) {
-            $validator->errors()->add('FORM', 'event');
-
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $event_request = request()->all();
-        if (request('frequency') == 'recur')
-            $event_request['recur'] = 1;
-
-        $event = Event::create($event_request);
-
-        Toastr::success("Event created");
-
-        return (request('frequency') == 'recur') ? redirect("/event") : redirect("/event/$event->id");
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update($id)
-    {
-        $people = People::findOrFail($id);
+        $instance = EventInstance::findOrFail($id);
 
         // Validate
-        $rules = ['type' => 'required', 'firstname' => 'required', 'lastname' => 'required'];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required'];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
+            'photo.required'  => 'The last name is required.',
         ];
-        $validator = Validator::make(request()->all(), $rules, $mesgs);
+        request()->validate($rules, $mesgs);
 
-        if ($validator->fails()) {
-            $validator->errors()->add('FORM', 'personal');
-
-            return back()->withErrors($validator)->withInput();
-        }
-        //dd(request()->all());
-
-        $people_request = request()->all();
+        $people_request = request()->except('photo');
+        $people_request['aid'] = 1; // Auth::user()->aid;
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat('d/m/Y H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df'). ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
+        dd(request()->all());
+        dd($people_request);
+        $people = People::create($people_request);
+
+        // Handle attached photo
+        if (request()->photo) {
+            // Pass Slim's getImages the name of your file input, and since we only care about one image, use Laravel's head() helper to get the first element
+            $image = head(Slim::getImages('photo'));
+
+            // Grab the ouput data (data modified after Slim has done its thing)
+            if (isset($image['output']['data']) )
+            {
+                $name = $people->id .'.';   // Original file name = $image['output']['name'];
+                $data = $image['output']['data'];  // Base64 of the image
+                $path = storage_path('app/people/photos/');   // Server path
+
+                // Save the file to the server
+                $file = Slim::saveFile($data, $name, $path, false);
+
+                // Get the absolute web path to the image
+                $imagePath = asset('img/' . $file['name']);
+
+                $people->photo = $imagePath;
+                $people->save();
+            }
+        }
+
+        // Check student into event
+        $attend = Attendance::create(['eid' => $instance->id, 'pid' => $people->id, 'in' => Carbon::now()->timezone(Auth::user()->timezone)->format('Y-m-d H:i:s') ]);
+
+        Toastr::success("Student created");
+
+        return redirect("/checkin/$instance->eid");
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function volunteerRegister($id)
+    {
+        $instance = EventInstance::findOrFail($id);
+
+        // Validate
+        $rules = ['firstname' => 'required', 'lastname' => 'required'];
+        $mesgs = [
+            'firstname.required' => 'The first name is required.',
+            'lastname.required'  => 'The last name is required.',
+        ];
+        request()->validate($rules, $mesgs);
+
+        dd(request()->all());
+
+        $people_request = request()->all();
+        $people_request['aid'] = 1; // Auth::user()->aid;
+
+        // Empty State field if rest of address fields are empty
+        if (!request('address') && !request('suburb') && !request('postcode'))
+            $people_request['state'] = null;
+
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df'). ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+
+        // Student details
+        if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
+            // Media Consent
+            if (request('media_consent')) {
+                $people_request['media_consent'] = Carbon::now()->toDateTimeString();
+                $people_request['media_consent_by'] = Auth::user()->id;
+            } else
+                $people_request['media_consent'] = null;
+
+        } else {
+            $people_request['grade'] = $people_request['school_id'] = null;
+            $people_request['media_consent'] = $people_request['media_consent_by'] = null;
+        }
 
         // Volunteer details
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat('d/m/Y H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df'). ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
         //dd($people_request);
-        $people->update($people_request);
+        $people = People::create($people_request);
 
-        Toastr::success("Saved changes");
+        Toastr::success("Profile created");
 
         return redirect("/people/$people->id");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        $people = People::findOrFail($id);
-        $people->status = 0;
-        $people->save();
-
-        return response()->json(['success', '200']);
-        //return Response::json('success', 200);
-    }
 
 
     /**
@@ -163,14 +183,14 @@ class CheckinController extends Controller {
      */
     public function getPeople($id)
     {
-        $people = People::where('status', 1)->where('aid', 1)->get();
+        $people = People::where('status', 1)->where('aid', 1)->orderBy('firstname')->get();
         $instance = EventInstance::find($id);
         $people_array = [];
         foreach ($people as $person) {
-            $checked_in = null;
+            $checked_in = $checked_in2 = null;
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             if ($instance && $attended)
-                $checked_in = $attended->in;
+                $checked_in = $attended->in->format('Y-m-d H:i:s');
             $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'eid' => $instance->id];
         }
 

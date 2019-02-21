@@ -1,17 +1,33 @@
 @extends('layouts/main')
 
 @section('content')
-
     @include('event/_header')
 
     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
     <div class="row">
-        <div class="col-12">
-yy
+        <div class="col-md-3 col-xs-12 col-sm-4">
+            {{-- Background --}}
+            @include('event/_show_background')
+        </div>
+        <div class="col-md-9 col-xs-12 col-sm-8">
+            {{-- Settings --}}
+            @include('event/_show_settings')
         </div>
     </div>
 
+    <div class="row">
+        <div class="col">
+            {{-- Rego Form --}}
+            @include('event/_show_regoform')
+        </div>
+    </div>
+
+    <div>
+        <div class="pull-right" style="font-size: 12px; font-weight: 200; padding: 10px 10px 0 0">
+            {!! $event->displayUpdatedBy() !!}
+        </div>
+    </div>
 @stop
 
 
@@ -25,42 +41,12 @@ yy
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/js/event-shared-functions.js" type="text/javascript"></script>
 <script type="text/javascript">
-
     // Form errors - show modal
-    if ($('#formerrors').val() == 'personal')
-        $('#modal_personal').modal('show');
-
-    display_fields();
-
-    function display_fields() {
-        var type = $("#type").val();
-        $('#fields_student').hide();
-        $('#fields_volunteer').hide();
-
-        if (type == 'Student' || type == 'Student/Volunteer') {
-            $('#fields_student').show();
-        }
-        if (type == 'Volunteer' || type == 'Student/Volunteer' || type == 'Parent/Volunteer') {
-            $('#fields_volunteer').show();
-        }
-
+    if ($('#formerrors').val() == 'event') {
+        toastr.error('Failed to save event', 'Errors!', {timeOut: 9000})
     }
-
-    $("#type").change(function () {
-        display_fields();
-    });
-
-    $("#grade").change(function () {
-        display_fields();
-    });
-
-    $('.date-picker').datepicker({
-        autoclose: true,
-        clearBtn: true,
-        format: 'dd/mm/yyyy',
-    });
-
 
 </script>
 @stop

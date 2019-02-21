@@ -94,8 +94,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
-                                <!--<input type="text" name="dob" class="form-control m-input" readonly="" style="background-color: #fff" placeholder="Select date" id="m_datepicker_2"> -->
+                                {!! Form::text('dob', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'dob']) !!}
                             </div>
                         </div>
                     </div>
@@ -175,20 +174,10 @@
                         </div>
                         {{-- WWC Expiry --}}
                         <div class="col-lg-3 col-md-6">
-                            <!--
-                            <div class="input-group date">
-                                <input type="text" class="form-control m-input" placeholder="Select date" id="m_datetimepicker_6">
-                                <div class="input-group-append">
-							<span class="input-group-text">
-							<i class="la la-calendar glyphicon-th"></i>
-							</span>
-                                </div>
-                            </div>-->
-
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'm_datepicker_2']) !!}
+                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'wwc_exp']) !!}
                                 </div>
                             </div>
                         </div>
