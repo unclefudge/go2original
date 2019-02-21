@@ -71,11 +71,11 @@
       <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.59931505">
-              <caret line="135" column="129" selection-start-line="135" selection-start-column="129" selection-end-line="135" selection-end-column="129" />
+            <state vertical-scroll-proportion="0.6849315">
+              <caret line="142" column="106" selection-start-line="142" selection-start-column="87" selection-end-line="142" selection-end-column="106" />
               <folding>
-                <element signature="e#2118#2163#0#HTML" expanded="true" />
-                <element signature="e#2185#2210#0#HTML" expanded="true" />
+                <element signature="e#2252#2297#0#HTML" expanded="true" />
+                <element signature="e#2319#2344#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1050,11 +1050,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59931505">
-          <caret line="135" column="129" selection-start-line="135" selection-start-column="129" selection-end-line="135" selection-end-column="129" />
+        <state vertical-scroll-proportion="0.6849315">
+          <caret line="142" column="106" selection-start-line="142" selection-start-column="87" selection-end-line="142" selection-end-column="106" />
           <folding>
-            <element signature="e#2118#2163#0#HTML" expanded="true" />
-            <element signature="e#2185#2210#0#HTML" expanded="true" />
+            <element signature="e#2252#2297#0#HTML" expanded="true" />
+            <element signature="e#2319#2344#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -52,6 +52,13 @@
             vertical-align: middle;
         }
 
+        .people-check {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 50px;
+        }
+
         .footer {
             position: fixed;
             left: 0;
@@ -133,7 +140,8 @@
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
                     <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
-                        <div class="people-label">@{{ person.name }}<img src="/img/check-64.png" height="50" style="margin: 5px"></div>
+                        <img class="people-check " src="/img/check-64.png" height="50" style="margin: 5px">
+                        <div class="people-label">@{{ person.name }}</div>
                     </div>
                 </template>
             </div>
