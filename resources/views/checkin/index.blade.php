@@ -20,7 +20,7 @@
             height: 80px;
             width: 90px;
             display: inline-block;
-            margin: 10px;
+            margin: 5px;
             cursor: pointer;
 
             position: relative;
@@ -47,6 +47,7 @@
             left: 0;
             width: 100%;
             height: 25px;
+            padding: 0px 3px;
             line-height: 25px;
             vertical-align: middle;
         }
@@ -132,7 +133,7 @@
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
                     <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
-                        <img src="/img/check-64.png" style="margin: 10px">
+                        <img src="/img/check-64.png" height="50" style="margin: 5px">
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
                 </template>
