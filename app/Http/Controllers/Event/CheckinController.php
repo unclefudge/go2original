@@ -102,19 +102,19 @@ class CheckinController extends Controller {
             if (isset($image['output']['data'])) {
                 $name = $people->id . '.' . pathinfo($image['output']['name'], PATHINFO_EXTENSION);;   // Original file name = $image['output']['name'];
                 $data = $image['output']['data'];  // Base64 of the image
-                $path = storage_path('app/people/photos/');   // Server path
+                $path = storage_path('app/public/people/photos/');   // Server path
                 $filepath = $path . $name;
 
                 // Save the file to the server
                 $file = Slim::saveFile($data, $name, $path, false);
 
-                $people->photo = $filepath;
+                $people->photo = $name;
                 $people->save();
 
-                // Resize the image to a thumbnail of 90x90 and constrain aspect ratio (auto height)
+                // Save the image as a thumbnail of 90x90 + 30x30
                 if (exif_imagetype($filepath)) {
-                    Image::make($filepath)->resize(90, 90)->save(storage_path('app/people/thumbs/t90-' . $name));
-                    Image::make($filepath)->resize(50, 50)->save(storage_path('app/people/thumbs/t50-' . $name));
+                    Image::make($filepath)->resize(90, 90)->save(storage_path('app/public/people/thumbs/t90-' . $name));
+                    Image::make($filepath)->resize(50, 50)->save(storage_path('app/public/people/thumbs/t50-' . $name));
                 } else
                     Toastr::error("Bad image");
 
@@ -195,7 +195,7 @@ class CheckinController extends Controller {
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             if ($instance && $attended)
                 $checked_in = $attended->in->format('Y-m-d H:i:s');
-            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'eid' => $instance->id];
+            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'photo' => Storage::url('app/people/thumbs/t90-190.jpg') ,'eid' => $instance->id];
         }
 
         return $people_array;

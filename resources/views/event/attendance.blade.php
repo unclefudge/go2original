@@ -63,6 +63,7 @@
         }
 
     </style>
+    
     <div id="vue-app">
         <div class="row">
             <div class="col">
@@ -157,7 +158,7 @@
                             </div>
                         </div>
 
-                        <!--<pre>@{{ $data }}</pre>
+                        <pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>

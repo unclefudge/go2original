@@ -4,9 +4,9 @@
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.php" afterPath="$PROJECT_DIR$/config/app.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/index.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/attendance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/attendance.blade.php" />
     </list>
     <ignored path="go2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,36 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="attendance.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="199" column="25" selection-start-line="199" selection-start-column="25" selection-end-line="199" selection-end-column="25" />
-              <folding>
-                <element signature="e#6669#6693#0#HTML" expanded="true" />
-                <element signature="e#6865#6889#0#HTML" expanded="true" />
-                <marker date="1550403842524" expanded="true" signature="5443:5660" placeholder="..." />
-                <marker date="1550403842524" expanded="true" signature="5457:5658" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Attendance.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/Event/Attendance.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="94" column="49" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CheckinController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CheckinController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5351027">
-              <caret line="116" column="99" selection-start-line="116" selection-start-column="99" selection-end-line="116" selection-end-column="99" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="113" column="36" selection-start-line="113" selection-start-column="36" selection-end-line="113" selection-end-column="36" />
               <folding>
                 <element signature="e#46#53#0#PHP" expanded="true" />
               </folding>
@@ -64,21 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/app.php">
+      <file leaf-file-name="EventController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="240" column="59" selection-start-line="240" selection-start-column="59" selection-end-line="240" selection-end-column="59" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Slim.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Utilities/Slim.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="28" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="28" />
+              <caret line="234" column="80" selection-start-line="234" selection-start-column="80" selection-end-line="234" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -88,8 +53,11 @@
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <caret line="126" column="137" selection-start-line="126" selection-start-column="125" selection-end-line="126" selection-end-column="137" />
+              <folding>
+                <element signature="e#2012#2057#0#HTML" expanded="true" />
+                <element signature="e#2079#2104#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -109,6 +77,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="attendance.blade.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5351027">
+              <caret line="65" column="4" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="4" />
+              <folding>
+                <element signature="e#6674#6698#0#HTML" expanded="true" />
+                <element signature="e#6870#6894#0#HTML" expanded="true" />
+                <marker date="1550751306300" expanded="true" signature="5448:5665" placeholder="..." />
+                <marker date="1550751306300" expanded="true" signature="5462:5663" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="58" column="90" selection-start-line="58" selection-start-column="75" selection-end-line="58" selection-end-column="90" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -124,7 +117,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Models/People/People.php" />
         <option value="$PROJECT_DIR$/resources/views/event/create.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Event/Event.php" />
         <option value="$PROJECT_DIR$/app/Models/Event/EventRecur.php" />
@@ -158,13 +150,11 @@
         <option value="$PROJECT_DIR$/resources/views/event/edit.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Event/AttendanceController.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_02_05_032043_create_events_table.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" />
         <option value="$PROJECT_DIR$/resources/views/form-error.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/event/_show_regoform.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/event/settings.blade.php" />
         <option value="$PROJECT_DIR$/app/helpers.php" />
         <option value="$PROJECT_DIR$/resources/views/event/_show_settings.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/event/attendance.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/event/checkin.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/people/_edit_personal.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/people/_show_personal.blade.php" />
@@ -174,7 +164,10 @@
         <option value="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" />
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/config/app.php" />
+        <option value="$PROJECT_DIR$/resources/views/checkin/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" />
+        <option value="$PROJECT_DIR$/resources/views/event/attendance.blade.php" />
       </list>
     </option>
   </component>
@@ -502,6 +495,54 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="go2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="go2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Http" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="go2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="go2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Http" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Event" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -702,13 +743,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/event/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44961897">
-          <caret line="68" column="126" selection-start-line="68" selection-start-column="119" selection-end-line="68" selection-end-column="126" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Account/AccountController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5794702">
@@ -841,26 +875,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="90" selection-start-line="58" selection-start-column="75" selection-end-line="58" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/vue-checkin-functions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.3803681">
           <caret line="65" column="18" selection-start-line="65" selection-start-column="18" selection-end-line="65" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="143" column="69" selection-start-line="143" selection-start-column="69" selection-end-line="143" selection-end-column="69" />
           <folding />
         </state>
       </provider>
@@ -934,6 +952,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19719544">
+          <caret line="17" column="37" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Event/Attendance.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63613015">
+          <caret line="94" column="49" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.5196917">
+          <caret line="240" column="59" selection-start-line="240" selection-start-column="59" selection-end-line="240" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Utilities/Slim.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6969178">
+          <caret line="2" column="28" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/event/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.043664385">
+          <caret line="68" column="126" selection-start-line="68" selection-start-column="119" selection-end-line="68" selection-end-column="126" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="126" column="137" selection-start-line="126" selection-start-column="125" selection-end-line="126" selection-end-column="137" />
+          <folding>
+            <element signature="e#2012#2057#0#HTML" expanded="true" />
+            <element signature="e#2079#2104#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/register_student.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -947,65 +1016,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Utilities/Slim.php">
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="28" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="28" />
+          <caret line="58" column="90" selection-start-line="58" selection-start-column="75" selection-end-line="58" selection-end-column="90" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <caret line="113" column="36" selection-start-line="113" selection-start-column="36" selection-end-line="113" selection-end-column="36" />
+          <folding>
+            <element signature="e#46#53#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/app.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="240" column="59" selection-start-line="240" selection-start-column="59" selection-end-line="240" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Event/Attendance.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="94" column="49" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19719544">
-          <caret line="17" column="37" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+          <caret line="234" column="80" selection-start-line="234" selection-start-column="80" selection-end-line="234" selection-end-column="80" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="25" selection-start-line="199" selection-start-column="25" selection-end-line="199" selection-end-column="25" />
-          <folding>
-            <element signature="e#6669#6693#0#HTML" expanded="true" />
-            <element signature="e#6865#6889#0#HTML" expanded="true" />
-            <marker date="1550403842524" expanded="true" signature="5443:5660" placeholder="..." />
-            <marker date="1550403842524" expanded="true" signature="5457:5658" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php">
-      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5351027">
-          <caret line="116" column="99" selection-start-line="116" selection-start-column="99" selection-end-line="116" selection-end-column="99" />
+          <caret line="65" column="4" selection-start-line="65" selection-start-column="4" selection-end-line="65" selection-end-column="4" />
           <folding>
-            <element signature="e#46#53#0#PHP" expanded="true" />
+            <element signature="e#6674#6698#0#HTML" expanded="true" />
+            <element signature="e#6870#6894#0#HTML" expanded="true" />
+            <marker date="1550751306300" expanded="true" signature="5448:5665" placeholder="..." />
+            <marker date="1550751306300" expanded="true" signature="5462:5663" placeholder="..." />
           </folding>
         </state>
       </provider>
