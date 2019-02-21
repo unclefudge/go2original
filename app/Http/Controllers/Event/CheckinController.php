@@ -13,7 +13,7 @@ use App\Http\Utilities\Slim;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
-use Jenssegers\Agent\Agent;
+use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -76,7 +76,7 @@ class CheckinController extends Controller {
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
-            'photo.required'  => 'The last name is required.',
+            'photo.required'     => 'The last name is required.',
         ];
         request()->validate($rules, $mesgs);
 
@@ -87,10 +87,10 @@ class CheckinController extends Controller {
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df'). ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
-        dd(request()->all());
-        dd($people_request);
+        //dd(request()->all());
+        //dd($people_request);
         $people = People::create($people_request);
 
         // Handle attached photo
@@ -99,25 +99,30 @@ class CheckinController extends Controller {
             $image = head(Slim::getImages('photo'));
 
             // Grab the ouput data (data modified after Slim has done its thing)
-            if (isset($image['output']['data']) )
-            {
-                $name = $people->id .'.';   // Original file name = $image['output']['name'];
+            if (isset($image['output']['data'])) {
+                $name = $people->id . '.' . pathinfo($image['output']['name'], PATHINFO_EXTENSION);;   // Original file name = $image['output']['name'];
                 $data = $image['output']['data'];  // Base64 of the image
                 $path = storage_path('app/people/photos/');   // Server path
+                $filepath = $path . $name;
 
                 // Save the file to the server
                 $file = Slim::saveFile($data, $name, $path, false);
 
-                // Get the absolute web path to the image
-                $imagePath = asset('img/' . $file['name']);
-
-                $people->photo = $imagePath;
+                $people->photo = $filepath;
                 $people->save();
+
+                // Resize the image to a thumbnail of 90x90 and constrain aspect ratio (auto height)
+                if (exif_imagetype($filepath)) {
+                    Image::make($filepath)->resize(90, 90)->save(storage_path('app/people/thumbs/t90-' . $name));
+                    Image::make($filepath)->resize(50, 50)->save(storage_path('app/people/thumbs/t50-' . $name));
+                } else
+                    Toastr::error("Bad image");
+
             }
         }
 
         // Check student into event
-        $attend = Attendance::create(['eid' => $instance->id, 'pid' => $people->id, 'in' => Carbon::now()->timezone(Auth::user()->timezone)->format('Y-m-d H:i:s') ]);
+        $attend = Attendance::create(['eid' => $instance->id, 'pid' => $people->id, 'in' => Carbon::now()->timezone(Auth::user()->timezone)->format('Y-m-d H:i:s')]);
 
         Toastr::success("Student created");
 
@@ -148,7 +153,7 @@ class CheckinController extends Controller {
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df'). ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
         // Student details
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
@@ -166,7 +171,7 @@ class CheckinController extends Controller {
 
         // Volunteer details
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df'). ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
         //dd($people_request);
         $people = People::create($people_request);
@@ -175,7 +180,6 @@ class CheckinController extends Controller {
 
         return redirect("/people/$people->id");
     }
-
 
 
     /**

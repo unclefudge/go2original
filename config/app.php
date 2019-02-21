@@ -181,6 +181,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Kamaln7\Toastr\ToastrServiceProvider::class,
         Camroncade\Timezone\TimezoneServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -237,6 +238,7 @@ return [
         'Datatables' => Yajra\Datatables\Datatables::class,
         'Toastr' => Kamaln7\Toastr\Facades\Toastr::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

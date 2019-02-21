@@ -15,6 +15,7 @@
         "laravelcollective/html": "5.7.*",
         "yajra/laravel-datatables-oracle": "^8.3",
         "oriceon/toastr-5-laravel": "dev-master",
+        "intervention/image": "^2.3",
         "jenssegers/agent": "dev-master",
         "pragmarx/countries": "dev-master",
         "camroncade/timezone": "0.1"
