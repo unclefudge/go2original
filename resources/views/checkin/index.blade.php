@@ -64,7 +64,7 @@
 
         .bg {
             /* The image used */
-            /*background-image: url("/img/morningrise.jpg");*/
+            background-image: url("/img/morningrise.jpg");
 
             /* Set a specific height */
             height: 100%;
@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <pre>@{{ $data }}</pre>
+        <!--<pre>@{{ $data }}</pre>
         -->
     </div>
 
@@ -133,8 +133,7 @@
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
                     <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
-                        <img src="/img/check-64.png" height="50" style="margin: 5px">
-                        <div class="people-label">@{{ person.name }}</div>
+                        <div class="people-label">@{{ person.name }}<img src="/img/check-64.png" height="50" style="margin: 5px"></div>
                     </div>
                 </template>
             </div>
