@@ -55,7 +55,7 @@
         .people-check {
             position: absolute;
             top: 0;
-            left: 0;
+            left: 20px;
             height: 50px;
         }
 
