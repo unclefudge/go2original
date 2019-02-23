@@ -97,7 +97,7 @@
                 padding: 15px 20px;
             }
             .btn-sesrch {
-                margin-left: 5px;
+                margin-left: 10px;
             }
 
             .people-grid {
@@ -162,16 +162,6 @@
                     <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for someone" name="query">
                     <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                     <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent btn-lg btn-register">Register</a>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="padding: 30px 80px">
-            <div class="col-12">
-                <input v-model="xx.instance_id" type="hidden" value="{{ $instance->id }}">
-                <div class="input-group">
-                    <input type="search" class="form-control m-input" placeholder="Search for someone" name="query2">
-                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                    <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent" style="margin-left: 20px; float: right;">Register</a>
                 </div>
             </div>
         </div>
