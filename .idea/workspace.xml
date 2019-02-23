@@ -93,7 +93,7 @@
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.42208904">
-              <caret line="84" column="41" selection-start-line="84" selection-start-column="41" selection-end-line="84" selection-end-column="41" />
+              <caret line="84" column="40" selection-start-line="84" selection-start-column="40" selection-end-line="84" selection-end-column="40" />
               <folding>
                 <element signature="e#3229#3255#0#HTML" expanded="true" />
                 <element signature="e#4347#4393#0#HTML" expanded="true" />
@@ -1172,7 +1172,7 @@
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42208904">
-          <caret line="84" column="41" selection-start-line="84" selection-start-column="41" selection-end-line="84" selection-end-column="41" />
+          <caret line="84" column="40" selection-start-line="84" selection-start-column="40" selection-end-line="84" selection-end-column="40" />
           <folding>
             <element signature="e#3229#3255#0#HTML" expanded="true" />
             <element signature="e#4347#4393#0#HTML" expanded="true" />
