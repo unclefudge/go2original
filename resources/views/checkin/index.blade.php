@@ -88,7 +88,7 @@
             }
 
             .people-container {
-                margin: 0px;
+                margin: 5px;
                 width: 100%;
             }
 
