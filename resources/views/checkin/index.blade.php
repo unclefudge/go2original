@@ -93,8 +93,8 @@
             }
 
             .people-cell {
-                height: 62px;
-                width: 70px;
+                height: 58px;
+                width: 65px;
             }
 
             .people-label {
