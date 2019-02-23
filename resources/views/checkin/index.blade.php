@@ -89,7 +89,7 @@
 
             .people-container {
                 margin: 10px;
-                width: 98%;
+                width: 99%;
             }
 
             .people-cell {
