@@ -19,7 +19,7 @@
             padding: 30px 80px;
         }
 
-        .btn-sesrch {
+        .btn-register {
             margin-left: 20px;
             float: right;
         }
@@ -96,7 +96,7 @@
             .search-row {
                 padding: 15px 20px;
             }
-            .btn-sesrch {
+            .btn-register {
                 margin-left: 10px;
             }
 
