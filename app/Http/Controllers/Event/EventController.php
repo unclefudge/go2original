@@ -10,6 +10,7 @@ use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
 use App\Models\People\People;
 use Carbon\Carbon;
+use App\Http\Utilities\Slim;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
 use Jenssegers\Agent\Agent;
@@ -88,10 +89,9 @@ class EventController extends Controller {
                 return abort(404);
         }
 
-
         $dates = [];
         foreach ($instances as $inst)
-            $dates[$inst->start->format('Y-m-d')] = $inst->start->format(session('df'));
+            $dates[$inst->start->format('Y-m-d')] = $inst->start->format(session('df')) . " &nbsp; $inst->name";
 
         krsort($dates);
 
@@ -120,6 +120,7 @@ class EventController extends Controller {
         }
 
         $event_request = request()->all();
+        $event_request['aid'] = session('aid');
         if (request('frequency') == 'recur')
             $event_request['recur'] = 1;
 
@@ -168,7 +169,44 @@ class EventController extends Controller {
     }
 
     /**
-     * Toggle Eevent Status
+     * Update Photo
+     */
+    public function updatePhoto($id)
+    {
+        $event = Event::findOrFail($id);
+        $path = storage_path("app/account/$event->aid/images/events/");   // Server path
+
+        //dd(request()->all());
+        // Handle attached photo
+        if (request()->photo) {
+            // Pass Slim's getImages the name of your file input, and since we only care about one image, use Laravel's head() helper to get the first element
+            $image = head(Slim::getImages('photo'));
+
+            // Grab the ouput data (data modified after Slim has done its thing)
+            if (isset($image['output']['data'])) {
+                $name = $event->id . '.' . pathinfo($image['output']['name'], PATHINFO_EXTENSION);   // Original file name = $image['output']['name'];
+                $data = $image['output']['data'];  // Base64 of the image
+
+                $filepath = $path . $name;
+
+                // Save the file to the server + update record
+                $file = Slim::saveFile($data, $name, $path, false);
+                $event->background = $name;
+                $event->save();
+            }
+        } elseif (request('previous_photo')) {
+            // Delete file
+            if ($event->background && file_exists($path . $event->background))
+                unlink($path . $event->background);
+            $event->background = null;
+            $event->save();
+        }
+
+        return redirect("/event/$event->id/settings");
+    }
+
+    /**
+     * Toggle Event Status
      */
     public function status($id, $status)
     {
@@ -231,8 +269,8 @@ class EventController extends Controller {
                 'name'   => $person->name,
                 'type'   => $person->type,
                 'grade'  => $person->grade,
-                'school' => ($person->school_id) ? $person->school->name : '',
-                'photo'  => ($person->photo) ? "/storage/people/thumbs/t30-$person->photo" : '/img/avatar-user.png',
+                'school' => $person->school_name,
+                'photo'  => $person->photo_path,
                 'status' => $person->status,
                 'method' => $method,
                 'eid'    => $instance->id

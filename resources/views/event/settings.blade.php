@@ -35,18 +35,24 @@
 @stop
 
 @section('page-styles')
+    <link href="/css/slim.min.css" rel="stylesheet">
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/js/slim.kickstart.min.js"></script>
 <script src="/js/event-shared-functions.js" type="text/javascript"></script>
 <script type="text/javascript">
     // Form errors - show modal
     if ($('#formerrors').val() == 'event') {
         toastr.error('Failed to save event', 'Errors!', {timeOut: 9000})
     }
+
+    $("#bg_image").click(function () {
+        $("#modal_background").modal('show');
+    });
 
 </script>
 @stop

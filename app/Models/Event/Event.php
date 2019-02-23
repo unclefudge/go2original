@@ -37,6 +37,15 @@ class Event extends Model
 
 
     /**
+     * Get Background Path (getter)
+     */
+    public function getBackgroundPathAttribute()
+    {
+        $path = "/image/".$this->attributes['aid'].'/events/';
+        return ($this->attributes['background']) ? $path.$this->attributes['background'].'?'.rand(1, 32000) : '/img/bg-event.jpg';
+    }
+
+    /**
      * Get Timezone  (getter)
      *
      * @return string;

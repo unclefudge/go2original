@@ -29,8 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     // Protect access the People photos + thumbs
-    Route::get('/storage/people/photos/{filename}', 'Misc\FileController@getFile'); //->where('filename', '^(.+)\/([^\/]+)$');
-    Route::get('/storage/people/thumbs/{filename}', 'Misc\FileController@getThumb'); //->where('filename', '^(.+)\/([^\/]+)$');
+    Route::get('/image/{aid}/{type}/{filename}', 'Misc\FileController@getPhoto'); //->where('filename', '^(.+)\/([^\/]+)$');
+    //Route::get('/storage/{aid}/thumbs/{filename}', 'Misc\FileController@getThumb'); //->where('filename', '^(.+)\/([^\/]+)$');
 
     //Route::get('/data/people', 'Account\AccountController@getPeople');
     Route::resource('/account', 'Account\AccountController');
@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/people/search-add', 'People\PeopleController@searchAddPeople');
     Route::any('/people/{id}/status/{status}', 'People\PeopleController@status');
     Route::get('/people/{id}/del', 'People\PeopleController@destroy');
+    Route::post('/people/{id}/photo', 'People\PeopleController@updatePhoto');
     Route::resource('/people', 'People\PeopleController');
 
     // Schools
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/event/{id}/attendance/{date}', 'Event\EventController@attendance');
     Route::any('/event/{id}/status/{status}', 'Event\EventController@status');
     Route::get('/event/{id}/del', 'Event\EventController@destroy');
+    Route::post('/event/{id}/photo', 'Event\EventController@updatePhoto');
     Route::resource('/event', 'Event\EventController');
 
     // Event Instance
@@ -63,6 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/checkin/{id}/register/student', 'Event\CheckinController@studentForm');
     Route::post('/checkin/{id}/register/student', 'Event\CheckinController@studentRegister');
     Route::get('/checkin/{id}/register/volunteer', 'Event\CheckinController@volunteerForm');
+    Route::post('/checkin/{id}/register/volunteer', 'Event\CheckinController@volunteerRegister');
     Route::resource('/checkin', 'Event\CheckinController');
 
     // Attendance

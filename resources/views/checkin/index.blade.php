@@ -3,7 +3,20 @@
 @section('content')
     <style>
         body, html {
-            height: 100% !important;
+            @if ($event->background)
+             background-image: url("{!! $event->background_path !!}") !important;
+            @endif
+             height: 100%; /* set height */
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-size: cover !important;
+        }
+
+        .people-grid {
+            padding: 30px;
         }
 
         .people-container {
@@ -54,7 +67,7 @@
 
         .people-check {
             position: absolute;
-            top: 0;
+            top: 5px;
             left: 20px;
             height: 50px;
         }
@@ -65,27 +78,35 @@
             bottom: 0;
             width: 100%;
             height: 50px;
-            background-color: red;
-            color: white;
+            background-color: white;
+            color: black;
         }
 
-        .bg {
-            /* The image used */
-            background-image: url("/img/morningrise.jpg");
+        @media screen and (max-width: 480px) {
+            .people-grid {
+                padding: 0px;
+            }
 
-            /* Set a specific height */
-            height: 100%;
+            .people-container {
+                margin: 0px;
+                width: 100%;
+            }
 
-            /* Create the parallax scrolling effect */
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+            .people-cell {
+                height: 62px;
+                width: 70px;
+            }
+
+            .people-label {
+                height: 20px;
+                padding: 0px 3px;
+                line-height: 20px;
+                vertical-align: middle;
+            }
         }
-
-
     </style>
-    <div class="bg" id="vue-app">
+    <div id="vue-app">
+
         <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
             <div class="col text-center">
                 <img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px">
@@ -106,7 +127,7 @@
         </div>
 
         {{-- People Grid --}}
-        <div class="row" style="padding: 30px">
+        <div class="row people-grid">
             <div class="col-12">
                 <checkin-grid :data="xx.people" :filter-key="xx.searchQuery"></checkin-grid>
             </div>
@@ -123,8 +144,8 @@
             </div>
         </div>
 
-        <!--<pre>@{{ $data }}</pre>
-        -->
+        <!--<pre style="background: #fff">@{{ $data }}</pre>
+            -->
     </div>
 
 
@@ -132,7 +153,9 @@
     <script type="text/x-template" id="grid-template">
         <div class="people-container">
             <div v-if="filteredData.length == 0 && !this.xx.searching">
-                <h4>Couldn't find the person you were looking for.</h4><br>
+                <span style="position: relative; background: #ffffff; padding: 20px; border-radius: 4px;">
+                    <span style="font-size: 14px">Couldn't find the person you were looking for. </span>
+                </span>
             </div>
             <div v-else>
                 <template v-for="person in filteredData">
@@ -140,7 +163,7 @@
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
                     <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
-                        <img class="people-check " src="/img/check-64.png" height="50" style="margin: 5px">
+                        <img class="people-check" src="/img/check-64.png" height="50px">
                         <div class="people-label">@{{ person.name }}</div>
                     </div>
                 </template>

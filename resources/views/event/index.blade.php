@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-2 col-sm-4 col-xs-6" style="padding-left: 0px">
                     <button type="button" class="btn btn-secondary btn-sm m-btn--pill pull-right" style="margin-left: 10px" id="but_show_archived"><i class="fa fa-eye"></i></button>
-                    <button type="button" class="btn btn-sm m-btn--pill pull-right" style="margin-left: 10px; color: #000000; background: #eee" id="but_hide_archived"><i class="fa fa-eye-slash" style="padding-right: 5px"></i> Hide Archived</button>
+                    <button type="button" class="btn btn-sm m-btn--pill pull-right" style="margin-left: 10px; color: #000000; background: #eee" id="but_hide_archived"><i class="fa fa-eye-slash" style="padding-right: 5px"></i> Hide Inactive</button>
 
                     <button type="button" class="btn btn-sm m-btn--pill btn-brand pull-right" data-toggle="modal" data-target="#modal_create_event">Add</button>
                     <hr class="d-none d-md-block" style="padding-top: 20px; margin-top: 48px">
@@ -63,11 +63,11 @@
                     @foreach ($events->where('recur', 1) as $event)
                         <div class="col-md-4 col-sm-6 {{ ($event->status) ? 'event-active' : 'event-archived event-hide' }}">
                             <div class="m-portlet m-portlet--head-overlay m-portlet--full-height  m-portlet--rounded-force">
-                                <div class="card card-image" style="height: 120px; background-size:100% auto; cursor: pointer; {!!  ($event->status) ? "background-image: url('/img/bg-event3.jpg');" : 'background: #777'!!}" id="event-{{ $event->id }}">
+                                <div class="card card-image" style="height: 120px; background-size:100% auto; cursor: pointer; {!!  ($event->status) ? "background-image: url($event->background_path);" : 'background: #777'!!}" id="event-{{ $event->id }}">
                                     <div>
                                         @if (!$event->status)
                                             <span class="pull-right" style="color: #FFF; padding: 5px"><i class="fa fa-archive"></i> Inactive</span>
-                                           <!-- <a href="/event/{{ $event->id }}/del" class="btn text-white waves-effect waves-light pull-right event-del" style="padding: 5px"><i class="fa fa-archive"></i></a>-->
+                                            <!-- <a href="/event/{{ $event->id }}/del" class="btn text-white waves-effect waves-light pull-right event-del" style="padding: 5px"><i class="fa fa-archive"></i></a>-->
                                         @else
                                             <span class="pull-right" style="padding: 5px">&nbsp;</span>
                                         @endif
@@ -79,12 +79,16 @@
                                     </div>
                                 </div>
                                 <div class="row" style="padding: 10px;">
-                                    <div class="col-6">
-                                        <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block">Check-In</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="button" class="btn btn-outline-accent m-btn btn-block">Stats</button>
-                                    </div>
+                                    @if ($event->status)
+                                        <div class="col-6">
+                                            <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block">Check-In</a>
+                                        </div>
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-outline-accent m-btn btn-block">Stats</button>
+                                        </div>
+                                    @else
+                                        <div class="col-12 text-center" style="padding: 10px">Unable to checkin on inactive events</div>
+                                    @endif
 
                                 </div>
                             </div>

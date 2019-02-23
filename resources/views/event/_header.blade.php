@@ -1,4 +1,4 @@
-<div class="member-bar {{ (!$event->status) ? 'member-inactive' : '' }}"">
+<div class="member-bar {{ (!$event->status) ? 'member-inactive' : '' }}">
     <i class="iicon-event-member-bar hidden-xs-down"></i>
     <div class="member-name">
         <div class="member-fullname">{{ $event->name }}</div>

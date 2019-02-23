@@ -52,7 +52,7 @@
                     <div class="col-md-5">
                         <div class="form-group {!! fieldHasError('dateformat', $errors) !!}">
                             {!! Form::label('dateformat', 'Date Format', ['class' => 'control-label']) !!}
-                            {!! Form::select('dateformat', ['d/m/Y' => 'Day/Month/Year', 'm/d/Y' => 'Month/Day/Year'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                            {!! Form::select('dateformat', ['d/m/Y' => 'Day/Month/Year', 'm/d/Y' => 'Month/Day/Year'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('dateformat', $errors) !!}
                         </div>
                     </div>

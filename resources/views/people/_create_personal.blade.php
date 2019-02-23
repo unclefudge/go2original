@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group {!! fieldHasError('state', $errors) !!}">
-                            {!! Form::select('state', $ozstates::all(), 'TAS', ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                            {!! Form::select('state', $ozstates::all(), 'TAS', ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('state', $errors) !!}
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="form-group {!! fieldHasError('gender', $errors) !!}">
                             {!! Form::label('gender', 'Gender', ['class' => 'control-label']) !!}
-                            {!! Form::select('gender', ['Male', 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                            {!! Form::select('gender', ['Male', 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('gender', $errors) !!}
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group {!! fieldHasError('type', $errors) !!}">
                             {!! Form::label('type', 'Type', ['class' => 'control-label']) !!}
-                            {!! Form::select('type', $people_types, null, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                            {!! Form::select('type', $people_types, null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('type', $errors) !!}
                         </div>
                     </div>
@@ -130,19 +130,9 @@
                         </div>
                         {{-- School --}}
                         <div class="col-lg-5 col-md-9">
-                            {{--}}
-                            <div class="form-group {!! fieldHasError('school_id', $errors) !!}">
-                                {!! Form::label('school_id', 'School', ['class' => 'control-label']) !!}
-                                {!! Form::select('school_id', \App\Models\Account\Account::find(1)->schoolsSelect(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker', 'id' => 'school_id']) !!}
-                                {!! fieldErrorMessage('school_id', $errors) !!}
-                            </div>--}}
                             <div class="form-group">
                                 <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
                                 <select name="school_id" class="form-control select2" id="school_id">
-                                    {{--}}
-                                    @foreach (\App\Models\Account\Account::find(1)->schools->sortBy('name') as $key => $value)
-                                        <option value="{{ $key }}">{{ $value }}</option>
-                                    @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -150,7 +140,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('media_consent', $errors) !!}">
                                 {!! Form::label('media_consent', 'Media Consent', ['class' => 'control-label']) !!}
-                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], 0, ['class' => 'form-control m-bootstrap-select m_selectpicker',]) !!}
+                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], 0, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                                 {!! fieldErrorMessage('media_consent', $errors) !!}
                             </div>
                         </div>

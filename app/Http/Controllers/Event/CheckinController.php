@@ -9,11 +9,9 @@ use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
 use App\Models\People\People;
-use App\Http\Utilities\Slim;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
-use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -25,14 +23,14 @@ class CheckinController extends Controller {
      */
     public function show($id)
     {
-        $now_local = Carbon::now()->timezone(Auth::user()->timezone)->format('Y-m-d');
+        $now_local = Carbon::now()->timezone(session('tz'))->format('Y-m-d');
         $event = Event::findOrFail($id);
         $instance = EventInstance::where('eid', $id)->whereDate('start', $now_local)->first();
 
         if (!$instance) {
             $instance = EventInstance::create([
                 'name'       => $event->name,
-                'start'      => Carbon::now()->timezone(Auth::user()->timezone)->toDateTimeString(),
+                'start'      => Carbon::now()->timezone(session('tz'))->toDateTimeString(),
                 'code'       => $event->code,
                 'grades'     => $event->grades,
                 'background' => $event->background,
@@ -61,7 +59,9 @@ class CheckinController extends Controller {
      */
     public function volunteerForm($id)
     {
-        echo 'volunteer';
+        $instance = EventInstance::findOrFail($id);
+
+        return view('checkin/register_volunteer', compact('instance'));
     }
 
     /**
@@ -72,16 +72,18 @@ class CheckinController extends Controller {
         $instance = EventInstance::findOrFail($id);
 
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required'];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
-            'photo.required'     => 'The last name is required.',
+            'photo.required'     => 'The photo is required.',
+            'dob.date_format'    => 'The birthday format needs to be ' . session('df-datepicker'),
         ];
         request()->validate($rules, $mesgs);
 
         $people_request = request()->except('photo');
-        $people_request['aid'] = 1; // Auth::user()->aid;
+        $people_request['aid'] = session('aid');
+        $people_request['type'] = "Student";
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
@@ -89,40 +91,14 @@ class CheckinController extends Controller {
 
         $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
-        //dd(request()->all());
-        //dd($people_request);
         $people = People::create($people_request);
 
         // Handle attached photo
-        if (request()->photo) {
-            // Pass Slim's getImages the name of your file input, and since we only care about one image, use Laravel's head() helper to get the first element
-            $image = head(Slim::getImages('photo'));
-
-            // Grab the ouput data (data modified after Slim has done its thing)
-            if (isset($image['output']['data'])) {
-                $name = $people->id . '.' . pathinfo($image['output']['name'], PATHINFO_EXTENSION);;   // Original file name = $image['output']['name'];
-                $data = $image['output']['data'];  // Base64 of the image
-                $path = storage_path('app/public/people/photos/');   // Server path
-                $filepath = $path . $name;
-
-                // Save the file to the server
-                $file = Slim::saveFile($data, $name, $path, false);
-
-                $people->photo = $name;
-                $people->save();
-
-                // Save the image as a thumbnail of 90x90 + 30x30
-                if (exif_imagetype($filepath)) {
-                    Image::make($filepath)->resize(90, 90)->save(storage_path('app/public/people/thumbs/t90-' . $name));
-                    Image::make($filepath)->resize(50, 50)->save(storage_path('app/public/people/thumbs/t50-' . $name));
-                } else
-                    Toastr::error("Bad image");
-
-            }
-        }
+        if (request()->photo)
+           $people->attachPhoto();
 
         // Check student into event
-        $attend = Attendance::create(['eid' => $instance->id, 'pid' => $people->id, 'in' => Carbon::now()->timezone(Auth::user()->timezone)->format('Y-m-d H:i:s')]);
+        $people->checkin($instance);
 
         Toastr::success("Student created");
 
@@ -137,48 +113,39 @@ class CheckinController extends Controller {
         $instance = EventInstance::findOrFail($id);
 
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required'];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
-            'firstname.required' => 'The first name is required.',
-            'lastname.required'  => 'The last name is required.',
+            'firstname.required'  => 'The first name is required.',
+            'lastname.required'   => 'The last name is required.',
+            'dob.date_format'     => 'The birthday format needs to be ' . session('df-datepicker'),
+            'wwc_exp.date_format' => 'The expiry format needs to be ' . session('df-datepicker'),
         ];
         request()->validate($rules, $mesgs);
 
-        dd(request()->all());
-
-        $people_request = request()->all();
-        $people_request['aid'] = 1; // Auth::user()->aid;
+        $people_request = request()->except('photo');
+        $people_request['aid'] = session('aid');
+        $people_request['type'] = "Volunteer";
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
         $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
-
-        // Student details
-        if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
-            // Media Consent
-            if (request('media_consent')) {
-                $people_request['media_consent'] = Carbon::now()->toDateTimeString();
-                $people_request['media_consent_by'] = Auth::user()->id;
-            } else
-                $people_request['media_consent'] = null;
-
-        } else {
-            $people_request['grade'] = $people_request['school_id'] = null;
-            $people_request['media_consent'] = $people_request['media_consent_by'] = null;
-        }
-
-        // Volunteer details
-        if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+        $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
         //dd($people_request);
         $people = People::create($people_request);
 
-        Toastr::success("Profile created");
+        // Handle attached photo
+        if (request()->photo)
+            $people->attachPhoto();
 
-        return redirect("/people/$people->id");
+        // Check student into event
+        $people->checkin($instance);
+
+        Toastr::success("Volunteer created");
+
+        return redirect("/checkin/$instance->eid");
     }
 
 
@@ -192,11 +159,11 @@ class CheckinController extends Controller {
         $people_array = [];
         foreach ($people as $person) {
             $checked_in = $checked_in2 = null;
-            $photo = ($person->photo) ? "/storage/people/thumbs/t90-$person->photo" : "/img/avatar-user.png";
+            $photo = $person->avatar90;
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             if ($instance && $attended)
                 $checked_in = $attended->in->format('Y-m-d H:i:s');
-            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'photo' => $photo ,'eid' => $instance->id];
+            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'photo' => $photo, 'eid' => $instance->id];
         }
 
         return $people_array;

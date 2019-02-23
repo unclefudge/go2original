@@ -29,7 +29,13 @@
         }
 
         .person_inactive {
-            opacity: .5;
+            background: #777;
+            color: #fff;
+        }
+
+        .person_inactive:hover {
+            /*background: #777;*/
+            color: #FF0000;
         }
 
         .avatar {
@@ -86,15 +92,14 @@
                         <input v-model="xx.date" type="hidden" value="{{ $date }}">
 
                         <div v-if="xx.date == 0">
-                            <br>No {{ $event->name }} events have occured yet. Please add one. <a href="#" class="btn btn-sm m-btn--pill btn-outline-brand" data-toggle="modal" data-target="#modal_attendance">Add Past Event</a> &nbsp; or &nbsp; <a href="/checkin/{{ $event->id }}"
-                                                                                                                                                                                                                                                       class="btn btn-sm m-btn--pill btn-outline-brand">Check-in
-                                one for today</a>
+                            <br>No {{ $event->name }} events have occured yet. Please add one.
+                            <a href="#" class="btn btn-sm m-btn--pill btn-outline-brand" data-toggle="modal" data-target="#modal_attendance">Add Past Event</a>
+                            &nbsp; or &nbsp; <a href="/checkin/{{ $event->id }}" class="btn btn-sm m-btn--pill btn-outline-brand">Check-in one for today</a>
                         </div>
                         <div v-if="xx.date">
                             <div class="row" style="padding: 20px 0px 10px 0px">
-                                <div class="col-12">
+                                <div class="col-8">
                                     <h1 v-if="!xx.edit_name">@{{ xx.instance.name }} <i v-if="xx.estatus != 0" v-on:click="toggleEditName" class="fa fa-edit" style="color: #9eacb4; font-size: 13px; padding: 7px 20px ; vertical-align: top; cursor: pointer"></i></h1>
-
                                     {{-- Edit Instance Name --}}
                                     <div v-if="xx.edit_name" class="col-8" style="padding-left: 5px">
                                         <div class="input-group">
@@ -105,20 +110,9 @@
                                             <span></span>
                                         </div>
                                     </div>
+                                </div>
 
-                                </div>
-                            </div>
-                            <div class="row" style="padding: 5px;">
-                                {{-- Date --}}
-                                <div class="col-lg-3 col-md-6" style="margin-bottom: 10px">
-                                    {!! Form::select('date', $dates, $date, ['class' => 'form-control form-control-lg m-input select2', 'style' => 'font-size:25px; height: 50px !important; line-height: 32px !important; min-height: 50px;', 'id' => 'date']) !!}
-                                </div>
-                                <div class="col-lg-5 col-md-6" style="margin-bottom: 10px">
-                                    <div class="input-group">
-                                        <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for something" name="query">
-                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                                    </div>
-                                </div>
+                                {{-- Show/Hide Option --}}
                                 <div class="col-lg-1" style="margin-bottom: 10px">
                                 </div>
                                 <div class="col-lg-3" style="margin-bottom: 10px">
@@ -136,6 +130,18 @@
                                     <div>
                                         <span v-if="!xx.show_checked" v-on:click="toggleChecked" style="cursor: pointer;"><i class="far fa-square" style="padding-right: 10px"></i> Show only checked-in people</span>
                                         <span v-if="xx.show_checked" v-on:click="toggleChecked" style="cursor: pointer;"><i class="fa fa-check-square" style="padding-right: 10px"></i> Show only checked-in people</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding: 5px;">
+                                {{-- Date --}}
+                                <div class="col-lg-5 col-md-6" style="margin-bottom: 10px">
+                                    {!! Form::select('date', $dates, $date, ['class' => 'form-control form-control-lg m-input select2', 'style' => 'font-size:25px; height: 50px !important; line-height: 32px !important; min-height: 50px;', 'id' => 'date']) !!}
+                                </div>
+                                <div class="col-lg-7 col-md-6" style="margin-bottom: 10px">
+                                    <div class="input-group">
+                                        <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for something" name="query">
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +164,7 @@
                             </div>
                         </div>
 
-                        <pre>@{{ $data }}</pre>
+                        <!--<pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>
@@ -195,7 +201,6 @@
                             <div v-if="person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)">
                                 <img src="/img/check-32.png" height="32px" style="margin: 10px">
                             </div>
-                            {{--}}<div v-if="!person.in && xx.show_photos" class="avatar" style="background-image: url('@{{person['photo']}}');"></div>--}}
                             <div v-if="!person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)"></div>
                         </div>
                     </td>
@@ -203,8 +208,17 @@
                     {{-- Deleted People --}}
                     <td v-if="!person.status || xx.estatus == 0" class="text-center">
                         {{-- Icons --}}
-                        <span v-if="person.in && !xx.show_photos"><i class="fa fa-check-square fa-2x" style="color: #45ccb1"></i></span>
-                        <span v-if="!person.in && !xx.show_photos"><i class="far fa-square fa-2x" style="color: #c4c5d6"></i></span>
+                        <div v-if="!xx.show_photos">
+                            <span v-if="person.in && !xx.show_photos"><i class="fa fa-check-square fa-2x" style="color: #45ccb1; cursor: default"></i></span>
+                            <span v-if="!person.in && !xx.show_photos"><i class="far fa-square fa-2x" style="color: #c4c5d6; cursor: default"></i></span>
+                        </div>
+                        {{-- Photos --}}
+                        <div v-if="xx.show_photos">
+                            <div v-if="person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)">
+                                <img src="/img/check-32.png" height="32px" style="margin: 10px">
+                            </div>
+                            <div v-if="!person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)"></div>
+                        </div>
                     </td>
 
                     {{-- Remaining Columns --}}
@@ -233,6 +247,9 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
 <script src="/js/vue-checkin-functions.js"></script>
 <script type="text/javascript">
+    // Form errors - show modal
+    if ($('#formerrors').val() == 'event')
+        $('#modal_create_instance').modal('show');
 
     var xx = {
         eid: "{{ $event->id }}", estatus: "{{ $event->status }}", date: "{{ $date }}", date_format: '',
@@ -368,6 +385,11 @@
                     str = "background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('" + person.photo + "')";
                 else
                     str = "background-image: url('" + person.photo + "')";
+
+                // Set cursor to defaul tfor inactive people to ensure user doesn't think they can click + update
+                if (!person.status)
+                        str = str + '; cursor:default';
+
                 return str;
 
             },

@@ -8,7 +8,7 @@
     <meta name="description" content="Event and Attendance for Youth Ministries">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta id="token" name="token" value="{{ csrf_token() }}" />
+    <meta id="token" name="token" value="{{ csrf_token() }}"/>
 
     <!--begin::Web font -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
@@ -32,7 +32,7 @@
     <!--<link href="/css/reseller.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="//framework.dreamscape.cloud/scripts/reseller/framework/vendors.bundle.js?vendors_timestamp=1539856691"></script>-->
     @yield('page-styles')
-    <!--end::Page Vendors Styles -->
+            <!--end::Page Vendors Styles -->
     <link rel="shortcut icon" href="/img/favicon.ico"/>
 </head>
 <!-- end::Head -->
@@ -40,7 +40,7 @@
 <!-- begin::Body -->
 <body style="background: #F7F7F7" style="height: 100%">
 
-                @yield('content')
+@yield('content')
 {{--}}
     @include('layouts/section/footer')
     --}}
@@ -49,27 +49,27 @@
 
 {{-- @include('layouts/section/sidebar') --}}
 
-<!-- begin::Scroll Top -->
+        <!-- begin::Scroll Top -->
 <div id="m_scroll_top" class="m-scroll-top">
     <i class="la la-arrow-up"></i>
 </div>
 
 <!-- end::Scroll Top -->
 
- {{-- @include('layouts/section/quicknav') --}}
+{{-- @include('layouts/section/quicknav') --}}
 
-<!--begin::Global Theme Bundle -->
+        <!--begin::Global Theme Bundle -->
 <script src="/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
 <script src="/assets/demo/demo5/base/scripts.bundle.js" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors -->
 @yield('vendor-scripts')
-<!--end::Page Vendors -->
+        <!--end::Page Vendors -->
 
 <!--begin::Page Scripts -->
 @yield('page-scripts')
-<!--end::Page Scripts -->
+        <!--end::Page Scripts -->
 
 {!! Toastr::render() !!}
 

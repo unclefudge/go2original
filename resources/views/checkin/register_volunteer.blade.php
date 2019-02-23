@@ -7,9 +7,9 @@
     <style>
         body, html {
             @if ($instance->event->background)
-             background-image: url("{!! $instance->event->background_path !!}") !important;
+              background-image: url("{!! $instance->event->background_path !!}") !important;
             @endif
-             height: 100%; /* set height */
+              height: 100%; /* set height */
 
             /* Create the parallax scrolling effect */
             background-attachment: fixed !important;
@@ -37,18 +37,19 @@
             </div>
         </div>
 
-        {{-- Student Rego  --}}
+        {{-- Volunteer Rego  --}}
         <div class="row justify-content-lg-center" style="padding: 30px">
             <div class="col-lg-8">
                 <div class="m-portlet">
                     <div class="m-portlet__body">
-                        {!! Form::model('people', ['action' => ['Event\CheckinController@studentRegister', $instance->id], 'files' => true]) !!}
+                        {!! Form::model('people', ['action' => ['Event\CheckinController@volunteerRegister', $instance->id], 'files' => true]) !!}
+                        @include('form-error')
                         <div class="row" style="padding-bottom: 10px">
                             <div class="col-md-5">
-                                <h4>Student Registration</h4>
+                                <h4>Volunteer Registration</h4>
                             </div>
                             <div class="col-md-7">
-                                <a href="/checkin/{{ $instance->id }}/register/volunteer" class="btn btn-brand pull-right" style="margin-left: 20px">Switch to Volunteer</a>
+                                <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-brand pull-right" style="margin-left: 20px">Switch to Student</a>
                                 <a href="/checkin/{{ $instance->eid }}" class="btn btn-secondary pull-right">Return to check-in</a>
                             </div>
                         </div>
@@ -85,7 +86,6 @@
                                     {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                                     <div class="input-group date">
                                         {!! Form::text('dob', null, ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
-                                        {!! fieldErrorMessage('dob', $errors) !!}
                                     </div>
                                     {!! fieldErrorMessage('dob', $errors) !!}
                                 </div>
@@ -141,41 +141,31 @@
                             </div>
                         </div>
 
-                        {{-- Grade + School --}}
+                        {{-- WWC info --}}
                         <div class="row" style="background-color: #F7F7F7; margin: 10px -25px; padding: 10px 30px">
                             <div class="col-md-3">
-                                <br><h6>School details</h6>
+                                <br><h6>WWC Registration</h6>
                             </div>
-                            {{-- Grade --}}
-                            <div class="col-md-4">
-                                <div class="form-group {!! fieldHasError('grade', $errors) !!}">
-                                    {!! Form::label('grade', 'Grade', ['class' => 'control-label']) !!}
-                                    {!! Form::select('grade', ['' => 'Select grade', '5' => 'Grade 5', '6' => 'Grade 6', '7' => 'Grade 7', '8' => 'Grade 8', '9' => 'Grade 9', '10' => 'Grade 10', '11' => 'Grade 11', '12' => 'Grade 12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
-                                    {!! fieldErrorMessage('grade', $errors) !!}
+                            {{-- WWC No. --}}
+                            <div class="col-md-3">
+                                <div class="form-group {!! fieldHasError('wwc_no', $errors) !!}">
+                                    {!! Form::label('wwc_no', 'No.', ['class' => 'control-label']) !!}
+                                    {!! Form::text('wwc_no', null, ['class' => 'form-control']) !!}
+                                    {!! fieldErrorMessage('wwc_no', $errors) !!}
                                 </div>
                             </div>
-                            {{-- School --}}
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
-                                    <select name="school_id" class="form-control select2" id="school_id">
-                                        @foreach (\App\Models\Account\Account::find(1)->schools->sortBy('name') as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- Parent / Guardian --}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group {!! fieldHasError('parent_name', $errors) !!}">
-                                    {!! Form::label('parent_name', 'Parent / Guardian Name', ['class' => 'control-label']) !!}
-                                    {!! Form::text('parent_name', null, ['class' => 'form-control', 'placeholder' => 'street address']) !!}
-                                    {!! fieldErrorMessage('parent_name', $errors) !!}
+                            {{--  WWC Expiry  --}}
+                            <div class="col-md-3">
+                                <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
+                                    {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
+                                    <div class="input-group date">
+                                        {!! Form::text('wwc_exp', null, ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
+                                    </div>
+                                    {!! fieldErrorMessage('wwc_exp', $errors) !!}
                                 </div>
                             </div>
                         </div>
+
                         <hr>
                         {{-- Photo --}}
                         <div class="row">
@@ -286,6 +276,15 @@
 
     // DOB
     $("#dob").datepicker({
+        todayHighlight: !0,
+        orientation: "bottom left",
+        autoclose: true,
+        clearBtn: true,
+        format: "{{ session('df-datepicker') }}",
+    });
+
+    // DOB
+    $("#wwc_exp").datepicker({
         todayHighlight: !0,
         orientation: "bottom left",
         autoclose: true,

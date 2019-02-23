@@ -18,11 +18,12 @@
                 {{-- Date --}}
                 <div class="row">
                     <div class="col">
-                        <div class="form-group {!! fieldHasError('dob', $errors) !!}">
+                        <div class="form-group {!! fieldHasError('pastdate', $errors) !!}">
                             {!! Form::label('pastdate', 'Date', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('pastdate', null, ['class' => 'form-control m-input datepicker', 'style' => 'background:#FFF', 'readonly', 'required', 'id' => 'pastdate']) !!}
+                                {!! Form::text('pastdate', null, ['class' => 'form-control m-input datepicker', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'required', 'id' => 'pastdate']) !!}
                             </div>
+                            {!! fieldErrorMessage('pastdate', $errors) !!}
                         </div>
                     </div>
                     </div>
@@ -70,7 +71,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('pastdate', 'Date', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('pastdate', null, ['class' => 'form-control m-input datepicker', 'style' => 'background:#FFF', 'readonly', 'required', 'id' => 'pastdate']) !!}
+                                {!! Form::text('pastdate', null, ['class' => 'form-control m-input datepicker', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'required', 'id' => 'pastdate']) !!}
                             </div>
                         </div>
                     </div>

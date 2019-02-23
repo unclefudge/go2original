@@ -30,7 +30,7 @@ class EventInstance extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function recur()
+    public function event()
     {
         return $this->belongsTo('App\Models\Event\Event', 'eid');
     }

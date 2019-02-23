@@ -14,20 +14,10 @@ class FileController extends Controller {
         $this->middleware('auth');
     }
 
-    public function getFile($filename)
+    public function getPhoto($aid, $type, $filename)
     {
-        //dd('here');
-        if (Auth::user()->id == 1)
-            return response()->download(storage_path('app/public/people/photos/'.$filename), null, [], null);
-
-        abort(404);
-    }
-
-    public function getThumb($filename)
-    {
-        //dd('here');
-        if (Auth::user()->id == 1)
-            return response()->download(storage_path('app/public/people/thumbs/'.$filename), null, [], null);
+        if (session('aid') == $aid)
+            return response()->download(storage_path("app/account/$aid/images/$type/$filename"), null, [], null);
 
         abort(404);
     }

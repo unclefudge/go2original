@@ -10,13 +10,11 @@
     <div class="row">
         <div class="col-lg-9 col-xs-12 col-sm-12">
             {{-- Personal Info --}}
-            @include('people/_show_personal')
-            @include('people/_edit_personal')
+            @include('people/_personal')
         </div>
         <div class="col-lg-3 col-xs-12 col-sm-12">
             {{-- Houshold --}}
-            @include('people/_show_household')
-            @include('people/_edit_household')
+            @include('people/_household')
         </div>
 
     </div>
@@ -33,12 +31,14 @@
 @stop
 
 @section('page-styles')
+    <link href="/css/slim.min.css" rel="stylesheet">
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/js/slim.kickstart.min.js"></script>
 <script type="text/javascript">
 
     // Form errors - show modal
@@ -109,6 +109,17 @@
             $("#school_id").append('<option value="">Select grade first</option>');
         }
     }
+
+    $("#avatar").click(function () {
+        //$("#modal_avatar_show").modal('show');
+        $("#modal_avatar_edit").modal('show');
+    });
+
+    $("#avatar-edit").click(function (e) {
+        e.stopPropagation();
+        $("#modal_avatar_edit").modal('show');
+    });
+
 
     $("#type").change(function () {
         display_fields();

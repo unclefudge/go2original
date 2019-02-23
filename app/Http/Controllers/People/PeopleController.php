@@ -46,14 +46,6 @@ class PeopleController extends Controller {
         return view('people/create');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -61,11 +53,14 @@ class PeopleController extends Controller {
     public function store()
     {
         // Validate
-        $rules = ['type' => 'required', 'firstname' => 'required', 'lastname' => 'required'];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
+            'dob.date_format'    => 'The birthday format needs to be ' . session('df-datepicker'),
+            'wwc.date_format'    => 'The expiry format needs to be ' . session('df-datepicker'),
         ];
+
         $validator = Validator::make(request()->all(), $rules, $mesgs);
 
         if ($validator->fails()) {
@@ -76,13 +71,13 @@ class PeopleController extends Controller {
         //dd(request()->all());
 
         $people_request = request()->all();
-        $people_request['aid'] = 1; // Auth::user()->aid;
+        $people_request['aid'] = session('aid');
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df'). ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
 
         // Student details
@@ -101,11 +96,10 @@ class PeopleController extends Controller {
 
         // Volunteer details
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df'). ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
         //dd($people_request);
         $people = People::create($people_request);
-
         Toastr::success("Profile created");
 
         return redirect("/people/$people->id");
@@ -119,10 +113,12 @@ class PeopleController extends Controller {
         $people = People::findOrFail($id);
 
         // Validate
-        $rules = ['type' => 'required', 'firstname' => 'required', 'lastname' => 'required'];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
+            'dob.date_format'    => 'The birthday format needs to be ' . session('df-datepicker'),
+            'wwc.date_format'    => 'The expiry format needs to be ' . session('df-datepicker'),
         ];
         $validator = Validator::make(request()->all(), $rules, $mesgs);
 
@@ -131,7 +127,6 @@ class PeopleController extends Controller {
 
             return back()->withErrors($validator)->withInput();
         }
-        //dd(request()->all());
 
         $people_request = request()->all();
 
@@ -139,8 +134,7 @@ class PeopleController extends Controller {
         if (!request('address') && !request('suburb') && !request('postcode'))
             $people_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df'). ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
-//Carbon::createFromFormat(session('df'). ' H:i'
+        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
         // Student details
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
@@ -156,12 +150,33 @@ class PeopleController extends Controller {
 
         // Volunteer details
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df'). ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
         //dd($people_request);
         $people->update($people_request);
-
         Toastr::success("Saved changes");
+
+        return redirect("/people/$people->id");
+    }
+
+    /**
+     * Update Photo
+     */
+    public function updatePhoto($id)
+    {
+        $people = People::findOrFail($id);
+        $path = storage_path("app/account/$people->aid/images/people/");   // Server path
+
+        // Handle attached photo
+        if (request()->photo)
+            $people->attachPhoto();
+        elseif (request('previous_photo')) {
+            // Delete file
+            if ($people->photo && file_exists($path . $people->photo))
+                unlink($path . $people->photo);
+            $people->photo = null;
+            $people->save();
+        }
 
         return redirect("/people/$people->id");
     }

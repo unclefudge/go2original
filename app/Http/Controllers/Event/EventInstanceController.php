@@ -23,6 +23,16 @@ class EventInstanceController extends Controller {
     {
         $event = Event::findOrFail(request('eid'));
 
+        // Validate
+        $rules = ['pastdate' => 'date_format:' . session('df')];
+        $mesgs = ['pastdate.date_format'    => 'The date format needs to be ' . session('df-datepicker')];
+        $validator = Validator::make(request()->all(), $rules, $mesgs);
+        if ($validator->fails()) {
+            $validator->errors()->add('FORM', 'event');
+
+            return back()->withErrors($validator)->withInput();
+        }
+
         $instance_request = request()->all();
         $instance_request['start'] = Carbon::createFromFormat(session('df'). ' H:i', request('pastdate') . '00:00')->toDateTimeString();
         $instance_request['name'] = (request('name')) ? request('name') : $event->name;
