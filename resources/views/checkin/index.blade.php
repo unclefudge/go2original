@@ -82,7 +82,7 @@
             color: black;
         }
 
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 560px) {  /* 480px */
             .people-grid {
                 padding: 10px;
             }
