@@ -84,7 +84,7 @@
 
         @media screen and (max-width: 480px) {
             .people-grid {
-                padding: 5px;
+                padding: 10px;
             }
 
             .people-container {
