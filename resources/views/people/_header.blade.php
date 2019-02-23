@@ -8,7 +8,7 @@
             position: relative;
             width: 90px;
 
-            margin: 0 20px 0 -80px;
+            margin: -20px 20px -20px -90px;  /* margin: 0 20px 0 -80px; */
             cursor: pointer;
             float: left;
         }
@@ -21,17 +21,21 @@
             left: 0;
             right: 0;
             height: 100%;
-            width: 90px;
+            width: 96px;
             opacity: 0;
             transition: .3s ease;
             background: rgb(0, 0, 0);
             background: rgba(0, 0, 0, 0.3); /* Black see-through */
-            border-radius: 10%;
+            /*border-radius: 0%;*/
         }
 
         /* When you mouse over the container, fade in the overlay icon*/
         .avatar-container:hover .avatar-overlay {
             opacity: 1;
+        }
+        .avatar-image {
+            height: 96px;
+            border-radius: 0%;
         }
 
         .avatar-edit:hover {
@@ -42,8 +46,8 @@
 
         .avatar-icon {
             position: absolute;
-            top:60px;
-            left: 60px
+            bottom: 1px;
+            right: 1px;
         }
 
         @media screen and (max-width: 825px) {
@@ -58,19 +62,18 @@
                 left: 50%;
                 right: 50%;
                 width: auto;
-                /*background: none;*/
             }
             .avatar-icon {
                 position: absolute;
                 top:60px;
-                left: 20px
+                left: 12px
             }
         }
     </style>
     <div class="member-name">
         {{-- Avatar --}}
         <div class="avatar-container" id="avatar">
-            <img src="{{ $people->avatar90 }}?<?=rand(1, 32000)?>" style="height: 90px; border-radius: 10%;" alt="Avatar">
+            <img class="avatar-image" src="{{ $people->avatar90 }}?<?=rand(1, 32000)?>" alt="Avatar">
             <div class="avatar-overlay">
                 <a href="#" class="avatar-edit" title="Edit" id="avatar-edit">
                     <img  class="avatar-icon" src="/img/icon-edit-avatar.png" height="35px">

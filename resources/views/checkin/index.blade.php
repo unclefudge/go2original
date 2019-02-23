@@ -15,6 +15,9 @@
             background-size: cover !important;
         }
 
+        .search-row {
+            padding: 30px 80px;
+        }
         .people-grid {
             padding: 30px;
         }
@@ -83,6 +86,9 @@
         }
 
         @media screen and (max-width: 720px) {  /* 480px */
+            .search-row {
+                padding: 15px 20px;
+            }
             .people-grid {
                 padding: 10px;
             }
@@ -103,6 +109,29 @@
                 line-height: 20px;
                 vertical-align: middle;
             }
+
+            /* override metronic lg control */
+            .form-control-lg {
+                height: calc(2.95rem + 2px);  /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
+                padding: .85rem 1.15rem;
+                font-size: 1rem;
+                line-height: 1.25;
+                border-radius: .25rem;
+            }
+
+            .input-group-append {
+                margin-left: -1px;
+                height: calc(2.95rem + 2px);  /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
+                font-size: 1rem !important;
+                line-height: 1.25 !important;
+            }
+
+            /* override metronic lg button */
+            .btn-lg {
+                padding: .85rem 1.15rem;
+                font-size: 1rem;
+                line-height: 1.25;
+            }
         }
     </style>
     <div id="vue-app">
@@ -115,13 +144,23 @@
         </div>
 
         {{-- Check-in Search  --}}
-        <div class="row" style="padding: 30px 80px">
+        <div class="row search-row">
             <div class="col-12">
                 <input v-model="xx.instance_id" type="hidden" value="{{ $instance->id }}">
                 <div class="input-group">
                     <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for someone" name="query">
                     <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                     <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent btn-lg" style="margin-left: 20px; float: right;">Register</a>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding: 30px 80px">
+            <div class="col-12">
+                <input v-model="xx.instance_id" type="hidden" value="{{ $instance->id }}">
+                <div class="input-group">
+                    <input type="search" class="form-control m-input" placeholder="Search for someone" name="query2">
+                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                    <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent" style="margin-left: 20px; float: right;">Register</a>
                 </div>
             </div>
         </div>
