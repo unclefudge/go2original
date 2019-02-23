@@ -84,11 +84,11 @@
 
         @media screen and (max-width: 480px) {
             .people-grid {
-                padding: 0px;
+                padding: 5px;
             }
 
             .people-container {
-                margin: 0px;
+                margin: 5px;
                 width: 100%;
             }
 

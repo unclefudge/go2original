@@ -2,42 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/checkin/register_volunteer.blade.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/img/bg-event3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/people/_show_household.blade.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/resources/views/people/_show_personal.blade.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/resources/views/people/_edit_household.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_household.blade.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/resources/views/people/_edit_personal.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_personal.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/img/avatar-user.png" afterPath="$PROJECT_DIR$/public/img/avatar-user.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/img/bg-event.jpg" afterPath="$PROJECT_DIR$/public/img/bg-event.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/img/bg-event2.jpg" afterPath="$PROJECT_DIR$/public/img/bg-event2.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MIsc/FileController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MIsc/FileController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/PeopleController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/PeopleController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Event/Event.php" afterPath="$PROJECT_DIR$/app/Models/Event/Event.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Event/EventInstance.php" afterPath="$PROJECT_DIR$/app/Models/Event/EventInstance.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/People/People.php" afterPath="$PROJECT_DIR$/app/Models/People/People.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/custom.css" afterPath="$PROJECT_DIR$/public/css/custom.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/account/_edit_account.blade.php" afterPath="$PROJECT_DIR$/resources/views/account/_edit_account.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/_create_instance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/_create_instance.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/_header.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/_header.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/_show_background.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/_show_background.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/attendance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/attendance.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/settings.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/settings.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/form-error.blade.php" afterPath="$PROJECT_DIR$/resources/views/form-error.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/home.blade.php" afterPath="$PROJECT_DIR$/resources/views/home.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/checkin.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/checkin.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_create_personal.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_create_personal.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_header.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_header.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/show.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <ignored path="go2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -127,8 +93,8 @@
       <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80736303">
-              <caret line="102" column="31" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.5505137">
+              <caret line="90" column="25" selection-start-line="90" selection-start-column="25" selection-end-line="90" selection-end-column="25" />
               <folding>
                 <element signature="e#3214#3240#0#HTML" expanded="true" />
                 <element signature="e#4332#4378#0#HTML" expanded="true" />
@@ -1206,8 +1172,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80736303">
-          <caret line="102" column="31" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.5505137">
+          <caret line="90" column="25" selection-start-line="90" selection-start-column="25" selection-end-line="90" selection-end-column="25" />
           <folding>
             <element signature="e#3214#3240#0#HTML" expanded="true" />
             <element signature="e#4332#4378#0#HTML" expanded="true" />
