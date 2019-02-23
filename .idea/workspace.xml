@@ -4,7 +4,6 @@
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_header.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_header.blade.php" />
     </list>
     <ignored path="go2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -94,10 +93,10 @@
       <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17123288">
-              <caret line="118" column="37" selection-start-line="118" selection-start-column="37" selection-end-line="118" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.36386988">
+              <caret line="163" column="118" selection-start-line="163" selection-start-column="118" selection-end-line="163" selection-end-column="118" />
               <folding>
-                <element signature="e#4881#4907#0#HTML" expanded="true" />
+                <element signature="e#5030#5056#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1162,10 +1161,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17123288">
-          <caret line="118" column="37" selection-start-line="118" selection-start-column="37" selection-end-line="118" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.36386988">
+          <caret line="163" column="118" selection-start-line="163" selection-start-column="118" selection-end-line="163" selection-end-column="118" />
           <folding>
-            <element signature="e#4881#4907#0#HTML" expanded="true" />
+            <element signature="e#5030#5056#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

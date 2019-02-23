@@ -4,9 +4,9 @@
     <style>
         body, html {
             @if ($event->background)
-             background-image: url("{!! $event->background_path !!}") !important;
+              background-image: url("{!! $event->background_path !!}") !important;
             @endif
-             height: 100%; /* set height */
+              height: 100%; /* set height */
 
             /* Create the parallax scrolling effect */
             background-attachment: fixed !important;
@@ -18,6 +18,12 @@
         .search-row {
             padding: 30px 80px;
         }
+
+        .btn-sesrch {
+            margin-left: 20px;
+            float: right;
+        }
+
         .people-grid {
             padding: 30px;
         }
@@ -85,10 +91,15 @@
             color: black;
         }
 
-        @media screen and (max-width: 720px) {  /* 480px */
+        @media screen and (max-width: 720px) {
+            /* 480px */
             .search-row {
                 padding: 15px 20px;
             }
+            .btn-sesrch {
+                margin-left: 5px;
+            }
+
             .people-grid {
                 padding: 10px;
             }
@@ -112,7 +123,7 @@
 
             /* override metronic lg control */
             .form-control-lg {
-                height: calc(2.95rem + 2px);  /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
+                height: calc(2.95rem + 2px); /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
                 padding: .85rem 1.15rem;
                 font-size: 1rem;
                 line-height: 1.25;
@@ -121,7 +132,7 @@
 
             .input-group-append {
                 margin-left: -1px;
-                height: calc(2.95rem + 2px);  /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
+                height: calc(2.95rem + 2px); /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
                 font-size: 1rem !important;
                 line-height: 1.25 !important;
             }
@@ -150,7 +161,7 @@
                 <div class="input-group">
                     <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for someone" name="query">
                     <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                    <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent btn-lg" style="margin-left: 20px; float: right;">Register</a>
+                    <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent btn-lg btn-register">Register</a>
                 </div>
             </div>
         </div>
