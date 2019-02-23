@@ -92,11 +92,11 @@
       <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46489727">
-              <caret line="86" column="27" selection-start-line="86" selection-start-column="27" selection-end-line="86" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.57191783">
+              <caret line="91" column="25" selection-start-line="91" selection-start-column="25" selection-end-line="91" selection-end-column="25" />
               <folding>
-                <element signature="e#3216#3242#0#HTML" expanded="true" />
-                <element signature="e#4334#4380#0#HTML" expanded="true" />
+                <element signature="e#3215#3241#0#HTML" expanded="true" />
+                <element signature="e#4333#4379#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1171,11 +1171,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46489727">
-          <caret line="86" column="27" selection-start-line="86" selection-start-column="27" selection-end-line="86" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.57191783">
+          <caret line="91" column="25" selection-start-line="91" selection-start-column="25" selection-end-line="91" selection-end-column="25" />
           <folding>
-            <element signature="e#3216#3242#0#HTML" expanded="true" />
-            <element signature="e#4334#4380#0#HTML" expanded="true" />
+            <element signature="e#3215#3241#0#HTML" expanded="true" />
+            <element signature="e#4333#4379#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>
