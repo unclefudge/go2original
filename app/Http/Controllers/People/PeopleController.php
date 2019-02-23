@@ -53,7 +53,7 @@ class PeopleController extends Controller {
     public function store()
     {
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
@@ -113,7 +113,7 @@ class PeopleController extends Controller {
         $people = People::findOrFail($id);
 
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
+        $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',

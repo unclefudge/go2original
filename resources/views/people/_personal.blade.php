@@ -111,6 +111,7 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #F7F7F7; padding:20px; border-bottom: 1px solid #ddd">
+                {{--@include('form-error')--}}
                 {{-- First + Last Name --}}
                 <div class="row">
                     <div class="col-md-6">

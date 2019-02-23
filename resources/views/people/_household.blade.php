@@ -1,50 +1,65 @@
 {{-- Household Info --}}
 <div class="m-portlet">
     <div class="m-portlet__body">
-        <div class="row" style="padding-bottom: 10px">
-            <div class="col-8"><h4>Household</h4></div>
-            <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
-        </div>
-        @if (false)
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="row" style="padding: 5px 0px">
-                        <div class="col-1">
-                            @if ($people->gender == 'Male')
-                                <i class="fa fa-2x fa-male"></i>
-                            @elseif ($people->gender == 'Male')
-                                <i class="fa fa-2x fa-female" style="padding-right: 5px"></i>
-                            @else
-                                <i class="fa fa-user" style="padding-right: 5px"></i>
-                            @endif
-                        </div>
-                        <div class="col col-md-11">
-                            {{ $people->type }} <br>
-                            {!! ($people->dob) ? "$people->age years old &nbsp; (".$people->dob->format('M d Y').") <br>" : '' !!}
-                        </div>
+        @if ($people->households->count())
+            @foreach ($people->households as $household)
+                {{-- Household Name --}}
+                @if ($loop->first)
+                    <div class="row" style="padding-bottom: 10px">
+                        <div class="col-8"><h4>{{ $household->name }}</h4></div>
+                        <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
                     </div>
+                @else
+                    <hr>
+                    <div class="row" style="padding-bottom: 10px">
+                        <div class="col"><h4>{{ $household->name }}</h4></div>
+                    </div>
+                @endif
 
-                </div>
-                <div class="col-md-6">
-                    <div class="row" style="padding: 5px 0px">
-                        <div class="col-1 col-md-3"><i class="fa fa-envelope" style="padding-right: 5px"></i> <span class="d-none d-md-inline">Email</span></div>
-                        <div class="col col-md-9">{!! ($people->email) ? "<a href='mailto:$people->email'> $people->email</a>" : '-' !!}</div>
-                    </div>
-                    <div class="row" style="padding: 5px 0px">
-                        <div class="col-1 col-md-3"><i class="fa fa-phone" style="padding-right: 5px"></i> <span class="d-none d-md-inline">Phone</span></div>
-                        <div class="col col-md-9">{!! ($people->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $people->phone)."> $people->phone </a>" : '-' !!}</div>
-                    </div>
-                    <div class="row" style="padding: 5px 0px">
-                        <div class="col-1 col-md-3"><i class="fa fa-map-marker-alt" style="padding-right: 5px"></i> <span class="d-none d-md-inline">Address</span></div>
-                        <div class="col col-md-9">{!! $people->address_formatted !!}</div>
-                    </div>
+                {{-- Adults --}}
+                @if ($household->adults()->count())
+                    <table class="table table-hover m-table" width="100%">
+                        @foreach ($household->adults()->sortby('firstname') as $member)
+                            <tr>
+                                <td>
+                            <span>
+                                <span style="font-size: 1.1rem">{{ $member->name }}</span><br>
+                                {!! ($member->dob) ? "<span style='color:#999'>$member->age years </span>" : '' !!}
+                            </span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                @endif
 
-                </div>
-            </div>
+                {{-- Students --}}
+                @if ($household->students()->count())
+                    <div class="row">
+                        <div class="col" style='color:#999'>CHILDREN</div>
+                    </div>
+                    <table class="table table-hover m-table" width="100%">
+                        @foreach ($household->students()->sortby('firstname') as $member)
+                            <tr>
+                                <td>
+                                    <span style="font-size: 1.1rem">{{ $member->name }}</span><br>
+                                    {!! ($member->dob) ? "<span style='color:#999'>$member->age years </span>" : '' !!}
+                                    {!! ($member->dob && $member->grade) ? "<span style='color:#999'> - </span>" : '' !!}
+                                    {!! ($member->grade) ? "<span style='color:#999'> Grade $member->grade</span>" : '' !!}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </table>
+                @endif
+            @endforeach
         @else
+            {{-- No Household --}}
+            <div class="row" style="padding-bottom: 10px">
+                <div class="col-8"><h4>Household</h4></div>
+                <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
+            </div>
             <div class="row justify-content-md-center">
                 <div class="col-8 text-center">
-                <br>{{ $people->firstname }} doesn't belong to any household<br><br>
+                    <br>{{ $people->firstname }} doesn't belong to any household<br><br>
                 </div>
             </div>
         @endif

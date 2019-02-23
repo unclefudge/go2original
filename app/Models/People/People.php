@@ -46,11 +46,21 @@ class People extends Model {
     /**
      * A People May belongs to a school
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function school()
     {
         return $this->belongsTo('App\Models\People\School', 'school_id');
+    }
+
+    /**
+     * A People May have belong to many households
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function households()
+    {
+        return $this->belongsToMany('App\Models\People\Household', 'households_people', 'pid', 'hid');
     }
 
     /**
@@ -68,6 +78,28 @@ class People extends Model {
     {
         return People::find($this->wwc_verified_by);
     }
+
+    /**
+     * This person is a Student
+     */
+    public function isStudent() {
+        return (in_array($this->type, ['Student', 'Student/Volunteer'])) ? true : false;
+    }
+
+    /**
+     * This person is a Volunteer
+     */
+    public function isVolunteer() {
+        return (in_array($this->type, ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer'])) ? true : false;
+    }
+
+    /**
+     * This person is a Parent
+     */
+    public function isParent() {
+        return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
+    }
+
 
     /**
      * Attach photo to a person

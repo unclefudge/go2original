@@ -2,18 +2,23 @@
 
 namespace App\Models\People;
 
+use Auth;
 use App\User;
+use App\Models\Event\Event;
+use App\Models\Event\EventInstance;
+use App\Models\Event\Attendance;
+use App\Http\Utilities\Slim;
 use Carbon\Carbon;
+use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
 
-class PeopleUser extends Model
-{
-    protected $table = 'users_people';
-    protected $fillable = [
-        'uid', 'pid', 'created_by', 'updated_by'];
+class Household extends Model {
+
+    protected $table = 'households';
+    protected $fillable = ['name', 'pid', 'notes', 'aid', 'created_by', 'updated_by'];
 
     /**
-     * A People belongs to a account
+     * A Household belongs to a account
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -22,55 +27,52 @@ class PeopleUser extends Model
         return $this->belongsTo('App\Models\Account\Account', 'aid');
     }
 
+    /**
+     * A Household has a head (Primary Person)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function head()
+    {
+        return $this->belongsTo('App\Models\People\People', 'pid');
+    }
 
     /**
-     * A User has many trades (trades they are skilled in).
+     * A Household has many members.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function tradesSkilledIn()
+    public function members()
     {
-        return $this->belongsToMany('App\Models\Site\Planner\Trade', 'user_trade', 'user_id', 'trade_id');
+        return $this->belongsToMany('App\Models\People\People', 'households_people', 'hid', 'pid');
     }
 
     /**
-     * Get the Full name (first + last)   (getter)
-     *
-     * @return string;
+     * Household adults
      */
-    public function getNameAttribute()
+    public function adults()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        $adults = [];
+        foreach ($this->members as $member) {
+            if (!$member->isStudent())
+                $adults[] = $member->id;
+        }
+        return People::find($adults);
     }
 
     /**
-     * Get Age (getter)
+     * Household students
      */
-    public function getAgeAttribute()
+    public function students()
     {
-        return Carbon::parse($this->attributes['dob'])->age;
+        $students = [];
+        foreach ($this->members as $member) {
+            if ($member->isStudent())
+                $students[] = $member->id;
+        }
+        return People::find($students);
     }
 
-    /**
-     * Get the suburb, state, postcode  (getter)
-     */
-    public function getAddressFormattedAttribute()
-    {
-        $string = '';
-
-        if ($this->attributes['address'])
-            $string = strtoupper($this->attributes['address']) . '<br>';
-
-        $string .= strtoupper($this->attributes['suburb']);
-        if ($this->attributes['suburb'] && $this->attributes['state'])
-            $string .= ', ';
-        if ($this->attributes['state'])
-            $string .= $this->attributes['state'];
-        if ($this->attributes['postcode'])
-            $string .= ' ' . $this->attributes['postcode'];
-
-        return ($string) ? $string : '-';
-    }
 
     /**
      * Get Timezone  (getter)

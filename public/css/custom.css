@@ -1,3 +1,11 @@
+/* Custom Colours */
+.steelgrey2 {
+    color: #7b7e8a !important;
+}
+
+.lightgrey2 {
+    color: #aaaaaa !important;
+}
 
 span.m-menu__link-text{
     /*color: #FF0000 !important;*/
