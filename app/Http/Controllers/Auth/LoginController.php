@@ -53,6 +53,7 @@ class LoginController extends Controller
         session(['tz' => Auth::user()->timezone]);
         session(['df' => Auth::user()->dateformat]);
         session(['df-datepicker' => (Auth::user()->dateformat == 'd/m/Y') ? 'dd/mm/yyyy' : 'mm/dd/yyyy']);
+        session(['df-moment' => (Auth::user()->dateformat == 'd/m/Y') ? 'DD/MM/YYYY' : 'MM/DD/YYYY']);
         //return redirect()->intended($this->redirectPath());
     }
 

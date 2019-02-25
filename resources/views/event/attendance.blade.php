@@ -164,7 +164,7 @@
                             </div>
                         </div>
 
-                        <!--<pre>@{{ $data }}</pre>
+                        <pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>
@@ -438,7 +438,7 @@
                         this.xx.people = data;
                         this.xx.searching = false;
                         this.countAttendance();
-                        this.xx.date_format = moment(this.xx.date).format('DD/MM/YYYY');
+                        this.xx.date_format = moment(this.xx.date).format("{{ session('df-moment') }}");
                     }.bind(this));
                 }
                 // Default - Show Only Checked-in for Inactive Events
@@ -476,7 +476,6 @@
                             this.xx.count_volunteers++;
                     }
                 });
-
             }
         },
     });

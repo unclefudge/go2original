@@ -39,6 +39,7 @@
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <script src="/js/slim.kickstart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
 <script type="text/javascript">
 
     // Form errors - show modal
@@ -167,6 +168,134 @@
         });
     });
 
+    $(".household-link").click(function (e) {
+        var split = this.id.split("-p");
+        var id = split[1];
+        window.location.href = "/people/" + id;
+    });
+
+
+</script>
+
+{{-- Household Vue Code --}}
+<script>
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+
+    var xx = {
+        date: "", date_format: '',
+        person: {id: "{{ $people->id }}", firstname: "{{ $people->firstname }}"},
+        household: {
+            id: "1",
+            name: "{{ $people->households->first()->name }}",
+            pid: "{{ $people->households->first()->head->id }}",
+            members: [],
+        },
+        searchQuery: "{!! app('request')->input('query') !!}",
+        member_search: false, households: [], members: [], people: []
+    };
+
+    // register the attendance component
+    Vue.component('household-grid', {
+        template: '#household-template',
+        data: function () {
+            return {xx: xx}
+        },
+        methods: {
+            deleteMember: function (person) {
+                // get index of object to delete
+                var removeIndex = this.xx.household.members.map(function (item) {
+                    return item.pid;
+                }).indexOf(person.pid);
+                this.xx.household.members.splice(removeIndex, 1); // delete object
+            },
+            headMember: function (person) {
+                this.xx.household.pid = person.pid;
+            },
+        }
+    })
+
+    // register the attendance component
+    Vue.component('search-grid', {
+        template: '#search-template',
+        props: {data: Array, filterKey: String},
+        data: function () {
+            return {xx: xx}
+        },
+        computed: {
+            filteredData: function () {
+                var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                var data = this.data
+                if (filterKey) {
+                    data = data.filter(function (row) {
+                        return Object.keys(row).some(function (key) {
+                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                        })
+                    })
+                    return data.slice(0, 5); // Return first x records only
+                }
+                return []; // Return no records unless search string contains characters
+            }
+        },
+        methods: {
+            searchSelect: function (person) {
+                this.xx.member_search = false;
+                person.hid = this.xx.household.id;
+                xx.household.members.push(person);
+            },
+        }
+    })
+
+
+    var vue_household = new Vue({
+        el: '#modal_household',
+        data: {xx: xx,},
+        created: function () {
+            this.getHouseholds();
+        },
+        methods: {
+            getHouseholds: function () {
+                $.getJSON('/data/household/members/' + this.xx.person.id, function (data) {
+                    this.xx.households = data[0];
+                    this.xx.household.members = data[1];
+                    this.xx.members = data[2];
+                    this.xx.people = data[3];
+                }.bind(this));
+            },
+            toggleSearchMember: function () {
+                this.xx.member_search = !this.xx.member_search;
+            },
+            saveHousehold: function () {
+                updateHouseholdDB(this.xx.household).then(function (result) {
+                    if (result)
+                        window.location.href = "/people/" + this.xx.person.id;
+                }.bind(this));
+            }
+        },
+    });
+
+
+    // Update house in Database Attendance and return a 'promise'
+    function updateHouseholdDB(household) {
+        console.log('Updating household:[' + household.id + '] ' + household.name);
+        return new Promise(function (resolve, reject) {
+            household._method = 'patch';
+            $.ajax({
+                url: '/household/' + household.id,
+                type: 'POST',
+                data: household,
+                success: function (result) {
+                    delete household._method;
+                    console.log('DB updated household:[' + household.id + '] ' + household.name);
+                    resolve(household);
+                },
+                error: function (result) {
+                    alert("failed updating household " + household.name + '. Please refresh the page to resync household');
+                    //console.log('DB updated household FAILED:[' + household.id + '] ' + household.name);
+                    reject(false);
+                }
+            });
+        });
+    }
 
 </script>
 @stop

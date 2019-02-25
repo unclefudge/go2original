@@ -43,6 +43,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/people/{id}/photo', 'People\PeopleController@updatePhoto');
     Route::resource('/people', 'People\PeopleController');
 
+    // Households
+    Route::get('/data/household/members/{id}', 'People\HouseholdController@getMembers');
+    Route::get('/household/{hid}/member/{pid}/add', 'People\HouseholdController@addMember');
+    Route::get('/household/{hid}/member/{pid}/del', 'People\HouseholdController@delMember');
+    Route::post('/household/update', 'People\HouseholdController@updateHousehold');
+    Route::resource('/household', 'People\HouseholdController');
+
     // Schools
     Route::get('/data/schools-by-grade/{grade}', 'People\SchoolController@schoolsByGrade');
 

@@ -105,6 +105,7 @@
     tz: {{ session('tz') }}<br>
     df: {{ session('df') }}<br>
     df-datepicker: {{ session('df-datepicker') }}<br>
+    df-moment: {{ session('df-moment') }}<br>
     username: {{ Auth::user()->username }}
     <div>
         1 <br>
