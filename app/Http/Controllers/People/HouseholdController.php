@@ -17,14 +17,17 @@ class HouseholdController extends Controller {
      */
     public function store()
     {
-        //dd(request('method'));
         if (request()->ajax()) {
-            // Ensure we don't check someone in who's already checked in
-            $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->first();
-            if (!$attend)
-                $attend = Attendance::create(request()->all());
+            // Create Household
+            $household = Household::create(request()->all());
 
-            return $attend;
+            // Add Members
+            if (request('members')) {
+                foreach (request('members') as $member)
+                    DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $member['pid']]);
+            }
+
+            return $household;
         }
 
         return abort(404);
@@ -35,13 +38,9 @@ class HouseholdController extends Controller {
      */
     public function update($id)
     {
-        //echo "id:".request('id').'<br>';
-        //echo "name:".request('name').'<br>';
-        //echo "pid:".request('pid').'<br>';
-
         if (request()->ajax()) {
             // Update Household
-            $household = household::findOrFail($id);
+            $household = Household::findOrFail($id);
             $household->update(request()->all());
 
             // Delete Members
@@ -68,7 +67,7 @@ class HouseholdController extends Controller {
     public function destroy()
     {
         if (request()->ajax()) {
-            $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->delete();
+            $deleted = Household::where('id', request('id'))->delete();
 
             return response()->json(['success', '200']);
         }

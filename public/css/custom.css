@@ -7,11 +7,11 @@
     color: #aaaaaa !important;
 }
 
-span.m-menu__link-text{
+span.m-menu__link-text {
     /*color: #FF0000 !important;*/
 }
 
-.m-menu__link-text a:hover{
+.m-menu__link-text a:hover {
     color: #00FF00 !important;
 }
 
@@ -55,8 +55,9 @@ li.m-menu__item.m-menu__item--active {
     .m-header--fixed .m-header .m-header__top {
         z-index: 0;
     }
+
     .m-dropdown__wrapper {
-        z-index:111 !important;
+        z-index: 111 !important;
     }
 }
 
@@ -65,7 +66,7 @@ li.m-menu__item.m-menu__item--active {
     display: table-row;
 }
 
-.project-jquerytypeahead.page-demo #form-user_v1 .typeahead__result .row  > * {
+.project-jquerytypeahead.page-demo #form-user_v1 .typeahead__result .row > * {
     display: table-cell;
     vertical-align: middle;
 }
@@ -113,9 +114,6 @@ li.m-menu__item.m-menu__item--active {
 .project-jquerytypeahead.page-demo #form-user_v1 .typeahead__result .project-information li {
     font-size: 12px;
 }
-
-
-
 
 /***************************************************************************
 * Member Bar
@@ -372,11 +370,9 @@ li.m-menu__item.m-menu__item--active {
     }
 }
 
-
 /*****************************************************
 *  Icons
 *****************************************************/
-
 
 [class*="iicon-"]:before {
     content: '';
@@ -478,4 +474,8 @@ li.m-menu__item.m-menu__item--active {
     font-size: 12px;
     text-transform: uppercase;
     display: block;
-}*/
+}
+
+*
+
+/

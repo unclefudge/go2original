@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Households
     Route::get('/data/household/members/{id}', 'People\HouseholdController@getMembers');
+    Route::get('/data/household/households/{id}', 'People\HouseholdController@getHouseholds');
     Route::get('/household/{hid}/member/{pid}/add', 'People\HouseholdController@addMember');
     Route::get('/household/{hid}/member/{pid}/del', 'People\HouseholdController@delMember');
     Route::post('/household/update', 'People\HouseholdController@updateHousehold');
