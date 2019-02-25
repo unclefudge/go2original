@@ -1,6 +1,4 @@
 @inject('ozstates', 'App\Http\Utilities\Ozstates')
-<?php $people_types = ['Student' => 'Student', 'Student/Volunteer' => 'Student/Volunteer', 'Parent' => 'Parent', 'Parent/Volunteer' => 'Parent/Volunteer', 'Volunteer' => 'Volunteer'] ?>
-
 @extends('layouts/checkin')
 
 @section('content')

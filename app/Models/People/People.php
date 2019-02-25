@@ -100,7 +100,6 @@ class People extends Model {
         return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
     }
 
-
     /**
      * Attach photo to a person
      */
@@ -195,16 +194,6 @@ class People extends Model {
     }
 
     /**
-     * Get Timezone  (getter)
-     *
-     * @return string;
-     */
-    public function getTimezoneAttribute()
-    {
-        return $this->account->timezone;
-    }
-
-    /**
      * Get the suburb, state, postcode  (getter)
      */
     public function getAddressFormattedAttribute()
@@ -225,6 +214,10 @@ class People extends Model {
         return ($string) ? $string : '-';
     }
 
+
+    static public function types() {
+        return ['Student' => 'Student', 'Student/Volunteer' => 'Student/Volunteer', 'Parent' => 'Parent', 'Parent/Volunteer' => 'Parent/Volunteer', 'Volunteer' => 'Volunteer'];
+    }
     /**
      * Display records last update_by + date
      *

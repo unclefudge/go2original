@@ -20,16 +20,6 @@ class School extends Model
     }
 
     /**
-     * Get Timezone  (getter)
-     *
-     * @return string;
-     */
-    public function getTimezoneAttribute()
-    {
-        return $this->account->timezone;
-    }
-
-    /**
      * The "booting" method of the model.
      *
      * Overrides parent function

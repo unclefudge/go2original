@@ -46,17 +46,6 @@ class Event extends Model
     }
 
     /**
-     * Get Timezone  (getter)
-     *
-     * @return string;
-     */
-    public function getTimezoneAttribute()
-    {
-        return $this->account->timezone;
-    }
-
-
-    /**
      * Display records last update_by + date
      *
      * @return string

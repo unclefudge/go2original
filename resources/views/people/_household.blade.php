@@ -2,7 +2,7 @@
 <div class="m-portlet">
     <div class="m-portlet__body">
         @if ($people->households->count())
-            @foreach ($people->households as $household)
+            @foreach ($people->households->sortBy('name') as $household)
                 {{-- Household Name --}}
                 @if ($loop->first)
                     <div class="row" style="padding-bottom: 10px">

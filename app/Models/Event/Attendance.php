@@ -36,16 +36,6 @@ class Attendance extends Model
     }
 
     /**
-     * Get Timezone  (getter)
-     *
-     * @return string;
-     */
-    public function getTimezoneAttribute()
-    {
-        return $this->account->timezone;
-    }
-
-    /**
      * Set date to UTC format for Timezone localization
      * @param $input
      */

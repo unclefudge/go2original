@@ -244,7 +244,7 @@
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <script src="/js/event-shared-functions.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+<script src="/js/vue.min.js"></script>
 <script src="/js/vue-checkin-functions.js"></script>
 <script type="text/javascript">
     // Form errors - show modal

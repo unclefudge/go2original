@@ -221,7 +221,7 @@
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+<script src="/js/vue.min.js"></script>
 <script src="/js/vue-checkin-functions.js"></script>
 <script type="text/javascript">
 

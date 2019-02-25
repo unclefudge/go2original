@@ -73,17 +73,6 @@ class Household extends Model {
         return People::find($students);
     }
 
-
-    /**
-     * Get Timezone  (getter)
-     *
-     * @return string;
-     */
-    public function getTimezoneAttribute()
-    {
-        return $this->account->timezone;
-    }
-
     /**
      * Display records last update_by + date
      *

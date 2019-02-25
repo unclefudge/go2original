@@ -85,7 +85,7 @@ class HouseholdController extends Controller {
         $household1 = [];
         $members = [];
         $household_count = 0;
-        foreach ($person->households as $household) {
+        foreach ($person->households->sortBy('name') as $household) {
             $household_count ++;
             $households[] = ['id' => $household->id, 'name' => $household->name, 'pid' => $household->pid, 'count' => $household->members->count()];
             foreach ($household->members as $member) {
