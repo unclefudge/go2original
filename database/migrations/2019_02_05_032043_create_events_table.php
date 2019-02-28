@@ -47,6 +47,7 @@ class CreateEventsTable extends Migration
             $table->dateTime('end')->nullable();
             $table->string('grades', 250)->nullable();
             $table->string('background', 250)->nullable();
+            $table->string('minhub', 50)->nullable();
             $table->text('notes')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->unsignedInteger('eid')->nullable();

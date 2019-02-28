@@ -22,7 +22,7 @@
             pid: '',
             name: '',
         },
-        memberQuery: "{!! app('request')->input('query') !!}",
+        searchQuery: "{!! app('request')->input('query') !!}",
         households: [], households2: [], members: [], members2: [], people: []
     };
 
@@ -97,8 +97,8 @@
                     } else
                         toastr.error(person.name + ' is already a member of the household');
                 }
-                // Join a household - creation
-                if (this.xx.state_now == 'MultiHousehold') {
+                // Join a household
+                if (this.xx.state_now == 'NoHousehold' || this.xx.state_now == 'MultiHousehold') {
                     $.getJSON('/data/household/members/' + person.pid, function (data) {
                         this.xx.households2 = data[0];
                         this.xx.members2 = data[2];

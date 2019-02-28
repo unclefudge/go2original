@@ -96,7 +96,7 @@ class HouseholdController extends Controller {
                     'type'   => $member->type,
                     'phone'  => $member->phone,
                     'email'  => $member->email,
-                    'photo'  => $member->photo_path,
+                    'photo'  => $member->avatar90,
                     'status' => $member->status,
                 ];
                 $members[] = $array;
@@ -117,7 +117,7 @@ class HouseholdController extends Controller {
                 'email'  => $person->email,
                 'suburb' => $person->suburb,
                 'state'  => $person->state,
-                'photo'  => $person->photo_path
+                'photo'  => $person->avatar90
             ];
 
         $json = [];

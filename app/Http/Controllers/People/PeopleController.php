@@ -21,7 +21,7 @@ class PeopleController extends Controller {
     public function index()
     {
         // Check authorisation
-        $people = People::where('status', 1)->get()->sortBy('firstname');
+        $people = People::all()->sortBy('firstname');
         $agent = new Agent();
 
         return view('people/index', compact('people', 'agent'));
@@ -71,7 +71,6 @@ class PeopleController extends Controller {
         //dd(request()->all());
 
         $people_request = request()->all();
-        $people_request['aid'] = session('aid');
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
@@ -351,6 +350,9 @@ class PeopleController extends Controller {
             else
                 $types = [request('show_type')];
         }
+        $status = [1];
+        if (request('show_inactive'))
+            $status = [0,1];
 
         //dd($types);
         $people = People::select([
@@ -361,10 +363,8 @@ class PeopleController extends Controller {
             DB::raw('DATE_FORMAT(people.wwc_exp, "%b %Y") AS wwc_exp2')])
             ->leftJoin('schools', 'people.school_id', '=', 'schools.id')
             ->whereIn('people.type', $types)
-            ->where('people.aid', 1)
-            ->where('people.status', 1); // request('status')
-
-        //$people = People::whereIn('people.type', $types)->where('people.aid', 1)->where('people.status', 1); // request('status')
+            ->where('people.aid', session('aid'))
+            ->whereIn('people.status', $status);
 
         $dt = Datatables::of($people)
             //->filterColumn('full_name', 'whereRaw', "CONCAT(firstname,' ',lastname) like ?", ["%$1%"])
@@ -373,6 +373,8 @@ class PeopleController extends Controller {
             //})
             ->editColumn('full_name', function ($people) {
                 $string = $people->firstname . ' ' . $people->lastname;
+                if (!$people->status)
+                    $string .= "<br>** INACTIVE **";
 
                 return $string;
             })
@@ -396,9 +398,10 @@ class PeopleController extends Controller {
             ->addColumn('action', function ($people) {
                 $actions = '';
                 if ($people->status)
-                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-archive' data-remote='/people/$people->id/status/0' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt'></i></button>";
+                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-archive' style='background: inherit;' data-remote='/people/$people->id/status/0' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt'></i></button>";
                 else
-                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete' data-remote='/people/$people->id/status/1' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-restore'></i></button>";
+                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete inactive-person' style='background: inherit; color:#fff' data-remote='/people/$people->id/status/1' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt
+'></i></button>";
 
                 return $actions;
             })

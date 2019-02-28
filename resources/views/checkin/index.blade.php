@@ -4,9 +4,9 @@
     <style>
         body, html {
             @if ($event->background)
-              background-image: url("{!! $event->background_path !!}") !important;
+             background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url("{!! $event->background_path !!}") !important;
             @endif
-              height: 100%; /* set height */
+               height: 100%; /* set height */
 
             /* Create the parallax scrolling effect */
             background-attachment: fixed !important;
@@ -96,6 +96,7 @@
             .search-row {
                 padding: 15px 20px;
             }
+
             .btn-register {
                 margin-left: 10px;
             }
@@ -149,7 +150,7 @@
 
         <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
             <div class="col text-center">
-                <img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px">
+                <a href="/event"><img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px"></a>
                 <h1 style="padding-top: 10px">{{ $event->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
             </div>
         </div>
@@ -173,9 +174,32 @@
             </div>
         </div>
 
-        <div class="footer">
-            <p><a href="/event" class="btn btn-secondary">Back to Events</a></p>
-        </div>
+        <footer class="m-grid__item m-footer footer ">
+            <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
+                <div class="m-footer__wrapper">
+                    <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
+                        <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
+                            <span class="m-footer__copyright">© Go2Youth | All rights reserved</span>
+                        </div>
+                        <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
+                            <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
+                                <li class="m-nav__item">
+                                    <a href="#" class="m-nav__link"><span class="m-nav__link-text">Students: @{{ xx.student_count }}</span></a>
+                                </li>
+                                <li class="m-nav__item">
+                                    <a href="#" class="m-nav__link"><span class="m-nav__link-text">Volunteers: @{{ xx.volunteer_count }}</span></a>
+                                </li>
+                                <li class="m-nav__item m-nav__item--last">
+                                    <a href="#" class="m-nav__link" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="Support Center">
+                                        <i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
         <!-- loading Spinner -->
         <div v-show="xx.searching" style="background-color: #FFF; padding: 20px;">
@@ -226,7 +250,7 @@
 <script type="text/javascript">
 
     var xx = {
-        params: {date: '', _token: $('meta[name=token]').attr('value')},
+        student_count: 0, volunteer_count: 0,
         people: [], instance_id: {{ $instance->id }}, searchQuery: "{!! app('request')->input('query') !!}",
     };
 
@@ -261,10 +285,18 @@
         },
         methods: {
             cellSelect: function (person) {
-                if (person.in)
-                    delAttendanceDB(person);
-                else
-                    addAttendanceDB(person, 'checkin');
+                if (person.in) {
+                    delAttendanceDB(person).then(function (result) {
+                        if (result)
+                            count_attendance();
+                    }.bind(this));
+                } else {
+                    addAttendanceDB(person, 'checkin').then(function (result) {
+                        if (result)
+                            count_attendance();
+                    }.bind(this));
+                }
+
             },
             cellClass: function (person) {
                 var str = 'people-cell';
@@ -298,9 +330,21 @@
                     this.xx.people = data;
                     this.xx.searching = false;
                     //console.log(data);
+                    count_attendance();
                 }.bind(this));
             },
         },
     });
+
+    function count_attendance() {
+        xx.student_count = 0;
+        xx.volunteer_count = 0;
+        $.each(xx.people, function (key, value) {
+            if (value.in && (value.type == 'Student' || value.type == 'Student/Volunteer'))
+                xx.student_count++;
+            if (value.in && (value.type == 'Volunteer' || value.type == 'Parent/Volunteer'))
+                xx.volunteer_count++;
+        });
+    }
 </script>
 @stop

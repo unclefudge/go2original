@@ -149,11 +149,11 @@
                         <button v-if="!xx.household_search" v-on:click="xx.household_search = !xx.household_search" type="button" class="btn btn-brand">Add household</button>
                         <div v-if="xx.household_search">
                             <div class="input-group">
-                                <input v-model="xx.householdQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
+                                <input v-model="xx.searchQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                             </div>
                             {{-- Search for household --}}
-                            <search-household :data="xx.people" :filter-key="xx.householdQuery"></search-household>
+                            <search-member :data="xx.people" :filter-key="xx.searchQuery"></search-member>
                         </div>
                         <br><br>
                     </div>
@@ -191,10 +191,10 @@
                     <div v-if="xx.member_search" class="row">
                         <div class="col">
                             <div class="input-group">
-                                <input v-model="xx.memberQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
+                                <input v-model="xx.searchQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                             </div>
-                            <search-member :data="xx.people" :filter-key="xx.memberQuery"></search-member>
+                            <search-member :data="xx.people" :filter-key="xx.searchQuery"></search-member>
                         </div>
                     </div>
                 </div>
@@ -218,12 +218,11 @@
                         </div>
                         <div v-if="xx.household_search" class="col">
                             <div class="input-group">
-                                <input v-model="xx.memberQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
+                                <input v-model="xx.searchQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                             </div>
                             {{-- Search for household --}}
-                            <search-member :data="xx.people" :filter-key="xx.memberQuery"></search-member>
-                            {{--}}<search-household :data="xx.people" :filter-key="xx.householdQuery"></search-household>--}}
+                            <search-member :data="xx.people" :filter-key="xx.searchQuery"></search-member>
                         </div>
                     </div>
 

@@ -214,6 +214,57 @@ class People extends Model {
         return ($string) ? $string : '-';
     }
 
+    /**
+     * Captitalise firstname  (mutator)
+     */
+    public function setFirstameAttribute($value)
+    {
+        $this->attributes['firstname'] = trim(ucfirst($value));
+    }
+
+    /**
+     * Captitalise lastname  (mutator)
+     */
+    public function setLastameAttribute($value)
+    {
+        $this->attributes['lastname'] = trim(ucfirst($value));
+    }
+
+
+    /**
+     * Set the address to capital firat letter format  (mutator)
+     */
+    public function setAddressAttribute($value)
+    {
+        $this->attributes['address'] = trim(ucwords(strtolower($value)));
+    }
+
+    /**
+     * Set the suburb to uppercase format  (mutator)
+     */
+    public function setSuburbAttribute($value)
+    {
+        $this->attributes['suburb'] = trim(strtoupper($value));
+    }
+
+    /**
+     * Set the suburb to uppercase format  (mutator)
+     */
+    public function setStateAttribute($value)
+    {
+        $this->attributes['state'] = trim(strtoupper($value));
+    }
+
+    /**
+     * Set the phone number to AU format  (mutator)
+     *
+     * @param $phone
+     */
+    public function setPhoneAttribute($phone)
+    {
+        $this->attributes['phone'] = format_phone('au', $phone);
+    }
+
 
     static public function types() {
         return ['Student' => 'Student', 'Student/Volunteer' => 'Student/Volunteer', 'Parent' => 'Parent', 'Parent/Volunteer' => 'Parent/Volunteer', 'Volunteer' => 'Volunteer'];
@@ -247,6 +298,7 @@ class People extends Model {
             static::creating(function ($table) {
                 $table->created_by = auth()->id();
                 $table->updated_by = auth()->id();
+                $table->aid = session('aid');
             });
 
             // create a event to happen on updating

@@ -11,7 +11,7 @@
             <span class="member-split">&nbsp;|&nbsp;</span>
             <span class="member-number">Active</span>
         </div>
-
+<!--
         <ul class="member-bar-menu">
             <li class="member-bar-item "><i class="iicon-profile"></i><a class="member-bar-link" href="/user/" title="Profile">PROFILE</a></li>
 
@@ -20,6 +20,7 @@
 
             <li class="member-bar-item "><i class="iicon-lock"></i><a class="member-bar-link" href="/user//security" title="Security">SECURITY</a></li>
         </ul>
+        -->
     </div>
 
     {{--}}@include('people/_header')--}}

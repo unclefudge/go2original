@@ -102,6 +102,7 @@ class Household extends Model {
             static::creating(function ($table) {
                 $table->created_by = auth()->id();
                 $table->updated_by = auth()->id();
+                $table->aid = session('aid');
             });
 
             // create a event to happen on updating

@@ -120,7 +120,6 @@ class EventController extends Controller {
         }
 
         $event_request = request()->all();
-        $event_request['aid'] = session('aid');
         if (request('frequency') == 'recur')
             $event_request['recur'] = 1;
 

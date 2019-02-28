@@ -9,6 +9,7 @@ use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
 use App\Models\People\People;
+use App\Models\People\Household;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
@@ -72,17 +73,32 @@ class CheckinController extends Controller {
         $instance = EventInstance::findOrFail($id);
 
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'photo' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df')];
+        $rules = [
+            'firstname'        => 'required',
+            'lastname'         => 'required',
+            'photo'            => 'required',
+            'dob'              => 'sometimes|nullable|date_format:' . session('df'),
+            'parent_id'        => 'required|not_in:0',
+            'parent_firstname' => 'required_if:parent_id,add',
+            'parent_lastname'  => 'required_if:parent_id,add',
+            'parent_phone'     => 'required_if:parent_id,add',
+            'parent_email'     => 'required_if:parent_id,add',
+        ];
         $mesgs = [
-            'firstname.required' => 'The first name is required.',
-            'lastname.required'  => 'The last name is required.',
-            'photo.required'     => 'The photo is required.',
-            'dob.date_format'    => 'The birthday format needs to be ' . session('df-datepicker'),
+            'firstname.required'           => 'The first name is required.',
+            'lastname.required'            => 'The last name is required.',
+            'photo.required'               => 'The photo is required.',
+            'dob.date_format'              => 'The birthday format needs to be ' . session('df-datepicker'),
+            'parent_id.required'           => 'The parent / guardian name is required.',
+            'parent_id.not_in'             => 'The parent / guardian name is required.',
+            'parent_firstname.required_if' => 'The parents first name is required.',
+            'parent_lastname.required_if'  => 'The parents last name is required.',
+            'parent_phone.required_if'     => 'The parents phone is required.',
+            'parent_email.required_if'     => 'The parents email is required.',
         ];
         request()->validate($rules, $mesgs);
 
         $people_request = request()->except('photo');
-        $people_request['aid'] = session('aid');
         $people_request['type'] = "Student";
 
         // Empty State field if rest of address fields are empty
@@ -91,14 +107,51 @@ class CheckinController extends Controller {
 
         $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
-        $people = People::create($people_request);
+        // Create Student
+        $student = People::create($people_request);
 
         // Handle attached photo
         if (request()->photo)
-           $people->attachPhoto();
+            $student->attachPhoto();
 
         // Check student into event
-        $people->checkin($instance);
+        $student->checkin($instance);
+
+        //
+        // Put Student + Parent into same household
+        //
+        if (request('parent_id') != 'add') {
+            // Existing Parent
+            $parent = People::findOrFail(request('parent_id'));
+
+            // If Parent has single house add student to it else create new one
+            if ($parent->households->count() == 1) {
+                DB::table('households_people')->insert(['hid' => $parent->households->first()->id, 'pid' => $student->id]);
+            } else {
+                // Create new household and put student + parent in
+                $household = Household::create(['name' => $parent->lastname . ' Household', 'pid' => $parent->id]);
+                DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $student->id]);
+                DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $parent->id]);
+            }
+        } else {
+            // Create new parent profile
+            $parent = People::create([
+                'type'      => 'Parent',
+                'firstname' => request('parent_firstname'),
+                'lastname'  => request('parent_lastname'),
+                'phone'     => request('parent_phone'),
+                'email'     => request('parent_email'),
+                'address'   => $student->address,
+                'suburb'    => $student->suburb,
+                'state'     => $student->state,
+                'postcode'  => $student->postcode,
+            ]);
+
+            // Create new household and put student + parent in
+            $household = Household::create(['name' => $parent->lastname . ' Household', 'pid' => $parent->id]);
+            DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $student->id]);
+            DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $parent->id]);
+        }
 
         Toastr::success("Student created");
 
@@ -113,17 +166,20 @@ class CheckinController extends Controller {
         $instance = EventInstance::findOrFail($id);
 
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
+        $rules = [
+            'firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'),
+            'wwc_no' => 'required', 'wwc_exp'   => 'required|date_format:' . session('df')];
         $mesgs = [
             'firstname.required'  => 'The first name is required.',
             'lastname.required'   => 'The last name is required.',
             'dob.date_format'     => 'The birthday format needs to be ' . session('df-datepicker'),
+            'wwc_no.required'    => 'The registration no. is required',
+            'wwc_exp.required'    => 'The expiry is required',
             'wwc_exp.date_format' => 'The expiry format needs to be ' . session('df-datepicker'),
         ];
         request()->validate($rules, $mesgs);
 
         $people_request = request()->except('photo');
-        $people_request['aid'] = session('aid');
         $people_request['type'] = "Volunteer";
 
         // Empty State field if rest of address fields are empty
@@ -152,18 +208,45 @@ class CheckinController extends Controller {
     /**
      * Get People (ajax)
      */
-    public function getPeople($id)
+    public function getPeople($eid)
     {
         $people = People::where('status', 1)->where('aid', 1)->orderBy('firstname')->get();
-        $instance = EventInstance::find($id);
+        $instance = EventInstance::find($eid);
         $people_array = [];
         foreach ($people as $person) {
-            $checked_in = $checked_in2 = null;
-            $photo = $person->avatar90;
-            $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
-            if ($instance && $attended)
-                $checked_in = $attended->in->format('Y-m-d H:i:s');
-            $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'in' => $checked_in, 'photo' => $photo, 'eid' => $instance->id];
+            if ($person->isStudent() || $person->isVolunteer()) {
+                $checked_in = $checked_in2 = null;
+                $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
+                if ($instance && $attended)
+                    $checked_in = $attended->in->format('Y-m-d H:i:s');
+                $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->avatar90, 'eid' => $instance->id];
+            }
+        }
+
+        return $people_array;
+    }
+
+    /**
+     * Get Parents (ajax)
+     */
+    public function getParents()
+    {
+        $people = People::where('status', 1)->where('aid', 1)->orderBy('firstname')->get();
+        $people_array = [];
+        foreach ($people as $person) {
+            if ($person->isParent()) {
+                $photo = $person->avatar90;
+                $people_array[] = [
+                    'pid'    => $person->id,
+                    'name'   => $person->name,
+                    'phone'  => $person->phone,
+                    'email'  => $person->email,
+                    'suburb' => $person->suburb,
+                    'state'  => $person->state,
+                    'photo'  => $person->avatar90
+                ];
+
+            }
         }
 
         return $people_array;

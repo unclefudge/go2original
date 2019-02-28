@@ -69,7 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/event/instance', 'Event\EventInstanceController');
 
     // Checkin
-    Route::get('/data/checkin/people/{id}', 'Event\CheckinController@getPeople');
+    Route::get('/data/checkin/people/{eid}', 'Event\CheckinController@getPeople');
+    Route::get('/data/checkin/parents', 'Event\CheckinController@getParents');
     Route::get('/checkin/{id}/register/student', 'Event\CheckinController@studentForm');
     Route::post('/checkin/{id}/register/student', 'Event\CheckinController@studentRegister');
     Route::get('/checkin/{id}/register/volunteer', 'Event\CheckinController@volunteerForm');
@@ -82,7 +83,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/group', 'HomeController@group');
-    Route::get('/import-students', 'HomeController@importStudents');
+    Route::get('/import-students', 'Misc\ImportController@importStudents');
+    Route::get('/import-adults', 'Misc\ImportController@importAdults');
+    Route::get('/import-events', 'Misc\ImportController@importEvents');
+    Route::get('/form-households', 'Misc\ImportController@formHouseholds');
+    Route::get('/copy-address', 'Misc\ImportController@copyAddress');
+    Route::get('/copy-address/{from}/{to}', 'Misc\ImportController@copyAddressDone');
 
 
     // Search

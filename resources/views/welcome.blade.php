@@ -1,98 +1,152 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts/checkin')
 
-        <title>Laravel</title>
+@section('content')
+    <style>
+        body, html {
+            background-image: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.3)), url('/img/home-bg.jpg') !important;
+            height: 100%; /* set height */
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-size: cover !important;
+        }
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+        h1 {
+            font-family: 'Open Sans', sans-serif !important;
+        }
 
-            .full-height {
-                height: 100vh;
-            }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+    </style>
 
-            .position-ref {
-                position: relative;
-            }
+    <div class="padding-all">
+        <div class="header">
+            <h1>Login</h1>
+        </div>
+        <!---728x90--->
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+        <div class="design-w3l">
+            <div class="mail-form-agile">
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
 
-            .content {
-                text-align: center;
-            }
+                    @if(session()->has('login_error'))
+                        <div class="alert alert-success">
+                            {{ session()->get('login_error') }}
+                        </div>
+                    @endif
+                    <input id="identity" type="text" class="{{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" placeholder="Username or Email" required autofocus>
+                    <input type="password"  name="password" class="padding" placeholder="Password" required=""/>
+                    <input type="submit" value="login">
+                </form>
+            </div>
+            <div class="clear"> </div>
+        </div>
+        <!---728x90--->
 
-            .title {
-                font-size: 84px;
-            }
+        <div class="footer">
+            <p>
+                {{--}}
+                @if (Route::has('password.request'))
+                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                        {{ __('Forgot Your Password?') }}
+                    </a>
+                @endif --}}
+            </p>
+        </div>
+    </div>
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+    {{--}}
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+            <div class="col-md-4">
+                <div class="card" style="background: rgb(255, 255, 255); background: rgba(255, 255, 255, 0.9);">
+                    <div class="card-header" style="background: #fff">{{ __('Login') }}</div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+                    <div class="card-body" style="">
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                            @if(session()->has('login_error'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('login_error') }}
+                                </div>
+                            @endif
+
+                            <div class="row form-group {{ $errors->has('identity') ? ' has-error' : '' }}">
+
+                                <div class="col">
+                                    <input id="identity" type="identity" class="form-control {{ $errors->has('identity') ? ' is-invalid' : '' }}" name="identity" value="{{ old('identity') }}" placeholder="Email or Username" required autofocus>
+
+                                    @if ($errors->has('identity'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('identity') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col">
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="password" required>
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-5">
+                                    <button type="submit" class="btn btn-primary">{{ __('Login') }}</button>
+                                </div>
+                                <div class="col-7 text-right">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="remember">{{ __('Remember Me') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-12 text-center">
+                                    @if (Route::has('password.request'))
+                                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                                            {{ __('Forgot Your Password?') }}
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+    --}}
+
+@stop
+
+
+@section('vendor-scripts')
+@stop
+
+@section('page-styles')
+    <link href="/css/login.css" rel="stylesheet" type="text/css">
+@stop
+
+@section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
+    <script>
+        function checkInput(input) {
+            if (input.value.length > 0) {
+                input.className = 'active';
+            } else {
+                input.className = '';
+            }
+        }
+    </script>
+@stop

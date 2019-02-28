@@ -22,6 +22,7 @@
 @stop
 
 @section('content')
+    {{--}}
     <div class="m-portlet ">
         <div class="m-portlet__body  m-portlet__body--no-padding">
             <div class="row m-row--no-padding m-row--col-separator-xl">
@@ -99,7 +100,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     aid: {{ session('aid') }}<br>
     tz: {{ session('tz') }}<br>
@@ -107,57 +108,16 @@
     df-datepicker: {{ session('df-datepicker') }}<br>
     df-moment: {{ session('df-moment') }}<br>
     username: {{ Auth::user()->username }}
+
+    <?php
+    $str = '09/16/2016 19:09 PM';
+    if (preg_match('/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]*/', $str))
+        echo 'match';
+    else
+        echo 'fail';
+    ?>
     <div>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
-        1 <br>
-        2 <br>
-        3 <br>
-        4 <br>
-        5 <br>
+
     </div>
 
 @stop

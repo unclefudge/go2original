@@ -5,9 +5,9 @@
     <style>
         body, html {
             @if ($instance->event->background)
-             background-image: url("{!! $instance->event->background_path !!}") !important;
+                  background-image: url("{!! $instance->event->background_path !!}") !important;
             @endif
-             height: 100%; /* set height */
+                  height: 100%; /* set height */
 
             /* Create the parallax scrolling effect */
             background-attachment: fixed !important;
@@ -26,6 +26,23 @@
             color: black;
         }
 
+        .search-row {
+            cursor: pointer;
+        }
+
+        .search-row:hover {
+            background: #F8F9FB;
+        }
+
+        .search-title {
+            font-size: 1.1rem;
+            font-weight: bolder;
+            margin-bottom: 3px
+        }
+
+        .search-info {
+            font-size: .8rem;
+        }
     </style>
     <div>
         <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
@@ -41,6 +58,8 @@
                 <div class="m-portlet">
                     <div class="m-portlet__body">
                         {!! Form::model('people', ['action' => ['Event\CheckinController@studentRegister', $instance->id], 'files' => true]) !!}
+                        @include('form-error')
+
                         <div class="row" style="padding-bottom: 10px">
                             <div class="col-md-5">
                                 <h4>Student Registration</h4>
@@ -164,15 +183,73 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- Parent / Guardian --}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group {!! fieldHasError('parent_name', $errors) !!}">
-                                    {!! Form::label('parent_name', 'Parent / Guardian Name', ['class' => 'control-label']) !!}
-                                    {!! Form::text('parent_name', null, ['class' => 'form-control', 'placeholder' => 'street address']) !!}
-                                    {!! fieldErrorMessage('parent_name', $errors) !!}
+
+                        {{---------------------}}
+                        {{-- Vue Parent Info --}}
+                        {{---------------------}}
+                        <div id="parent_info">
+                            <input v-model="xx.parent.id" type="hidden" name="parent_id" value="0">
+
+                            {{-- Parent / Guardian Search --}}
+                            <div class="row">
+                                <div v-if="xx.parent_search" class="col-12">
+                                    <div class="{!! fieldHasError('parent_id', $errors) !!}">
+                                        {!! Form::label('parent_name', 'Parent / Guardian Name', ['class' => 'form-control-label']) !!}
+                                        <div class="input-group">
+                                            <input v-on:click="xx.search_options = true" v-model="xx.searchQuery" type="search" class="form-control m-input" name="parent_name" placeholder="Search for parent">
+                                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                        </div>
+                                        {!! fieldErrorMessage('parent_id', $errors) !!}
+                                    </div>
+
+                                    {{-- Search for household --}}
+                                    <div v-if="xx.search_options">
+                                        <search-parent :data="xx.parents" :filter-key="xx.searchQuery"></search-parent>
+                                    </div>
+
                                 </div>
                             </div>
+
+                            {{-- Parent / Guardian Add --}}
+                            <div v-if="xx.parent_add">
+                                {{-- Parent First + Last Name --}}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group m-form__group {!! fieldHasError('parent_firstname', $errors) !!}">
+                                            {!! Form::label('parent_firstname', 'Parent / Guardian First Name', ['class' => 'form-control-label']) !!}
+                                            <input v-model="xx.parent.firstname" v-on:click="xx.parent.id = 'add'" type="text" name="parent_firstname" id="parent_firstname" class="form-control" required>
+                                            {!! fieldErrorMessage('parent_firstname', $errors) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group {!! fieldHasError('parent_lastname', $errors) !!}">
+                                            {!! Form::label('parent_lastname', 'Parent / Guardinan Last Name', ['class' => 'control-label']) !!}
+                                            <input v-model="xx.parent.lastname" v-on:click="xx.parent.id = 'add'" type="text" name="parent_lastname" id="parent_lastname" class="form-control" required>
+                                            {!! fieldErrorMessage('parent_lastname', $errors) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- Parent Phone + Email --}}
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group {!! fieldHasError('parent_phone', $errors) !!}">
+                                            {!! Form::label('parent_phone', 'Phone', ['class' => 'control-label']) !!}
+                                            {!! Form::text('parent_phone', null, ['class' => 'form-control', 'required']) !!}
+                                            {!! fieldErrorMessage('parent_phone', $errors) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group {!! fieldHasError('parent_email', $errors) !!}">
+                                            {!! Form::label('parent_email', 'Email', ['class' => 'control-label']) !!}
+                                            {!! Form::text('parent_email', null, ['class' => 'form-control', 'required']) !!}
+                                            {!! fieldErrorMessage('parent_email', $errors) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--<pre>@{{ $data }}</pre> -->
+
                         </div>
                         <hr>
                         {{-- Photo --}}
@@ -201,6 +278,37 @@
         </div>
     </div>
 
+    {{--  Search template --}}
+    <script type="text/x-template" id="search-template">
+        <table width="100%" style="background: #fff">
+            <tbody>
+            <tr v-if="xx.searchQuery" v-on:click="searchSelect()" class="search-row" style="border: solid 1px #eee;">
+                <td colspan="2" style="padding: 10px 0px 5px 20px">
+                    <div class="search-title">ADD NEW PARENT <span class="search-info">(not listed below)</span></div>
+                </td>
+            </tr>
+            <template v-for="person in filteredData">
+                <tr v-on:click="searchSelect(person)" class="search-row" style="border: solid 1px #eee;">
+                    <td style="padding: 5px 0px 5px 20px">
+                        <div class="search-title">@{{ person.name }}</div>
+                        <span v-if="person.phone" class="search-info"><i class="fa fa-phone" style="padding-right: 5px"></i> @{{ person.phone }}</span>
+                        <span v-if="person.phone && person.email" class="search-info"> &nbsp; &nbsp;</span>
+                        <span v-if="person.email" class="search-info"><i class="fa fa-envelope" style="padding-right: 5px"></i> @{{ person.email }}</span>
+                    </td>
+                    <td style="padding:5px 15px 5px 20px">
+                        <div class="search-title">&nbsp;</div>
+                        <div class="search-info text-right">
+                            <span v-if="person.suburb">@{{ person.suburb }}</span>
+                            <span v-if="person.suburb && person.state">, </span>
+                            <span v-if="person.state">@{{ person.state }}</span>
+                        </div>
+                    </td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+    </script>
+
 @stop
 
 
@@ -216,6 +324,7 @@
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <script src="/js/slim.kickstart.min.js"></script>
+<script src="/js/vue.min.js"></script>
 <script type="text/javascript">
 
     // Form errors - show modal
@@ -291,5 +400,83 @@
         format: "{{ session('df-datepicker') }}",
     });
 
+</script>
+{{-- Student Vue Code --}}
+<script>
+    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+
+    var xx = {
+        parent_search: true, parent_add: false, search_options: true,
+        searchQuery: "{!! app('request')->input('query') !!}",
+        parent: {
+            id: "{{ ($errors->has('parent_firstname') || $errors->has('parent_lastname') || $errors->has('parent_phone') || $errors->has('parent_email')) ? 'add' : 0 }}",
+            firstname: "{{ old('parent_firstname') }}",
+            lastname: "{{ old('parent_lastname') }}"
+        },
+        parents: [], date: new Date(2016, 9, 16),
+    };
+
+    // register the search member component
+    Vue.component('search-parent', {
+        template: '#search-template',
+        props: {data: Array, filterKey: String},
+        data: function () {
+            return {xx: xx}
+        },
+        computed: {
+            filteredData: function () {
+                var filterKey = this.filterKey && this.filterKey.toLowerCase()
+                var data = this.data
+                if (filterKey) {
+                    data = data.filter(function (row) {
+                        return Object.keys(row).some(function (key) {
+                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+                        })
+                    })
+                    return data.slice(0, 10); // Return first x records only
+                }
+                return []; // Return no records unless search string contains characters
+            }
+        },
+        methods: {
+            searchSelect: function (person) {
+                if (!person) {
+                    this.xx.parent.id = 'add'
+                    this.xx.parent.firstname = xx.searchQuery.substr(0, xx.searchQuery.indexOf(' '));
+                    this.xx.parent.lastname = xx.searchQuery.substr(xx.searchQuery.indexOf(' ') + 1);
+                    if (!this.xx.parent.firstname) {
+                        this.xx.parent.firstname = this.xx.parent.lastname;
+                        this.xx.parent.lastname = '';
+                    }
+                    this.xx.parent_search = false;
+                    this.xx.parent_add = true;
+                }
+                else {
+                    this.xx.parent.id = person.pid
+                    this.xx.searchQuery = person.name;
+                    this.xx.search_options = false;
+                }
+            },
+        }
+    })
+
+    var vue_rego = new Vue({
+        el: '#parent_info',
+        data: {xx: xx,},
+        created: function () {
+            this.getParents();
+        },
+        methods: {
+            getParents: function () {
+                $.getJSON('/data/checkin/parents', function (data) {
+                    this.xx.parents = data;
+                    if (xx.parent.id == 'add') {
+                        this.xx.parent_search = false;
+                        this.xx.parent_add = true;
+                    }
+                }.bind(this));
+            },
+        },
+    });
 </script>
 @stop

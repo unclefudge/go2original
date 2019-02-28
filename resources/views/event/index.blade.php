@@ -78,13 +78,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" style="padding: 10px;">
+                                <div class="row justify-content-center" style="padding: 10px;">
                                     @if ($event->status)
-                                        <div class="col-6">
-                                            <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block">Check-In</a>
-                                        </div>
-                                        <div class="col-6">
-                                            <button type="button" class="btn btn-outline-accent m-btn btn-block">Stats</button>
+                                        <div class="col-lg-6">
+                                            <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block"><i class="fa fa-sign-in-alt"></i> &nbsp; Check-In</a>
                                         </div>
                                     @else
                                         <div class="col-12 text-center" style="padding: 10px">Unable to checkin on inactive events</div>
@@ -164,7 +161,7 @@
             display_fields();
         });
 
-        //
+        // Show Inactive
         $("#but_show_archived").click(function () {
             $("#show_archived").val(1);
 
@@ -175,7 +172,7 @@
             }
             display_fields();
         });
-        //
+        // Hide Inactive
         $("#but_hide_archived").click(function () {
             $("#show_archived").val(0);
             var archived_events = document.getElementsByClassName('event-archived');

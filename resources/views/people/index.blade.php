@@ -9,27 +9,29 @@
                     <ul class="nav nav-tabs m-tabs-line m-tabs-line--primary m-tabs-line--2x">
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_all">
-                                <i class="fa fa-users"></i> All &nbsp; ({{ count($people) }})
+                                <i class="fa fa-users"></i> All &nbsp; <span id="count_all_num"></span>
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_student">
-                                <i class="fa fa-user-graduate"></i> Students &nbsp; ({{ count($people->whereIn('type', ['Student', 'Student/Volunteer'])) }})
+                                <i class="fa fa-user-graduate"></i> Students &nbsp; <span id="count_students_num"></span>
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_parent">
-                                <i class="fa fa-user-tie"></i> Parents &nbsp; ({{ count($people->whereIn('type', ['Parent', 'Parent/Volunteer'])) }})
+                                <i class="fa fa-user-tie"></i> Parents &nbsp; <span id="count_parents_num"></span>
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_volunteer">
-                                <i class="fa fa-user-friends"></i> Volunteers ({{ count($people->whereIn('type', ['Volunteer', 'Parent/Volunteer'])) }})
+                                <i class="fa fa-user-friends"></i> Volunteers <span id="count_volunteers_num"></span>
                             </a>
                         </li>
                     </ul>
                 </div>
-                <div class="col-1" style="padding-left: 0px">
+                <div class="col-2 col-sm-4 col-xs-6" style="padding-left: 0px">
+                    <button type="button" class="btn btn-secondary btn-sm m-btn--pill pull-right" style="margin-left: 10px" id="but_show_inactive"><i class="fa fa-eye"></i></button>
+                    <button type="button" class="btn btn-sm m-btn--pill pull-right" style="margin-left: 10px; color: #000000; background: #eee" id="but_hide_inactive"><i class="fa fa-eye-slash" style="padding-right: 5px"></i> Hide Inactive</button>
                     <button type="button" class="btn btn-sm m-btn--pill btn-brand pull-right" data-toggle="modal" data-target="#modal_create_person">Add</button>
                     <hr class="d-none d-md-block" style="padding-top: 20px; margin-top: 48px">
                 </div>
@@ -37,11 +39,28 @@
             {!! Form::hidden('show_type', null, ['id' => 'show_type']) !!}
             {!! Form::hidden('pagelength', ($agent->isMobile() ? 100 : 25), ['id' => 'pagelength']) !!}
             {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
+            {!! Form::hidden('show_inactive', '0', ['id' => 'show_inactive']) !!}
+            {!! Form::hidden('count_all', count($people->where('status', 1)), ['id' => 'count_all']) !!}
+            {!! Form::hidden('count_students', count($people->where('status', 1)->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'count_students']) !!}
+            {!! Form::hidden('count_parents', count($people->where('status', 1)->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'count_parents']) !!}
+            {!! Form::hidden('count_volunteers', count($people->where('status', 1)->whereIn('type', ['Volunteer', 'Parent/Volunteer'])), ['id' => 'count_volunteers']) !!}
+            {!! Form::hidden('counti_all', count($people), ['id' => 'counti_all']) !!}
+            {!! Form::hidden('counti_students', count($people->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'counti_students']) !!}
+            {!! Form::hidden('counti_parents', count($people->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'counti_parents']) !!}
+            {!! Form::hidden('counti_volunteers', count($people->whereIn('type', ['Volunteer', 'Parent/Volunteer'])), ['id' => 'counti_volunteers']) !!}
 
             <style>
                 #datatable1 tbody td.selected {
                     color: black;
                     background-color: #F8F9FB;
+                }
+                .person_inactive {
+                    color: #fff !important;
+                    background: #777 !important;
+                }
+                .person_inactive:hover {
+                    /*background: #777;*/
+                    color: #FF0000;
                 }
             </style>
             <table class="table table-hover table-checkable table-bordered table-responsive m-table--head-bg-brand m-table" id="datatable1" width="100%">
@@ -58,6 +77,7 @@
                     <th> Media</th>
                     <th width="10%"> WWC Expiry</th>
                     <th width="5%"> Actions</th>
+                    <th>status</th>
                 </tr>
                 </thead>
             </table>
@@ -203,6 +223,7 @@
             'type': 'GET',
             'data': function (d) {
                 d.show_type = $('#show_type').val();
+                d.show_inactive = $('#show_inactive').val();
             }
         },
         columns: [
@@ -217,12 +238,18 @@
             {data: 'media_consent', name: 'people.media_consent', orderable: true},
             {data: 'wwc_exp2', name: 'people.wwc_exp', visible: false, orderable: true},
             {data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'status', name: 'people.status', visible: false},
             {data: 'firstname', name: 'people.firstname', visible: false},
             {data: 'lastname', name: 'people.lastname', visible: false},
         ],
         order: [
             [1, "asc"]
         ],
+        createdRow: function( row, data, dataIndex){
+            if( data['status'] == 0)
+                $(row).addClass('person_inactive');
+            //$("#count_all").html('all');
+        },
     });
 
     //
@@ -367,12 +394,30 @@
             var type = $("#type").val();
             $('#fields_student').hide();
             $('#fields_volunteer').hide();
+            $('#but_show_inactive').hide();
+            $('#but_hide_inactive').hide();
 
             if (type == 'Student' || type == 'Student/Volunteer') {
                 $('#fields_student').show();
             }
             if (type == 'Volunteer' || type == 'Student/Volunteer' || type == 'Parent/Volunteer') {
                 $('#fields_volunteer').show();
+            }
+
+            // Hide / Show Inactive records
+            var show_inactive = $("#show_inactive").val();
+            if (show_inactive == 0) {
+                $('#but_show_inactive').show();
+                $('#count_all_num').html('('+$('#count_all').val()+')');
+                $('#count_students_num').html('('+$('#count_students').val()+')');
+                $('#count_parents_num').html('('+$('#count_parents').val()+')');
+                $('#count_volunteers_num').html('('+$('#count_volunteers').val()+')');
+            } else {
+                $('#but_hide_inactive').show();
+                $('#count_all_num').html('('+$('#counti_all').val()+')');
+                $('#count_students_num').html('('+$('#counti_students').val()+')');
+                $('#count_parents_num').html('('+$('#counti_parents').val()+')');
+                $('#count_volunteers_num').html('('+$('#counti_volunteers').val()+')');
             }
 
             // Dynamic School dropdown from Grade
@@ -432,6 +477,19 @@
 
         $("#grade").change(function () {
             display_fields();
+        });
+
+        // Show Inactive
+        $("#but_show_inactive").click(function () {
+            $("#show_inactive").val(1);
+            display_fields();
+            datatable1.ajax.reload();
+        });
+        // Hide Inactive
+        $("#but_hide_inactive").click(function () {
+            $("#show_inactive").val(0);
+            display_fields();
+            datatable1.ajax.reload();
         });
     });
 
