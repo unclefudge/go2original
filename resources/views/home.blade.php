@@ -6,17 +6,6 @@
             <div class="mr-auto">
                 <h3 class="m-subheader__title ">Dashboard</h3>
             </div>
-            <div>
-            <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
-                <span class="m-subheader__daterange-label">
-                    <span class="m-subheader__daterange-title"></span>
-                    <span class="m-subheader__daterange-date m--font-brand"></span>
-                </span>
-                <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
-                    <i class="la la-angle-down"></i>
-                </a>
-            </span>
-            </div>
         </div>
     </div>
 @stop
@@ -102,22 +91,14 @@
         </div>
     </div> --}}
 
-    aid: {{ session('aid') }}<br>
-    tz: {{ session('tz') }}<br>
-    df: {{ session('df') }}<br>
-    df-datepicker: {{ session('df-datepicker') }}<br>
-    df-moment: {{ session('df-moment') }}<br>
-    username: {{ Auth::user()->username }}
 
-    <?php
-    $str = '09/16/2016 19:09 PM';
-    if (preg_match('/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]*/', $str))
-        echo 'match';
-    else
-        echo 'fail';
-    ?>
     <div>
-
+        aid: {{ session('aid') }}<br>
+        tz: {{ session('tz') }}<br>
+        df: {{ session('df') }}<br>
+        df-datepicker: {{ session('df-datepicker') }}<br>
+        df-moment: {{ session('df-moment') }}<br>
+        username: {{ Auth::user()->username }}
     </div>
 
 @stop

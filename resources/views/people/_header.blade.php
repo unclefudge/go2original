@@ -73,7 +73,7 @@
     <div class="member-name">
         {{-- Avatar --}}
         <div class="avatar-container" id="avatar">
-            <img class="avatar-image" src="{{ $people->avatar90 }}?<?=rand(1, 32000)?>" alt="Avatar">
+            <img class="avatar-image" src="{{ $people->photoSmPath }}?<?=rand(1, 32000)?>" alt="Avatar">
             <div class="avatar-overlay">
                 <a href="#" class="avatar-edit" title="Edit" id="avatar-edit">
                     <img  class="avatar-icon" src="/img/icon-edit-avatar.png" height="35px">

@@ -46,6 +46,15 @@ class Event extends Model
     }
 
     /**
+     * Get Background Path (getter)
+     */
+    public function getBackgroundMedPathAttribute()
+    {
+        $path = "/image/".$this->attributes['aid'].'/events/m';
+        return ($this->attributes['background']) ? $path.$this->attributes['background'].'?'.rand(1, 32000) : '/img/bg-event.jpg';
+    }
+
+    /**
      * Display records last update_by + date
      *
      * @return string

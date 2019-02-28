@@ -48,7 +48,7 @@
             <div class="col-12 text-center">
                 {{-- Image --}}
                 <div class="image-container" id="bg_image">
-                    <img src="{{ $event->background_path }}" class="img-fluid">
+                    <img src="{{ $event->backgroundMedPath }}" class="img-fluid">
                     <div class="image-overlay">
                         <a href="#" class="image-edit" title="Edit" id="avatar-edit">
                             <img class="image-icon" src="/img/icon-edit-avatar.png" height="35px" style="margin: -18px 0 0 -18px">

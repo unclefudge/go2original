@@ -11,6 +11,7 @@ use App\Models\Event\Attendance;
 use App\Models\People\People;
 use Carbon\Carbon;
 use App\Http\Utilities\Slim;
+use Intervention\Image\Facades\Image;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
 use Jenssegers\Agent\Agent;
@@ -192,6 +193,17 @@ class EventController extends Controller {
                 $file = Slim::saveFile($data, $name, $path, false);
                 $event->background = $name;
                 $event->save();
+
+                // Save the image as a thumbnail of 90x90 + 30x30
+                if (exif_imagetype($filepath)) {
+                    Image::make($filepath)
+                        ->resize(400, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })
+                        ->save($path . 'm' . $name);
+                } else
+                    Toastr::error("Bad image");
             }
         } elseif (request('previous_photo')) {
             // Delete file

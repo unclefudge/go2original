@@ -219,7 +219,7 @@ class CheckinController extends Controller {
                 $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
                 if ($instance && $attended)
                     $checked_in = $attended->in->format('Y-m-d H:i:s');
-                $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->avatar90, 'eid' => $instance->id];
+                $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->photoSmPath, 'eid' => $instance->id];
             }
         }
 
@@ -235,7 +235,6 @@ class CheckinController extends Controller {
         $people_array = [];
         foreach ($people as $person) {
             if ($person->isParent()) {
-                $photo = $person->avatar90;
                 $people_array[] = [
                     'pid'    => $person->id,
                     'name'   => $person->name,
@@ -243,7 +242,7 @@ class CheckinController extends Controller {
                     'email'  => $person->email,
                     'suburb' => $person->suburb,
                     'state'  => $person->state,
-                    'photo'  => $person->avatar90
+                    'photo'  => $person->photoSmPath
                 ];
 
             }

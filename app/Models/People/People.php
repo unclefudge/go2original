@@ -120,10 +120,10 @@ class People extends Model {
             $this->photo = $name;
             $this->save();
 
-            // Save the image as a thumbnail of 90x90 + 30x30
+            // Save the image as a thumbnail of 90x90 + 50x50
             if (exif_imagetype($filepath)) {
-                Image::make($filepath)->resize(90, 90)->save($path . 't90-' . $name);
-                Image::make($filepath)->resize(50, 50)->save($path . 't50-' . $name);
+                Image::make($filepath)->resize(90, 90)->save($path . 's' . $name);
+                Image::make($filepath)->resize(50, 50)->save($path . 'x' . $name);
             } else
                 Toastr::error("Bad image");
 
@@ -186,9 +186,9 @@ class People extends Model {
     /**
      * Get Avatar (getter)
      */
-    public function getAvatar90Attribute()
+    public function getPhotoSmPathAttribute()
     {
-        $path = "/image/" . $this->attributes['aid'] . '/people/t90-';
+        $path = "/image/" . $this->attributes['aid'] . '/people/s';
 
         return ($this->attributes['photo']) ? $path . $this->attributes['photo'] : '/img/avatar-user2.png';
     }
