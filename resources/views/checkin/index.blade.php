@@ -76,6 +76,7 @@
 
         .leader-label {
            /* background-color: #B2E2F0;*/ /* #2998B3;*/
+            background-color: #222;
             color: #FFFF00;
         }
 
