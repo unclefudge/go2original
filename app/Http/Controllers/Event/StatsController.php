@@ -48,7 +48,7 @@ class StatsController extends Controller {
         while ($loop_date->lt($date2)) {
             $d1 = Carbon::parse($loop_date->format('Y-m-d'))->startOfWeek();
             $d2 = Carbon::parse($loop_date->format('Y-m-d'))->endOfWeek();
-            $week = $d1->format('d/m'); // . ' - ' . $d2->format('d/m');
+            $week = $d1->format('M j'); // . ' - ' . $d2->format('d/m');
             //echo "$week: " . $loop_date->startOfWeek()->format('Y-m-d') . "-" . $loop_date->endOfWeek()->format('Y-m-d') . ".<br>";
             $instance_ids = $event->betweenDates($d1->format('Y-m-d'), $d2->format('Y-m-d'))->pluck('id')->toArray();
             if ($debug) print_r($instance_ids);
