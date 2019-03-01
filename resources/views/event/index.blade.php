@@ -63,7 +63,7 @@
                     @foreach ($events->where('recur', 1) as $event)
                         <div class="col-md-4 col-sm-6 {{ ($event->status) ? 'event-active' : 'event-archived event-hide' }}">
                             <div class="m-portlet m-portlet--head-overlay m-portlet--full-height  m-portlet--rounded-force">
-                                <div class="card card-image" style="height: 120px; background-size:100% auto; cursor: pointer; {!!  ($event->status) ? "background-image: url($event->backgroundMedPath);" : 'background: #777'!!}" id="event-{{ $event->id }}">
+                                <div class="card card-image" style="height: 120px; background-size:100% auto; cursor: pointer; {!!  ($event->status) ?   "background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url($event->backgroundMedPath)"  : 'background: #777'!!}" id="event-{{ $event->id }}">
                                     <div>
                                         @if (!$event->status)
                                             <span class="pull-right" style="color: #FFF; padding: 5px"><i class="fa fa-archive"></i> Inactive</span>

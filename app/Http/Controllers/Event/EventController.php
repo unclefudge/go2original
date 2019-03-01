@@ -194,14 +194,14 @@ class EventController extends Controller {
                 $event->background = $name;
                 $event->save();
 
-                // Save the image as a thumbnail of 90x90 + 30x30
+                // Save the image as a medium size max 400px with 70% quality
                 if (exif_imagetype($filepath)) {
                     Image::make($filepath)
                         ->resize(400, null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
                         })
-                        ->save($path . 'm' . $name);
+                        ->save($path . 'm' . $name, 70);
                 } else
                     Toastr::error("Bad image");
             }
