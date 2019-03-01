@@ -108,7 +108,8 @@ class HouseholdController extends Controller {
 
         // Active people
         $people = [];
-        foreach (People::where('aid', session('aid'))->where('status', 1)->get() as $person)
+        //foreach (People::where('aid', session('aid'))->where('status', 1)->get() as $person)
+        foreach (People::where('aid', session('aid'))->get() as $person)
             $people[] = [
                 'pid'    => $person->id,
                 'name'   => $person->name,

@@ -29,40 +29,46 @@ class StatsController extends Controller {
     public function weekTotals()
     {
         $event = Event::findOrFail(2);
+        $debug = false;
         //$event = Event::findOrFail(request('eid'));
-        $da1 = '2018-06-01';
+        $da1 = '2018-01-01';
         $da2 = '2018-12-30';
         $date1 = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
         $date2 = Carbon::createFromFormat('Y-m-d H:i', $da2 . '00:00');
 
-        //echo "Event[$event->id]: $event->name<br>";
-        //echo "From:" . $date1->format('d/m/Y') . " - " . $date2->format('d/m/Y') . "<br>";
-        //echo "Mon:" . $date1->startOfWeek()->format('d/m/Y') . ' - ' . $date2->startOfWeek()->format('d/m/Y') . '<br>';
-        ////echo "<h2>Dates</h2>";
+        if ($debug) {
+            echo "Event[$event->id]: $event->name<br>";
+            echo "From:" . $date1->format('d/m/Y') . " - " . $date2->format('d/m/Y') . "<br>";
+            echo "Mon:" . $date1->startOfWeek()->format('d/m/Y') . ' - ' . $date2->startOfWeek()->format('d/m/Y') . '<br>';
+            echo "<h2>Dates</h2>";
+        }
 
         $loop_date = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
         $chartdata = [];
         while ($loop_date->lt($date2)) {
-            $d1 = $loop_date->startOfWeek();
-            $d2 = $loop_date->endOfWeek();
-            $week = $d1->format('d/m') . ' - ' . $d2->format('d/m');
+            $d1 = Carbon::parse($loop_date->format('Y-m-d'))->startOfWeek();
+            $d2 = Carbon::parse($loop_date->format('Y-m-d'))->endOfWeek();
+            $week = $d1->format('d/m'); // . ' - ' . $d2->format('d/m');
+            //echo "$week: " . $loop_date->startOfWeek()->format('Y-m-d') . "-" . $loop_date->endOfWeek()->format('Y-m-d') . ".<br>";
             $instance_ids = $event->betweenDates($d1->format('Y-m-d'), $d2->format('Y-m-d'))->pluck('id')->toArray();
+            if ($debug) print_r($instance_ids);
             $attendance = Attendance::whereIn('eid', $instance_ids)->get();
             $a = $b = 0;
             if ($attendance) {
-                echo "Getting attendance<br>"
+                if ($debug) echo "<br>Getting attendance<br>";
                 foreach ($attendance as $attend) {
-                    if ($attend->person->isStudent())
+                    if ($debug) echo "$attend->id : " . $attend->person->type . " : " . $attend->person->name . "<br>";
+                    if ($attend->person->isStudent()) {
                         $a ++;
+                    }
                     if ($attend->person->isVolunteer())
                         $b ++;
                 }
             }
+            //echo "DDD: $a:$b<br>";
 
             $chartdata[] = ['y' => $week, 'a' => $a, 'b' => $b];
             $loop_date->addWeek();
-
-            //echo "$week<br>";
 
         }
 
