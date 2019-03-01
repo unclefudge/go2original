@@ -77,7 +77,7 @@
         .leader-label {
            /* background-color: #B2E2F0;*/ /* #2998B3;*/
             background-color: #222;
-            color: #FFFF00;
+            color: #00c5dc;
         }
 
         .people-check {
@@ -180,6 +180,8 @@
             </div>
         </div>
 
+        <br><br><br>
+
         <footer class="m-grid__item m-footer footer ">
             <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
                 <div class="m-footer__wrapper">
@@ -214,7 +216,7 @@
             </div>
         </div>
 
-        <pre style="background: #fff">@{{ $data }}</pre>
+        <!--<pre style="background: #fff">@{{ $data }}</pre>
             -->
     </div>
 

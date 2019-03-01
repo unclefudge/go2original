@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                         <div class="form-group m-form__group {!! fieldHasError('firstname', $errors) !!}">
                             {!! Form::label('firstname', 'First Name', ['class' => 'form-control-label']) !!}
-                            {!! Form::text('firstname', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('firstname', null, ['class' => 'form-control', 'required']) !!}
                             {!! fieldErrorMessage('firstname', $errors) !!}
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="form-group {!! fieldHasError('gender', $errors) !!}">
                             {!! Form::label('gender', 'Gender', ['class' => 'control-label']) !!}
-                            {!! Form::select('gender', ['Male', 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('gender', ['' => 'Gender', 'Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('gender', $errors) !!}
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'dob']) !!}
+                                {!! Form::text('dob', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'readonly', 'id' => 'wwc_exp']) !!}
+                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
                                 </div>
                             </div>
                         </div>
