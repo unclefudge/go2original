@@ -74,6 +74,11 @@
             vertical-align: middle;
         }
 
+        .leader-label {
+           /* background-color: #B2E2F0;*/ /* #2998B3;*/
+            color: #FFFF00;
+        }
+
         .people-check {
             position: absolute;
             top: 5px;
@@ -208,7 +213,7 @@
             </div>
         </div>
 
-        <!--<pre style="background: #fff">@{{ $data }}</pre>
+        <pre style="background: #fff">@{{ $data }}</pre>
             -->
     </div>
 
@@ -224,11 +229,11 @@
             <div v-else>
                 <template v-for="person in filteredData">
                     <div v-if="!person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: url('/img/d90.jpg');" --}}
-                        <div class="people-label">@{{ person.name }}</div>
+                        <div :class="labelClass(person)">@{{ person.name }}</div>
                     </div>
                     <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
                         <img class="people-check" src="/img/check-64.png" height="50px">
-                        <div class="people-label">@{{ person.name }}</div>
+                        <div :class="labelClass(person)">@{{ person.name }}</div>
                     </div>
                 </template>
             </div>
@@ -298,11 +303,11 @@
                 }
 
             },
-            cellClass: function (person) {
-                var str = 'people-cell';
+            labelClass: function (person) {
+                var str = 'people-label';
 
-                if (person.in != null)
-                    str = str + ' people-in';
+                if (person.type == 'Volunteer' || person.type == 'Student/Volunteer' || person.type == 'Parent/Volunteer')
+                    str = str + ' leader-label';
                 return str;
             },
             backgroundImage: function (person) {

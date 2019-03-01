@@ -29,7 +29,7 @@ class StatsController extends Controller {
     public function weekTotals()
     {
         $event = Event::findOrFail(2);
-        $debug = false;
+        $debug = true;
         //$event = Event::findOrFail(request('eid'));
         $da1 = '2018-01-01';
         $da2 = '2018-12-30';
@@ -54,6 +54,7 @@ class StatsController extends Controller {
             if ($debug) print_r($instance_ids);
             $attendance = Attendance::whereIn('eid', $instance_ids)->get();
             $a = $b = 0;
+            $b = 4;
             if ($attendance) {
                 if ($debug) echo "<br>Getting attendance<br>";
                 foreach ($attendance as $attend) {
