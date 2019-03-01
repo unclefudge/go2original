@@ -15,25 +15,25 @@ class Attendance extends Model
     protected $dates = ['in', 'out'];
 
     /**
-     * A EventRecur belongs to a account
+     * A Attendance belongs to a EventInstance
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function account()
+    public function instance()
     {
-        return $this->belongsTo('App\Models\Account\Account', 'aid');
+        return $this->belongsTo('App\Models\Event\EventInstance', 'eid');
     }
-
 
     /**
-     * A EventInstance belong to an Event
+     * A Attendance belongs to a EventInstance
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function recur()
+    public function person()
     {
-        return $this->belongsTo('App\Models\Event\Event', 'eid');
+        return $this->belongsTo('App\Models\People\People', 'pid');
     }
+
 
     /**
      * Set date to UTC format for Timezone localization

@@ -35,6 +35,16 @@ class Event extends Model
         return $this->hasMany('App\Model\Event\EventInstance');
     }
 
+    /**
+     * A Event has many EventInstance between 2 dates.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function betweenDates($date1, $date2)
+    {
+        return EventInstance::where('start', '>=', $date1)->where('start', '<=', $date2)->get();
+    }
+
 
     /**
      * Get Background Path (getter)

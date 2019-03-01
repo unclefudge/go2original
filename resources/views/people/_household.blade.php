@@ -7,7 +7,9 @@
                 @if ($loop->first)
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-10"><h4>{{ $household->name }}</h4></div>
-                        <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
+                        @if (true || $people->status)
+                            <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
+                        @endif
                     </div>
                 @else
                     <hr>
@@ -55,7 +57,9 @@
             {{-- No Household --}}
             <div class="row" style="padding-bottom: 10px">
                 <div class="col-8"><h4>Household</h4></div>
-                <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
+                @if (true || $people->status)
+                    <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
+                @endif
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-8 text-center">
@@ -116,6 +120,7 @@
         font-size: 1rem;
         font-weight: normal;
     }
+
     .household-edit:hover {
         text-decoration: underline;
     }

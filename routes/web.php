@@ -80,6 +80,10 @@ Route::group(['middleware' => 'auth'], function () {
     // Attendance
     Route::resource('/attendance', 'Event\AttendanceController');
 
+    // Stats
+    Route::get('/stats/event/weekly-totals', 'Event\StatsController@weekTotals');
+    Route::post('/stats/event/weekly-totals', 'Event\StatsController@weekTotals');
+
 
 
     Route::get('/group', 'HomeController@group');

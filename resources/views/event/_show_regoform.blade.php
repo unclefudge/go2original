@@ -5,7 +5,11 @@
             <div class="col-10">
                 <h4>Registration Form</h4>
             </div>
-            <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a></div>
+            <div class="col-2">
+                @if ($event->status)
+                    <a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a>
+                @endif
+            </div>
         </div>
         <div class="row">
             <div class="col">

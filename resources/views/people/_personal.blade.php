@@ -3,7 +3,9 @@
     <div class="m-portlet__body">
         <div class="row" style="padding-bottom: 10px">
             <div class="col-10"><h4>Personal Info</h4></div>
-            <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a></div>
+            @if ($people->status)
+                <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a></div>
+            @endif
         </div>
         <div class="row">
             <div class="col-md-5">
