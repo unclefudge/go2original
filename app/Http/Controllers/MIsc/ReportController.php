@@ -30,11 +30,15 @@ class ReportController extends Controller {
         foreach ($people as $person) {
             if ($person->status && $person->isStudent()) {
                 $attend_last = Attendance::where('pid', $person->id)->orderBy('in', 'desc')->first();
-                $attend_last = ($attend_last) ? $attend_last->in->format('d/m/Y') : 'never';
-                $attend_count = Attendance::where('pid', $person->id)->count();
+                if ($attend_last && $attend_last->in->lt(Carbon::now()->subMonths(6))) {
+                    $attend_last = $attend_last->in->format('d/m/Y');
+                    $attend_count = Attendance::where('pid', $person->id)->count();
 
-                echo "<tr style='background:#ccc'><td><a href='/people/$person->id' target='_blank'>$person->firstname $person->lastname</a></td>";
-                echo "<td>$attend_count</td><td>$attend_last</td><td>$person->grade<td>$person->address, $person->suburb, $person->state</td></tr>";
+                    if ($attend_count < 5) {
+                        echo "<tr style='background:#ccc'><td><a href='/people/$person->id' target='_blank'>$person->firstname $person->lastname</a></td>";
+                        echo "<td>$attend_count</td><td>$attend_last</td><td>$person->grade<td>$person->address, $person->suburb, $person->state</td></tr>";
+                    }
+                }
             }
         }
         echo "</table>";
