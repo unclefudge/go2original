@@ -364,6 +364,10 @@
                 this.sortOrders[key] = this.sortOrders[key] * -1
             },
             show: function (person) {
+                // Hide Parents
+                if (this.xx.type == 'Parent')
+                    return false;
+
                 // Hide Non Checked-in unless Checked-in checked
                 if (this.xx.show_checked && !person.in)
                     return false;
