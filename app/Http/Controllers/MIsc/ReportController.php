@@ -25,7 +25,7 @@ class ReportController extends Controller {
     {
         $people = People::all()->sortby('name');
 
-        echo "<b>Outdated Active Students<b>";
+        echo "<h3>Outdated Active Students - <small>With less then 5 attenendance and last was 6 months ago</small></h3>";
         echo "<table><tr><td width='150'>Name</td><td width=100>No. Attendence</td><td width=400>Last Attendance</td><td>Grade</td><td>Address</td></tr>";
         foreach ($people as $person) {
             if ($person->status && $person->isStudent()) {
