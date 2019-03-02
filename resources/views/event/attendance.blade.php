@@ -164,7 +164,7 @@
                             </div>
                         </div>
 
-                        <!--<pre>@{{ $data }}</pre>
+                        <pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>
@@ -365,7 +365,7 @@
             },
             show: function (person) {
                 // Hide Parents
-                if (this.xx.type == 'Parent')
+                if (person.type == 'Parent')
                     return false;
 
                 // Hide Non Checked-in unless Checked-in checked

@@ -137,11 +137,11 @@
       <file leaf-file-name="attendance.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35747662">
-              <caret line="367" column="43" selection-start-line="367" selection-start-column="43" selection-end-line="367" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.41588786">
+              <caret line="367" column="44" selection-start-line="367" selection-start-column="44" selection-end-line="367" selection-end-column="44" />
               <folding>
-                <marker date="1551491827812" expanded="true" signature="7362:7579" placeholder="..." />
-                <marker date="1551491827812" expanded="true" signature="7376:7577" placeholder="..." />
+                <marker date="1551491952389" expanded="true" signature="7362:7579" placeholder="..." />
+                <marker date="1551491952389" expanded="true" signature="7376:7577" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -1194,11 +1194,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35747662">
-          <caret line="367" column="43" selection-start-line="367" selection-start-column="43" selection-end-line="367" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.41588786">
+          <caret line="367" column="44" selection-start-line="367" selection-start-column="44" selection-end-line="367" selection-end-column="44" />
           <folding>
-            <marker date="1551491827812" expanded="true" signature="7362:7579" placeholder="..." />
-            <marker date="1551491827812" expanded="true" signature="7376:7577" placeholder="..." />
+            <marker date="1551491952389" expanded="true" signature="7362:7579" placeholder="..." />
+            <marker date="1551491952389" expanded="true" signature="7376:7577" placeholder="..." />
           </folding>
         </state>
       </provider>
