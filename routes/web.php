@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/form-households', 'Misc\ImportController@formHouseholds');
     Route::get('/copy-address', 'Misc\ImportController@copyAddress');
     Route::get('/copy-address/{from}/{to}', 'Misc\ImportController@copyAddressDone');
+    Route::get('/outdated-students', 'Misc\ReportController@outdatedStudents');
 
 
     // Search
