@@ -201,37 +201,39 @@ class ImportController extends Controller {
         echo "<h1>Form Households<h1>";
         echo "<table><tr><td width=50>#H</td><td width='200'>Last name</td><td width='150'>First name</td><td width=100>Type</td><td width=60>Grade</td><td>Address</td></tr>";
         foreach ($people as $person) {
-            $person->address = trim($person->address);
-            $person->suburb = trim($person->suburb);
-            $person->postcode = trim($person->postcode);
-            $person->state = ($person->suburb || $person->postcode || $person->address) ? 'TAS': '';
-            if (!$person->postcode) {
-                if ($person->suburb == 'CLARENDON VALE') $person->postcode = '7019';
-                if ($person->suburb == 'ROKEBY') $person->postcode = '7019';
-                if ($person->suburb == 'WEST MOONAH') $person->postcode = '7009';
-                if ($person->suburb == 'MIDWAY POINT') $person->postcode = '7171';
-                if ($person->suburb == 'GAGEBROOK') $person->postcode = '7030';
-                if ($person->suburb == 'KINGSTON') $person->postcode = '7050';
-                if ($person->suburb == 'GLENORCHY') $person->postcode = '7030';
-                if ($person->suburb == 'SANDFORD') $person->postcode = '7020';
-                if ($person->suburb == 'HOWRAH') $person->postcode = '7018';
-                if ($person->suburb == 'HONEYWOOD') $person->postcode = '7010';
-                if ($person->suburb == 'CLARENCE CITY') $person->postcode = '7018';
-                if ($person->suburb == 'LENAH VALLEY') $person->postcode = '7008';
-                if ($person->suburb == 'PONTVILLE') $person->postcode = '7030';
-                if ($person->suburb == 'RISDON VALE') $person->postcode = '7018';
-                if ($person->suburb == 'TRANMERE') $person->postcode = '7030';
-                if ($person->suburb == 'AUSTINS FERRY') $person->postcode = '7011';
-                if ($person->suburb == 'LINDISFARNE') $person->postcode = '7015';
-                if ($person->suburb == 'TAROONA') $person->postcode = '7053';
-            }
-            $person->save();
+            if ($person->type != 'Volunteer') {
+                $person->address = trim($person->address);
+                $person->suburb = trim($person->suburb);
+                $person->postcode = trim($person->postcode);
+                $person->state = ($person->suburb || $person->postcode || $person->address) ? 'TAS': '';
+                if (!$person->postcode) {
+                    if ($person->suburb == 'CLARENDON VALE') $person->postcode = '7019';
+                    if ($person->suburb == 'ROKEBY') $person->postcode = '7019';
+                    if ($person->suburb == 'WEST MOONAH') $person->postcode = '7009';
+                    if ($person->suburb == 'MIDWAY POINT') $person->postcode = '7171';
+                    if ($person->suburb == 'GAGEBROOK') $person->postcode = '7030';
+                    if ($person->suburb == 'KINGSTON') $person->postcode = '7050';
+                    if ($person->suburb == 'GLENORCHY') $person->postcode = '7030';
+                    if ($person->suburb == 'SANDFORD') $person->postcode = '7020';
+                    if ($person->suburb == 'HOWRAH') $person->postcode = '7018';
+                    if ($person->suburb == 'HONEYWOOD') $person->postcode = '7010';
+                    if ($person->suburb == 'CLARENCE CITY') $person->postcode = '7018';
+                    if ($person->suburb == 'LENAH VALLEY') $person->postcode = '7008';
+                    if ($person->suburb == 'PONTVILLE') $person->postcode = '7030';
+                    if ($person->suburb == 'RISDON VALE') $person->postcode = '7018';
+                    if ($person->suburb == 'TRANMERE') $person->postcode = '7030';
+                    if ($person->suburb == 'AUSTINS FERRY') $person->postcode = '7011';
+                    if ($person->suburb == 'LINDISFARNE') $person->postcode = '7015';
+                    if ($person->suburb == 'TAROONA') $person->postcode = '7053';
+                }
+                $person->save();
 
-            $house = ($person->households->count() > 0) ? 'Y' : '';
-            $bg = ($person->status) ? '#eee' : '#aaa';
-            $bg2 = ($house) ? '#FFFF00' : $bg;
-            echo "<tr style='background: $bg'><td style='text-align:center; background: $bg2'>$house</td><td>$person->lastname</td><td><a href='/people/$person->id' target='_blank'>$person->firstname</a></td>
+                $house = ($person->households->count() > 0) ? 'Y' : '';
+                $bg = ($person->status) ? '#eee' : '#aaa';
+                $bg2 = ($house) ? '#FFFF00' : $bg;
+                echo "<tr style='background: $bg'><td style='text-align:center; background: $bg2'>$house</td><td>$person->lastname</td><td><a href='/people/$person->id' target='_blank'>$person->firstname</a></td>
             <td>$person->type</td><td>$person->grade</td><td>$person->address, $person->suburb $person->postcode</td></tr>";
+            }
         }
         echo "</table>";
     }
