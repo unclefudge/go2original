@@ -117,7 +117,7 @@
     });
 
     var chart = am4core.create(
-            "chart-weekly-totals",
+            "chart-weekly-totals2",
             am4charts.PieChart
     );
 </script>

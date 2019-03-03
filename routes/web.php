@@ -18,14 +18,14 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/signup', 'HomeController@index')->name('home')->middleware('guest');
+Route::get('/home', 'Misc\HomeController@index')->name('home');
+Route::get('/signup', 'Misc\HomeController@index')->name('home')->middleware('guest');
 
 
 // Logged in Routes
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/metronic', 'HomeController@metronic');
-    Route::get('/fudge', 'HomeController@fudge');
+    Route::get('/metronic', 'Misc\HomeController@metronic');
+    Route::get('/fudge', 'Misc\HomeController@fudge');
 
 
     // Protect access the People photos + thumbs
@@ -86,7 +86,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-    Route::get('/group', 'HomeController@group');
+    Route::get('/group', 'Misc\HomeController@group');
+    Route::get('/quick', 'Misc\ImportController@quick');
     Route::get('/import-students', 'Misc\ImportController@importStudents');
     Route::get('/import-adults', 'Misc\ImportController@importAdults');
     Route::get('/import-events', 'Misc\ImportController@importEvents');

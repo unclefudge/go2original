@@ -274,4 +274,31 @@ class ImportController extends Controller {
 
         $to->save();
     }
+
+    public function quick()
+    {
+        echo "<h3>Fix dnl attendance</h3>";
+        $x = 0;
+
+        foreach (EventInstance::all() as $instance) {
+            $count = $instance::where('name', $instance->name)->where('start', $instance->start)->count();
+            if ($count > 1) {
+                $first = EventInstance::where('name', $instance->name)->where('start', $instance->start)->first();
+                echo "[$first->id] $first->eid : $first->name : $first->start<br>";
+                $first->delete();
+                $x++;
+            }
+        }
+        foreach (Attendance::all() as $attend) {
+            echo "*[$attend->id] $attend->eid : $attend->pid : $attend->in<br>";
+            $count = Attendance::where('eid', $attend->eid)->where('pid', $attend->pid)->count();
+            if ($count > 1) {
+                $first = Attendance::where('eid', $attend->eid)->where('pid', $attend->pid)->first();
+                echo "[$first->id] $first->eid : $first->pid : $first->in<br>";
+                //$first->delete();
+                $x++;
+            }
+        }
+        echo "<br>Count: $x<br>";
+    }
 }
