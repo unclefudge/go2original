@@ -32,7 +32,7 @@ class Event extends Model
      */
     public function instances()
     {
-        return $this->hasMany('App\Model\Event\EventInstance');
+        return $this->hasMany('App\Models\Event\EventInstance', 'eid');
     }
 
     /**

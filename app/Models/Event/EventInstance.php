@@ -36,6 +36,16 @@ class EventInstance extends Model
     }
 
     /**
+     * A Event has many Attendance.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendance()
+    {
+        return $this->hasMany('App\Models\Event\Attendance', 'eid');
+    }
+
+    /**
      * Display records last update_by + date
      *
      * @return string

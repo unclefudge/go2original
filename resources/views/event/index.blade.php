@@ -80,9 +80,16 @@
                                 </div>
                                 <div class="row justify-content-center" style="padding: 10px;">
                                     @if ($event->status)
-                                        <div class="col-lg-6">
-                                            <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block"><i class="fa fa-sign-in-alt"></i> &nbsp; Check-In</a>
+                                        <div class="col-5">
+                                            <a href="/checkin/{{ $event->id }}"  class="btn btn-secondary m-btn btn-block"><img src="/img/check-in-screen-med.png" class="img-fluid"></a>
                                         </div>
+                                        <div class="col-5">
+                                            <a href="/event/{{ $event->id }}"  class="btn btn-secondary m-btn btn-block"><img src="/img/overview.png" class="img-fluid"></a>
+                                        </div>
+                                    {{--}}}}
+                                        <div class="col-6">
+                                            <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block"><i class="fa fa-sign-in-alt"></i> &nbsp; Check-In</a>
+                                        </div>--}}
                                     @else
                                         <div class="col-12 text-center" style="padding: 10px">Unable to checkin on inactive events</div>
                                     @endif
@@ -198,7 +205,7 @@
         $(".card").click(function () {
             var split = this.id.split("-");
             var id = split[1];
-            window.location.href = "/event/" + id;
+            //window.location.href = "/event/" + id;
         });
 
     });
