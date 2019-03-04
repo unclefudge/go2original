@@ -272,7 +272,7 @@ class EventController extends Controller {
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             $new = 0;
             if ($instance && $attended) {
-                $checked_in = $attended->in->format('Y-m-d H:i:s');
+                $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s');
                 $method = $attended->method;
                 $new = ($person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $instance->start->timezone(session('tz'))->format('Y-m-d')) ? 1 : 0;
             }
