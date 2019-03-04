@@ -270,9 +270,11 @@ class EventController extends Controller {
         foreach ($people as $person) {
             $checked_in = $method = null;
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
+            $new = 0;
             if ($instance && $attended) {
                 $checked_in = $attended->in->format('Y-m-d H:i:s');
                 $method = $attended->method;
+                $new = ($person->firstAttended->in->timezone(session('tz'))->format('Y-m-d') == $attended->in->timezone(session('tz'))->format('Y-m-d')) ? 1 : 0;
             }
             $people_array[] = [
                 'pid'    => $person->id,
@@ -283,6 +285,7 @@ class EventController extends Controller {
                 'school' => $person->school_name,
                 'photo'  => $person->photo_path,
                 'status' => $person->status,
+                'new' => $new,
                 'method' => $method,
                 'eid'    => $instance->id
             ];

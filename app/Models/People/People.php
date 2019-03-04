@@ -194,6 +194,23 @@ class People extends Model {
     }
 
     /**
+     * Get First Attendance (getter)
+     */
+    public function getFirstAttendedAttribute($eid = '')
+    {
+        return ($eid) ? Attendance::where('pid', $this->id)->where('eid', $eid)->orderBy('in', 'asc')->first() : Attendance::where('pid', $this->id)->orderBy('in', 'asc')->first();
+    }
+
+    /**
+     * Get Lst Attendance (getter)
+     */
+    public function getLastAttendedAttribute($eid = '')
+    {
+        return ($eid) ? Attendance::where('pid', $this->id)->where('eid', $eid)->orderBy('in', 'desc')->first() : Attendance::where('pid', $this->id)->orderBy('in', 'desc')->first();
+
+    }
+
+    /**
      * Get the suburb, state, postcode  (getter)
      */
     public function getAddressFormattedAttribute()

@@ -222,7 +222,11 @@
                     </td>
 
                     {{-- Remaining Columns --}}
-                    <td style="padding: 10px">@{{person.name}} <span v-if="!person.status" style="padding-left: 20px">** INACTIVE **</span></td>
+                    <td style="padding: 10px">
+                        @{{person.name}}
+                        <span v-if="person.new == 1" class="m-badge m-badge--warning m-badge--wide">NEW</span>
+                        <span v-if="!person.status" style="padding-left: 20px">** INACTIVE **</span>
+                    </td>
                     <td style="padding: 10px">@{{person.type}}</td>
                     <td style="padding: 10px">@{{person.grade}}</td>
                     <td style="padding: 10px">@{{person.school}}</td>
