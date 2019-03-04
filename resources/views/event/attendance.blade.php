@@ -262,7 +262,7 @@
             name: "{{ ($instance) ? $instance->name : '' }}",
         },
         count_all: 0, count_students: 0, count_volunteers: 0, searchQuery: "{!! app('request')->input('query') !!}",
-        edit_name: false, show_photos: false, show_checked: false, show_inactive: false,
+        edit_name: false, show_photos: false, show_checked: true, show_inactive: true,
         people: [], columns: ['in', 'name', 'type', 'grade', 'school'],
     };
 
