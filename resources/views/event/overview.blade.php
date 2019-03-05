@@ -5,6 +5,15 @@
 
     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
+    <style type="text/css">
+        .legendColour {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0px 10px 0px 20px;
+            padding-left: 4px;
+        }
+    </style>
     <div class="row">
         <div class="col-12">
             <div class="m-portlet">
@@ -23,6 +32,7 @@
                     <div class="row">
                         <div class="col">
                             <div id="chart-weekly-totals" style="height: 250px;"></div>
+                            <div id="legend2" align="center"></div>
                         </div>
                     </div>
                 </div>
@@ -92,15 +102,6 @@
 <script type="text/javascript">
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    weekly_totals = new Morris.Bar({
-        element: 'chart-weekly-totals',
-        barGap: 3,    // sets the space between bars in a single bar group. Default 3:
-        barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
-        data: [0, 0, 0],
-        xkey: 'y',
-        ykeys: ['a', 'b'],
-        labels: ['Series A', 'Series B']
-    });
 
     // Fire off an AJAX request to load the data
     $.ajax({
@@ -109,8 +110,31 @@
         url: "/stats/event/weekly-totals",
         data: {eid: 2, days: 7}
     }).done(function (data) {
+        weekly_totals = new Morris.Bar({
+            element: 'chart-weekly-totals',
+            barGap: 3,    // sets the space between bars in a single bar group. Default 3:
+            barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
+            stacked: true,
+            resize: true,
+            data: [0, 0, 0],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            barColors: ["#5867dd", "#f4516c",],
+            labels: ['Student', 'New Student']
+        });
         // When the response to the AJAX request comes back render the chart with new data
         weekly_totals.setData(data);
+
+        weekly_totals.options.labels.forEach(function (label, i) {
+            //var legendItem = $('<span align="center"></span> ').text(label).css('color', weekly_totals.options.barColors[i])
+            console.log(label + ' ' + i + ' c:' + weekly_totals.options.barColors[i]);
+            console.log(legendItem);
+            var legendLabel = $('<span>'+label+'</span>');
+            var legendItem = $('<span class="legendColour"></span>').css('background-color', weekly_totals.options.barColors[i]);
+
+            $('#legend2').append(legendItem);
+            $('#legend2').append(legendLabel);
+        })
     }).fail(function () {
         // If there is no communication between the server, show an error
         alert("error occured");

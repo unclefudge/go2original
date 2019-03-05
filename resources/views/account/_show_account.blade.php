@@ -27,12 +27,12 @@
             <div class="col-3">Timezone</div>
             <div class="col">
                 @if ($account->timezone)
-                    {!! $timezones::name($account->timezone)  !!}  {{ $account->updated_at->timezone(Auth::user()->timezone)->format(Auth::user()->dateformat." g:i a") }}
+                    {!! $timezones::name($account->timezone)  !!}
                 @endif
             </div>
         </div>
         <div class="row" style="padding: 5px 0px">
-            <div class="col-3">Dateformat</div>
+            <div class="col-3">Date format</div>
             <div class="col">{!! ($account->dateformat == 'd/m/Y') ? 'Day/Month/Year' : 'Month/Day/Year' !!}</div>
         </div>
     </div>

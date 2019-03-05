@@ -23,6 +23,10 @@ class CronController extends Controller {
     static public function nightly()
     {
         echo "<h1> Nightly Batch Job - " . Carbon::now()->format('d/m/Y g:i a') . "</h1>";
+        //
+        //if (!file_exists(storage_path('app/log/nightly')))
+        //    mkdir(storage_path('app/log/nightly'));
+
         $logfile = storage_path('app/log/nightly/' . Carbon::now()->format('Ymd') . '.txt');
         $log = "Nightly Batch Job\n--------------\n\n";
         $bytes_written = File::put($logfile, $log);
@@ -58,7 +62,7 @@ class CronController extends Controller {
         $log = '';
 
         echo "<h2>Clean-up</h2>";
-        $log .= "Deleting events old then 2 days with no attendees\n";
+        $log .= "Deleting events older then 2 days with no attendees\n";
         $log .= "-------------------------------------------------------------------------\n\n";
 
         $events = EventInstance::all();

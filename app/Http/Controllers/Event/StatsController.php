@@ -31,10 +31,12 @@ class StatsController extends Controller {
         $event = Event::findOrFail(2);
         $debug = false;
         //$event = Event::findOrFail(request('eid'));
-        $da1 = '2018-01-01';
-        $da2 = '2018-12-30';
-        $date1 = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
-        $date2 = Carbon::createFromFormat('Y-m-d H:i', $da2 . '00:00');
+        //$da1 = '2018-01-01';
+        //$da2 = '2018-12-30';
+        //$date1 = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
+        //$date2 = Carbon::createFromFormat('Y-m-d H:i', $da2 . '00:00');
+        $date1 = Carbon::now()->subYear();
+        $date2 = Carbon::now();
 
         if ($debug) {
             echo "Event[$event->id]: $event->name<br>";
@@ -43,7 +45,8 @@ class StatsController extends Controller {
             echo "<h2>Dates</h2>";
         }
 
-        $loop_date = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
+        //$loop_date = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
+        $loop_date = Carbon::now()->subYear();
         $chartdata = [];
         while ($loop_date->lt($date2)) {
             $d1 = Carbon::parse($loop_date->format('Y-m-d'))->startOfWeek();
@@ -53,22 +56,22 @@ class StatsController extends Controller {
             $instance_ids = $event->betweenDates($d1->format('Y-m-d'), $d2->format('Y-m-d'))->pluck('id')->toArray();
             if ($debug) print_r($instance_ids);
             $attendance = Attendance::whereIn('eid', $instance_ids)->get();
-            $a = $b = 0;
-            $b = 4;
+            $student = $new = 0;
             if ($attendance) {
                 if ($debug) echo "<br>Getting attendance<br>";
                 foreach ($attendance as $attend) {
-                    if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] '. $attend->person->name . "<br>";
+                    if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
                     if ($attend->person->isStudent()) {
-                        $a ++;
+                        if ($attend->person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
+                            $new ++;
+                        else
+                            $student ++;
                     }
-                    if ($attend->person->isVolunteer())
-                        $b ++;
                 }
             }
             //echo "DDD: $a:$b<br>";
 
-            $chartdata[] = ['y' => $week, 'a' => $a, 'b' => $b];
+            $chartdata[] = ['y' => $week, 'a' => $student, 'b' => $new];
             $loop_date->addWeek();
         }
 
