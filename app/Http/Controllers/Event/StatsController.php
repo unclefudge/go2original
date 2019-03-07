@@ -234,22 +234,4 @@ class StatsController extends Controller {
         //return abort(404);
     }
 
-
-    /**
-     * Delete the specified resource in storage.
-     */
-    public
-    function destroy()
-    {
-
-        if (request()->ajax()) {
-            $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->delete();
-
-            return response()->json(['success', '200']);
-        }
-
-        return abort(404);
-    }
-
-
 }

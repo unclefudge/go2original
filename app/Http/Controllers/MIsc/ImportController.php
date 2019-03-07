@@ -279,6 +279,7 @@ class ImportController extends Controller {
     public function quick()
     {
 
+        echo "<h3>Fix double attendance</h3>";
         $attendance = Attendance::all();
         foreach($attendance as $attend) {
             $at = Attendance::where('eid', $attend->eid)->where('pid', $attend->pid)->get();

@@ -197,7 +197,7 @@
                                             <div style="font-size: 10px;">{{ ($student->grade) ? "Grade $student->grade" : '' }}</div>
                                         </td>
                                         <td>
-                                            <span style="font-size: 18px">{{ $count/count($instances) * 100 }}%</span><br>
+                                            <span style="font-size: 18px">{{ round($count/count($instances) * 100), 0, PHP_ROUND_HALF_UP) }}%</span><br>
                                         </td>
                                     </tr>
                                 @endforeach
