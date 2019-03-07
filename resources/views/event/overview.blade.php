@@ -59,14 +59,15 @@
                         <div class="col-12">
                             <ul class="nav nav-tabs  m-tabs-line m-tabs-line--primary" role="tablist">
                                 <li class="nav-item m-tabs__item">
-                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_tabs_3_1" role="tab">New Students</a>
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_tabs_3_1" role="tab">New Students ({{ $new_students_last_month->count() }})</a>
                                 </li>
                                 <li class="nav-item m-tabs__item">
-                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_3_2" role="tab">Active Students</a>
+                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_3_2" role="tab">Active Students ({{ $students_last_month3->count() }})</a>
                                 </li>
                                 <li class="nav-item m-tabs__item">
-                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_3_3" role="tab">Absent Students</a>
+                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_3_3" role="tab">Absent Students ({{ $mia_students_last_month3->count() }})</a>
                                 </li>
+                                {{--}}
                                 <li class="nav-item dropdown m-tabs__item">
                                     <a class="nav-link m-tabs__link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Settings</a>
                                     <div class="dropdown-menu">
@@ -76,7 +77,7 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" data-toggle="tab" href="#m_tabs_3_4">Separated link</a>
                                     </div>
-                                </li>
+                                </li>--}}
                             </ul>
                         </div>
                     </div>
@@ -125,8 +126,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @if ($students_last_year->count())
-                                            @foreach ($students_last_year->sortBy('firstname')->sortByDesc('lastEventEver') as $student)
+                                        @if ($students_last_month3->count())
+                                            @foreach ($students_last_month3->sortBy('firstname')->sortByDesc('lastEventEver') as $student)
                                                 <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
                                                     <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
                                                     <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
