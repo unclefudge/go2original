@@ -18,21 +18,28 @@
         <div class="col-12">
             <div class="m-portlet">
                 <div class="m-portlet__body">
-                    {{-- Rego Form Info --}}
+                    {{-- Chart --}}
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-10">
-                            <h4>Weekly Totals</h4>
+                            <h4 id="chart_title"></h4>
                         </div>
                         <div class="col-2">
-                            @if ($event->status)
-                                <a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a>
-                            @endif
+                            <div class="dropdown pull-right">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View</button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                                    <button class="dropdown-item" type="button" id="sel_weekly">Weekly Totals</button>
+                                    <button class="dropdown-item" type="button" id="sel_compare3">3yr Comparison</button>
+                                    <button class="dropdown-item" type="button" id="sel_compare5">5yr Comparison</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div id="chart-weekly-totals" style="height: 250px;"></div>
-                            <div id="legend2" align="center"></div>
+                            <div id="chart_totals" style="height: 500px;">
+                                <div class="text-center" id="chart_loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom" style="margin-top: 110px"></i> Loading...</div>
+                            </div>
+                            <div id="chart_legend" align="center"></div>
                         </div>
                     </div>
                 </div>
@@ -40,37 +47,31 @@
         </div>
     </div>
 
-
-    <div class="row">
-        <div class="col-12">
-            <div class="m-portlet">
-                <div class="m-portlet__body">
-                    {{-- Rego Form Info --}}
-                    <div class="row" style="padding-bottom: 10px">
-                        <div class="col-10">
-                            <h4>Weekly Totals2</h4>
+    {{--}}
+        <div class="row">
+            <div class="col-12">
+                <div class="m-portlet">
+                    <div class="m-portlet__body">
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-10">
+                                <h4>Weekly Totals2</h4>
+                            </div>
+                            <div class="col-2">
+                                @if ($event->status)
+                                    <a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a>
+                                @endif
+                            </div>
                         </div>
-                        <div class="col-2">
-                            @if ($event->status)
-                                <a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div id="chart-weekly-totals2" style="height: 500px;"></div>
+                        <div class="row">
+                            <div class="col">
+                                <div id="chart-weekly-totals2" style="height: 500px;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div>
-        <div class="pull-right" style="font-size: 12px; font-weight: 200; padding: 10px 10px 0 0">
-            {!! $event->displayUpdatedBy() !!}
-        </div>
-    </div>
+    --}}
 @stop
 
 
@@ -102,48 +103,151 @@
 <script type="text/javascript">
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
+    $(document).ready(function () {
+        weeklyTotals()
 
-    // Fire off an AJAX request to load the data
-    $.ajax({
-        type: "POST",
-        dataType: 'json',
-        url: "/stats/event/weekly-totals",
-        data: {eid: 2, days: 7}
-    }).done(function (data) {
-        weekly_totals = new Morris.Bar({
-            element: 'chart-weekly-totals',
-            barGap: 3,    // sets the space between bars in a single bar group. Default 3:
-            barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
-            stacked: true,
-            resize: true,
-            data: [0, 0, 0],
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            barColors: ["#5867dd", "#f4516c",],
-            labels: ['Student', 'New Student']
+        $("#sel_weekly").click(function () {
+            weeklyTotals()
         });
-        // When the response to the AJAX request comes back render the chart with new data
-        weekly_totals.setData(data);
 
-        weekly_totals.options.labels.forEach(function (label, i) {
-            //var legendItem = $('<span align="center"></span> ').text(label).css('color', weekly_totals.options.barColors[i])
-            console.log(label + ' ' + i + ' c:' + weekly_totals.options.barColors[i]);
-            console.log(legendItem);
-            var legendLabel = $('<span>'+label+'</span>');
-            var legendItem = $('<span class="legendColour"></span>').css('background-color', weekly_totals.options.barColors[i]);
+        $("#sel_compare3").click(function () {
+            compareYear3()
+        });
 
-            $('#legend2').append(legendItem);
-            $('#legend2').append(legendLabel);
-        })
-    }).fail(function () {
-        // If there is no communication between the server, show an error
-        alert("error occured");
+        $("#sel_compare5").click(function () {
+            compareYear5()
+        });
+
+
+        function weeklyTotals() {
+            $("#chart_title").text("Weekly Totals");
+            $("#chart_totals").empty();
+            $("#chart_totals").html('<div class="text-center" id="chart_loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom" style="margin-top: 110px"></i> Loading...</div>');
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/stats/event/weekly-totals",
+                data: {eid: "{{ $event->id }}"},
+            }).done(function (data) {
+                $("#chart_totals").empty();
+                chart_totals = new Morris.Bar({
+                    element: 'chart_totals',
+                    barGap: 3,         // sets the space between bars in a single bar group. Default 3:
+                    barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
+                    stacked: true,
+                    resize: true,
+                    data: [0, 0, 0],
+                    xkey: 'y',
+                    ykeys: ['a', 'b'],
+                    barColors: ["#73BEE0", "#E17294",],
+                    labels: ['Students', 'New Students']
+                });
+                // When the response to the AJAX request comes back render the chart with new data
+                chart_totals.setData(data);
+
+                $('#chart_legend').empty();
+                chart_totals.options.labels.forEach(function (label, i) {
+                    var legendLabel = $('<span>' + label + '</span>');
+                    var legendItem = $('<span class="legendColour"></span>').css('background-color', chart_totals.options.barColors[i]);
+                    $('#chart_legend').append(legendItem);
+                    $('#chart_legend').append(legendLabel);
+                })
+                $('#chart_loading').hide();
+
+            }).fail(function () {
+                // If there is no communication between the server, show an error
+                alert("error occured");
+            });
+        }
+
+        function compareYear3() {
+            $("#chart_title").text("3 Year Comparison");
+            $("#chart_totals").empty();
+            $("#chart_totals").html('<div class="text-center" id="chart_loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom" style="margin-top: 110px"></i> Loading...</div>');
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/stats/event/compare-year/3",
+                data: {eid: "{{ $event->id }}"},
+            }).done(function (data) {
+                chart_totals = new Morris.Bar({
+                    element: 'chart_totals',
+                    barGap: 3,         // sets the space between bars in a single bar group. Default 3:
+                    barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
+                    resize: true,
+                    data: [0, 0, 0, 0],
+                    xkey: 'y',
+                    ykeys: ['a', 'b', 'c'],
+                    barColors: ["#73BEE0", "#717CE0", "#CF72E0"],
+                    labels: ['2017', '2018', '2019']
+                });
+                // When the response to the AJAX request comes back render the chart with new data
+                chart_totals.setData(data);
+
+                $('#chart_legend').empty();
+                chart_totals.options.labels.forEach(function (label, i) {
+                    var legendLabel = $('<span>' + label + '</span>');
+                    var legendItem = $('<span class="legendColour"></span>').css('background-color', chart_totals.options.barColors[i]);
+                    $('#chart_legend').append(legendItem);
+                    $('#chart_legend').append(legendLabel);
+                })
+                $('#chart_loading').hide();
+
+            }).fail(function () {
+                // If there is no communication between the server, show an error
+                alert("error occured");
+            });
+        }
+
+        function compareYear5() {
+            $("#chart_title").text("5 Year Comparison");
+            $("#chart_totals").empty();
+            $("#chart_totals").html('<div class="text-center" id="chart_loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom" style="margin-top: 110px"></i> Loading...</div>');
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/stats/event/compare-year/5",
+                data: {eid: "{{ $event->id }}"},
+            }).done(function (data) {
+                chart_totals = new Morris.Bar({
+                    element: 'chart_totals',
+                    barGap: 3,         // sets the space between bars in a single bar group. Default 3:
+                    barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
+                    resize: true,
+                    data: [0, 0, 0, 0, 0, 0],
+                    xkey: 'y',
+                    ykeys: ['a', 'b', 'c', 'd', 'e'],
+                    barColors: ["#73BEE0", "#717CE0", "#CF72E0", '#E17294', '#DFB873'],
+                    labels: ['2015', '2016', '2017', '2018', '2019']
+                });
+                // When the response to the AJAX request comes back render the chart with new data
+                chart_totals.setData(data);
+
+                $('#chart_legend').empty();
+                chart_totals.options.labels.forEach(function (label, i) {
+                    var legendLabel = $('<span>' + label + '</span>');
+                    var legendItem = $('<span class="legendColour"></span>').css('background-color', chart_totals.options.barColors[i]);
+                    $('#chart_legend').append(legendItem);
+                    $('#chart_legend').append(legendLabel);
+                })
+                $('#chart_loading').hide();
+
+            }).fail(function () {
+                // If there is no communication between the server, show an error
+                alert("error occured");
+            });
+        }
+
+/*
+        var chart = am4core.create(
+                "chart-weekly-totals2",
+                am4charts.PieChart
+        );
+        */
     });
-
-    var chart = am4core.create(
-            "chart-weekly-totals2",
-            am4charts.PieChart
-    );
 </script>
 
 
