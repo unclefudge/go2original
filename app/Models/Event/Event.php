@@ -60,7 +60,7 @@ class Event extends Model {
         if ($attendance) {
             foreach ($attendance as $attend) {
                 if ($attend->person->isStudent && !in_array($attend->pid, $students)) {
-                    if ($new && $attend->person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
+                    if ($new && $attend->person->firstEvent($this->id)->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
                         $students[] = $attend->pid;
                     elseif (!$new)
                         $students[] = $attend->pid;
@@ -105,10 +105,12 @@ class Event extends Model {
         $active_students = $this->studentAttendance($weeks)->pluck('id')->toArray();
         //print_r($active_students);
 
-        $people = People::where('status', 1)->where('aid', 1)->get();
+        $instance_ids = $this->instances->pluck('id')->toArray();
+        $previous_attenders = Attendance::whereIn('eid', $instance_ids)->pluck('pid')->toArray();
+        $people = People::find($previous_attenders);
         $mia = [];
         foreach ($people as $person) {
-            if ($person->isStudent && !in_array($person->id, $active_students))
+            if ($person->status && $person->isStudent && !in_array($person->id, $active_students))
                 $mia[] = $person->id;
         }
 

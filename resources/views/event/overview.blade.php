@@ -22,6 +22,8 @@
         $students_last_month = $event->studentAttendance(4);
         $students_last_month3 = $event->studentAttendance(12);
         $students_last_year = $event->studentAttendance(52);
+        $new_students_last_month = $event->studentAttendance(4, 'new');
+        $mia_students_last_month3 = $event->studentMIA(12);
         ?>
         <div class="col-md-8">
             <div class="m-portlet">
@@ -31,21 +33,22 @@
                             <h4>Overview</h4>
                         </div>
                     </div>
+                    {{-- Basic Stats --}}
                     <div class="row" style="color: #fff; font-size: 16px;">
                         <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
-                            <div style="background: #bbb; padding: 10px 20px;">
+                            <div style="background: #9DA8ED; padding: 10px 20px;">
                                 <h3 style="padding-top: 15px">{{ count($students_last_week) }} Students</h3>
                                 <p>Last Week</p>
                             </div>
                         </div>
                         <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
-                            <div style="background: #bbb; padding: 10px 20px">
+                            <div style="background: #9DA8ED; padding: 10px 20px">
                                 <h3 style="padding-top: 15px">{{ count($students_last_month) }} Students</h3>
                                 <p>Last Month</p>
                             </div>
                         </div>
                         <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
-                            <div style="background: #bbb; padding: 10px 20px;">
+                            <div style="background: #9DA8ED; padding: 10px 20px;">
                                 <h3 style="padding-top: 15px">{{ count($students_last_year) }} Students</h3>
                                 <p>Last Year</p>
                             </div>
@@ -93,13 +96,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($event->studentAttendance(4, 'new')->sortBy('firstname')->sortByDesc('firstEvent') as $student)
-                                            <tr id="new-{{ $student->id }}" style="cursor: pointer" class="link-person">
-                                                <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
-                                                <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
-                                                <td>{{ $student->firstEvent->start->diffForHumans() }}</td>
+                                        @if ($new_students_last_month->count())
+                                            @foreach ($new_students_last_month->sortBy('firstname')->sortByDesc('firstEventEver') as $student)
+                                                <tr id="new-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                                    <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
+                                                    <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
+                                                    <td>{{ $student->firstEvent($event->id)->start->diffForHumans() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">No new students</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -116,13 +125,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($event->studentAttendance(12)->sortBy('firstname')->sortByDesc('lastEvent') as $student)
-                                            <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
-                                                <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
-                                                <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
-                                                <td>{{ $student->lastEvent->start->diffForHumans() }}</td>
+                                        @if ($students_last_year->count())
+                                            @foreach ($students_last_year->sortBy('firstname')->sortByDesc('lastEventEver') as $student)
+                                                <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                                    <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
+                                                    <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
+                                                    <td>{{ $student->lastEvent($event->id)->start->diffForHumans() }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">No active students</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -139,13 +154,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($event->studentMIA(12)->sortBy('firstname')->sortByDesc('lastEvent') as $student)
+                                        @if ($mia_students_last_month3->count())
+                                        @foreach ($mia_students_last_month3->sortBy('firstname')->sortByDesc('lastEventEver') as $student)
                                             <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
                                                 <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
                                                 <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
-                                                <td>{{ ($student->lastEvent) ? $student->lastEvent->start->diffForHumans() : 'never'}}</td>
+                                                <td>{{ ($student->lastEvent($event->id)) ? $student->lastEvent($event->id)->start->diffForHumans() : 'never'}}</td>
                                             </tr>
                                         @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="3">No absent students</td>
+                                            </tr>
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>

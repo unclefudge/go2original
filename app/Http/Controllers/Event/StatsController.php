@@ -55,7 +55,7 @@ class StatsController extends Controller {
                 foreach ($attendance as $attend) {
                     if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
                     if ($attend->person->isStudent) {
-                        if ($attend->person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
+                        if ($attend->person->firstEvent($event->id)->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
                             $new ++;
                         else
                             $student ++;

@@ -274,7 +274,7 @@ class EventController extends Controller {
             if ($instance && $attended) {
                 $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s');
                 $method = $attended->method;
-                $new = ($person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $instance->start->timezone(session('tz'))->format('Y-m-d')) ? 1 : 0;
+                $new = ($person->firstEvent()->start->timezone(session('tz'))->format('Y-m-d') == $instance->start->timezone(session('tz'))->format('Y-m-d')) ? 1 : 0;
             }
             $people_array[] = [
                 'pid'    => $person->id,

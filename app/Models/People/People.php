@@ -126,6 +126,60 @@ class People extends Model {
     }
 
     /**
+     * Get First Attendance
+     */
+    public function firstEvent($eid = '')
+    {
+        if ($eid) {
+            $event = EventInstance::select([
+                'events_instance.id', 'events_instance.name', 'events_instance.start',
+                'events_attendance.eid', 'events_attendance.pid'])
+                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
+                ->where('events_attendance.pid', $this->id)
+                ->where('events_instance.eid', $eid)
+                ->orderBy('events_instance.start', 'asc')->get()->first();
+
+            return ($event) ? EventInstance::find($event->eid) : null;
+        } else {
+            $event = EventInstance::select([
+                'events_instance.id', 'events_instance.name', 'events_instance.start',
+                'events_attendance.eid', 'events_attendance.pid'])
+                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
+                ->where('events_attendance.pid', $this->id)
+                ->orderBy('events_instance.start', 'asc')->get()->first();
+
+            return ($event) ? EventInstance::find($event->eid) : null;
+        }
+    }
+
+    /**
+     * Get Last Attendance
+     */
+    public function lastEvent($eid = '')
+    {
+        if ($eid) {
+            $event = EventInstance::select([
+                'events_instance.id', 'events_instance.name', 'events_instance.start',
+                'events_attendance.eid', 'events_attendance.pid'])
+                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
+                ->where('events_attendance.pid', $this->id)
+                ->where('events_instance.eid', $eid)
+                ->orderBy('events_instance.start', 'desc')->get()->first();
+
+            return ($event) ? EventInstance::find($event->eid) : null;
+        } else {
+            $event = EventInstance::select([
+                'events_instance.id', 'events_instance.name', 'events_instance.start',
+                'events_attendance.eid', 'events_attendance.pid'])
+                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
+                ->where('events_attendance.pid', $this->id)
+                ->orderBy('events_instance.start', 'desc')->get()->first();
+
+            return ($event) ? EventInstance::find($event->eid) : null;
+        }
+    }
+
+    /**
      * Get the Full name (first + last)   (getter)
      *
      * @return string;
@@ -176,72 +230,56 @@ class People extends Model {
     /**
      * This person is a Student
      */
-    public function getIsStudentAttribute() {
+    public function getIsStudentAttribute()
+    {
         return (in_array($this->type, ['Student', 'Student/Volunteer'])) ? true : false;
     }
 
     /**
      * This person is a Volunteer
      */
-    public function getIsVolunteerAttribute() {
+    public function getIsVolunteerAttribute()
+    {
         return (in_array($this->type, ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer'])) ? true : false;
     }
 
     /**
      * This person is a Parent
      */
-    public function getIsParentAttribute() {
+    public function getIsParentAttribute()
+    {
         return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
     }
 
     /**
-     * Get First Attendance (getter)
+     * Get First Attendance Ever (getter)
      */
-    public function getFirstEventAttribute($eid = '')
+    public function getFirstEventEverAttribute()
     {
-        if ($eid) {
-            $event = EventInstance::select([
-                'events_instance.id', 'events_instance.name', 'events_instance.start',
-                'events_attendance.eid', 'events_attendance.pid'])
-                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
-                ->where('events_attendance.pid', $this->id)
-                ->where('events_instance.eid', $eid)
-                ->orderBy('events_instance.start', 'asc')->get()->first();
-            return ($event) ? EventInstance::find($event->eid) : null;
-        } else {
-            $event = EventInstance::select([
-                'events_instance.id', 'events_instance.name', 'events_instance.start',
-                'events_attendance.eid', 'events_attendance.pid'])
-                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
-                ->where('events_attendance.pid', $this->id)
-                ->orderBy('events_instance.start', 'asc')->get()->first();
-            return ($event) ? EventInstance::find($event->eid) : null;
-        }
+        $event = EventInstance::select([
+            'events_instance.id', 'events_instance.name', 'events_instance.start',
+            'events_attendance.eid', 'events_attendance.pid'])
+            ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
+            ->where('events_attendance.pid', $this->id)
+            ->orderBy('events_instance.start', 'asc')->get()->first();
+
+        return ($event) ? EventInstance::find($event->eid) : null;
+
     }
 
     /**
-     * Get Lst Attendance (getter)
+     * Get Last Attendance Ever (getter)
      */
-    public function getLastEventAttribute($eid = '')
+    public function getLastEventEverAttribute()
     {
-        if ($eid) {
-            $event = EventInstance::select([
-                'events_instance.id', 'events_instance.name', 'events_instance.start',
-                'events_attendance.eid', 'events_attendance.pid'])
-                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
-                ->where('events_attendance.pid', $this->id)
-                ->where('events_instance.eid', $eid)
-                ->orderBy('events_instance.start', 'desc')->get()->first();
-            return ($event) ? EventInstance::find($event->eid) : null;
-        } else {
-            $event = EventInstance::select([
-                'events_instance.id', 'events_instance.name', 'events_instance.start',
-                'events_attendance.eid', 'events_attendance.pid'])
-                ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
-                ->where('events_attendance.pid', $this->id)
-                ->orderBy('events_instance.start', 'desc')->get()->first();
-            return ($event) ? EventInstance::find($event->eid) : null;
-        }
+        $event = EventInstance::select([
+            'events_instance.id', 'events_instance.name', 'events_instance.start',
+            'events_attendance.eid', 'events_attendance.pid'])
+            ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
+            ->where('events_attendance.pid', $this->id)
+            ->orderBy('events_instance.start', 'desc')->get()->first();
+
+        return ($event) ? EventInstance::find($event->eid) : null;
     }
 
     /**
@@ -317,9 +355,11 @@ class People extends Model {
     }
 
 
-    static public function types() {
+    static public function types()
+    {
         return ['Student' => 'Student', 'Student/Volunteer' => 'Student/Volunteer', 'Parent' => 'Parent', 'Parent/Volunteer' => 'Parent/Volunteer', 'Volunteer' => 'Volunteer'];
     }
+
     /**
      * Display records last update_by + date
      *
