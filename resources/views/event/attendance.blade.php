@@ -164,7 +164,7 @@
                             </div>
                         </div>
 
-                        <!--<pre>@{{ $data }}</pre>
+                        <pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>

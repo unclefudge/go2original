@@ -14,6 +14,203 @@
             padding-left: 4px;
         }
     </style>
+
+    <div class="row">
+        {{-- Overview --}}
+        <?php
+        $students_last_week = $event->studentAttendance(1);
+        $students_last_month = $event->studentAttendance(4);
+        $students_last_month3 = $event->studentAttendance(12);
+        $students_last_year = $event->studentAttendance(52);
+        ?>
+        <div class="col-md-8">
+            <div class="m-portlet">
+                <div class="m-portlet__body" style="padding-bottom: 0px">
+                    <div class="row" style="padding-bottom: 10px">
+                        <div class="col-12">
+                            <h4>Overview</h4>
+                        </div>
+                    </div>
+                    <div class="row" style="color: #fff; font-size: 16px;">
+                        <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
+                            <div style="background: #bbb; padding: 10px 20px;">
+                                <h3 style="padding-top: 15px">{{ count($students_last_week) }} Students</h3>
+                                <p>Last Week</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
+                            <div style="background: #bbb; padding: 10px 20px">
+                                <h3 style="padding-top: 15px">{{ count($students_last_month) }} Students</h3>
+                                <p>Last Month</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
+                            <div style="background: #bbb; padding: 10px 20px;">
+                                <h3 style="padding-top: 15px">{{ count($students_last_year) }} Students</h3>
+                                <p>Last Year</p>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="nav nav-tabs  m-tabs-line m-tabs-line--primary" role="tablist">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_tabs_3_1" role="tab">New Students</a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_3_2" role="tab">Active Students</a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_3_3" role="tab">Absent Students</a>
+                                </li>
+                                <li class="nav-item dropdown m-tabs__item">
+                                    <a class="nav-link m-tabs__link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Settings</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" data-toggle="tab" href="#m_tabs_3_4">Action</a>
+                                        <a class="dropdown-item" data-toggle="tab" href="#m_tabs_3_4">Another action</a>
+                                        <a class="dropdown-item" data-toggle="tab" href="#m_tabs_3_4">Something else here</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" data-toggle="tab" href="#m_tabs_3_4">Separated link</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body" style="padding-top: 0px">
+                    <div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="200" data-scrollbar-shown="true" style="height: 300px; overflow: hidden;">
+                        <div class="tab-content">
+                            {{-- New Students --}}
+                            <div class="tab-pane active show" id="m_tabs_3_1" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>First Check-in</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($event->studentAttendance(4, 'new')->sortBy('firstname')->sortByDesc('firstEvent') as $student)
+                                            <tr id="new-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                                <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
+                                                <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
+                                                <td>{{ $student->firstEvent->start->diffForHumans() }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {{-- Active Students --}}
+                            <div class="tab-pane" id="m_tabs_3_2" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Last Check-in</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($event->studentAttendance(12)->sortBy('firstname')->sortByDesc('lastEvent') as $student)
+                                            <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                                <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
+                                                <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
+                                                <td>{{ $student->lastEvent->start->diffForHumans() }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {{-- Absent Students --}}
+                            <div class="tab-pane" id="m_tabs_3_3" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Last Check-in</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($event->studentMIA(12)->sortBy('firstname')->sortByDesc('lastEvent') as $student)
+                                            <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                                <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
+                                                <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
+                                                <td>{{ ($student->lastEvent) ? $student->lastEvent->start->diffForHumans() : 'never'}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="m_tabs_3_4" role="tabpanel">
+                                something
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Top Attendance --}}
+        <div class="col-md-4">
+            <div class="m-portlet">
+                <div class="m-portlet__head" style="border: none">
+                    <div class="row" style="padding: 25px 0px">
+                        <div class="col-12">
+                            <h4>Top Attendance
+                                <small style="color:#999"> &nbsp; (Past 12 weeks)</small>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body" style="padding-top: 0px">
+                    <div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="400" data-mobile-height="400" style="height: 400px; overflow: hidden;">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tbody>
+                                <?php
+                                $x = 0;
+                                $now = \Carbon\Carbon::now()->timezone(session('tz'));
+                                $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks(12);
+                                $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
+                                ?>
+                                @foreach ($event->studentTopAttendance(12) as $pid => $count )
+                                    <?php
+                                    $x ++;
+                                    $student = \App\Models\People\People::find($pid);
+                                    ?>
+                                    <tr id="top-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                        <td>
+                                            <img src="{{ $student->photoSmPath }}" width="40" class="rounded-circle" style="margin-right: 15px">
+                                        </td>
+                                        <td>
+                                            <div style="font-size: 14px">{{ $student->name }}</div>
+                                            <div style="font-size: 10px;">{{ ($student->grade) ? "Grade $student->grade" : '' }}</div>
+                                        </td>
+                                        <td>
+                                            <span style="font-size: 18px">{{ $count/count($instances) * 100 }}%</span><br>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Weekly Totals --}}
     <div class="row">
         <div class="col-12">
             <div class="m-portlet">
@@ -46,45 +243,10 @@
             </div>
         </div>
     </div>
-
-    {{--}}
-        <div class="row">
-            <div class="col-12">
-                <div class="m-portlet">
-                    <div class="m-portlet__body">
-                        <div class="row" style="padding-bottom: 10px">
-                            <div class="col-10">
-                                <h4>Weekly Totals2</h4>
-                            </div>
-                            <div class="col-2">
-                                @if ($event->status)
-                                    <a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div id="chart-weekly-totals2" style="height: 500px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    --}}
 @stop
 
 
 @section('vendor-scripts')
-    {{--}}
-    <script src="//www.amcharts.com/lib/3/amcharts.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/serial.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/radar.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/pie.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/plugins/tools/polarScatter/polarScatter.min.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/plugins/animate/animate.min.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/plugins/export/export.min.js" type="text/javascript"></script>
-    <script src="//www.amcharts.com/lib/3/themes/light.js" type="text/javascript"></script>--}}
     <script src="//www.amcharts.com/lib/4/core.js"></script>
     <script src="//www.amcharts.com/lib/4/charts.js"></script>
     <script src="//www.amcharts.com/lib/4/maps.js"></script>
@@ -104,6 +266,15 @@
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
     $(document).ready(function () {
+
+        $(".link-person").click(function () {
+            var split = this.id.split("-");
+            var id = split[1];
+            window.location.href = "/people/" + id;
+
+        });
+
+
         weeklyTotals()
 
         $("#sel_weekly").click(function () {
@@ -240,129 +411,6 @@
                 alert("error occured");
             });
         }
-
-/*
-        var chart = am4core.create(
-                "chart-weekly-totals2",
-                am4charts.PieChart
-        );
-        */
     });
 </script>
-
-
-{{--}}
-<script>
-    var amChartsChartsDemo = function () {
-        var e = function () {
-            var e = {
-                1995: [{sector: "Agriculture", size: 6.6}, {sector: "Mining and Quarrying", size: .6}, {sector: "Manufacturing", size: 23.2}, {sector: "Electricity and Water", size: 2.2}, {sector: "Construction", size: 4.5}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 14.6
-                }, {sector: "Transport and Communication", size: 9.3}, {sector: "Finance, real estate and business services", size: 22.5}],
-                1996: [{sector: "Agriculture", size: 6.4}, {sector: "Mining and Quarrying", size: .5}, {sector: "Manufacturing", size: 22.4}, {sector: "Electricity and Water", size: 2}, {sector: "Construction", size: 4.2}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 14.8
-                }, {sector: "Transport and Communication", size: 9.7}, {sector: "Finance, real estate and business services", size: 22}],
-                1997: [{sector: "Agriculture", size: 6.1}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 20.9}, {sector: "Electricity and Water", size: 1.8}, {sector: "Construction", size: 4.2}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 13.7
-                }, {sector: "Transport and Communication", size: 9.4}, {sector: "Finance, real estate and business services", size: 22.1}],
-                1998: [{sector: "Agriculture", size: 6.2}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 21.4}, {sector: "Electricity and Water", size: 1.9}, {sector: "Construction", size: 4.2}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 14.5
-                }, {sector: "Transport and Communication", size: 10.6}, {sector: "Finance, real estate and business services", size: 23}],
-                1999: [{sector: "Agriculture", size: 5.7}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 20}, {sector: "Electricity and Water", size: 1.8}, {sector: "Construction", size: 4.4}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.2
-                }, {sector: "Transport and Communication", size: 10.5}, {sector: "Finance, real estate and business services", size: 24.7}],
-                2000: [{sector: "Agriculture", size: 5.1}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 20.4}, {sector: "Electricity and Water", size: 1.7}, {sector: "Construction", size: 4}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.3
-                }, {sector: "Transport and Communication", size: 10.7}, {sector: "Finance, real estate and business services", size: 24.6}],
-                2001: [{sector: "Agriculture", size: 5.5}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 20.3}, {sector: "Electricity and Water", size: 1.6}, {sector: "Construction", size: 3.1}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.3
-                }, {sector: "Transport and Communication", size: 10.7}, {sector: "Finance, real estate and business services", size: 25.8}],
-                2002: [{sector: "Agriculture", size: 5.7}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 20.5}, {sector: "Electricity and Water", size: 1.6}, {sector: "Construction", size: 3.6}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.1
-                }, {sector: "Transport and Communication", size: 10.7}, {sector: "Finance, real estate and business services", size: 26}],
-                2003: [{sector: "Agriculture", size: 4.9}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 19.4}, {sector: "Electricity and Water", size: 1.5}, {sector: "Construction", size: 3.3}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.2
-                }, {sector: "Transport and Communication", size: 11}, {sector: "Finance, real estate and business services", size: 27.5}],
-                2004: [{sector: "Agriculture", size: 4.7}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 18.4}, {sector: "Electricity and Water", size: 1.4}, {sector: "Construction", size: 3.3}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.9
-                }, {sector: "Transport and Communication", size: 10.6}, {sector: "Finance, real estate and business services", size: 28.1}],
-                2005: [{sector: "Agriculture", size: 4.3}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 18.1}, {sector: "Electricity and Water", size: 1.4}, {sector: "Construction", size: 3.9}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.7
-                }, {sector: "Transport and Communication", size: 10.6}, {sector: "Finance, real estate and business services", size: 29.1}],
-                2006: [{sector: "Agriculture", size: 4}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 16.5}, {sector: "Electricity and Water", size: 1.3}, {sector: "Construction", size: 3.7}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 14.2
-                }, {sector: "Transport and Communication", size: 12.1}, {sector: "Finance, real estate and business services", size: 29.1}],
-                2007: [{sector: "Agriculture", size: 4.7}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 16.2}, {sector: "Electricity and Water", size: 1.2}, {sector: "Construction", size: 4.1}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.6
-                }, {sector: "Transport and Communication", size: 11.2}, {sector: "Finance, real estate and business services", size: 30.4}],
-                2008: [{sector: "Agriculture", size: 4.9}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 17.2}, {sector: "Electricity and Water", size: 1.4}, {sector: "Construction", size: 5.1}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.4
-                }, {sector: "Transport and Communication", size: 11.1}, {sector: "Finance, real estate and business services", size: 28.4}],
-                2009: [{sector: "Agriculture", size: 4.7}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 16.4}, {sector: "Electricity and Water", size: 1.9}, {sector: "Construction", size: 4.9}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.5
-                }, {sector: "Transport and Communication", size: 10.9}, {sector: "Finance, real estate and business services", size: 27.9}],
-                2010: [{sector: "Agriculture", size: 4.2}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 16.2}, {sector: "Electricity and Water", size: 2.2}, {sector: "Construction", size: 4.3}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.7
-                }, {sector: "Transport and Communication", size: 10.2}, {sector: "Finance, real estate and business services", size: 28.8}],
-                2011: [{sector: "Agriculture", size: 4.1}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 14.9}, {sector: "Electricity and Water", size: 2.3}, {sector: "Construction", size: 5}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 17.3
-                }, {sector: "Transport and Communication", size: 10.2}, {sector: "Finance, real estate and business services", size: 27.2}],
-                2012: [{sector: "Agriculture", size: 3.8}, {sector: "Mining and Quarrying", size: .3}, {sector: "Manufacturing", size: 14.9}, {sector: "Electricity and Water", size: 2.6}, {sector: "Construction", size: 5.1}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 15.8
-                }, {sector: "Transport and Communication", size: 10.7}, {sector: "Finance, real estate and business services", size: 28}],
-                2013: [{sector: "Agriculture", size: 3.7}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 14.9}, {sector: "Electricity and Water", size: 2.7}, {sector: "Construction", size: 5.7}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.5
-                }, {sector: "Transport and Communication", size: 10.5}, {sector: "Finance, real estate and business services", size: 26.6}],
-                2014: [{sector: "Agriculture", size: 3.9}, {sector: "Mining and Quarrying", size: .2}, {sector: "Manufacturing", size: 14.5}, {sector: "Electricity and Water", size: 2.7}, {sector: "Construction", size: 5.6}, {
-                    sector: "Trade (Wholesale, Retail, Motor)",
-                    size: 16.6
-                }, {sector: "Transport and Communication", size: 10.5}, {sector: "Finance, real estate and business services", size: 26.5}]
-            }, a = 1995;
-        };
-        return {
-            init: function () {
-                AmCharts.makeChart("m_amcharts_1", {
-                    rtl: mUtil.isRTL(),
-                    type: "serial",
-                    theme: "light",
-                    dataProvider: [{country: "USA", visits: 2025}, {country: "China", visits: 1882}, {country: "Japan", visits: 1809}, {country: "Germany", visits: 1322}, {country: "UK", visits: 1122}, {country: "France", visits: 1114}, {country: "India", visits: 984}, {
-                        country: "Spain",
-                        visits: 711
-                    }, {country: "Netherlands", visits: 665}, {country: "Russia", visits: 580}, {country: "South Korea", visits: 443}, {country: "Canada", visits: 441}, {country: "Brazil", visits: 395}],
-                    valueAxes: [{gridColor: "#FFFFFF", gridAlpha: .2, dashLength: 0}],
-                    gridAboveGraphs: !0,
-                    startDuration: 1,
-                    graphs: [{balloonText: "[[category]]: <b>[[value]]</b>", fillAlphas: .8, lineAlpha: .2, type: "column", valueField: "visits"}],
-                    chartCursor: {categoryBalloonEnabled: !1, cursorAlpha: 0, zoomable: !1},
-                    categoryField: "country",
-                    categoryAxis: {gridPosition: "start", gridAlpha: 0, tickPosition: "start", tickLength: 20},
-                    export: {enabled: !0}
-                }), e()
-            }
-        }
-    }();
-    jQuery(document).ready(function () {
-        amChartsChartsDemo.init()
-    });
-</script>
---}}
 @stop

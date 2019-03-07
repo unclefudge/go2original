@@ -79,26 +79,6 @@ class People extends Model {
         return People::find($this->wwc_verified_by);
     }
 
-    /**
-     * This person is a Student
-     */
-    public function isStudent() {
-        return (in_array($this->type, ['Student', 'Student/Volunteer'])) ? true : false;
-    }
-
-    /**
-     * This person is a Volunteer
-     */
-    public function isVolunteer() {
-        return (in_array($this->type, ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer'])) ? true : false;
-    }
-
-    /**
-     * This person is a Parent
-     */
-    public function isParent() {
-        return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
-    }
 
     /**
      * Attach photo to a person
@@ -191,6 +171,27 @@ class People extends Model {
         $path = "/image/" . $this->attributes['aid'] . '/people/s';
 
         return ($this->attributes['photo']) ? $path . $this->attributes['photo'] : '/img/avatar-user2.png';
+    }
+
+    /**
+     * This person is a Student
+     */
+    public function getIsStudentAttribute() {
+        return (in_array($this->type, ['Student', 'Student/Volunteer'])) ? true : false;
+    }
+
+    /**
+     * This person is a Volunteer
+     */
+    public function getIsVolunteerAttribute() {
+        return (in_array($this->type, ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer'])) ? true : false;
+    }
+
+    /**
+     * This person is a Parent
+     */
+    public function getIsParentAttribute() {
+        return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
     }
 
     /**

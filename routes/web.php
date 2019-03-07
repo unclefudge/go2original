@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/attendance', 'Event\AttendanceController');
 
     // Stats
+    Route::any('/stats/event/{eid}/student/attendance/{weeks}', 'Event\StatsController@studentAttendance');
     Route::any('/stats/event/weekly-totals', 'Event\StatsController@weekTotals');
     Route::any('/stats/event/compare-year/{years}', 'Event\StatsController@compareYear');
 

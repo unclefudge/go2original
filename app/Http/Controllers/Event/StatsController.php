@@ -14,14 +14,6 @@ use Illuminate\Http\Request;
 
 class StatsController extends Controller {
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // Check authorisation
-    }
-
 
     /**
      * Update the specified resource in storage.
@@ -62,7 +54,7 @@ class StatsController extends Controller {
                 if ($debug) echo "<br>Getting attendance<br>";
                 foreach ($attendance as $attend) {
                     if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
-                    if ($attend->person->isStudent()) {
+                    if ($attend->person->isStudent) {
                         if ($attend->person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
                             $new ++;
                         else
@@ -118,8 +110,7 @@ class StatsController extends Controller {
                     if ($attendance) {
                         foreach ($attendance as $attend) {
                             //if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
-                            if ($attend->person->isStudent())
-                                $student ++;
+                            if ($attend->person->isStudent) $student ++;
                         }
                     }
 
@@ -192,10 +183,10 @@ class StatsController extends Controller {
                 if ($debug) echo "<br>Getting attendance<br>";
                 foreach ($attendance as $attend) {
                     if ($debug) echo "$attend->id : " . $attend->person->type . " : " . $attend->person->name . "<br>";
-                    if ($attend->person->isStudent()) {
+                    if ($attend->person->isStudent) {
                         $a ++;
                     }
-                    if ($attend->person->isVolunteer())
+                    if ($attend->person->isVolunteer)
                         $b ++;
                 }
             }
@@ -247,7 +238,8 @@ class StatsController extends Controller {
     /**
      * Delete the specified resource in storage.
      */
-    public function destroy()
+    public
+    function destroy()
     {
 
         if (request()->ajax()) {

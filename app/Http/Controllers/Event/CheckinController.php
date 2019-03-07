@@ -214,7 +214,7 @@ class CheckinController extends Controller {
         $instance = EventInstance::find($eid);
         $people_array = [];
         foreach ($people as $person) {
-            if ($person->isStudent() || $person->isVolunteer()) {
+            if ($person->isStudent || $person->isVolunteer) {
                 $checked_in = $checked_in2 = null;
                 $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
                 if ($instance && $attended)
@@ -234,7 +234,7 @@ class CheckinController extends Controller {
         $people = People::where('status', 1)->where('aid', 1)->orderBy('firstname')->get();
         $people_array = [];
         foreach ($people as $person) {
-            if ($person->isParent()) {
+            if ($person->isParent) {
                 $people_array[] = [
                     'pid'    => $person->id,
                     'name'   => $person->name,

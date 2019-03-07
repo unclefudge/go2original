@@ -29,7 +29,7 @@ class ReportController extends Controller {
         echo "Attended less then 5 times and last was over 6 months ago<br><br>";
         echo "<table><tr><td width='150'>Name</td><td width=100>No. Attendence</td><td width=400>Last Attendance</td><td>Grade</td><td>Address</td></tr>";
         foreach ($people as $person) {
-            if ($person->status && $person->isStudent()) {
+            if ($person->status && $person->isStudent) {
                 $attend_last = Attendance::where('pid', $person->id)->orderBy('in', 'desc')->first();
                 if ($attend_last && $attend_last->in->lt(Carbon::now()->subMonths(6))) {
                     $attend_last = $attend_last->in->format('d/m/Y');

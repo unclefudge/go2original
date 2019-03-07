@@ -279,16 +279,14 @@ class ImportController extends Controller {
     public function quick()
     {
 
-        echo "Getting<br>";
-
-        $pid = 1; // Alex 265  Conn 40
-        $event = EventInstance::select([
-            'events_instance.id', 'events_instance.name', 'events_instance.start',
-            'events_attendance.eid', 'events_attendance.pid'])
-            ->join('events_attendance', 'events_attendance.eid', '=', 'events_instance.id')
-            ->where('events_attendance.pid', $pid)
-        ->orderBy('events_instance.start', 'asc')->get()->first();
-        echo "$event->start  $event->name";
+        $attendance = Attendance::all();
+        foreach($attendance as $attend) {
+            $at = Attendance::where('eid', $attend->eid)->where('pid', $attend->pid)->get();
+            if ($at->count() > 1) {
+                echo $attend->instance->name . " : " . $attend->person->name . "<br>";
+                $attend->delete();
+            }
+        }
         /*
         echo "<h3>Fix dnl attendance</h3>";
         $x = 0;

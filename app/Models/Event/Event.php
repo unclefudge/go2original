@@ -3,15 +3,16 @@
 namespace App\Models\Event;
 
 use App\User;
+use App\Models\People\People;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
-{
+class Event extends Model {
+
     protected $table = 'events';
     protected $fillable = [
         'name', 'recur', 'code', 'day', 'start', 'end', 'grades', 'background',
-        'notes', 'status', 'aid',  'created_by', 'updated_by'];
+        'notes', 'status', 'aid', 'created_by', 'updated_by'];
     protected $dates = ['start', 'end'];
 
     /**
@@ -42,7 +43,76 @@ class Event extends Model
      */
     public function betweenDates($date1, $date2)
     {
-        return EventInstance::where('start', '>=', $date1)->where('start', '<=', $date2)->get();
+        return EventInstance::where('eid', $this->id)->where('start', '>=', $date1)->where('start', '<=', $date2)->get();
+    }
+
+    /**
+     * Student Attendance for last X weeks
+     */
+    public function studentAttendance($weeks, $new = false)
+    {
+        $now = Carbon::now()->timezone(session('tz'));
+        $from = Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+
+        $instance_ids = $this->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
+        $attendance = Attendance::whereIn('eid', $instance_ids)->get();
+        $students = [];
+        if ($attendance) {
+            foreach ($attendance as $attend) {
+                if ($attend->person->isStudent && !in_array($attend->pid, $students)) {
+                    if ($new && $attend->person->firstEvent->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
+                        $students[] = $attend->pid;
+                    elseif (!$new)
+                        $students[] = $attend->pid;
+                }
+            }
+        }
+
+        return People::find($students);
+    }
+
+    /**
+     * StudentAttendance for last X weeks
+     */
+    public function studentTopAttendance($weeks)
+    {
+        $now = Carbon::now()->timezone(session('tz'));
+        $from = Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+
+        $instance_ids = $this->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
+        $attendance = Attendance::whereIn('eid', $instance_ids)->get();
+        $students = [];
+        if ($attendance) {
+            foreach ($attendance as $attend) {
+                if ($attend->person->isStudent) {
+                    if (isset($students[$attend->pid]))
+                        $students[$attend->pid] = $students[$attend->pid] + 1;
+                    else
+                        $students[$attend->pid] = 1;
+                }
+            }
+        }
+        arsort($students, true);
+
+        return $students;
+    }
+
+    /**
+     * Student MIA (Missing in Action) for last X weeks
+     */
+    public function studentMIA($weeks)
+    {
+        $active_students = $this->studentAttendance($weeks)->pluck('id')->toArray();
+        //print_r($active_students);
+
+        $people = People::where('status', 1)->where('aid', 1)->get();
+        $mia = [];
+        foreach ($people as $person) {
+            if ($person->isStudent && !in_array($person->id, $active_students))
+                $mia[] = $person->id;
+        }
+
+        return People::find($mia);
     }
 
 
@@ -51,8 +121,9 @@ class Event extends Model
      */
     public function getBackgroundPathAttribute()
     {
-        $path = "/image/".$this->attributes['aid'].'/events/';
-        return ($this->attributes['background']) ? $path.$this->attributes['background'].'?'.rand(1, 32000) : '/img/bg-event.jpg';
+        $path = "/image/" . $this->attributes['aid'] . '/events/';
+
+        return ($this->attributes['background']) ? $path . $this->attributes['background'] . '?' . rand(1, 32000) : '/img/bg-event.jpg';
     }
 
     /**
@@ -60,9 +131,11 @@ class Event extends Model
      */
     public function getBackgroundMedPathAttribute()
     {
-        $path = "/image/".$this->attributes['aid'].'/events/m';
-        return ($this->attributes['background']) ? $path.$this->attributes['background'].'?'.rand(1, 32000) : '/img/bg-event.jpg';
+        $path = "/image/" . $this->attributes['aid'] . '/events/m';
+
+        return ($this->attributes['background']) ? $path . $this->attributes['background'] . '?' . rand(1, 32000) : '/img/bg-event.jpg';
     }
+
 
     /**
      * Display records last update_by + date

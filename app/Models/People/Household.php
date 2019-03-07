@@ -54,7 +54,7 @@ class Household extends Model {
     {
         $adults = [];
         foreach ($this->members as $member) {
-            if (!$member->isStudent())
+            if (!$member->isStudent)
                 $adults[] = $member->id;
         }
         return People::find($adults);
@@ -67,7 +67,7 @@ class Household extends Model {
     {
         $students = [];
         foreach ($this->members as $member) {
-            if ($member->isStudent())
+            if ($member->isStudent)
                 $students[] = $member->id;
         }
         return People::find($students);
