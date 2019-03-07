@@ -284,7 +284,7 @@ class ImportController extends Controller {
             $at = Attendance::where('eid', $attend->eid)->where('pid', $attend->pid)->get();
             if ($at->count() > 1) {
                 echo $attend->instance->name . " : " . $attend->person->name . "<br>";
-                //$attend->delete();
+                $attend->delete();
             }
         }
         /*
