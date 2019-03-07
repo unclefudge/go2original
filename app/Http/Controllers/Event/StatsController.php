@@ -84,7 +84,7 @@ class StatsController extends Controller {
      */
     public function compareYear($years)
     {
-        $event = Event::findOrFail(2);
+        $event = Event::findOrFail(request('eid'));
         $debug = false;
         //$event = Event::findOrFail(request('eid'));
         //$da1 = '2018-01-01';
