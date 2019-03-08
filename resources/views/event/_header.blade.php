@@ -36,8 +36,9 @@
 
     <ul class="member-bar-menu" style="padding-right: 20px">
         <li class="member-bar-item {{ $active_overview }}"><i class="iicon-peoplechart"></i><a class="member-bar-link" href="/event/{{ $event->id }}" title="Overview">OVERVIEW</a></li>
-        <li class="member-bar-item {{ $active_settings }}"><i class="iicon-settings"></i><a class="member-bar-link" href="/event/{{ $event->id }}/settings" title="Settings">SETTINGS</a></li>
         <li class="member-bar-item {{ $active_attendance }}"><i class="iicon-people"></i><a class="member-bar-link" href="/event/{{ $event->id }}/attendance/0" title="Attendance">
                 <span class="d-none d-md-block">ATTENDANCE</span><span class="d-md-none">ATTEND</span></a></li>
+        <li class="member-bar-item {{ $active_settings }}"><i class="iicon-settings"></i><a class="member-bar-link" href="/event/{{ $event->id }}/settings" title="Settings">SETTINGS</a></li>
+
     </ul>
 </div>
