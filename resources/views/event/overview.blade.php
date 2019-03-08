@@ -162,13 +162,13 @@
                                         </thead>
                                         <tbody>
                                         @if ($mia_students_last_month3->count())
-                                        @foreach ($mia_students_last_month3->sortBy('firstname')->sortByDesc('lastEventEver') as $student)
-                                            <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
-                                                <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
-                                                <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
-                                                <td>{{ ($student->lastEvent($event->id)) ? $student->lastEvent($event->id)->start->diffForHumans() : 'never'}}</td>
-                                            </tr>
-                                        @endforeach
+                                            @foreach ($mia_students_last_month3->sortBy('firstname')->sortByDesc('lastEventEver') as $student)
+                                                <tr id="active-{{ $student->id }}" style="cursor: pointer" class="link-person">
+                                                    <td><img src="{{ $student->photoSmPath }}" width="30" class="rounded-circle" style="margin-right: 15px"> {{ $student->name }}</td>
+                                                    <td>{!!  ($student->phone) ? "<i class='fa fa-phone' style='padding-right: 4px'></i>$student->phone" : '' !!}</td>
+                                                    <td>{{ ($student->lastEvent($event->id)) ? $student->lastEvent($event->id)->start->diffForHumans() : 'never'}}</td>
+                                                </tr>
+                                            @endforeach
                                         @else
                                             <tr>
                                                 <td colspan="3">No absent students</td>
@@ -195,7 +195,7 @@
                     <div class="row" style="padding: 25px 0px">
                         <div class="col-12">
                             <h4>Top Attendance
-                                <small style="color:#999"> &nbsp; (Past 12 weeks)</small>
+                                <small style="color:#999"> &nbsp; {{ ($event->id == 2) ? "(Past 12 months)" : "(Past 12 weeks)" }}</small>
                             </h4>
                         </div>
                     </div>
@@ -210,8 +210,9 @@
                                 $now = \Carbon\Carbon::now()->timezone(session('tz'));
                                 $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks(12);
                                 $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
+                                $list = ($event->id == 2) ? $event->studentTopAttendance(12) : $event->studentTopAttendance(52);
                                 ?>
-                                @foreach ($event->studentTopAttendance(12) as $pid => $count )
+                                @foreach ($list as $pid => $count )
                                     <?php
                                     $x ++;
                                     $student = \App\Models\People\People::find($pid);
@@ -225,7 +226,9 @@
                                             <div style="font-size: 10px;">{{ ($student->grade) ? "Grade $student->grade" : '' }}</div>
                                         </td>
                                         <td>
-                                            <span style="font-size: 18px">{{ round($count/count($instances) * 100, 0, PHP_ROUND_HALF_UP) }}%</span><br>
+                                            <div style="font-size: 18px" data-container="body" data-toggle="m-popover" data-placement="left" data-original-title="" title="" data-content="{{ $count }}/{{ count($instances) }}">
+                                                {{ round($count/count($instances) * 100, 0, PHP_ROUND_HALF_UP) }}%
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
