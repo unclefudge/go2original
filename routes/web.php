@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Protect access the People photos + thumbs
     Route::get('/image/{aid}/{type}/{filename}', 'Misc\FileController@getPhoto'); //->where('filename', '^(.+)\/([^\/]+)$');
+    Route::get('/log/{aid}/{type}/{filename}', 'Misc\FileController@getLog'); //->where('filename', '^(.+)\/([^\/]+)$');
+
     //Route::get('/storage/{aid}/thumbs/{filename}', 'Misc\FileController@getThumb'); //->where('filename', '^(.+)\/([^\/]+)$');
 
     //Route::get('/data/people', 'Account\AccountController@getPeople');
@@ -84,6 +86,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/stats/event/{eid}/student/attendance/{weeks}', 'Event\StatsController@studentAttendance');
     Route::any('/stats/event/weekly-totals', 'Event\StatsController@weekTotals');
     Route::any('/stats/event/compare-year/{years}', 'Event\StatsController@compareYear');
+
+    // Reports
+    Route::any('/report/nightly', 'Misc\ReportController@nightly');
 
 
     Route::get('/group', 'Misc\HomeController@group');

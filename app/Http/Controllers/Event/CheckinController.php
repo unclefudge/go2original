@@ -106,6 +106,7 @@ class CheckinController extends Controller {
             $people_request['state'] = null;
 
         $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        dd($people_request);
 
         // Create Student
         $student = People::create($people_request);

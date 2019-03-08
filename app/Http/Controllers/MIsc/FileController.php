@@ -21,4 +21,12 @@ class FileController extends Controller {
 
         abort(404);
     }
+
+    public function getLog($aid, $type, $filename)
+    {
+        if (session('aid') == $aid)
+            return response()->download(storage_path("app/log/$type/$filename"), null, [], null);
+
+        abort(404);
+    }
 }

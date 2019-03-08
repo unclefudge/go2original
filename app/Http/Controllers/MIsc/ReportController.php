@@ -44,4 +44,11 @@ class ReportController extends Controller {
         }
         echo "</table>";
     }
+
+    public function nightly()
+    {
+        $files = array_reverse(array_diff(scandir(storage_path('/app/log/nightly')), array('.', '..')));
+
+        return view('report/nightly', compact('files'));
+    }
 }
