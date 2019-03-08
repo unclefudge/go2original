@@ -208,9 +208,10 @@
                                 <?php
                                 $x = 0;
                                 $now = \Carbon\Carbon::now()->timezone(session('tz'));
-                                $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks(12);
+                                $weeks = ($event->id == 3) ? 52 : 12;
+                                $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
                                 $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
-                                $list = ($event->id == 3) ? $event->studentTopAttendance(52) : $event->studentTopAttendance(12);
+                                $list = $event->studentTopAttendance($weeks);
                                 ?>
                                 @foreach ($list as $pid => $count )
                                     <?php
@@ -278,13 +279,9 @@
 
 
 @section('vendor-scripts')
-    <script src="//www.amcharts.com/lib/4/core.js"></script>
-    <script src="//www.amcharts.com/lib/4/charts.js"></script>
-    <script src="//www.amcharts.com/lib/4/maps.js"></script>
 @stop
 
 @section('page-styles')
-    <link href="//www.amcharts.com/lib/3/plugins/export/export.css" rel="stylesheet" type="text/css"/>
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}

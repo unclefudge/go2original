@@ -68,9 +68,84 @@
             padding-top: 5px;
         }
 
+        .legendColour {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0px 10px 0px 20px;
+            padding-left: 4px;
+        }
+
     </style>
 
     <div id="vue-app">
+        {{-- Chats / Stats --}}
+        <div class="row" style="min-height: 300px;">
+            {{-- Genders Chart --}}
+            <div class="col-md-3">
+                <div class="m-portlet  m-portlet--full-height ">
+                    <div class="m-portlet__body">
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-12">
+                                <h4>Genders</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="gender_chart" style="height: 150px;"></div>
+                                <div id="gender_legend" align="center"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- Grades Chart --}}
+            <div class="col-md-4">
+                <div class="m-portlet  m-portlet--full-height ">
+                    <div class="m-portlet__body">
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-12">
+                                <h4>Grades</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div id="grade_chart" style="height: 170px;"></div>
+                                </div>
+                                <div class="col-6">
+                                    <div id="grade_legend" align=""></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- Schools Chart --}}
+            <div class="col-md-5">
+                <div class="m-portlet  m-portlet--full-height ">
+                    <div class="m-portlet__body">
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-12">
+                                <h4>Schools</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="school_chart" style="height: 170px;"></div>
+                                </div>
+                                {{--}}
+                                <div class="col-6">
+                                    <div id="school_legend" align=""></div>
+                                </div>--}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <div class="m-portlet">
@@ -90,6 +165,8 @@
                         <input v-model="xx.estatus" type="hidden" value="{{ $event->status }}">
                         <input v-model="xx.instance.id" type="hidden" value="{{ ($instance) ? $instance->id : 0 }}">
                         <input v-model="xx.date" type="hidden" value="{{ $date }}">
+                        <input v-model="xx.count_male" type="hidden" value="">
+                        <input v-model="xx.count_female" type="hidden" value="">
 
                         <div v-if="xx.date == 0">
                             <br>No {{ $event->name }} events have occured yet. Please add one.
@@ -164,7 +241,7 @@
                             </div>
                         </div>
 
-                        <!--<pre>@{{ $data }}</pre>
+                        <pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>
@@ -261,7 +338,9 @@
             id: "{{ ($instance) ? $instance->id : 0 }}",
             name: "{{ ($instance) ? $instance->name : '' }}",
         },
-        count_all: 0, count_students: 0, count_volunteers: 0, searchQuery: "{!! app('request')->input('query') !!}",
+        count_all: 0, count_students: 0, count_volunteers: 0, count_male: 0, count_female: 0,
+        count_grades: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}, count_schools: {},
+        searchQuery: "{!! app('request')->input('query') !!}",
         edit_name: false, show_photos: false, show_checked: true, show_inactive: true,
         people: [], columns: ['in', 'name', 'type', 'grade', 'school'],
     };
@@ -396,7 +475,7 @@
 
                 // Set cursor to defaul tfor inactive people to ensure user doesn't think they can click + update
                 if (!person.status)
-                        str = str + '; cursor:default';
+                    str = str + '; cursor:default';
 
                 return str;
 
@@ -414,19 +493,7 @@
                     }.bind(this));
             },
             updateAttendance: function () {
-                this.xx.count_all = 0;
-                this.xx.count_students = 0;
-                this.xx.count_volunteers = 0;
-                this.xx.people.forEach(function (person) {
-                    if (person.in) {
-                        this.xx.count_all++;
-                        if (person.type == 'Student' || person.type == 'Student/Volunteer')
-                            this.xx.count_students++;
-                        if (person.type == 'Volunteer' || person.type == 'Student/Volunteer' || person.type == 'Parent/Volunteer')
-                            this.xx.count_volunteers++;
-                    }
-                });
-
+                countAttendance();
             }
         }
     })
@@ -472,21 +539,53 @@
                 this.xx.show_photos = !this.xx.show_photos;
             },
             countAttendance: function () {
-                this.xx.count_all = 0;
-                this.xx.count_students = 0;
-                this.count_volunteers = 0;
-                this.xx.people.forEach(function (person) {
-                    if (person.in) {
-                        this.xx.count_all++;
-                        if (person.type == 'Student' || person.type == 'Student/Volunteer')
-                            this.xx.count_students++;
-                        if (person.type == 'Volunteer' || person.type == 'Student/Volunteer' || person.type == 'Parent/Volunteer')
-                            this.xx.count_volunteers++;
-                    }
-                });
+                countAttendance();
             }
         },
     });
+
+    function countAttendance() {
+        this.xx.count_all = 0;
+        this.xx.count_students = 0;
+        this.xx.count_volunteers = 0;
+        this.xx.count_male = 0;
+        this.xx.count_female = 0;
+        this.xx.count_grades = {'1': 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, "8": 0, "9": 0, '10': 0, 11: 0, 12: 0, Unknown: 0};
+        this.xx.count_schools = {Other: 0};
+        this.xx.people.forEach(function (person) {
+            if (person.in) {
+                this.xx.count_all++;
+                if (person.type == 'Student' || person.type == 'Student/Volunteer') {
+                    this.xx.count_students++;
+                    // Gender
+                    if (person.gender == 'Male')
+                        this.xx.count_male++;
+                    if (person.gender == 'Female')
+                        this.xx.count_female++;
+                    // Grade
+                    if (person.grade)
+                        this.xx.count_grades[person.grade]++;
+                    else
+                        this.xx.count_grades['Unknown']++;
+
+                    if (person.school) {
+                        if (person.school in this.xx.count_schools)
+                            this.xx.count_schools[person.school]++;
+                        else
+                            this.xx.count_schools[person.school] = 1;
+                    } else
+                        this.xx.count_schools['Other']++;
+
+                    // School
+                }
+                if (person.type == 'Volunteer' || person.type == 'Student/Volunteer' || person.type == 'Parent/Volunteer')
+                    this.xx.count_volunteers++;
+            }
+        });
+        drawGenderChart();
+        drawGradeChart();
+        drawSchoolChart();
+    }
 
 
     // Update Event Instance in Database Attendance and return a 'promise'
@@ -509,6 +608,98 @@
                 }
             });
         });
+    }
+
+    function drawGenderChart() {
+        $("#gender_chart").empty();
+        genderChart = new Morris.Donut({
+            element: 'gender_chart',
+            resize: true,
+            data: [
+                {label: "Male", value: Math.round(this.xx.count_male / this.xx.count_students * 100)},
+                {label: "Female", value: Math.round(this.xx.count_female / this.xx.count_students * 100)},
+            ],
+            //backgroundColor: '#ddd',
+            labelColor: '#000',
+            colors: ['#73BEE0', '#E072D5',],
+            formatter: function (x) {
+                return x + "%"
+            }
+        });
+
+        var label_male = "<span class='legendColour' style='background:#73BEE0'></span><span>" + this.xx.count_male + " Male</span>";
+        var label_female = "<span class='legendColour' style='background:#E072D5'></span><span>" + this.xx.count_female + " Female</span>";
+        $('#gender_legend').html(label_male + label_female);
+    }
+
+    function drawGradeChart() {
+        $("#grade_chart").empty();
+        gradeChart = new Morris.Donut({
+            element: 'grade_chart',
+            resize: true,
+            data: [
+                {label: "Grade 6", value: Math.round(this.xx.count_grades[6] / this.xx.count_students * 100)},
+                {label: "Grade 7", value: Math.round(this.xx.count_grades[7] / this.xx.count_students * 100)},
+                {label: "Grade 8", value: Math.round(this.xx.count_grades[8] / this.xx.count_students * 100)},
+                {label: "Grade 9", value: Math.round(this.xx.count_grades[9] / this.xx.count_students * 100)},
+                {label: "Grade 10", value: Math.round(this.xx.count_grades[10] / this.xx.count_students * 100)},
+                {label: "Grade 11", value: Math.round(this.xx.count_grades[11] / this.xx.count_students * 100)},
+                {label: "Grade 12", value: Math.round(this.xx.count_grades[12] / this.xx.count_students * 100)},
+            ],
+            //backgroundColor: '#ddd',
+            labelColor: '#000',
+            colors: ['#73BEE0', '#739EE1', '#717CE0', '#8B72E0', '#AC72E0', '#CF72E0', '#E072D5'],
+            formatter: function (x) {
+                return x + "%"
+            }
+        });
+
+        $('#grade_legend').empty();
+        var grade = 6;
+        gradeChart.options.colors.forEach(function (color, i) {
+            var legendLabel = $('<span>Grade ' + grade++ + '</span><br>');
+            var legendItem = $('<span class="legendColour"></span>').css('background-color', color);
+            $('#grade_legend').append(legendItem);
+            $('#grade_legend').append(legendLabel);
+        })
+    }
+
+
+    function drawSchoolChart() {
+        $("#school_chart").empty();
+
+        // Set data
+        var data = [];
+        var labels = [];
+        var colours = ['#73BEE0', '#739EE1', '#717CE0', '#8B72E0', '#AC72E0', '#CF72E0', '#E072D5', '#E072B4', '#E17294', '#E07473', '#E09772', '#DFB873'];
+
+        Object.keys(this.xx.count_schools).forEach(function (key, index) {
+            data.push({y: key, a: this.xx.count_schools[key]});
+            labels.push(key);
+        });
+
+        schoolChart = new Morris.Bar({
+            element: 'school_chart',
+            barGap: 3,         // sets the space between bars in a single bar group. Default 3:
+            barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
+            stacked: true,
+            resize: true,
+            data: data,
+            xkey: 'y',
+            ykeys: ['a'],
+            //xLabelAngle: '70',
+            axes: 'y',
+            barColors: colours,
+            labels: labels,
+        });
+
+        $('#school_legend').empty();
+        schoolChart.options.labels.forEach(function (label, i) {
+            var legendLabel = $('<span>' + label + '</span><br>');
+            var legendItem = $('<span class="legendColour"></span>').css('background-color', schoolChart.options.barColors[i]);
+            $('#school_legend').append(legendItem);
+            $('#school_legend').append(legendLabel);
+        })
     }
 </script>
 @stop

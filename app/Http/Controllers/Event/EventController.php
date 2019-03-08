@@ -281,6 +281,7 @@ class EventController extends Controller {
                 'in'     => $checked_in,
                 'name'   => $person->name,
                 'type'   => $person->type,
+                'gender'  => $person->gender,
                 'grade'  => $person->grade,
                 'school' => $person->school_name,
                 'photo'  => $person->photo_path,
