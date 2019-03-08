@@ -195,7 +195,7 @@
                     <div class="row" style="padding: 25px 0px">
                         <div class="col-12">
                             <h4>Top Attendance
-                                <small style="color:#999"> &nbsp; {{ ($event->id == 2) ? "(Past 12 months)" : "(Past 12 weeks)" }}</small>
+                                <small style="color:#999"> &nbsp; {{ ($event->id == 3) ? "(Past 12 months)" : "(Past 12 weeks)" }}</small>
                             </h4>
                         </div>
                     </div>
@@ -210,7 +210,7 @@
                                 $now = \Carbon\Carbon::now()->timezone(session('tz'));
                                 $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks(12);
                                 $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
-                                $list = ($event->id == 2) ? $event->studentTopAttendance(12) : $event->studentTopAttendance(52);
+                                $list = ($event->id == 3) ? $event->studentTopAttendance(12) : $event->studentTopAttendance(52);
                                 ?>
                                 @foreach ($list as $pid => $count )
                                     <?php
