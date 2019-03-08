@@ -13,6 +13,7 @@ use App\Models\People\Household;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
+use Jenssegers\Agent\Agent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -71,12 +72,13 @@ class CheckinController extends Controller {
     public function studentRegister($id)
     {
         $instance = EventInstance::findOrFail($id);
+        $agent = new Agent();
+
 
         // Validate
         $rules = [
             'firstname'        => 'required',
             'lastname'         => 'required',
-            'photo'            => 'required',
             'dob'              => 'sometimes|nullable|date_format:' . session('df'),
             'parent_id'        => 'required|not_in:0',
             'parent_firstname' => 'required_if:parent_id,add',
@@ -84,6 +86,11 @@ class CheckinController extends Controller {
             'parent_phone'     => 'required_if:parent_id,add',
             'parent_email'     => 'required_if:parent_id,add',
         ];
+
+        // Require photo for tablets/mobile devices only
+        if (!$agent->isDesktop())
+            $rules['photo'] = 'required';
+
         $mesgs = [
             'firstname.required'           => 'The first name is required.',
             'lastname.required'            => 'The last name is required.',
@@ -98,7 +105,7 @@ class CheckinController extends Controller {
         ];
         request()->validate($rules, $mesgs);
 
-        $people_request = request()->except('photo', 'parent_id', 'school_id');
+        $people_request = request()->except('photo', 'parent_id');
         $people_request['type'] = "Student";
 
         // Empty State field if rest of address fields are empty
@@ -169,12 +176,12 @@ class CheckinController extends Controller {
         // Validate
         $rules = [
             'firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'),
-            'wwc_no' => 'required', 'wwc_exp'   => 'required|date_format:' . session('df')];
+            'wwc_no'    => 'required', 'wwc_exp' => 'required|date_format:' . session('df')];
         $mesgs = [
             'firstname.required'  => 'The first name is required.',
             'lastname.required'   => 'The last name is required.',
             'dob.date_format'     => 'The birthday format needs to be ' . session('df-datepicker'),
-            'wwc_no.required'    => 'The registration no. is required',
+            'wwc_no.required'     => 'The registration no. is required',
             'wwc_exp.required'    => 'The expiry is required',
             'wwc_exp.date_format' => 'The expiry format needs to be ' . session('df-datepicker'),
         ];

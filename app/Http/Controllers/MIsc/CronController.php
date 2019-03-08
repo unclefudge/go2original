@@ -23,9 +23,9 @@ class CronController extends Controller {
     static public function nightly()
     {
         echo "<h1> Nightly Batch Job - " . Carbon::now()->format('d/m/Y g:i a') . "</h1>";
-        //
-        //if (!file_exists(storage_path('app/log/nightly')))
-        //    mkdir(storage_path('app/log/nightly'));
+
+        if (!file_exists(storage_path('app/log/nightly')))
+            mkdir(storage_path('app/log/nightly'));
 
         $logfile = storage_path('app/log/nightly/' . Carbon::now()->format('Ymd') . '.txt');
         $log = "Nightly Batch Job\n--------------\n\n";
@@ -35,7 +35,7 @@ class CronController extends Controller {
         CronController::cleanup();
 
         echo "<h1>ALL DONE - NIGHTLY COMPLETE</h1>";
-        $log .= "\nALL DONE - NIGHTLY COMPLETE\n\n\n";
+        $log = "\nALL DONE - NIGHTLY COMPLETE\n\n\n";
 
         $bytes_written = File::append($logfile, $log);
         if ($bytes_written === false) die("Error writing to file");
@@ -44,7 +44,6 @@ class CronController extends Controller {
     static public function verifyNightly()
     {
         $logfile = storage_path('app/log/nightly/' . Carbon::now()->format('Ymd') . '.txt');
-        //echo "Log: $log<br>";
         if (strpos(file_get_contents($logfile), "ALL DONE - NIGHTLY COMPLETE") !== false) {
             //echo "successful";
             //Mail::to('support@openhands.com.au')->send(new \App\Mail\Misc\VerifyNightly("was Successful"));

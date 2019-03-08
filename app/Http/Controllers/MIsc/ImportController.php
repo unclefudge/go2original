@@ -30,7 +30,7 @@ class ImportController extends Controller {
         //$account = \App\Models\Account\Account::create(['name' => 'Young Life Hobart', 'slug' => 'yl'])->first();
         $school = School::where('name', 'Other')->first();
         if (!$school)
-            $other_school = School::create(['name' => 'Other', 'aid' => session('aid')]);
+            $other_school = School::create(['name' => 'Other', 'grade_from' => 1, 'grade_to' => 12]);
 
         $row = 0;
         if (($handle = fopen(public_path("students.csv"), "r")) !== false) {
@@ -59,7 +59,7 @@ class ImportController extends Controller {
 
                 $school = School::where('name', $school_name)->first();
                 if (!$school)
-                    $school = School::create(['name' => $school_name, 'aid' => 1])->first();
+                    $school = School::create(['name' => $school_name, 'grade_from' => 1, 'grade_to' => 12])->first();
 
                 $people = People::where('firstname', $firstname)->where('lastname', $lastname)->first();
                 if (!$people) {

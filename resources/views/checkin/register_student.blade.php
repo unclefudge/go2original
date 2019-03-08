@@ -60,6 +60,8 @@
                         {!! Form::model('people', ['action' => ['Event\CheckinController@studentRegister', $instance->id], 'files' => true]) !!}
                         @include('form-error')
 
+
+
                         <div class="row" style="padding-bottom: 10px">
                             <div class="col-md-5">
                                 <h4>Student Registration</h4>
@@ -73,14 +75,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group m-form__group {!! fieldHasError('firstname', $errors) !!}">
-                                    {!! Form::label('firstname', 'First Name', ['class' => 'form-control-label']) !!}
+                                    <label for="firstname" class="form-control-label">First Name {!! REQUIRED_FIELD !!}</label>
                                     {!! Form::text('firstname', null, ['class' => 'form-control', 'required']) !!}
                                     {!! fieldErrorMessage('firstname', $errors) !!}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group {!! fieldHasError('lastname', $errors) !!}">
-                                    {!! Form::label('lastname', 'Last Name', ['class' => 'control-label']) !!}
+                                    <label for="lastname" class="form-control-label">Last Name {!! REQUIRED_FIELD !!}</label>
                                     {!! Form::text('lastname', null, ['class' => 'form-control', 'required']) !!}
                                     {!! fieldErrorMessage('lastname', $errors) !!}
                                 </div>
@@ -188,15 +190,15 @@
                         {{-- Vue Parent Info --}}
                         {{---------------------}}
                         <div id="parent_info">
-                            <input v-model="xx.parent.id" type="hidden" name="parent_id" value="0">
+                            <input v-model="xx.parent.id" type="hidden" name="parent_id" value="{{ old('parent_id', 0) }}">
 
                             {{-- Parent / Guardian Search --}}
                             <div class="row">
                                 <div v-if="xx.parent_search" class="col-12">
                                     <div class="{!! fieldHasError('parent_id', $errors) !!}">
-                                        {!! Form::label('parent_name', 'Parent / Guardian Name', ['class' => 'form-control-label']) !!}
+                                        <label for="parent_name" class="form-control-label">Parent / Guardian Name {!! REQUIRED_FIELD !!}</label>
                                         <div class="input-group">
-                                            <input v-on:click="xx.search_options = true" v-model="xx.searchQuery" type="search" class="form-control m-input" name="parent_name" placeholder="Search for parent">
+                                            <input v-on:click="xx.search_options = true" v-model="xx.searchQuery" type="search" class="form-control m-input" name="parent_name" placeholder="Search for parent" value="{{ old('parent_name', '' ) }}">
                                             <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                                         </div>
                                         {!! fieldErrorMessage('parent_id', $errors) !!}
@@ -216,14 +218,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group m-form__group {!! fieldHasError('parent_firstname', $errors) !!}">
-                                            {!! Form::label('parent_firstname', 'Parent / Guardian First Name', ['class' => 'form-control-label']) !!}
+                                            <label for="parent_firstname" class="form-control-label">Parent / Guardian First Name {!! REQUIRED_FIELD !!}</label>
                                             <input v-model="xx.parent.firstname" v-on:click="xx.parent.id = 'add'" type="text" name="parent_firstname" id="parent_firstname" class="form-control" required>
                                             {!! fieldErrorMessage('parent_firstname', $errors) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group {!! fieldHasError('parent_lastname', $errors) !!}">
-                                            {!! Form::label('parent_lastname', 'Parent / Guardinan Last Name', ['class' => 'control-label']) !!}
+                                            <label for="parent_lastname" class="form-control-label">Parent / Guardian Last Name {!! REQUIRED_FIELD !!}</label>
                                             <input v-model="xx.parent.lastname" v-on:click="xx.parent.id = 'add'" type="text" name="parent_lastname" id="parent_lastname" class="form-control" required>
                                             {!! fieldErrorMessage('parent_lastname', $errors) !!}
                                         </div>
@@ -233,14 +235,14 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group {!! fieldHasError('parent_phone', $errors) !!}">
-                                            {!! Form::label('parent_phone', 'Phone', ['class' => 'control-label']) !!}
+                                            <label for="parent_phone" class="form-control-label">Phone {!! REQUIRED_FIELD !!}</label>
                                             {!! Form::text('parent_phone', null, ['class' => 'form-control', 'required']) !!}
                                             {!! fieldErrorMessage('parent_phone', $errors) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group {!! fieldHasError('parent_email', $errors) !!}">
-                                            {!! Form::label('parent_email', 'Email', ['class' => 'control-label']) !!}
+                                            <label for="parent_email" class="form-control-label">Email {!! REQUIRED_FIELD !!}</label>
                                             {!! Form::text('parent_email', null, ['class' => 'form-control', 'required']) !!}
                                             {!! fieldErrorMessage('parent_email', $errors) !!}
                                         </div>
@@ -407,9 +409,9 @@
 
     var xx = {
         parent_search: true, parent_add: false, search_options: true,
-        searchQuery: "{!! app('request')->input('query') !!}",
+        searchQuery: "{!! old('parent_name', app('request')->input('query') )!!}",
         parent: {
-            id: "{{ ($errors->has('parent_firstname') || $errors->has('parent_lastname') || $errors->has('parent_phone') || $errors->has('parent_email')) ? 'add' : 0 }}",
+            id: "{{ old('parent_id', 0) }}",
             firstname: "{{ old('parent_firstname') }}",
             lastname: "{{ old('parent_lastname') }}"
         },
