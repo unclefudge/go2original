@@ -98,7 +98,7 @@ class CheckinController extends Controller {
         ];
         request()->validate($rules, $mesgs);
 
-        $people_request = request()->except('photo');
+        $people_request = request()->except('photo', 'parent_id');
         $people_request['type'] = "Student";
 
         // Empty State field if rest of address fields are empty
