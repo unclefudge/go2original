@@ -210,7 +210,7 @@
                                 $now = \Carbon\Carbon::now()->timezone(session('tz'));
                                 $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks(12);
                                 $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
-                                $list = ($event->id == 3) ? $event->studentTopAttendance(12) : $event->studentTopAttendance(52);
+                                $list = ($event->id == 3) ? $event->studentTopAttendance(52) : $event->studentTopAttendance(12);
                                 ?>
                                 @foreach ($list as $pid => $count )
                                     <?php
