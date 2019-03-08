@@ -109,13 +109,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div id="grade_chart" style="height: 170px;"></div>
-                                </div>
-                                <div class="col-6">
-                                    <div id="grade_legend" align=""></div>
-                                </div>
+                            <div class="col-6">
+                                <div id="grade_chart" style="height: 170px;"></div>
+                            </div>
+                            <div class="col-6">
+                                <div id="grade_legend" align=""></div>
                             </div>
                         </div>
                     </div>
@@ -131,15 +129,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div id="school_chart" style="height: 170px;"></div>
-                                </div>
-                                {{--}}
-                                <div class="col-6">
-                                    <div id="school_legend" align=""></div>
-                                </div>--}}
+                            <div class="col-12">
+                                <div id="school_chart" style="height: 170px;"></div>
                             </div>
+                            {{--}}
+                            <div class="col-6">
+                                <div id="school_legend" align=""></div>
+                            </div>--}}
                         </div>
                     </div>
                 </div>
@@ -681,7 +677,7 @@
         schoolChart = new Morris.Bar({
             element: 'school_chart',
             barGap: 3,         // sets the space between bars in a single bar group. Default 3:
-            barSizeRatio: 0.9, // proportion of the width of the entire graph given to bars. Default 0.75
+            barSizeRatio: 0.75, // proportion of the width of the entire graph given to bars. Default 0.75
             stacked: true,
             resize: true,
             data: data,
