@@ -41,6 +41,7 @@ class CreateEventsTable extends Migration
         // Events Instance
         Schema::create('events_instance', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('eid')->nullable();
             $table->string('name', 100)->nullable();
             $table->string('code', 50)->nullable();
             $table->string('day', 20)->nullable();
@@ -51,7 +52,6 @@ class CreateEventsTable extends Migration
             $table->string('minhub', 50)->nullable();
             $table->text('notes')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->unsignedInteger('eid')->nullable();
             $table->unsignedInteger('aid')->nullable();
 
             // Foreign keys
@@ -68,10 +68,10 @@ class CreateEventsTable extends Migration
         // Events Form
         Schema::create('events_form', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('eid')->nullable();
             $table->integer('field_id')->nullable();
             $table->tinyInteger('custom')->default(0);
             $table->tinyInteger('checkin')->default(0);
-            $table->unsignedInteger('eid')->nullable();
 
             // Foreign keys
             $table->foreign('eid')->references('id')->on('events')->onDelete('cascade');
@@ -85,8 +85,8 @@ class CreateEventsTable extends Migration
         // Events Access
         Schema::create('events_access', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('uid')->nullable();
             $table->unsignedInteger('eid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
             $table->tinyInteger('level')->default(0);
             $table->tinyInteger('checkin')->default(0);
 

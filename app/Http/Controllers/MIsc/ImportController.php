@@ -185,7 +185,7 @@ class ImportController extends Controller {
                             // Check person into event
                             $attend = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
                             if (!$attend)
-                                $attend = Attendance::create(['eid' => $instance->id, 'pid' => $person->id, 'in' => $start, 'method' => 'import']);
+                                $attend = Attendance::create(['eid' => $instance->id, 'pid' => $person->id, 'in' => $start, 'method' => 'imported']);
                         }
                     }
                 }

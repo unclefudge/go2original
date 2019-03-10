@@ -64,6 +64,27 @@ class People extends Model {
     }
 
     /**
+     * A People has many Attendance
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendance()
+    {
+        return $this->hasMany('App\Models\Event\Attendance', 'pid');
+    }
+
+    /**
+     * A People has many History
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany('App\Models\People\PeopleHistory', 'pid');
+    }
+
+
+    /**
      * A People Media Consent May be Given by a User
      */
     public function mediaConsentBy()
@@ -177,6 +198,59 @@ class People extends Model {
 
             return ($event) ? EventInstance::find($event->eid) : null;
         }
+    }
+
+    /**
+     * Get Persons Activity
+     */
+    public function activity()
+    {
+        $activity = [];
+
+        // Attendance
+        foreach ($this->attendance as $attend) {
+            $array = [];
+            $array['datetime'] = $attend->instance->start->timezone(session('tz'))->format('Y-m-d h:i:s');
+            $array['icon'] = "<i class='fa fa-map-marker-alt' style='color: #32c5d2'></i>";
+            $array['title'] = "Checked in to " . $attend->instance->event->name;
+            $array['title'] .= ($attend->instance->name && $attend->instance->name != $attend->instance->event->name) ? ' <small> - ' . $attend->instance->name . '</small>' : '';
+            $array['date'] = $attend->instance->start->timezone(session('tz'))->format('F jS, Y');
+            $array['data'] = "<div class='row'><div class='col-3'>Event:</div><div class='col'>" . $attend->instance->name . "</div></div>";
+            $array['data'] .= "<div class='row'><div class='col-3'>Time:</div><div class='col'>" . $attend->instance->start->timezone(session('tz'))->format('g:i a') . "</div></div>";
+            $array['data'] .= "<div class='row'><div class='col-3'>Method:</div><div class='col'>$attend->method</div></div>";
+            $activity[] = (object) $array;
+        }
+
+        // History
+        foreach ($this->history as $history) {
+            $array = [];
+            $array['datetime'] = $history->created_at->timezone(session('tz'))->format('Y-m-d h:i:s');
+            $array['icon'] = ($history->action == 'created') ? "<i class='fa fa-user-plus' style='color:#5867dd'></i>" : "<i class='fa fa-user-edit' style='color:#5867dd'></i>";
+            $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->user->username;
+            $array['date'] = $history->created_at->timezone(session('tz'))->format('F jS, Y');
+
+            if ($history->data) {
+                $json = json_decode($history->data);
+                $array['data'] = "<div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
+                foreach ($json as $obj)
+                    $array['data'] .= "<div class='row' style='padding:5px'><div class='col-3'>$obj->field</div><div class='col-4' style='color: #999'>$obj->before</div><div class='col-4'>$obj->after</div></div>";
+                $activity[] = (object) $array;
+            }
+        }
+
+        // Sort Newest to Oldest date
+        usort($activity, function ($a, $b) {
+            return strtotime($b->datetime) - strtotime($a->datetime);
+        });
+
+        return $activity;
+        /*
+                {
+                    "1": {"field": "Address", "before": "44 Church St", "after": "Clifton TAS 7000"},
+                    "2": {"field": "Birthdate", "before": "1973-10-11", "after": ""}
+                }
+        */
+
     }
 
     /**

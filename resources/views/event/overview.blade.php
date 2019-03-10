@@ -689,9 +689,6 @@
 
         });
 
-
-        weeklyTotals()
-
         $("#sel_weekly").click(function () {
             weeklyTotals()
         });
@@ -704,6 +701,7 @@
             compareYear5()
         });
 
+        weeklyTotals()
 
         function weeklyTotals() {
             $("#chart_title").text("Weekly Totals");
@@ -742,8 +740,7 @@
                 $('#chart_loading').hide();
 
             }).fail(function () {
-                // If there is no communication between the server, show an error
-                alert("error occured");
+                alert("error occured"); // If there is no communication between the server, show an error
             });
         }
 
@@ -780,10 +777,8 @@
                     $('#chart_legend').append(legendLabel);
                 })
                 $('#chart_loading').hide();
-
             }).fail(function () {
-                // If there is no communication between the server, show an error
-                alert("error occured");
+                alert("error occured"); // If there is no communication between the server, show an error
             });
         }
 
@@ -820,10 +815,8 @@
                     $('#chart_legend').append(legendLabel);
                 })
                 $('#chart_loading').hide();
-
             }).fail(function () {
-                // If there is no communication between the server, show an error
-                alert("error occured");
+                alert("error occured"); // If there is no communication between the server, show an error
             });
         }
     });

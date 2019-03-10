@@ -124,6 +124,7 @@ class EventController extends Controller {
         if (request('frequency') == 'recur')
             $event_request['recur'] = 1;
 
+        $event_request['start'] = Carbon::now()->timezone(session('tz'))->toDateTimeString();
         $event = Event::create($event_request);
 
         Toastr::success("Event created");

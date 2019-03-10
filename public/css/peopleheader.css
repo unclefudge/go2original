@@ -1,0 +1,199 @@
+.mbar {
+    background: #32c5d2;
+    margin-bottom: 30px;
+    padding: 0;
+    /*overflow: hidden;*/
+    color: #fff;
+    position: relative;
+}
+
+.mbar-inactive {
+    background: #777;
+}
+
+/* mBar Name */
+.mbar .mbar-name {
+    width: 420px;
+    margin: 20px 0 16px 90px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.mbar-bar .mbar-name a {
+    color: #fff;
+    font-size: 30px;
+}
+
+.mbar-bar .mbar-name a:hover {
+    color: #fff;
+}
+
+.mbar .mbar-name a.mbar-status {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.mbar .mbar-name a.mbar-status:hover {
+    opacity: 1;
+}
+
+.mbar .mbar-name .mbar-type, .mbar .mbar-name .mbar-split {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.mbar-fullname {
+    font-weight: normal;
+    font-size: 26px;
+    text-transform: none;
+}
+
+/*
+ * Avatar
+ */
+
+/* Container needed to position the overlay. Adjust the width as needed */
+.mbar .mbar-name .avatar-container {
+    position: relative;
+    width: 90px;
+    margin: -20px 20px -20px -90px; /* margin: 0 20px 0 -80px; */
+    cursor: pointer;
+    float: left;
+}
+
+/* The overlay effect (full height and width) - lays on top of the container and over the image */
+.mbar .mbar-name .avatar-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 96px;
+    opacity: 0;
+    transition: .3s ease;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3); /* Black see-through */
+    /*border-radius: 0%;*/
+}
+
+/* When you mouse over the container, fade in the overlay icon*/
+.mbar .mbar-name .avatar-container:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.mbar .mbar-name .avatar-image {
+    height: 96px;
+    border-radius: 0%;
+}
+
+.mbar .mbar-name .avatar-edit:hover {
+    color: #FF0000;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3); /* Black see-through */
+}
+
+.mbar .mbar-name .avatar-icon {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+}
+
+
+/* Mbar Menu (right side) */
+.mbar .mbar-menu {
+    padding: 0;
+    float: right;
+    margin: 0px;
+}
+
+.mbar .mbar-actions {
+    margin: 20px 20px 10px 0px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+
+/* iPad + Tablets */
+@media screen and (max-width: 825px) {
+    .mbar {
+        overflow: hidden;
+    }
+
+    .mbar .mbar-name {
+        margin: 20px auto 16px;
+        display: block;
+        text-align: center;
+        width: auto;
+    }
+
+    .mbar .mbar-name .avatar-container {
+        display: block;
+        float: none;
+        margin: 0px;
+        width: auto;
+        text-align: center;
+    }
+
+    .mbar .mbar-name .avatar-overlay {
+        left: 50%;
+        right: 50%;
+        width: auto;
+    }
+
+    .mbar .mbar-name .avatar-icon {
+        position: absolute;
+        top: 60px;
+        left: 12px
+    }
+
+    .mbar .mbar-menu {
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        text-align: center !important; /* attempt to center all content */
+    }
+
+    .mbar .mbar-actions {
+        margin: 0px;
+    }
+
+    .mbar .mbar-info {
+        margin: 10px 0px;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .mbar .mbar-name .mbar-type, .mbar .mbar-name .mbar-split {
+        -webkit-font-smoothing: antialiased;
+        font-weight: 600;
+    }
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+    .mbar .mbar-name .mbar-type, .mbar .mbar-name .mbar-split {
+        -webkit-font-smoothing: subpixel-antialiased;
+        font-weight: 500;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .mbar .mbar-name {
+        width: 330px;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    .mbar .mbar-name {
+        width: 270px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mbar .mbar-name {
+        padding: 0 20px;
+    }
+}
+

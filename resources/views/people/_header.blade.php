@@ -111,8 +111,7 @@
 
     <ul class="member-bar-menu">
         <li class="member-bar-item {{ $active_profile }}"><i class="iicon-profile"></i><a class="member-bar-link" href="/people/{{ $people->id }}" title="Profile">PROFILE</a></li>
-        <li class="member-bar-item "><i class="iicon-document"></i><a class="member-bar-link" href="/people/{{ $people->id }}" title="Documents">
-                <span class="d-none d-md-block">DOCUMENTS</span><span class="d-md-none">DOCS</span></a></li>
+        <li class="member-bar-item "><i class="iicon-document"></i><a class="member-bar-link" href="/people/{{ $people->id }}/activity" title="Activity">Activity</a></li>
 
         <li class="member-bar-item "><i class="iicon-lock"></i><a class="member-bar-link" href="/people/{{ $people->id }}" title="Security">SECURITY</a></li>
     </ul>

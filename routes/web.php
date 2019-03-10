@@ -26,6 +26,7 @@ Route::get('/signup', 'Misc\HomeController@index')->name('home')->middleware('gu
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/metronic', 'Misc\HomeController@metronic');
     Route::get('/fudge', 'Misc\HomeController@fudge');
+    Route::get('/test', function () {return view('test');});
 
 
     // Protect access the People photos + thumbs
@@ -40,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
     // People
     Route::get('/data/people', 'People\PeopleController@getPeople');
     Route::get('/data/people/search-add', 'People\PeopleController@searchAddPeople');
+    Route::any('/people/{id}/activity', 'People\PeopleController@activity');
     Route::any('/people/{id}/status/{status}', 'People\PeopleController@status');
     Route::get('/people/{id}/del', 'People\PeopleController@destroy');
     Route::post('/people/{id}/photo', 'People\PeopleController@updatePhoto');

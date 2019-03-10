@@ -83,6 +83,7 @@ class CreatePeopleTables extends Migration
         // People Medical
         Schema::create('people_medical', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('pid')->nullable();
             $table->string('emergency_name1', 255)->nullable();
             $table->string('emergency_phone1', 50)->nullable();
             $table->string('emergency_name2', 255)->nullable();
@@ -96,7 +97,6 @@ class CreatePeopleTables extends Migration
             $table->tinyInteger('anaphylactic')->nullable();
             $table->string('dietary')->nullable();
             $table->text('medical')->nullable();
-            $table->unsignedInteger('pid')->nullable();
             $table->dateTime('verified_at')->nullable();
             $table->unsignedInteger('verified_by')->nullable();
 

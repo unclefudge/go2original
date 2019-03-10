@@ -38,6 +38,18 @@ class PeopleController extends Controller {
         return view('people/show', compact('people'));
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     */
+    public function activity($id)
+    {
+        $people = People::findOrFail($id);
+
+        return view('people/activity', compact('people'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

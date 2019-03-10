@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Account\Account;
+use App\Models\People\People;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,6 +48,15 @@ class User extends Authenticatable
     public function people()
     {
         return $this->belongsToMany('App\Models\People\People', 'users_people', 'uid', 'pid');
+    }
+
+    /**
+     * A User has a primary people profiles
+     *
+     */
+    public function primary()
+    {
+        return People::where('uid', $this->id)->where('primary', 1)->first();
     }
 
     /**
