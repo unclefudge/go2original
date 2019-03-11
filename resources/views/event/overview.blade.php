@@ -593,9 +593,9 @@
                                 <tbody>
                                 <?php
                                 $x = 0;
-                                $now = \Carbon\Carbon::now()->timezone(session('tz'));
+                                $now = \Carbon\Carbon::now();
                                 $weeks = ($event->id == 3) ? 52 : 12;
-                                $from = \Carbon\Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+                                $from = \Carbon\Carbon::now()->subWeeks($weeks);
                                 $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
                                 $list = $event->studentTopAttendance($weeks);
                                 ?>

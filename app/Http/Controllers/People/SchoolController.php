@@ -70,7 +70,7 @@ class SchoolController extends Controller {
     public function schoolsByGrade($grade)
     {
         $list = [];
-        $schools = School::where('aid', 1)->orderBy('name')->get();
+        $schools = School::where('aid', session('aid'))->orderBy('name')->get();
         if ($schools) {
             foreach ($schools as $school) {
                 if ($school->grade_from <= $grade && $school->grade_to >= $grade)

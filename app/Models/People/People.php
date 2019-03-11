@@ -139,7 +139,7 @@ class People extends Model {
         $attend = Attendance::create([
             'eid'    => $instance->id,
             'pid'    => $this->id,
-            'in'     => Carbon::now()->timezone(session('tz'))->format('Y-m-d H:i:s'),
+            'in'     => Carbon::now()->toDateTimeString(),
             'method' => $method
         ]);
 

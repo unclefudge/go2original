@@ -76,8 +76,8 @@ class Event extends Model {
      */
     public function studentTopAttendance($weeks)
     {
-        $now = Carbon::now()->timezone(session('tz'));
-        $from = Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+        $now = Carbon::now();
+        $from = Carbon::now()->subWeeks($weeks);
 
         $instance_ids = $this->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
         $attendance = Attendance::whereIn('eid', $instance_ids)->get();

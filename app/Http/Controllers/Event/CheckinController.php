@@ -25,9 +25,9 @@ class CheckinController extends Controller {
      */
     public function show($id)
     {
-        $now_local = Carbon::now()->timezone(session('tz'))->format('Y-m-d');
+        $now = Carbon::now()->format('Y-m-d');
         $event = Event::findOrFail($id);
-        $instance = EventInstance::where('eid', $id)->whereDate('start', $now_local)->first();
+        $instance = EventInstance::where('eid', $id)->whereDate('start', $now)->first();
 
         if (!$instance) {
             $instance = EventInstance::create([
@@ -218,7 +218,7 @@ class CheckinController extends Controller {
      */
     public function getPeople($eid)
     {
-        $people = People::where('status', 1)->where('aid', 1)->orderBy('firstname')->get();
+        $people = People::where('status', 1)->where('aid', session('aid'))->orderBy('firstname')->get();
         $instance = EventInstance::find($eid);
         $people_array = [];
         foreach ($people as $person) {
@@ -239,7 +239,7 @@ class CheckinController extends Controller {
      */
     public function getParents()
     {
-        $people = People::where('status', 1)->where('aid', 1)->orderBy('firstname')->get();
+        $people = People::where('status', 1)->where('aid', session('aid'))->orderBy('firstname')->get();
         $people_array = [];
         foreach ($people as $person) {
             if ($person->isParent) {
