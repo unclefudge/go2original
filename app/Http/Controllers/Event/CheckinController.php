@@ -40,8 +40,6 @@ class CheckinController extends Controller {
                 'aid'        => $event->aid
             ]);
         }
-        //echo($today_local);
-        //dd($instance);
 
         return view('checkin/index', compact('event', 'instance'));
     }

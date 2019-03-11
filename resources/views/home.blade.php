@@ -105,14 +105,30 @@
         $utc = \Carbon\Carbon::createFromDate('2019', '03', '11', 'UTC');
         $tas = \Carbon\Carbon::createFromDate('2019', '03', '11', 'Australia/Hobart');
         $today = \Carbon\Carbon::today();
+        $todayEnd = \Carbon\Carbon::today(session('tz'))->endOfDay()->timezone('UTC');
         $now = \Carbon\Carbon::now();
+        $utcTodayStart = \Carbon\Carbon::today(session('tz'))->timezone('UTC');
+        $utcTodayEnd = \Carbon\Carbon::today(session('tz'))->endOfDay()->timezone('UTC');
 
         echo "UTC: " . $utc->toDateTimeString() . "<br>";
         echo "TAS: " . $tas->toDateTimeString() . "<br>";
-        echo "2da: " . $today->toDateTimeString() . "<br>";
+        echo "today: " . $today->toDateTimeString() . "<br>";
+        echo "todayEnd: " . $todayEnd->toDateTimeString() . "<br>";
         echo "now: " . $now->toDateTimeString() . "<br>";
         echo "nowTAS: " . $now->timezone(session('tz'))->toDateTimeString() . "<br>";
+        echo "utcTodayStart: " . $utcTodayStart->toDateTimeString() . "<br>";
+        echo "utcTodayEnd: " . $utcTodayEnd->toDateTimeString() . "<br>";
         ?>
+
+        <br><br>Testing1<br>
+        @foreach (\App\Models\Event\EventInstance::whereDate('start', '2019-03-11')->get() as $instance)
+            {{ $instance->name }} - {{ $instance->start }} - {{ $instance->start->timezone(session('tz'))->toDateTimeString() }}<br>
+        @endforeach
+
+        <br><br>Testing2<br>
+        @foreach (\App\Models\Event\EventInstance::whereBetween('start', [$utcTodayStart, $utcTodayEnd])->get() as $instance)
+            {{ $instance->name }} - {{ $instance->start }} - {{ $instance->start->timezone(session('tz'))->toDateTimeString() }}<br>
+        @endforeach
     </div>
 
 @stop

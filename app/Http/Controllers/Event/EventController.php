@@ -84,7 +84,8 @@ class EventController extends Controller {
             $instance = EventInstance::where('eid', $event->id)->orderBy('start', 'desc')->first();
             $date = ($instance) ? $instance->start->timezone(session('tz'))->format('Y-m-d') : '';
         } else {
-            //$date_timezone_adjusted = Carbon::create
+            list($year, $month, $day) = explode($date);
+            $date_timezone_adjusted = Carbon::createFromDate($year, $month, $day, session('tz'));
             $instance = EventInstance::where('eid', $event->id)->whereDate('start', $date)->first();
             // Redirect if invalid instance date
             if (!$instance)
