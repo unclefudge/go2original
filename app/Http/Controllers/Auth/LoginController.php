@@ -49,7 +49,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        session(['aid' => 1]);
+        session(['aid' => Auth::user()->primary->aid]);
         session(['tz' => Auth::user()->timezone]);
         session(['df' => Auth::user()->dateformat]);
         session(['df-datepicker' => (Auth::user()->dateformat == 'd/m/Y') ? 'dd/mm/yyyy' : 'mm/dd/yyyy']);

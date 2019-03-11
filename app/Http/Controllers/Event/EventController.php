@@ -26,7 +26,7 @@ class EventController extends Controller {
     public function index()
     {
         // Check authorisation
-        $events = Event::all()->sortBy('name');
+        $events = Event::where('aid', session('aid'))->get()->sortBy('name');
 
         //$agent = new Agent();
 

@@ -244,6 +244,7 @@ class People extends Model {
         });
 
         return $activity;
+        /* {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}} */
         /*
                 {
                     "1": {"field": "Address", "before": "44 Church St", "after": "Clifton TAS 7000"},

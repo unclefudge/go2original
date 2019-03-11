@@ -16,7 +16,7 @@
                         <li class="m-menu__item {{ $path[0] == 'people' ?  'm-menu__item--active' : ''}}" aria-haspopup="true"><a href="/people" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text">People</span></a></li>
                         <li class="m-menu__item {{ $path[0] == 'event' ?  'm-menu__item--active' : ''}}" aria-haspopup="true"><a href="/event" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text">Events</span></a></li>
                         <!--<li class="m-menu__item {{ $path[0] == 'group' ?  'm-menu__item--active' : ''}}" aria-haspopup="true"><a href="/group" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text">Groups</span></a></li>-->
-                        <li class="m-menu__item {{ $path[0] == 'account' ?  'm-menu__item--active' : ''}}" aria-haspopup="true"><a href="/account/1" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text">Management</span></a></li>
+                        <li class="m-menu__item {{ $path[0] == 'account' ?  'm-menu__item--active' : ''}}" aria-haspopup="true"><a href="/account/{{ session('aid') }}" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text">Management</span></a></li>
 
                     </ul>
                 </div>

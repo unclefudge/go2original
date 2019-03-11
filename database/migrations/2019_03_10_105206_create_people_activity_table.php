@@ -20,7 +20,7 @@ class CreatePeopleActivityTable extends Migration
             $table->string('subtype', '50')->nullable();
             $table->string('action', '255')->nullable();
             $table->unsignedInteger('ref')->nullable();
-            $table->json('data')->nullable();
+            $table->text('data')->nullable();
 
             // Foreign keys
             $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');

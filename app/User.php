@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use App\Models\Account\Account;
 use App\Models\People\People;
 use Illuminate\Notifications\Notifiable;
@@ -51,15 +52,6 @@ class User extends Authenticatable
     }
 
     /**
-     * A User has a primary people profiles
-     *
-     */
-    public function primary()
-    {
-        return People::where('uid', $this->id)->where('primary', 1)->first();
-    }
-
-    /**
      * Get user fullname if linked to person else username  (getter)
      */
     public function getNameAttribute()
@@ -68,6 +60,15 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * Get user primary people profile (getter)
+     *
+     */
+    public function getPrimaryAttribute()
+    {
+        $row = DB::table('users_people')->select('pid')->where('uid', $this->id)->where('primary', 1)->first();
+        return People::findOrFail($row->pid);
+    }
     /**
      * Get user timezone  (getter)
      */

@@ -21,7 +21,7 @@ class PeopleController extends Controller {
     public function index()
     {
         // Check authorisation
-        $people = People::all()->sortBy('firstname');
+        $people = People::where('aid', session('aid'))->get()->sortBy('firstname');
         $agent = new Agent();
 
         return view('people/index', compact('people', 'agent'));
