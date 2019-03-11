@@ -92,7 +92,7 @@ class EventController extends Controller {
 
         $dates = [];
         foreach ($instances as $inst)
-            $dates[$inst->start->format('Y-m-d')] = $inst->start->format(session('df')) . " &nbsp; $inst->name";
+            $dates[$inst->start->timezone(session('tz'))->format('Y-m-d')] = $inst->start->format(session('df')) . " &nbsp; $inst->name";
 
         krsort($dates);
 
