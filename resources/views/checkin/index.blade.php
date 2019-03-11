@@ -215,7 +215,6 @@
                 <div class="loadSpinner"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom"></i> Loading...</div>
             </div>
         </div>
-
         <!--<pre style="background: #fff">@{{ $data }}</pre>
             -->
     </div>

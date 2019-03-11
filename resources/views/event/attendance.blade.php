@@ -578,9 +578,9 @@
                     this.xx.count_volunteers++;
             }
         });
-        //drawGenderChart();
-        //drawGradeChart();
-        //drawSchoolChart();
+        drawGenderChart();
+        drawGradeChart();
+        drawSchoolChart();
     }
 
 

@@ -4,7 +4,7 @@ namespace App\Models\Event;
 
 use App\User;
 use Carbon\Carbon;
-use Camroncade\Timezone\Facades\Timezone;
+use  Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
@@ -41,7 +41,8 @@ class Attendance extends Model
      */
     public function setInAttribute($input)
     {
-        $this->attributes['in'] = ($input) ? Timezone::convertToUTC($input, auth()->user()->timezone, 'Y-m-d H:i:s') : null;
+        // Need to convert to local tz due to front-end moment.js
+        $this->attributes['in'] = ($input) ? Timezone::convertToUTC($input, session('tz')) : null;
     }
 
     /**

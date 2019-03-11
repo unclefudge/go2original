@@ -11,6 +11,7 @@ use App\Models\People\Household;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
+use  Camroncade\Timezone\Facades\Timezone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -145,12 +146,11 @@ class ImportController extends Controller {
                     $split = explode(' ', $data[3]);
                     $date = ($split[0]) ? $split[0] : '';
                     $time = ($split[1]) ? $split[1] : '';
-                    //echo "$date $time<br>";
-                    $start = (preg_match('/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]/', $date)) ? Carbon::createFromFormat('m/d/Y H:i', $date . '00:00')->timezone(session('tz'))->toDateTimeString() : null;
+                    echo "$date $time<br>";
+                    $start = (preg_match('/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]/', $date)) ? Timezone::convertToUTC("$date $time:00", session('tz')) : null;
                 } else
                     $start = '';
 
-                //$start = ($data[3]) ? Carbon::parse($data[3]) : null; //$data[3]; //Carbon::parse($data[3]);
                 $end = $data[4]; //Carbon::parse($data[4]);
                 $collection_id = $data[5];
                 $repeat_date = $data[6]; //Carbon::parse($data[6]);
@@ -158,6 +158,7 @@ class ImportController extends Controller {
                 $students = explode(';', $data[8]);
                 $adults = explode(';', $data[9]);
 
+                echo "Event: $instance_name &nbsp; &nbsp; Date:$start<br>";
                 if (!$event_name || !$start) {
                     echo "*** BAD DATA ***<br>";
                     echo "$minhub -  $event_name - $instance_name - $start<br><br>";

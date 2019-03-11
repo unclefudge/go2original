@@ -226,7 +226,7 @@ class CheckinController extends Controller {
                 $checked_in = $checked_in2 = null;
                 $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
                 if ($instance && $attended)
-                    $checked_in = $attended->in->format('Y-m-d H:i:s');
+                    $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s'); // Need to convert to local tz due to front-end moment.js
                 $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->photoSmPath, 'eid' => $instance->id];
             }
         }

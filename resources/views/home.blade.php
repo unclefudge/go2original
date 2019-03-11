@@ -98,7 +98,21 @@
         df: {{ session('df') }}<br>
         df-datepicker: {{ session('df-datepicker') }}<br>
         df-moment: {{ session('df-moment') }}<br>
-        username: {{ Auth::user()->username }}
+        username: {{ Auth::user()->username }}<br>
+
+        <?php
+
+        $utc = \Carbon\Carbon::createFromDate('2019', '03', '11', 'UTC');
+        $tas = \Carbon\Carbon::createFromDate('2019', '03', '11', 'Australia/Hobart');
+        $today = \Carbon\Carbon::today();
+        $now = \Carbon\Carbon::now();
+
+        echo "UTC: " . $utc->toDateTimeString() . "<br>";
+        echo "TAS: " . $tas->toDateTimeString() . "<br>";
+        echo "2da: " . $today->toDateTimeString() . "<br>";
+        echo "now: " . $now->toDateTimeString() . "<br>";
+        echo "nowTAS: " . $now->timezone(session('tz'))->toDateTimeString() . "<br>";
+        ?>
     </div>
 
 @stop

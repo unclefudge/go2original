@@ -82,8 +82,9 @@ class EventController extends Controller {
 
         if ($date == 0) {
             $instance = EventInstance::where('eid', $event->id)->orderBy('start', 'desc')->first();
-            $date = ($instance) ? $instance->start->format('Y-m-d') : '';
+            $date = ($instance) ? $instance->start->timezone(session('tz'))->format('Y-m-d') : '';
         } else {
+            //$date_timezone_adjusted = Carbon::create
             $instance = EventInstance::where('eid', $event->id)->whereDate('start', $date)->first();
             // Redirect if invalid instance date
             if (!$instance)
@@ -92,7 +93,7 @@ class EventController extends Controller {
 
         $dates = [];
         foreach ($instances as $inst)
-            $dates[$inst->start->timezone(session('tz'))->format('Y-m-d')] = $inst->start->format(session('df')) . " &nbsp; $inst->name";
+            $dates[$inst->start->timezone(session('tz'))->format('Y-m-d')] = $inst->start->timezone(session('tz'))->format(session('df')) . " &nbsp; $inst->name";
 
         krsort($dates);
 
@@ -273,7 +274,7 @@ class EventController extends Controller {
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             $new = 0;
             if ($instance && $attended) {
-                $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s');
+                $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s'); // Need to convert to local tz due to front-end moment.js
                 $method = $attended->method;
                 $new = ($person->firstEvent()->start->timezone(session('tz'))->format('Y-m-d') == $instance->start->timezone(session('tz'))->format('Y-m-d')) ? 1 : 0;
             }
