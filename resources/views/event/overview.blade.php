@@ -420,7 +420,7 @@
                         </div>
                         <div class="col-2">
                             <button type="button" class="btn btn-secondary m-btn--pill btn-sm m-btn pull-right" data-container="body" data-toggle="m-popover"
-                                    data-placement="left" data-original-title="" title="" data-content="If a student has checked-in in the last 3 months, they count as an active student. Absent students are the remains students who hsve previously attend this event in the past. ">
+                                    data-placement="left" data-original-title="" title="" data-content="If a student has checked-in in the last 3 months, they count as an active student. Absent students are the remaining students who have previously attended this event in the past. ">
                                 <i class="fa fa-question"></i>
                             </button>
                         </div>
