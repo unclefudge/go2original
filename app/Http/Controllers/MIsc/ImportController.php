@@ -282,7 +282,7 @@ class ImportController extends Controller {
 
         echo "<h3>Fix event dates</h3>";
         $x = 0;
-        $instances = EventInstance::where('eid', 2)->get();
+        $instances = EventInstance::where('eid', 1)->get();
         foreach ($instances as $instance) {
 
             $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
