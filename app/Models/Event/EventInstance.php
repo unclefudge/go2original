@@ -4,6 +4,7 @@ namespace App\Models\Event;
 
 use App\User;
 use Carbon\Carbon;
+use Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
 
 class EventInstance extends Model
@@ -45,6 +46,7 @@ class EventInstance extends Model
         return $this->hasMany('App\Models\Event\Attendance', 'eid');
     }
 
+
     /**
      * Did Person Attend.
      *
@@ -54,6 +56,22 @@ class EventInstance extends Model
     {
         return $this->attendance->where('pid', $pid)->first();
     }
+
+    /**
+     * Existing Event Instance on date YYYY-MM-DD
+     *
+     * @return EventAttendance
+     */
+    static public function existingOnDate($date, $eid = '')
+    {
+        // Convert date to UTC and search for instance from UTC start of day to end of day
+        // for those darn international timezone difference
+        $utcDateStart = Timezone::convertToUTC("$date 00:00:00", session('tz')); // Beginning of day UTC
+        $utcDateEnd = Carbon::createFromFormat('Y-m-d H:i:s', "$date 00:00:00")->timezone(session('tz'))->endOfDay()->timezone('UTC'); // End of day UTC
+
+        return ($eid) ? EventInstance::where('eid', $eid)->whereBetween('start', [$utcDateStart, $utcDateEnd])->first() : EventInstance::whereBetween('start', [$utcDateStart, $utcDateEnd])->first() ;
+    }
+
 
     /**
      * Display records last update_by + date

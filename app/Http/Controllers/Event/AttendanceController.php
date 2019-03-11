@@ -58,6 +58,4 @@ class AttendanceController extends Controller {
 
         return abort(404);
     }
-
-
 }

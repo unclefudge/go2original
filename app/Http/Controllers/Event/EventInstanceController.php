@@ -10,6 +10,7 @@ use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
 use App\Models\People\People;
 use Carbon\Carbon;
+use Camroncade\Timezone\Facades\Timezone;
 use Kamaln7\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -34,18 +35,23 @@ class EventInstanceController extends Controller {
         }
 
         $instance_request = request()->all();
-        $instance_request['start'] = Carbon::createFromFormat(session('df'). ' H:i', request('pastdate') . '00:00')->toDateTimeString();
+
+        // Convert date to UTC
+        $date = Carbon::createFromFormat(session('df'). ' H:i', request('pastdate') . '00:00')->format('Y-m-d');
+        $datetime = Carbon::createFromFormat(session('df'). ' H:i', request('pastdate') . '00:00')->toDateTimeString();
+        $utcDateStart = Timezone::convertToUTC($datetime, session('tz')); // Beginning of day UTC
+
+        $instance_request['start'] = $utcDateStart;
         $instance_request['name'] = (request('name')) ? request('name') : $event->name;
 
         // Verify not existing instance on same date
-        $existing = EventInstance::where('eid', $event->id)->whereDate('start', $instance_request['start'])->first();
+        $existing = EventInstance::existingOnDate($date, $event->id)
+        //$existing = EventInstance::where('eid', $event->id)->whereBetween('start', [$utcDateStart, $utcDateEnd])->first();
         if ($existing) {
-            Toastr::error("Existing event on ".$existing->start->format(session('df')), null, ["timeOut" => "10000"]);
+            Toastr::error("Existing event on ".Timezone::convertFromUTC($existing->start, session('tz'), session('df')), null, ["timeOut" => "10000"]);
             return redirect("/event/$existing->eid/attendance/".request('cdate'));
         }
 
-
-        //dd($instance_request);
         $instance = EventInstance::create($instance_request);
 
         Toastr::success("Event created");
@@ -76,7 +82,7 @@ class EventInstanceController extends Controller {
     {
         $instance = EventInstance::findOrFail($id);
         $eid = $instance->eid;
-        $date = $instance->start->format(session('df'));
+        $date = Timezone::convertFromUTC($instance->start, session('tz'), session('df'));
         $instance->delete();
 
         Toastr::error("Deleted event on $date");

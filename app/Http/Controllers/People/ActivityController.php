@@ -8,6 +8,7 @@ use Validator;
 use App\Models\People\People;
 use App\Models\People\PeopleHistory;
 use App\Models\People\Household;
+use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -92,7 +93,7 @@ class ActivityController extends Controller {
         // Attendance
         foreach ($person->attendance as $attend) {
             $array = [];
-            $array['datetime'] = $attend->instance->start->timezone(session('tz'))->format('Y-m-d h:i:s');
+            $array['datetime'] = Timezone::convertFromUTC($attend->instance->start, session('tz'));
             $array['icon'] = "<i class='fa fa-map-marker-alt' style='color: #32c5d2'></i>";
             $array['title'] = "Checked in to " . $attend->instance->event->name;
             $array['title'] .= ($attend->instance->name && $attend->instance->name != $attend->instance->event->name) ? ' <small> - ' . $attend->instance->name . '</small>' : '';
@@ -106,7 +107,7 @@ class ActivityController extends Controller {
         // History
         foreach ($person->history as $history) {
             $array = [];
-            $array['datetime'] = $history->created_at->timezone(session('tz'))->format('Y-m-d h:i:s');
+            $array['datetime'] = Timezone::convertFromUTC($history->created_at, session('tz'));
             $array['icon'] = ($history->action == 'created') ? "<i class='fa fa-user-plus' style='color:#5867dd'></i>" : "<i class='fa fa-user-edit' style='color:#5867dd'></i>";
             $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->user->username;
             $array['date'] = $history->created_at->timezone(session('tz'))->format('F jS, Y');

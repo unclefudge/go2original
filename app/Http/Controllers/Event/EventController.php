@@ -10,6 +10,7 @@ use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
 use App\Models\People\People;
 use Carbon\Carbon;
+use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Utilities\Slim;
 use Intervention\Image\Facades\Image;
 use Yajra\Datatables\Datatables;
@@ -82,11 +83,10 @@ class EventController extends Controller {
 
         if ($date == 0) {
             $instance = EventInstance::where('eid', $event->id)->orderBy('start', 'desc')->first();
-            $date = ($instance) ? $instance->start->timezone(session('tz'))->format('Y-m-d') : '';
+            $date = ($instance) ? Timezone::convertFromUTC($instance->start, session('tz'), 'Y-m-d') : '';
         } else {
-            list($year, $month, $day) = explode($date);
-            $date_timezone_adjusted = Carbon::createFromDate($year, $month, $day, session('tz'));
-            $instance = EventInstance::where('eid', $event->id)->whereDate('start', $date)->first();
+            $instance = EventInstance::existingOnDate($date, $event->id);
+
             // Redirect if invalid instance date
             if (!$instance)
                 return abort(404);
@@ -94,7 +94,7 @@ class EventController extends Controller {
 
         $dates = [];
         foreach ($instances as $inst)
-            $dates[$inst->start->timezone(session('tz'))->format('Y-m-d')] = $inst->start->timezone(session('tz'))->format(session('df')) . " &nbsp; $inst->name";
+            $dates[Timezone::convertFromUTC($inst->start, session('tz'), 'Y-m-d')] = Timezone::convertFromUTC($inst->start, session('tz'), session('df')) . " &nbsp; $inst->name";
 
         krsort($dates);
 
@@ -142,7 +142,6 @@ class EventController extends Controller {
     {
         $event = Event::findOrFail($id);
 
-        //dd(request()->all());
         // Validate
         $rules = ['name' => 'required'];
         $mesgs = ['name.required' => 'The event name is required.',];
@@ -251,16 +250,17 @@ class EventController extends Controller {
     /**
      * Get Dates (ajax)
      */
+    /*
     public function getDates($id)
     {
         $instances = EventInstance::where('eid', $id)->get();
         $dates_array = [0 => 'Select date'];
         foreach ($instances as $instance) {
-            $dates_array[] = ['id' => $instance->id, 'text' => $instance->start->format(session('df'))];
+            $dates_array[] = ['id' => $instance->id, 'text' =>  Timezone::convertFromUTC($instance->start, session('tz'), session('df'))];
         }
 
         return $dates_array;
-    }
+    }*/
 
     /**
      * Get People (ajax)
@@ -275,9 +275,9 @@ class EventController extends Controller {
             $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
             $new = 0;
             if ($instance && $attended) {
-                $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s'); // Need to convert to local tz due to front-end moment.js
+                $checked_in = Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
                 $method = $attended->method;
-                $new = ($person->firstEvent()->start->timezone(session('tz'))->format('Y-m-d') == $instance->start->timezone(session('tz'))->format('Y-m-d')) ? 1 : 0;
+                $new = (Timezone::convertFromUTC($person->firstEvent()->start, session('tz'), 'Y-m-d') == Timezone::convertFromUTC($instance->start, session('tz'), 'Y-m-d')) ? 1 : 0;
             }
             $people_array[] = [
                 'pid'    => $person->id,

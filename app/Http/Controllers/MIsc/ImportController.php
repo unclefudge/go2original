@@ -11,7 +11,7 @@ use App\Models\People\Household;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
-use  Camroncade\Timezone\Facades\Timezone;
+use Camroncade\Timezone\Facades\Timezone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -280,19 +280,17 @@ class ImportController extends Controller {
     public function quick()
     {
 
+        /*
         echo "<h3>Fix event dates</h3>";
         $x = 0;
         $instances = EventInstance::where('eid', 1)->get();
         foreach ($instances as $instance) {
-
             $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
             $utc = Timezone::convertToUTC($tas, session('tz'));
             echo "<br>$instance->name<br>" . $instance->start->toDateTimeString() . " => $tas =>  $utc<br>";
             $instance->start = $utc;
             $instance->save();
-
-
-        }
+        }*/
 
         /*
         echo "<h3>Fix double attendance</h3>";

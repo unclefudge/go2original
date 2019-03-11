@@ -11,6 +11,7 @@ use App\Models\Event\Attendance;
 use App\Models\People\People;
 use App\Models\People\Household;
 use Carbon\Carbon;
+use Camroncade\Timezone\Facades\Timezone;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
 use Jenssegers\Agent\Agent;
@@ -25,9 +26,9 @@ class CheckinController extends Controller {
      */
     public function show($id)
     {
-        $now = Carbon::now()->format('Y-m-d');
+        $now = Carbon::now()->timezone(session('tz'))->format('Y-m-d');
         $event = Event::findOrFail($id);
-        $instance = EventInstance::where('eid', $id)->whereDate('start', $now)->first();
+        $instance = EventInstance::existingOnDate($now, $id);
 
         if (!$instance) {
             $instance = EventInstance::create([
@@ -71,7 +72,6 @@ class CheckinController extends Controller {
     {
         $instance = EventInstance::findOrFail($id);
         $agent = new Agent();
-
 
         // Validate
         $rules = [
@@ -224,7 +224,7 @@ class CheckinController extends Controller {
                 $checked_in = $checked_in2 = null;
                 $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
                 if ($instance && $attended)
-                    $checked_in = $attended->in->timezone(session('tz'))->format('Y-m-d H:i:s'); // Need to convert to local tz due to front-end moment.js
+                    $checked_in =  Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
                 $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->photoSmPath, 'eid' => $instance->id];
             }
         }
