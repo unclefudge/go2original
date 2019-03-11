@@ -14,7 +14,7 @@
             padding-left: 4px;
         }
     </style>
-
+{{--}}
 
     <div class="row">
         <div class="col-xl-6 col-lg-12">
@@ -399,7 +399,7 @@
             <!--End::Portlet-->  	</div>
     </div>
 
-
+--}}
 
     <div class="row">
         {{-- Overview --}}

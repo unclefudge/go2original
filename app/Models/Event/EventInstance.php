@@ -46,6 +46,16 @@ class EventInstance extends Model
     }
 
     /**
+     * Did Person Attend.
+     *
+     * @return EventAttendance
+     */
+    public function personAttend($pid)
+    {
+        return $this->attendance->where('pid', $pid)->first();
+    }
+
+    /**
      * Display records last update_by + date
      *
      * @return string

@@ -237,7 +237,7 @@
                             </div>
                         </div>
 
-                        <!--<pre>@{{ $data }}</pre>
+                        <pre>@{{ $data }}</pre>
                         -->
                     </div>
                 </div>
@@ -578,9 +578,9 @@
                     this.xx.count_volunteers++;
             }
         });
-        drawGenderChart();
-        drawGradeChart();
-        drawSchoolChart();
+        //drawGenderChart();
+        //drawGradeChart();
+        //drawSchoolChart();
     }
 
 

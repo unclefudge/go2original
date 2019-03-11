@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use Validator;
 use App\Models\People\People;
+use App\Models\Event\Event;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
@@ -46,8 +47,10 @@ class PeopleController extends Controller {
     public function activity($id)
     {
         $people = People::findOrFail($id);
+        $events = Event::where('recur', 1)->where('aid', session('aid'))->pluck('name', 'id')->toArray();
+        asort($events);
 
-        return view('people/activity', compact('people'));
+        return view('people/activity', compact('people', 'events'));
     }
 
     /**

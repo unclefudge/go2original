@@ -32,7 +32,7 @@ class CheckinController extends Controller {
         if (!$instance) {
             $instance = EventInstance::create([
                 'name'       => $event->name,
-                'start'      => Carbon::now()->timezone(session('tz'))->toDateTimeString(),
+                'start'      => Carbon::now()->toDateTimeString(),
                 'code'       => $event->code,
                 'grades'     => $event->grades,
                 'background' => $event->background,

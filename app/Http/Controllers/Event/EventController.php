@@ -124,7 +124,7 @@ class EventController extends Controller {
         if (request('frequency') == 'recur')
             $event_request['recur'] = 1;
 
-        $event_request['start'] = Carbon::now()->timezone(session('tz'))->toDateTimeString();
+        $event_request['start'] = Carbon::now()->toDateTimeString();
         $event = Event::create($event_request);
 
         Toastr::success("Event created");
@@ -265,7 +265,7 @@ class EventController extends Controller {
      */
     public function getPeople($id)
     {
-        $people = People::where('aid', 1)->orderBy('firstname')->get();
+        $people = People::where('aid', session('aid'))->orderBy('firstname')->get();
         $instance = EventInstance::find($id);
         $people_array = [];
         foreach ($people as $person) {

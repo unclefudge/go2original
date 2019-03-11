@@ -55,6 +55,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/household/update', 'People\HouseholdController@updateHousehold');
     Route::resource('/household', 'People\HouseholdController');
 
+    // Activity
+    Route::any('/data/activity', 'People\ActivityController@getActivity');
+    Route::resource('/activity', 'People\ActivityController');
+
     // Schools
     Route::get('/data/schools-by-grade/{grade}', 'People\SchoolController@schoolsByGrade');
 
@@ -85,7 +89,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/attendance', 'Event\AttendanceController');
 
     // Stats
-    Route::any('/stats/event/{eid}/student/attendance/{weeks}', 'Event\StatsController@studentAttendance');
+    Route::any('/stats/event/{eid}/student/{pid}', 'Event\StatsController@studentAttendance');
     Route::any('/stats/event/weekly-totals', 'Event\StatsController@weekTotals');
     Route::any('/stats/event/compare-year/{years}', 'Event\StatsController@compareYear');
 

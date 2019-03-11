@@ -47,12 +47,12 @@ class Event extends Model {
     }
 
     /**
-     * Student Attendance for last X weeks
+     * Student Attendees in last X weeks
      */
     public function studentAttendance($weeks, $new = false)
     {
-        $now = Carbon::now()->timezone(session('tz'));
-        $from = Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+        $now = Carbon::now();
+        $from = Carbon::now()->subWeeks($weeks);
 
         $instance_ids = $this->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
         $attendance = Attendance::whereIn('eid', $instance_ids)->get();
@@ -60,7 +60,7 @@ class Event extends Model {
         if ($attendance) {
             foreach ($attendance as $attend) {
                 if ($attend->person->isStudent && !in_array($attend->pid, $students)) {
-                    if ($new && $attend->person->firstEvent($this->id)->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
+                    if ($new && $attend->person->firstEvent($this->id)->start->format('Y-m-d') == $attend->instance->start->format('Y-m-d'))
                         $students[] = $attend->pid;
                     elseif (!$new)
                         $students[] = $attend->pid;
@@ -72,7 +72,7 @@ class Event extends Model {
     }
 
     /**
-     * StudentAttendance for last X weeks
+     * Top Student Attendees for last X weeks
      */
     public function studentTopAttendance($weeks)
     {
