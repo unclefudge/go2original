@@ -60,8 +60,6 @@
                         {!! Form::model('people', ['action' => ['Event\CheckinController@studentRegister', $instance->id], 'files' => true]) !!}
                         @include('form-error')
 
-
-
                         <div class="row" style="padding-bottom: 10px">
                             <div class="col-md-5">
                                 <h4>Student Registration</h4>

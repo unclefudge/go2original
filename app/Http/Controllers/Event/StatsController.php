@@ -29,8 +29,8 @@ class StatsController extends Controller {
         //$da2 = '2018-12-30';
         //$date1 = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
         //$date2 = Carbon::createFromFormat('Y-m-d H:i', $da2 . '00:00');
-        $date1 = Carbon::now()->timezone(session('tz'))->subYear();
-        $date2 = Carbon::now()->timezone(session('tz'));
+        $date1 = Carbon::now()->subYear();
+        $date2 = Carbon::now();
 
         if ($debug) {
             echo "Event[$event->id]: $event->name<br>";
@@ -39,15 +39,14 @@ class StatsController extends Controller {
             echo "<h2>Dates</h2>";
         }
 
-        //$loop_date = Carbon::createFromFormat('Y-m-d H:i', $da1 . '00:00');
-        $loop_date = Carbon::now()->timezone(session('tz'))->subYear();
+        $loop_date = Carbon::now()->subYear();
         $chartdata = [];
         while ($loop_date->lt($date2)) {
             $d1 = Carbon::parse($loop_date->format('Y-m-d'))->startOfWeek();
             $d2 = Carbon::parse($loop_date->format('Y-m-d'))->endOfWeek();
-            $week = $d1->format('M j'); // . ' - ' . $d2->format('d/m');
-            //echo "$week: " . $loop_date->startOfWeek()->format('Y-m-d') . "-" . $loop_date->endOfWeek()->format('Y-m-d') . ".<br>";
-            $instance_ids = $event->betweenDates($d1->format('Y-m-d'), $d2->format('Y-m-d'))->pluck('id')->toArray();
+            $week = $d1->format('M j');
+
+            $instance_ids = $event->betweenUTCDates($d1->format('Y-m-d'), $d2->format('Y-m-d'))->pluck('id')->toArray();
             if ($debug) print_r($instance_ids);
             $attendance = Attendance::whereIn('eid', $instance_ids)->get();
             $student = $new = 0;
@@ -56,7 +55,7 @@ class StatsController extends Controller {
                 foreach ($attendance as $attend) {
                     if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
                     if ($attend->person->isStudent) {
-                        if ($attend->person->firstEvent($event->id)->start->timezone(session('tz'))->format('Y-m-d') == $attend->instance->start->timezone(session('tz'))->format('Y-m-d'))
+                        if ($attend->person->firstEvent($event->id)->start->isSameDay($attend->instance->start))
                             $new ++;
                         else
                             $student ++;
@@ -102,17 +101,15 @@ class StatsController extends Controller {
                 $month = str_pad($m, 2, '0', STR_PAD_LEFT);
                 $days = Carbon::parse($loop_date->format('Y-m-d'))->endOfMonth()->format('d');
                 if ($debug) echo "Getting data $year-$month  ($days)<br>";
-                $instance_ids = $event->betweenDates("$year-$month-01", "$year-$month-$days")->pluck('id')->toArray();
-                //if ($debug) print_r($instance_ids);
+                $instance_ids = $event->betweenUTCDates("$year-$month-01", "$year-$month-$days")->pluck('id')->toArray();
+
                 $avg = 0;
                 if (count($instance_ids)) {
                     $attendance = Attendance::whereIn('eid', $instance_ids)->get();
                     $student = 0;
                     if ($attendance) {
-                        foreach ($attendance as $attend) {
-                            //if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
+                        foreach ($attendance as $attend)
                             if ($attend->person->isStudent) $student ++;
-                        }
                     }
 
                     // Average attendence by amount of events that month
@@ -126,9 +123,9 @@ class StatsController extends Controller {
 
                 $loop_date->addMonth();
             }
-            //$chartdata[] = ['y' => $week, 'a' => $student, 'b' => $new];
         }
 
+        // Create data array for chart
         if ($debug) print_r($monthly_stats);
         $chartdata = [];
         $months = ['1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', '5' => 'May', '6' => 'Jun', '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', '11' => 'Nov', '12' => 'Dec'];
@@ -155,21 +152,20 @@ class StatsController extends Controller {
     {
         $event = Event::findOrFail($eid);
         $people = People::findOrFail($pid);
-        $firstDate = ($people->firstEvent($eid)) ? Carbon::createFromFormat('Y-m-d H:i', $people->firstEvent($eid)->start->timezone(session('tz'))->format('Y-m-d') . '00:00') : '';
+        $firstDate = ($people->firstEvent($eid)) ? Carbon::createFromFormat('Y-m-d H:i', $people->firstEvent($eid)->start->format('Y-m-d') . '00:00') : '';
         //echo $firstDate;
         $stats = [];
         if ($firstDate) {
-            $stats['attended_first'] = $people->firstEvent($eid)->start->timezone(session('tz'))->diffForHumans();
-            $stats['attended_last'] = $people->lastEvent($eid)->start->timezone(session('tz'))->diffForHumans();
+            $stats['attended_first'] = $people->firstEvent($eid)->start->diffForHumans();
+            $stats['attended_last'] = $people->lastEvent($eid)->start->diffForHumans();
 
             // Last Month
             $weeks = 4;
-            $date1 = Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+            $date1 = Carbon::now()->subWeeks($weeks);
             $from = ($date1->lt($firstDate)) ? $firstDate : $date1;
-            //echo ($from);
-            $now = Carbon::now()->timezone(session('tz'));
+            $now = Carbon::now();
 
-            $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
+            $instances = $event->betweenUTCDates($from->format('Y-m-d'), $now->format('Y-m-d'));
             $count = 0;
             foreach ($instances as $instance) {
                 if ($instance->personAttend($pid))
@@ -181,11 +177,11 @@ class StatsController extends Controller {
 
             // Last Year
             $weeks = 52;
-            $date1 = Carbon::now()->timezone(session('tz'))->subWeeks($weeks);
+            $date1 = Carbon::now()->subWeeks($weeks);
             $from = ($date1->lt($firstDate)) ? $firstDate : $date1;
-            $now = Carbon::now()->timezone(session('tz'));
+            $now = Carbon::now();
 
-            $instances = $event->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'));
+            $instances = $event->betweenUTCDates($from->format('Y-m-d'), $now->format('Y-m-d'));
             $count = 0;
             foreach ($instances as $instance) {
                 if ($instance->personAttend($pid))

@@ -230,10 +230,10 @@
             </div>
             <div v-else>
                 <template v-for="person in filteredData">
-                    <div v-if="!person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: url('/img/d90.jpg');" --}}
+                    <div v-if="!person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)">
                         <div :class="labelClass(person)">@{{ person.name }}</div>
                     </div>
-                    <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)"> {{-- style="background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('/img/d90.jpg');"> --}}
+                    <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)">
                         <img class="people-check" src="/img/check-64.png" height="50px">
                         <div :class="labelClass(person)">@{{ person.name }}</div>
                     </div>

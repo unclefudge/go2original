@@ -26,9 +26,9 @@ class CheckinController extends Controller {
      */
     public function show($id)
     {
-        $now = Carbon::now()->timezone(session('tz'))->format('Y-m-d');
         $event = Event::findOrFail($id);
-        $instance = EventInstance::existingOnDate($now, $id);
+        $nowLocal = Carbon::now()->timezone(session('tz'))->format('Y-m-d');
+        $instance = EventInstance::existingLocalDate($nowLocal, $id);
 
         if (!$instance) {
             $instance = EventInstance::create([
@@ -224,7 +224,7 @@ class CheckinController extends Controller {
                 $checked_in = $checked_in2 = null;
                 $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
                 if ($instance && $attended)
-                    $checked_in =  Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
+                    $checked_in = Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
                 $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->photoSmPath, 'eid' => $instance->id];
             }
         }

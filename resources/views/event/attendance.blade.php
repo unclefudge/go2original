@@ -80,7 +80,7 @@
 
     <div id="vue-app">
         {{-- Chats / Stats --}}
-        <div class="row" style="min-height: 300px;">
+        <div v-if="xx.date" class="row" style="min-height: 300px;">
             {{-- Genders Chart --}}
             <div class="col-md-3">
                 <div class="m-portlet  m-portlet--full-height ">

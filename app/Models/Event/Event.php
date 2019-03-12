@@ -5,6 +5,7 @@ namespace App\Models\Event;
 use App\User;
 use App\Models\People\People;
 use Carbon\Carbon;
+use Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model {
@@ -41,9 +42,9 @@ class Event extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function betweenDates($date1, $date2)
+    public function betweenUTCDates($date1, $date2)
     {
-        return EventInstance::where('eid', $this->id)->where('start', '>=', $date1)->where('start', '<=', $date2)->get();
+        return EventInstance::where('eid', $this->id)->whereBetween('start', [$date1, $date2])->get();
     }
 
     /**
@@ -53,14 +54,13 @@ class Event extends Model {
     {
         $now = Carbon::now();
         $from = Carbon::now()->subWeeks($weeks);
-
-        $instance_ids = $this->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
+        $instance_ids = $this->betweenUTCDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
         $attendance = Attendance::whereIn('eid', $instance_ids)->get();
         $students = [];
         if ($attendance) {
             foreach ($attendance as $attend) {
                 if ($attend->person->isStudent && !in_array($attend->pid, $students)) {
-                    if ($new && $attend->person->firstEvent($this->id)->start->format('Y-m-d') == $attend->instance->start->format('Y-m-d'))
+                    if ($new && $attend->person->firstEvent($this->id)->start->isSameDay($attend->instance->start))
                         $students[] = $attend->pid;
                     elseif (!$new)
                         $students[] = $attend->pid;
@@ -78,8 +78,7 @@ class Event extends Model {
     {
         $now = Carbon::now();
         $from = Carbon::now()->subWeeks($weeks);
-
-        $instance_ids = $this->betweenDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
+        $instance_ids = $this->betweenUTCDates($from->format('Y-m-d'), $now->format('Y-m-d'))->pluck('id')->toArray();
         $attendance = Attendance::whereIn('eid', $instance_ids)->get();
         $students = [];
         if ($attendance) {
@@ -103,8 +102,6 @@ class Event extends Model {
     public function studentMIA($weeks)
     {
         $active_students = $this->studentAttendance($weeks)->pluck('id')->toArray();
-        //print_r($active_students);
-
         $instance_ids = $this->instances->pluck('id')->toArray();
         $previous_attenders = Attendance::whereIn('eid', $instance_ids)->pluck('pid')->toArray();
         $people = People::find($previous_attenders);
@@ -150,6 +147,16 @@ class Event extends Model {
 
         return ($user) ? '<span style="font-weight: 400">Last modified: </span>' . $this->updated_at->diffForHumans() . ' &nbsp; ' .
             '<span style="font-weight: 400">By:</span> ' . $user->name : "$this->updated_by";
+    }
+
+    /**
+     * Convert date to User Local Timezone format
+     *
+     * @return Carbon date object
+     */
+    public function getStartLocalAttribute()
+    {
+        return $this->start->timezone(session('tz'));
     }
 
     /**

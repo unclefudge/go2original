@@ -82,19 +82,19 @@ class EventController extends Controller {
         $instances = EventInstance::where('eid', $event->id)->get();
 
         if ($date == 0) {
+            // No specified date so grab most recent event if exists
             $instance = EventInstance::where('eid', $event->id)->orderBy('start', 'desc')->first();
-            $date = ($instance) ? Timezone::convertFromUTC($instance->start, session('tz'), 'Y-m-d') : '';
+            $date = ($instance) ? $instance->start_local->format('Y-m-d') : '';
         } else {
-            $instance = EventInstance::existingOnDate($date, $event->id);
-
-            // Redirect if invalid instance date
+            // Attempt to get instance for specified local date
+            $instance = EventInstance::existingLocalDate($date, $event->id);
             if (!$instance)
-                return abort(404);
+                return abort(404);  // Redirect if invalid instance date
         }
 
         $dates = [];
         foreach ($instances as $inst)
-            $dates[Timezone::convertFromUTC($inst->start, session('tz'), 'Y-m-d')] = Timezone::convertFromUTC($inst->start, session('tz'), session('df')) . " &nbsp; $inst->name";
+            $dates[$inst->start_local->format('Y-m-d')] = $inst->start_local->format(session('df')) . " &nbsp; $inst->name";
 
         krsort($dates);
 
@@ -178,7 +178,6 @@ class EventController extends Controller {
         $event = Event::findOrFail($id);
         $path = storage_path("app/account/$event->aid/images/events/");   // Server path
 
-        //dd(request()->all());
         // Handle attached photo
         if (request()->photo) {
             // Pass Slim's getImages the name of your file input, and since we only care about one image, use Laravel's head() helper to get the first element
@@ -224,7 +223,7 @@ class EventController extends Controller {
     public function status($id, $status)
     {
         $event = Event::findOrFail($id);
-        $event->status = request('status');
+        $event->status = $status;
         $event->save();
 
         if (request()->ajax())
@@ -277,19 +276,19 @@ class EventController extends Controller {
             if ($instance && $attended) {
                 $checked_in = Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
                 $method = $attended->method;
-                $new = (Timezone::convertFromUTC($person->firstEvent()->start, session('tz'), 'Y-m-d') == Timezone::convertFromUTC($instance->start, session('tz'), 'Y-m-d')) ? 1 : 0;
+                $new = ($person->firstEvent()->start_local->isSameDay($instance->start_local)) ? 1 : 0;
             }
             $people_array[] = [
                 'pid'    => $person->id,
                 'in'     => $checked_in,
                 'name'   => $person->name,
                 'type'   => $person->type,
-                'gender'  => $person->gender,
+                'gender' => $person->gender,
                 'grade'  => $person->grade,
                 'school' => $person->school_name,
                 'photo'  => $person->photo_path,
                 'status' => $person->status,
-                'new' => $new,
+                'new'    => $new,
                 'method' => $method,
                 'eid'    => $instance->id
             ];

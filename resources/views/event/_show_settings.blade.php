@@ -25,7 +25,7 @@
         </div>
 
         {{-- Grades --}}
-        <div class="form-group m-form__group row {!! fieldHasError('name', $errors) !!}">
+        <div class="form-group m-form__group row {!! fieldHasError('grades', $errors) !!}">
             {!! Form::label('grades', 'Grades', ['class' => 'col-md-2 control-label']) !!}
             <div class="col-md-10">
                 <div class="m-checkbox-inline">

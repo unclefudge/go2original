@@ -4,14 +4,14 @@ namespace App\Models\Event;
 
 use App\User;
 use Carbon\Carbon;
-use  Camroncade\Timezone\Facades\Timezone;
+use Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
 
-class Attendance extends Model
-{
+class Attendance extends Model {
+
     protected $table = 'events_attendance';
     protected $fillable = [
-        'eid', 'pid', 'in', 'out', 'method', 'aid',  'created_by', 'updated_by'];
+        'eid', 'pid', 'in', 'out', 'method', 'aid', 'created_by', 'updated_by'];
     protected $dates = ['in', 'out'];
 
     /**
@@ -51,10 +51,10 @@ class Attendance extends Model
      *
      * @return string
      */
-    //public function getInAttribute($input)
-    //{
-    //    return ($input) ? Timezone::convertFromUTC($input, auth()->user()->timezone, 'Y-m-d H:i:s') : '';
-    //}
+    public function getInLocalAttribute()
+    {
+        return $this->in->timezone(session('tz'));
+    }
 
     /**
      * Display records last update_by + date

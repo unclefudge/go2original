@@ -113,8 +113,8 @@ class ActivityController extends Controller {
             $array['date'] = $history->created_at->timezone(session('tz'))->format('F jS, Y');
 
             if ($history->data) {
-                $json = json_decode($history->data);
                 $array['data'] = "<div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
+                $json = json_decode($history->data);
                 foreach ($json as $obj)
                     $array['data'] .= "<div class='row' style='padding:5px'><div class='col-3'>$obj->field</div><div class='col-4' style='color: #999'>$obj->before</div><div class='col-4'>$obj->after</div></div>";
                 $activity[] = (object) $array;

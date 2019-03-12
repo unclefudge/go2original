@@ -191,7 +191,7 @@
         });
 
         // Hide Create Event Save button until Name + Frequency selected
-        $("#name").change(function () {
+        $("#name").keyup(function () {
             $("#but_create_event").hide();
             if ($("#name").val() != '' && $("#frequency").val() != '')
                 $("#but_create_event").show();

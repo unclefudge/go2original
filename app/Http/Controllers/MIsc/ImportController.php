@@ -280,6 +280,28 @@ class ImportController extends Controller {
     public function quick()
     {
 
+        echo "<h3>Testing timezone out dates</h3>";
+        $x = 0;
+        $instances = EventInstance::where('eid', 1)->get();
+        foreach ($instances as $instance) {
+            $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
+            $utc = Timezone::convertToUTC($tas, session('tz'));
+            echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() . " L: $tas =>  U: $utc<br>";
+            echo "O: ".$instance->start->toDateTimeString() . " L: " . $instance->startLocal->toDateTimeString();
+        }
+
+        $d1 = Timezone::convertToUTC('2018-11-16 00:00:00', session('tz')); //Carbon::parse("2018-11-16 18:00:00");
+        $d2 = Timezone::convertToUTC('2018-11-16 23:59:00', session('tz')); //Carbon::parse("2018-11-16 20:00:00");
+        echo "<br><br><br>Between $d1 - $d2<br>";
+        $instances = EventInstance::where('eid', 1)->whereBetween('start', [$d1, $d2])->get();
+        //dd($instances->all());
+        foreach ($instances as $instance) {
+            //echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() ."<br>";
+            $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
+            $utc = Timezone::convertToUTC($tas, session('tz'));
+            echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() . " L: $tas =>  U: $utc<br>";
+            echo "O: ".$instance->start->toDateTimeString() . " L: " . $instance->startLocal->toDateTimeString();
+        }
         /*
         echo "<h3>Fix event dates</h3>";
         $x = 0;

@@ -62,7 +62,7 @@ class EventInstance extends Model
      *
      * @return EventAttendance
      */
-    static public function existingOnDate($date, $eid = '')
+    static public function existingLocalDate($date, $eid = '')
     {
         // Convert date to UTC and search for instance from UTC start of day to end of day
         // for those darn international timezone difference
@@ -85,6 +85,27 @@ class EventInstance extends Model
         return ($user) ? '<span style="font-weight: 400">Last modified: </span>' . $this->updated_at->diffForHumans() . ' &nbsp; ' .
             '<span style="font-weight: 400">By:</span> ' . $user->name : "$this->updated_by";
     }
+
+    /**
+     * Convert date to User Local Timezone format
+     *
+     * @return Carbon date object
+     */
+    public function getStartLocalAttribute()
+    {
+        return $this->start->timezone(session('tz'));
+    }
+
+    /**
+     * Convert date to User Local Timezone format
+     *
+     * @param $input
+     * @return string
+     *//*
+    public function getStartAttribute($input)
+    {
+        return Carbon::parse(Timezone::convertFromUTC($input, session('tz'));
+    }*/
 
     /**
      * The "booting" method of the model.
