@@ -113,7 +113,7 @@ class People extends Model {
         if (isset($image['output']['data'])) {
             $name = $this->id . '.' . pathinfo($image['output']['name'], PATHINFO_EXTENSION);;   // Original file name = $image['output']['name'];
             $data = $image['output']['data'];  // Base64 of the image
-            $path = storage_path('app/account/' . Auth::user()->id . '/images/people/');   // Server path
+            $path = storage_path('app/account/' . $this->aid. '/images/people/');   // Server path
             $filepath = $path . $name;
 
             // Save the file to the server + update record
