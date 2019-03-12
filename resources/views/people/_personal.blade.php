@@ -229,7 +229,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('grade', $errors) !!}">
                                 {!! Form::label('grade', 'Grade', ['class' => 'control-label']) !!}
-                                {!! Form::select('grade', ['' => 'Grade', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('grade', ['' => 'Grade', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12', 'Young Adult' => 'Young Adult'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                                 {!! fieldErrorMessage('grade', $errors) !!}
                             </div>
                         </div>

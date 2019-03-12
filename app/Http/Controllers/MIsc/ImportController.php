@@ -8,6 +8,7 @@ use App\Models\Account\Account;
 use App\Models\People\People;
 use App\Models\People\School;
 use App\Models\People\Household;
+use App\Models\People\PeopleHistory;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
@@ -279,29 +280,103 @@ class ImportController extends Controller {
 
     public function quick()
     {
+        echo "<h3>Insert profile history</h3>";
+        $people = People::all();
+        $fillable = [
+            'type', 'gender', 'dob', 'email', 'phone', 'instagram',
+            'grade', 'school_id', 'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by',
+            'media_consent', 'media_consent_by', 'notes'];
+        $address = ['address', 'address2', 'suburb', 'state', 'postcode', 'country'];
+        $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent'];
+        foreach ($people as $person) {
+            $array = [];
+            // Name
+            if ($person->firstname || $person->lastname) {
+                $array['Name'] = '';
+                if ($person->firstname) $array['Name'] .= "$person->firstname";
+                if ($person->lastname) $array['Name'] .= " $person->lastname";
+            }
 
-        echo "<h3>Testing timezone out dates</h3>";
-        $x = 0;
-        $instances = EventInstance::where('eid', 1)->get();
-        foreach ($instances as $instance) {
-            $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
-            $utc = Timezone::convertToUTC($tas, session('tz'));
-            echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() . " L: $tas =>  U: $utc<br>";
-            echo "O: ".$instance->start->toDateTimeString() . " L: " . $instance->startLocal->toDateTimeString();
+            // Address
+            if ($person->address || $person->suburb || $person->state || $person->postcode) {
+                $array['Address'] = '';
+                if ($person->address) $array['Address'] .= "$person->address<br>";
+                if ($person->suburb) $array['Address'] .= "$person->suburb, ";
+                if ($person->state) $array['Address'] .= "$person->state ";
+                if ($person->postcode) $array['Address'] .= "$person->postcode";
+            }
+
+            $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+            foreach ($fillable as $key) {
+                $KEY = ucfirst($key);
+                if ($key == 'dob') $KEY = 'Birthdate';
+                if (isset($person[$key]) && $person[$key]) {
+                    if (in_array($key, $dates))
+                        $array[$KEY] = $person[$key]->format(session('df'));
+                    elseif ($key == 'school_id')
+                        $array['School'] = $person->school->name;
+                    elseif ($key == 'grade') {
+                        if (is_numeric($person->grade)) {
+                            if ($person->grade > 12)
+                                $array[$KEY] = "Young Adult";
+                            elseif (($person->grade %100) >= 11 && ($person->grade %100) <= 13)
+                                $array[$KEY] = $person->grade. 'th';
+                            else
+                                $array[$KEY] = $person->grade. $ends[$person->grade % 10];
+                        } else
+                            $array[$KEY] = $person->grade;
+                    }
+                    else
+                        $array[$KEY] = $person[$key];
+                }
+            }
+            echo "<br><br>$person->name<br>";
+            /* {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}} */
+            print_r($array);
+            $json = "{";
+            $x=1;
+            foreach ($array as $key => $val){
+                $json .= '"'.($x++).'": {"field": "'.$key.'", "before": "", "after": "'.$val.'"}, ';
+            }
+            $json = rtrim($json, ', ');
+            $json .= "}";
+            echo "<br>$json<br>";
+            $history = DB::table('people_history')->insert([
+                'pid' => $person->id,
+                'action' => 'created',
+                'type' => 'profile',
+                'subtype' => 'personal',
+                'data' => $json,
+                'created_by' => ($person->firstEvent() && $person->firstEvent()->start->lt(Carbon::now()->subWeeks(4))) ? 2 : 3,
+                'created_at' => ($person->firstEvent() && $person->firstEvent()->start->lt($person->created_at)) ? $person->firstEvent()->start : $person->created_at,
+                'updated_at' => ($person->firstEvent() && $person->firstEvent()->start->lt($person->created_at)) ? $person->firstEvent()->start : $person->updated_at,
+            ]);
         }
 
-        $d1 = Timezone::convertToUTC('2018-11-16 00:00:00', session('tz')); //Carbon::parse("2018-11-16 18:00:00");
-        $d2 = Timezone::convertToUTC('2018-11-16 23:59:00', session('tz')); //Carbon::parse("2018-11-16 20:00:00");
-        echo "<br><br><br>Between $d1 - $d2<br>";
-        $instances = EventInstance::where('eid', 1)->whereBetween('start', [$d1, $d2])->get();
-        //dd($instances->all());
-        foreach ($instances as $instance) {
-            //echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() ."<br>";
-            $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
-            $utc = Timezone::convertToUTC($tas, session('tz'));
-            echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() . " L: $tas =>  U: $utc<br>";
-            echo "O: ".$instance->start->toDateTimeString() . " L: " . $instance->startLocal->toDateTimeString();
-        }
+
+        /*
+                echo "<h3>Testing timezone out dates</h3>";
+                $x = 0;
+                $instances = EventInstance::where('eid', 1)->get();
+                foreach ($instances as $instance) {
+                    $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
+                    $utc = Timezone::convertToUTC($tas, session('tz'));
+                    echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() . " L: $tas =>  U: $utc<br>";
+                    echo "O: ".$instance->start->toDateTimeString() . " L: " . $instance->startLocal->toDateTimeString();
+                }
+
+                $d1 = Timezone::convertToUTC('2018-11-16 00:00:00', session('tz')); //Carbon::parse("2018-11-16 18:00:00");
+                $d2 = Timezone::convertToUTC('2018-11-16 23:59:00', session('tz')); //Carbon::parse("2018-11-16 20:00:00");
+                echo "<br><br><br>Between $d1 - $d2<br>";
+                $instances = EventInstance::where('eid', 1)->whereBetween('start', [$d1, $d2])->get();
+                //dd($instances->all());
+                foreach ($instances as $instance) {
+                    //echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() ."<br>";
+                    $tas = Carbon::createFromFormat('Y-m-d H:i', $instance->start->format('Y-m-d') . '19:00')->toDateTimeString();
+                    $utc = Timezone::convertToUTC($tas, session('tz'));
+                    echo "<br><br>$instance->name<br>O: " . $instance->start->toDateTimeString() . " L: $tas =>  U: $utc<br>";
+                    echo "O: ".$instance->start->toDateTimeString() . " L: " . $instance->startLocal->toDateTimeString();
+                }*/
         /*
         echo "<h3>Fix event dates</h3>";
         $x = 0;
@@ -312,6 +387,7 @@ class ImportController extends Controller {
             echo "<br>$instance->name<br>" . $instance->start->toDateTimeString() . " => $tas =>  $utc<br>";
             $instance->start = $utc;
             $instance->save();
+        }
         }*/
 
         /*

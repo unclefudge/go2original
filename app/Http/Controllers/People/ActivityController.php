@@ -109,7 +109,7 @@ class ActivityController extends Controller {
             $array = [];
             $array['datetime'] = Timezone::convertFromUTC($history->created_at, session('tz'));
             $array['icon'] = ($history->action == 'created') ? "<i class='fa fa-user-plus' style='color:#5867dd'></i>" : "<i class='fa fa-user-edit' style='color:#5867dd'></i>";
-            $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->user->username;
+            $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->user->primary->name;
             $array['date'] = $history->created_at->timezone(session('tz'))->format('F jS, Y');
 
             if ($history->data) {

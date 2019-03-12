@@ -311,7 +311,7 @@ class People extends Model {
         $string = '';
 
         if ($this->attributes['address'])
-            $string = strtoupper($this->attributes['address']) . '<br>';
+            $string = $this->attributes['address'] . '<br>';
 
         $string .= strtoupper($this->attributes['suburb']);
         if ($this->attributes['suburb'] && $this->attributes['state'])

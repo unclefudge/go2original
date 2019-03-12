@@ -52,13 +52,6 @@ class PeopleHistory extends Model {
             // create a event to happen on creating
             static::creating(function ($table) {
                 $table->created_by = auth()->id();
-                $table->updated_by = auth()->id();
-                $table->aid = session('aid');
-            });
-
-            // create a event to happen on updating
-            static::updating(function ($table) {
-                $table->updated_by = auth()->id();
             });
         }
     }
