@@ -74,9 +74,11 @@
 @stop
 
 @section('page-styles')
+    <link href="/css/slim.min.css" rel="stylesheet">
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
+<script src="/js/slim.kickstart.min.js"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
 <script type="text/javascript">
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
