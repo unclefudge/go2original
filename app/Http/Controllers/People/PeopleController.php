@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use Validator;
 use App\Models\People\People;
+use App\Models\People\PeopleHistory;
 use App\Models\Event\Event;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
@@ -112,8 +113,18 @@ class PeopleController extends Controller {
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
             $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
-        //dd($people_request);
+        // Create history record
         $people = People::create($people_request);
+        $x=1;
+        foreach ($people->genHistoryData() as $category => $json) {
+            $action = ($x == 1) ? 'created' : 'updated';
+            DB::table('people_history')->insert([
+                'pid'  => $people->id, 'action' => $action, 'type' => 'profile', 'subtype' => $category,
+                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
+
+            if ($x++ < 2) sleep(1); // Delay 1 sec after first loop to ensure 'Created' record is earlier then updates for order sort later on
+        }
+
         Toastr::success("Profile created");
 
         return redirect("/people/$people->id");
@@ -125,6 +136,7 @@ class PeopleController extends Controller {
     public function update($id)
     {
         $people = People::findOrFail($id);
+        $peopleBefore = People::findOrFail($id);
 
         // Validate
         $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
@@ -153,9 +165,18 @@ class PeopleController extends Controller {
         // Student details
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
             // Media Consent
-            if (request('media_consent') != $people->media_consent) {
-                $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
-                $people_request['media_consent_by'] = Auth::user()->id;
+            if (request('media_consent')) {
+                if (!$people->media_consent) {
+                    // New approved media request
+                    $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
+                    $people_request['media_consent_by'] = Auth::user()->id;
+                }
+            } else {
+                if ($people->media_consent) {
+                    // Previous media approval changed to denied
+                    $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
+                    $people_request['media_consent_by'] = Auth::user()->id;
+                }
             }
         } else {
             $people_request['grade'] = $people_request['school_id'] = null;
@@ -168,6 +189,14 @@ class PeopleController extends Controller {
 
         //dd($people_request);
         $people->update($people_request);
+
+        // Create history record
+        foreach ($people->genHistoryData($peopleBefore) as $category => $json) {
+            DB::table('people_history')->insert([
+                'pid'  => $people->id, 'action' => 'updated', 'type' => 'profile', 'subtype' => $category,
+                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
+        }
+
         Toastr::success("Saved changes");
 
         return redirect("/people/$people->id");
@@ -367,7 +396,7 @@ class PeopleController extends Controller {
         }
         $status = [1];
         if (request('show_inactive'))
-            $status = [0,1];
+            $status = [0, 1];
 
         //dd($types);
         $people = People::select([

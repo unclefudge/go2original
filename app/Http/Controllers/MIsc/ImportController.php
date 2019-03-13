@@ -280,6 +280,14 @@ class ImportController extends Controller {
 
     public function quick()
     {
+
+        $people = People::find(67);
+        $people->genHistoryData();
+
+        $people = People::find(214);
+        $people->genHistoryData();
+
+        /*
         echo "<h3>Insert profile history</h3>";
         $people = People::all();
         $fillable = [
@@ -331,7 +339,7 @@ class ImportController extends Controller {
                 }
             }
             echo "<br><br>$person->name<br>";
-            /* {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}} */
+            // {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}}
             print_r($array);
             $json = "{";
             $x=1;
@@ -352,7 +360,7 @@ class ImportController extends Controller {
                 'updated_at' => ($person->firstEvent() && $person->firstEvent()->start->lt($person->created_at)) ? $person->firstEvent()->start : $person->updated_at,
             ]);
         }
-
+*/
 
         /*
                 echo "<h3>Testing timezone out dates</h3>";

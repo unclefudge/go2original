@@ -13,6 +13,7 @@ class CreatePeopleActivityTable extends Migration
      */
     public function up()
     {
+
         Schema::create('people_history', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('pid')->nullable();

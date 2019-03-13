@@ -471,13 +471,13 @@
             }
         }
 
-        $("#type").change(function () {
-            display_fields();
-        });
+        $("#type").change(function () {display_fields();});
+        $("#grade").change(function () {display_fields();});
 
-        $("#grade").change(function () {
-            display_fields();
-        });
+        // DOB
+        $("#dob").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});
+        // WWC Exp
+        $("#wwc_exp").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});
 
         // Show Inactive
         $("#but_show_inactive").click(function () {

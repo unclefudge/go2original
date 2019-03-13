@@ -85,23 +85,6 @@ class People extends Model {
 
 
     /**
-     * A People Media Consent May be Given by a User
-     */
-    public function mediaConsentBy()
-    {
-        return People::find($this->media_consent_by);
-    }
-
-    /**
-     * A People WWC May be Verified by a User
-     */
-    public function wwcVerifiedBy()
-    {
-        return People::find($this->wwc_verified_by);
-    }
-
-
-    /**
      * Attach photo to a person
      */
     public function attachPhoto()
@@ -113,7 +96,7 @@ class People extends Model {
         if (isset($image['output']['data'])) {
             $name = $this->id . '.' . pathinfo($image['output']['name'], PATHINFO_EXTENSION);;   // Original file name = $image['output']['name'];
             $data = $image['output']['data'];  // Base64 of the image
-            $path = storage_path('app/account/' . $this->aid. '/images/people/');   // Server path
+            $path = storage_path("app/account/$this->aid/images/people/");   // Server path
             $filepath = $path . $name;
 
             // Save the file to the server + update record
@@ -129,6 +112,128 @@ class People extends Model {
                 Toastr::error("Bad image");
 
         }
+    }
+
+    /**
+     * Determine which fields have changed and generate People History JSON data
+     * JSON format 'category' : 'before' : 'after'
+     *
+     * @params $before, $after
+     */
+    public function genHistoryData($b = '', $a = '')
+    {
+        if (!$b) $b = new People;
+        if (!$a) $a = $this;
+        $result = [];
+
+        // {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}}
+        //
+        // Personal
+        //
+        $data = [];
+        // Name
+        if ($a->firstname != $b->firstname || $a->lastname != $b->lastname) {
+            $data['Name'] = [];
+            $data['Name']['a'] = $a->name;
+            $data['Name']['b'] = $b->name;
+        }
+        // Address
+        if ($a->address != $b->address || $a->suburb != $b->suburb || $a->state != $b->state || $a->postcode != $b->postcode) {
+            $data['Address'] = [];
+            $data['Address']['a'] = $a->address_formatted;
+            $data['Address']['b'] = $b->address_formatted;
+        }
+
+        $personal = ['type', 'gender', 'dob', 'email', 'phone', 'instagram'];
+        foreach ($personal as $key) {
+            if ($a[$key] != $b[$key]) {
+                $KEY = ucfirst($key);
+                if ($key == 'dob') $KEY = 'Birthdate';
+                $data[$KEY] = [];
+
+                if (in_array($key, $this->dates)) {
+                    $data[$KEY]['a'] = ($a[$key]) ? $a[$key]->format(session('df')) : '';
+                    $data[$KEY]['b'] = ($b[$key]) ? $b[$key]->format(session('df')) : '';
+                } else {
+                    $data[$KEY]['a'] = $a[$key];
+                    $data[$KEY]['b'] = $b[$key];
+                }
+            }
+        }
+
+        if (count($data)) {
+            $json = "{";
+            $x = 1;
+            foreach ($data as $key => $val)
+                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "'.$val['b'].'", "after": "' . $val['a'] . '"}, ';
+            $json = rtrim($json, ', ')."}";
+            $result['personal'] = $json;
+        }
+
+        //
+        // Student
+        //
+        $data = [];
+        $student = ['grade', 'school_id', 'media_consent'];
+        foreach ($student as $key) {
+            if ($a[$key] != $b[$key]) {
+                $KEY = ucfirst($key);
+                if ($key == 'school_id') $KEY = 'School';
+                if ($key == 'media_consent') $KEY = 'Media Consent';
+
+                $data[$KEY] = [];
+
+                if ($key == 'school_id') {
+                    $data[$KEY]['a'] = ($a->school_id) ? $a->school->name : '';
+                    $data[$KEY]['b'] = ($b->school_id) ? $b->school->name : '';
+                } elseif ($key == 'grade') {
+                    $data[$KEY]['a'] = ($a->grade) ? $a->grade_ordinal : '';
+                    $data[$KEY]['b'] = ($b->grade) ? $b->grade_ordinal : '';
+                } elseif ($key == 'media_consent') {
+                    $data[$KEY]['a'] = ($a->media_consent) ? $a->media_consent->format(session('df')) ."<br>By ".$a->mediaConsentByUser->name : '';
+                    $data[$KEY]['b'] = ($b->media_consent) ? $b->media_consent->format(session('df')) ."<br>By ".$b->mediaConsentByUser->name : '';
+                }
+            }
+        }
+
+        //print_r($data);
+        //dd($data);
+        if (count($data)) {
+            $json = "{";
+            $x = 1;
+            foreach ($data as $key => $val)
+                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "'.$val['b'].'", "after": "' . $val['a'] . '"}, ';
+            $json = rtrim($json, ', ')."}";
+            $result['student'] = $json;
+        }
+
+        //
+        // Volunteer
+        //
+        $data = [];
+        $volunteer = ['wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by'];
+        if ($a->wwc_no != $b->wwc_no || $a->wwc_exp != $b->wwc_exp || $a->wwc_verified != $b->wwc_verified) {
+            $data['WWC Registration'] = [];
+            $data['WWC Registration']['a'] = ($a->wwc_exp) ? "$a->wwc_no<br>" . $a->wwc_exp->format(session('df')) : "$a->wwc_no<br>";
+            $data['WWC Registration']['b'] = ($b->wwc_exp) ? "$b->wwc_no<br>" . $b->wwc_exp->format(session('df')) : "$b->wwc_no<br>";
+            if ($a->wwc_verified != $b->wwc_verified) {
+                $data['WWC Registration']['a'] .= ($a->wwc_verified) ? "Verified by<br>" . $a->wwcVerifiedByUser->name . '<br>' . $a->wwc_verified->format(session('df')) : '';
+                $data['WWC Registration']['b'] .= ($b->wwc_verified) ? "Verified by<br>" . $b->wwcVerifiedByUser->name . '<br>' . $b->wwc_verified->format(session('df')) : '';
+            }
+        }
+
+        //print_r($data);
+        if ($data) {
+            $json = "{";
+            $x = 1;
+            foreach ($data as $key => $val)
+                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "'.$val['b'].'", "after": "' . $val['a'] . '"}, ';
+            $json = rtrim($json, ', ')."}";
+            $result['volunteer'] = $json;
+        }
+
+        return $result;
+
     }
 
     /**
@@ -229,6 +334,25 @@ class People extends Model {
     }
 
     /**
+     * Get the Grade name  (getter)
+     *
+     * @return string;
+     */
+    public function getGradeOrdinalAttribute()
+    {
+        $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
+        if (is_numeric($this->grade)) {
+            if (($this->grade % 100) >= 11 && ($this->grade % 100) <= 13)
+                return $this->grade . 'th';
+            else
+                return $this->grade . $ends[$this->grade % 10];
+        }
+
+        return $this->grade;
+    }
+
+
+    /**
      * Get Photo Path (getter)
      */
     public function getPhotoPathAttribute()
@@ -309,19 +433,29 @@ class People extends Model {
     public function getAddressFormattedAttribute()
     {
         $string = '';
+        if ($this->address) $string = "$this->address<br>";
+        $string .= strtoupper($this->suburb);
+        if ($this->suburb && $this->state) $string .= ', ';
+        if ($this->state) $string .= $this->state;
+        if ($this->postcode) $string .= ' ' . $this->postcode;
 
-        if ($this->attributes['address'])
-            $string = $this->attributes['address'] . '<br>';
+        return ($string) ? $string : '';
+    }
 
-        $string .= strtoupper($this->attributes['suburb']);
-        if ($this->attributes['suburb'] && $this->attributes['state'])
-            $string .= ', ';
-        if ($this->attributes['state'])
-            $string .= $this->attributes['state'];
-        if ($this->attributes['postcode'])
-            $string .= ' ' . $this->attributes['postcode'];
+    /**
+     * A People Media Consent May be Given by a User (getter)
+     */
+    public function getMediaConsentByUserAttribute()
+    {
+        return User::find($this->media_consent_by);
+    }
 
-        return ($string) ? $string : '-';
+    /**
+     * A People WWC May be Verified by a User
+     */
+    public function getWwcVerifieUserdBy()
+    {
+        return User::find($this->wwc_verified_by);
     }
 
     /**
