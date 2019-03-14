@@ -164,7 +164,7 @@ class ActivityController extends Controller {
                  <button id="btn-more" data-offset="' . ($x - 1) . '" class="btn btn-secondary btn-block"> Load More</button>
             </div>';
         } else {
-            $output = 'No activity';
+            $output = 'No past activity';
         }
 
         //dd($activity);
