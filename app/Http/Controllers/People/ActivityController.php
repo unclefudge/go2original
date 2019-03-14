@@ -83,10 +83,10 @@ class ActivityController extends Controller {
      */
     public function getActivity()
     {
-        //$person = People::find(356);
-        //$offset = 0;
-        $person = People::findOrFail(request('pid'));
-        $offset = request('offset');
+        $person = People::find(3);
+        $offset = 0;
+        //$person = People::findOrFail(request('pid'));
+        //$offset = request('offset');
 
         $activity = [];
 
