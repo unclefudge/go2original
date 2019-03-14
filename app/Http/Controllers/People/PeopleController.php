@@ -183,13 +183,6 @@ class PeopleController extends Controller {
         $people->update($people_request);
         $people->addHistoryData('profile', $peopleBefore);
 
-        // Create history record
-        foreach ($people->genHistoryData($peopleBefore) as $category => $json) {
-            DB::table('people_history')->insert([
-                'pid'  => $people->id, 'action' => 'updated', 'type' => 'profile', 'subtype' => $category,
-                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
-        }
-
         Toastr::success("Saved changes");
 
         return redirect("/people/$people->id");
