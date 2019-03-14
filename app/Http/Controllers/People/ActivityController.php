@@ -131,7 +131,6 @@ class ActivityController extends Controller {
         $records = 20;
         if ($offset < count($activity))
             foreach ($activity as $act) {
-
                 if ($x > $offset && $x <= ($offset + $records)) {
                     //echo "x:$x offset:$offset<br>";
                     $output .= "

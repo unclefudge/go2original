@@ -2,6 +2,7 @@
 
 namespace App\Models\People;
 
+use DB;
 use Auth;
 use App\User;
 use App\Models\Event\Event;
@@ -19,8 +20,8 @@ class People extends Model {
         'firstname', 'lastname', 'type', 'gender', 'dob', 'email', 'phone', 'instagram',
         'address', 'address2', 'suburb', 'state', 'postcode', 'country',
         'grade', 'school_id', 'photo', 'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by',
-        'media_consent', 'media_consent_by', 'notes', 'minhub', 'status', 'aid', 'created_by', 'updated_by'];
-    protected $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent'];
+        'media_consent', 'media_consent_by', 'media_consent_at', 'notes', 'minhub', 'status', 'aid', 'created_by', 'updated_by'];
+    protected $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent_at'];
 
     /**
      * A People belongs to a account
@@ -120,7 +121,7 @@ class People extends Model {
      *
      * @params $before, $after
      */
-    public function genHistoryData($b = '', $a = '')
+    public function addHistoryData($type, $b = '', $a = '')
     {
         if (!$b) $b = new People;
         if (!$a) $a = $this;
@@ -165,9 +166,18 @@ class People extends Model {
             $json = "{";
             $x = 1;
             foreach ($data as $key => $val)
-                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "'.$val['b'].'", "after": "' . $val['a'] . '"}, ';
-            $json = rtrim($json, ', ')."}";
+                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "' . $val['b'] . '", "after": "' . $val['a'] . '"}, ';
+            $json = rtrim($json, ', ') . "}";
             $result['personal'] = $json;
+
+            $action = (PeopleHistory::where('pid', $this->id)->where('type', $type)->where('subtype', 'personal')->first()) ? 'updated' : 'created';
+            // Save history record to DB
+            DB::table('people_history')->insert([
+                'pid'  => $this->id, 'action' => $action, 'type' => $type, 'subtype' => 'personal',
+                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
+
+            // Delay 1 sec after 'Created' record to ensure it's earlier then updates for order sort later on
+            if ($action == 'created') sleep(1);
         }
 
         //
@@ -190,8 +200,8 @@ class People extends Model {
                     $data[$KEY]['a'] = ($a->grade) ? $a->grade_ordinal : '';
                     $data[$KEY]['b'] = ($b->grade) ? $b->grade_ordinal : '';
                 } elseif ($key == 'media_consent') {
-                    $data[$KEY]['a'] = ($a->media_consent) ? $a->media_consent->format(session('df')) ."<br>By ".$a->mediaConsentByUser->name : '';
-                    $data[$KEY]['b'] = ($b->media_consent) ? $b->media_consent->format(session('df')) ."<br>By ".$b->mediaConsentByUser->name : '';
+                    $data[$KEY]['a'] = ($a->media_consent) ? "$a->media_consent<br>" . $a->media_consent_at->format(session('df')) . "<br>By " . $a->mediaConsentByUser->name : '';
+                    $data[$KEY]['b'] = ($b->media_consent) ? "$b->media_consent<br>" . $b->media_consent_at->format(session('df')) . "<br>By " . $b->mediaConsentByUser->name : '';
                 }
             }
         }
@@ -202,9 +212,13 @@ class People extends Model {
             $json = "{";
             $x = 1;
             foreach ($data as $key => $val)
-                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "'.$val['b'].'", "after": "' . $val['a'] . '"}, ';
-            $json = rtrim($json, ', ')."}";
-            $result['student'] = $json;
+                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "' . $val['b'] . '", "after": "' . $val['a'] . '"}, ';
+            $json = rtrim($json, ', ') . "}";
+            // Save history record to DB
+            DB::table('people_history')->insert([
+                'pid'  => $this->id, 'action' => 'updated', 'type' => $type, 'subtype' => 'student',
+                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
+
         }
 
         //
@@ -227,13 +241,14 @@ class People extends Model {
             $json = "{";
             $x = 1;
             foreach ($data as $key => $val)
-                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "'.$val['b'].'", "after": "' . $val['a'] . '"}, ';
-            $json = rtrim($json, ', ')."}";
-            $result['volunteer'] = $json;
+                $json .= '"' . ($x ++) . '": {"field": "' . $key . '", "before": "' . $val['b'] . '", "after": "' . $val['a'] . '"}, ';
+            $json = rtrim($json, ', ') . "}";
+            // Save history record to DB
+            DB::table('people_history')->insert([
+                'pid'  => $this->id, 'action' => 'updated', 'type' => $type, 'subtype' => 'volunteer',
+                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
+            $result[''] = $json;
         }
-
-        return $result;
-
     }
 
     /**
@@ -244,7 +259,8 @@ class People extends Model {
         $attend = Attendance::create([
             'eid'    => $instance->id,
             'pid'    => $this->id,
-            'in'     => Carbon::now()->toDateTimeString(),
+            // Need to covert to local TZ because model itself coverts to UTC on save
+            'in'     => Carbon::now()->timezone(session('tz'))->toDateTimeString(),
             'method' => $method
         ]);
 

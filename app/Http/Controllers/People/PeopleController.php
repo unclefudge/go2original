@@ -115,15 +115,7 @@ class PeopleController extends Controller {
 
         // Create history record
         $people = People::create($people_request);
-        $x=1;
-        foreach ($people->genHistoryData() as $category => $json) {
-            $action = ($x == 1) ? 'created' : 'updated';
-            DB::table('people_history')->insert([
-                'pid'  => $people->id, 'action' => $action, 'type' => 'profile', 'subtype' => $category,
-                'data' => $json, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
-
-            if ($x++ < 2) sleep(1); // Delay 1 sec after first loop to ensure 'Created' record is earlier then updates for order sort later on
-        }
+        $people->addHistoryData('profile');
 
         Toastr::success("Profile created");
 
@@ -189,6 +181,7 @@ class PeopleController extends Controller {
 
         //dd($people_request);
         $people->update($people_request);
+        $people->addHistoryData('profile', $peopleBefore);
 
         // Create history record
         foreach ($people->genHistoryData($peopleBefore) as $category => $json) {

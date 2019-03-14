@@ -115,6 +115,7 @@ class CheckinController extends Controller {
 
         // Create Student
         $student = People::create($people_request);
+        $student->addHistoryData('profile');
 
         // Handle attached photo
         if (request()->photo)
@@ -197,6 +198,7 @@ class CheckinController extends Controller {
 
         //dd($people_request);
         $people = People::create($people_request);
+        $people->addHistoryData('profile');
 
         // Handle attached photo
         if (request()->photo)
