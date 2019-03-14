@@ -127,13 +127,14 @@ class ActivityController extends Controller {
         });
 
         $output = '';
-        $x = 1;
-        $records = 20;
-        if ($offset < count($activity))
-            foreach ($activity as $act) {
-                if ($x > $offset && $x <= ($offset + $records)) {
-                    //echo "x:$x offset:$offset<br>";
-                    $output .= "
+        if (count($activity)) {
+            $x = 1;
+            $records = 20;
+            if ($offset < count($activity))
+                foreach ($activity as $act) {
+                    if ($x > $offset && $x <= ($offset + $records)) {
+                        //echo "x:$x offset:$offset<br>";
+                        $output .= "
             <div class='m-accordion__item'>
                 <div class='m-accordion__item-head collapsed'  role='tab' id='m_accordion_item_" . $x . "_head' data-toggle='collapse' href='#m_accordion_item_" . $x . "_body' aria-expanded=' false'>
                     <span class='m-accordion__item-icon'>$act->icon</span>
@@ -150,18 +151,21 @@ class ActivityController extends Controller {
                     </div>
                 </div>
             </div>";
+                    }
+                    $x ++;
+                    if ($x > ($offset + $records))
+                        break;
                 }
-                $x ++;
-                if ($x > ($offset + $records))
-                    break;
-            }
 
-        //echo "act:" . count($activity) . "xx:$x<br>";
-        if (count($activity) >= $x)
-            $output .= '
+            //echo "act:" . count($activity) . "xx:$x<br>";
+            if (count($activity) >= $x)
+                $output .= '
             <div id="remove-row">
                  <button id="btn-more" data-offset="' . ($x - 1) . '" class="btn btn-secondary btn-block"> Load More</button>
             </div>';
+        } else {
+            $output = 'No activity';
+        }
 
         //dd($activity);
         return $output;
