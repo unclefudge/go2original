@@ -228,8 +228,8 @@ class People extends Model {
         $volunteer = ['wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by'];
         if ($a->wwc_no != $b->wwc_no || $a->wwc_exp != $b->wwc_exp || $a->wwc_verified != $b->wwc_verified) {
             $data['WWC Registration'] = [];
-            $data['WWC Registration']['a'] = ($a->wwc_exp) ? "$a->wwc_no<br>" . $a->wwc_exp->format(session('df')) : "$a->wwc_no<br>";
-            $data['WWC Registration']['b'] = ($b->wwc_exp) ? "$b->wwc_no<br>" . $b->wwc_exp->format(session('df')) : "$b->wwc_no<br>";
+            $data['WWC Registration']['a'] = ($a->wwc_exp) ? "No: $a->wwc_no<br>Exp: " . $a->wwc_exp->format(session('df')) : "No: $a->wwc_no<br>";
+            $data['WWC Registration']['b'] = ($b->wwc_exp) ? "No: $b->wwc_no<br>Exp: " . $b->wwc_exp->format(session('df')) : "No: $b->wwc_no<br>";
             if ($a->wwc_verified != $b->wwc_verified) {
                 $data['WWC Registration']['a'] .= ($a->wwc_verified) ? "Verified by<br>" . $a->wwcVerifiedByUser->name . '<br>' . $a->wwc_verified->format(session('df')) : '';
                 $data['WWC Registration']['b'] .= ($b->wwc_verified) ? "Verified by<br>" . $b->wwcVerifiedByUser->name . '<br>' . $b->wwc_verified->format(session('df')) : '';
