@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/ActivityController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/ActivityController.php" />
     </list>
     <ignored path="go2.iws" />
@@ -111,7 +112,7 @@
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/People/ActivityController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.86506027">
-              <caret line="166" column="67" selection-start-line="166" selection-start-column="67" selection-end-line="166" selection-end-column="67" />
+              <caret line="166" column="71" selection-start-line="166" selection-start-column="71" selection-end-line="166" selection-end-column="71" />
               <folding>
                 <element signature="e#47#54#0#PHP" expanded="true" />
               </folding>
@@ -1213,7 +1214,7 @@
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/People/ActivityController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.86506027">
-          <caret line="166" column="67" selection-start-line="166" selection-start-column="67" selection-end-line="166" selection-end-column="67" />
+          <caret line="166" column="71" selection-start-line="166" selection-start-column="71" selection-end-line="166" selection-end-column="71" />
           <folding>
             <element signature="e#47#54#0#PHP" expanded="true" />
           </folding>
