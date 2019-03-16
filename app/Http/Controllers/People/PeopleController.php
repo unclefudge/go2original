@@ -99,10 +99,10 @@ class PeopleController extends Controller {
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
             // Media Consent
             if (request('media_consent')) {
-                $user_request['media_consent'] = Carbon::now()->toDateTimeString();
+                $user_request['media_consent_at'] = Carbon::now()->toDateTimeString();
                 $user_request['media_consent_by'] = Auth::user()->id;
             } else
-                $user_request['media_consent'] = null;
+                $user_request['media_consent_at'] = $user_request['media_consent_by'] = null;
 
         } else {
             $user_request['grade'] = $user_request['school_id'] = null;
@@ -156,23 +156,15 @@ class PeopleController extends Controller {
 
         // Student details
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
-            // Media Consent
-            if (request('media_consent')) {
-                if (!$user->media_consent) {
-                    // New approved media request
-                    $user_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
-                    $user_request['media_consent_by'] = Auth::user()->id;
-                }
-            } else {
-                if ($user->media_consent) {
-                    // Previous media approval changed to denied
-                    $user_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
-                    $user_request['media_consent_by'] = Auth::user()->id;
-                }
+            if (request('media_consent') && request('media_consent') != $user->media_consent) {
+                // Change in media consent
+                $user_request['media_consent_at'] = Carbon::now()->toDateTimeString();
+                $user_request['media_consent_by'] = Auth::user()->id;
+
             }
         } else {
             $user_request['grade'] = $user_request['school_id'] = null;
-            $user_request['media_consent'] = $user_request['media_consent_by'] = null;
+            $user_request['media_consent_at'] = $user_request['media_consent_by'] = null;
         }
 
         // Volunteer details
@@ -420,7 +412,7 @@ class PeopleController extends Controller {
             ->editColumn('media_consent', function ($user) {
                 if (!in_array($user->type, ['Student', 'Student/Volenteer'])) return "<i class='fa fa-user m--font-metal'>";
 
-                return ($user->media_consent) ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
+                return ($user->media_consent == 'y') ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
             })
             ->editColumn('wwc_exp2', function ($user) {
                 return ($user->wwc_verified) ? $user->wwc_exp2 : $user->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash m--font-danger'>";

@@ -43,8 +43,11 @@ class ActivityController extends Controller {
         foreach ($user->history as $history) {
             $array = [];
             $array['datetime'] = Timezone::convertFromUTC($history->created_at, session('tz'));
-            $array['icon'] = ($history->action == 'created') ? "<i class='fa fa-user-plus' style='color:#5867dd'></i>" : "<i class='fa fa-user-edit' style='color:#5867dd'></i>";
-            $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->updateByUser->name;
+            if ($history->type == 'profile')
+                $array['icon'] = ($history->action == 'created') ? "<i class='fa fa-user-plus' style='color:#5867dd'></i>" : "<i class='fa fa-user-edit' style='color:#5867dd'></i>";
+            if ($history->type == 'household')
+                $array['icon'] = "<i class='fa fa-user-friends' style='color:#5867dd'></i>";
+            $array['title'] = ucfirst($history->type) . ' ' . ucfirst($history->action) . " &nbsp;<small> by " . $history->updateByUser->name . "</small>";
             $array['date'] = $history->created_at->timezone(session('tz'))->format('F jS, Y');
             $array['data'] = '';
 
@@ -52,7 +55,7 @@ class ActivityController extends Controller {
                 $json = json_decode($history->data);
                 //dd($json);
                 foreach ($json as $category) {
-                    $array['data'] .= "<h5>".ucwords($category->title)."</h5><div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
+                    $array['data'] .= "<h5>" . ucwords($category->title) . "</h5><div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
                     foreach ($category->data as $row) {
                         foreach ($row as $field)
                             $array['data'] .= "<div class='row' style='padding:5px'><div class='col-3'>$field->field</div><div class='col-4' style='color: #999'>$field->before</div><div class='col-4'>$field->after</div></div>";

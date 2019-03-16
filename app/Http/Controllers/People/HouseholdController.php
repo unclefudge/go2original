@@ -7,10 +7,19 @@ use Auth;
 use Validator;
 use App\User;
 use App\Models\People\Household;
+use App\Models\People\PeopleHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class HouseholdController extends Controller {
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -25,6 +34,15 @@ class HouseholdController extends Controller {
             if (request('members')) {
                 foreach (request('members') as $member)
                     DB::table('users_household')->insert(['hid' => $household->id, 'uid' => $member['uid']]);
+
+                // Update user history for each member
+                $house_before = (object) ['name' => $household->name, 'members' => []];
+                $house_after = (object)  ['name' => $household->name, 'members' => $household->members->sortBy('firstname')->pluck('name')->toArray(), 'created_at' => $household->created_at];
+                foreach (request('members') as $member) {
+                    $user = User::findOrFail($member['uid']);
+                    PeopleHistory::addHistory($user, 'household', $house_before, $house_after);
+                }
+
             }
 
             return $household;
@@ -41,6 +59,8 @@ class HouseholdController extends Controller {
         if (request()->ajax()) {
             // Update Household
             $household = Household::findOrFail($id);
+            $member_ids_before = $household->members->pluck('id')->toArray();
+            $house_before = (object)  ['name' => $household->name, 'members' => $household->members->sortBy('firstname')->pluck('name')->toArray()];
             $household->update(request()->all());
 
             // Delete Members
@@ -51,6 +71,16 @@ class HouseholdController extends Controller {
             if (request('members')) {
                 foreach (request('members') as $member)
                     DB::table('users_household')->insert(['hid' => $id, 'uid' => $member['uid']]);
+
+                // Update user history for each member
+                $household = Household::findOrFail($id);
+                $member_ids_after = $household->members->pluck('id')->toArray();
+                $house_after = (object)  ['name' => $household->name, 'members' => $household->members->sortBy('firstname')->pluck('name')->toArray(), 'created_at' => $household->created_at];
+
+                foreach (array_merge($member_ids_before, $member_ids_after) as $uid) {
+                    $user = User::findOrFail($uid);
+                    PeopleHistory::addHistory($user, 'household', $house_before, $house_after);
+                }
             } else
                 $household->delete();
 

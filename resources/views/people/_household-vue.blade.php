@@ -222,7 +222,7 @@
                     resolve(household);
                 },
                 error: function (result) {
-                    alert("failed creating household " + household.name + '. Please refresh the page to resync household');
+                    alert("Something went wrong creating household " + household.name + '. Please refresh the page to resync household');
                     //console.log('DB created household FAILED:[' + result.id + '] ' + household.name);
                     reject(false);
                 }
@@ -247,7 +247,7 @@
                     resolve(household);
                 },
                 error: function (result) {
-                    alert("failed updating household " + household.name + '. Please refresh the page to resync household');
+                    alert("Something went wrong updating household " + household.name + '. Please refresh the page to resync household');
                     //console.log('DB updated household FAILED:[' + household.id + '] ' + household.name);
                     reject(false);
                 }

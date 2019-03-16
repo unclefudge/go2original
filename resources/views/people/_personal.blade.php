@@ -67,8 +67,15 @@
                         <div class="col-2"><!--<a href="#" class="pull-right" data-toggle="modal" data-target="#modal_profile"> <i class="fa fa-edit"></i></a>--></div>
                     </div>
                     <div class="row">
-                        <div class="col-1">{!! ($user->media_consent) ? '<i class="fa fa-user m--font-success"></i>' : '<i class="fa fa-user-slash m--font-danger"></i>'!!}</div>
-                        <div class="col">{!! ($user->media_consent) ? 'Consent given by '.$user->mediaConsentByUser->name.' ('.$user->media_consent->format(session('df')).')' : 'No Media Consent' !!}</div>
+                        <div class="col-1">{!! ($user->media_consent == 'y') ? '<i class="fa fa-user m--font-success"></i>' : '<i class="fa fa-user-slash m--font-danger"></i>'!!}</div>
+                        <div class="col">
+                            @if ($user->media_consent)
+                                <?php $media_action = ($user->media_consent == 'y') ? 'Consent given' : 'Media denied' ?>
+                                 {{ $media_action }} by {!! $user->mediaConsentByUser->name.' ('.$user->media_consent_at->format(session('df')).')' !!}
+                                @else
+                                No Media Consent
+                                @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -248,7 +255,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('media_consent', $errors) !!}">
                                 {!! Form::label('media_consent', 'Media Consent', ['class' => 'control-label']) !!}
-                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], ($user->media_consent) ? 1 : 0, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('media_consent', ($user->media_consent) ? ['y' => 'Yes', 'n' => 'No'] : ['' => 'Select', 'y' => 'Yes', 'n' => 'No'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                                 {!! fieldErrorMessage('media_consent', $errors) !!}
                             </div>
                         </div>

@@ -198,8 +198,8 @@ class ImportController extends Controller {
 
     public function createPeopleHistory()
     {
-        echo "<h3>Add profile creation</h3>";
-        $users = User::all();
+        echo "<h3>Add missing profile creation for all users</h3>";
+        $users = User::where('aid', session('aid'))->get();
         foreach ($users as $user) {
             $exists = PeopleHistory::where('uid', $user->id)->where('type', 'profile')->where('action', 'created')->first();
             if (!$exists) {
@@ -207,77 +207,6 @@ class ImportController extends Controller {
                 PeopleHistory::addHistory($user, 'profile');
             }
         }
-        /*
-        $fillable = [
-            'type', 'gender', 'dob', 'email', 'phone', 'instagram',
-            'grade', 'school_id', 'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by',
-            'media_consent', 'media_consent_by', 'notes'];
-        $address = ['address', 'address2', 'suburb', 'state', 'postcode', 'country'];
-        $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent'];
-        foreach ($users as $user) {
-            $array = [];
-            // Name
-            if ($user->firstname || $user->lastname) {
-                $array['Name'] = '';
-                if ($user->firstname) $array['Name'] .= "$user->firstname";
-                if ($user->lastname) $array['Name'] .= " $user->lastname";
-            }
-
-            // Address
-            if ($user->address || $user->suburb || $user->state || $user->postcode) {
-                $array['Address'] = '';
-                if ($user->address) $array['Address'] .= "$user->address<br>";
-                if ($user->suburb) $array['Address'] .= "$user->suburb, ";
-                if ($user->state) $array['Address'] .= "$user->state ";
-                if ($user->postcode) $array['Address'] .= "$user->postcode";
-            }
-
-            $ends = array('th','st','nd','rd','th','th','th','th','th','th');
-            foreach ($fillable as $key) {
-                $KEY = ucfirst($key);
-                if ($key == 'dob') $KEY = 'Birthdate';
-                if (isset($user[$key]) && $user[$key]) {
-                    if (in_array($key, $dates))
-                        $array[$KEY] = $user[$key]->format(session('df'));
-                    elseif ($key == 'school_id')
-                        $array['School'] = $user->school->name;
-                    elseif ($key == 'grade') {
-                        if (is_numeric($user->grade)) {
-                            if ($user->grade > 12)
-                                $array[$KEY] = "Young Adult";
-                            elseif (($user->grade %100) >= 11 && ($user->grade %100) <= 13)
-                                $array[$KEY] = $user->grade. 'th';
-                            else
-                                $array[$KEY] = $user->grade. $ends[$user->grade % 10];
-                        } else
-                            $array[$KEY] = $user->grade;
-                    }
-                    else
-                        $array[$KEY] = $user[$key];
-                }
-            }
-            echo "<br><br>$user->name<br>";
-            // {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}}
-            print_r($array);
-            $json = "{";
-            $x=1;
-            foreach ($array as $key => $val){
-                $json .= '"'.($x++).'": {"field": "'.$key.'", "before": "", "after": "'.$val.'"}, ';
-            }
-            $json = rtrim($json, ', ');
-            $json .= "}";
-            echo "<br>$json<br>";
-            $history = DB::table('users_history')->insert([
-                'uid' => $user->id,
-                'action' => 'created',
-                'type' => 'profile',
-                'subtype' => 'personal',
-                'data' => $json,
-                'created_by' => ($user->firstEvent() && $user->firstEvent()->start->lt(Carbon::now()->subWeeks(4))) ? 2 : 3,
-                'created_at' => ($user->firstEvent() && $user->firstEvent()->start->lt($user->created_at)) ? $user->firstEvent()->start : $user->created_at,
-                'updated_at' => ($user->firstEvent() && $user->firstEvent()->start->lt($user->created_at)) ? $user->firstEvent()->start : $user->updated_at,
-            ]);
-        }*/
     }
 
     public function formHouseholds()
@@ -363,6 +292,24 @@ class ImportController extends Controller {
 
     public function quick()
     {
+
+        $household = Household::find(1);
+        $members_before = (object) ['name' => $household->name, 'members' => []];
+        $members_after = (object)  ['name' => $household->name, 'members' => $household->members->sortBy('firstname')->pluck('name')->toArray()];
+
+
+        $data = [];
+        if ($members_after->members != $members_before->members) {
+            $data['Members'] = [];
+            $data['Members']['b'] = '';
+            $data['Members']['a'] = '';
+            foreach ($members_after->members as $member)
+                $data['Members']['a'] .= "$member<br>";
+            foreach ($members_before->members as $member)
+                $data['Members']['b'] .= "$member<br>";
+        }
+        dd($data);
+        dd($members_before);
         /*
                 echo "<h3>Testing timezone out dates</h3>";
                 $x = 0;
