@@ -2,59 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrations/2019_01_01_102604_create_setup_accounts_table.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Models/People/People.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/database/migrations/2019_03_10_105206_create_people_activity_table.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/database/migrations/2019_03_13_224946_create_extra_users_table.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_100000_create_password_resets_table.php" afterPath="$PROJECT_DIR$/database/migrations/2019_01_02_100000_create_password_resets_table.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/database/migrations/2018_12_16_102604_create_accounts_table.php" afterPath="$PROJECT_DIR$/database/migrations/2019_01_03_102604_create_accounts_table.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/database/migrations/2018_12_16_110239_create_people_tables.php" afterPath="$PROJECT_DIR$/database/migrations/2019_01_02_000000_create_users_table.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Account/AccountController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Account/AccountController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/LoginController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/AttendanceController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/AttendanceController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Event/StatsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Event/StatsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MIsc/CronController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MIsc/CronController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MIsc/FileController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MIsc/FileController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MIsc/HomeController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MIsc/HomeController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MIsc/ImportController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MIsc/ImportController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MIsc/ReportController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MIsc/ReportController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/ActivityController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/ActivityController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/HouseholdController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/HouseholdController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/PeopleController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/PeopleController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/SchoolController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/SchoolController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/People/SearchController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/People/SearchController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Account/Account.php" afterPath="$PROJECT_DIR$/app/Models/Account/Account.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Event/Attendance.php" afterPath="$PROJECT_DIR$/app/Models/Event/Attendance.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Event/Event.php" afterPath="$PROJECT_DIR$/app/Models/Event/Event.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Event/EventInstance.php" afterPath="$PROJECT_DIR$/app/Models/Event/EventInstance.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/People/Household.php" afterPath="$PROJECT_DIR$/app/Models/People/Household.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/People/PeopleHistory.php" afterPath="$PROJECT_DIR$/app/Models/People/PeopleHistory.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/People/School.php" afterPath="$PROJECT_DIR$/app/Models/People/School.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/User.php" afterPath="$PROJECT_DIR$/app/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2019_02_05_032043_create_events_table.php" afterPath="$PROJECT_DIR$/database/migrations/2019_02_05_032043_create_events_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2019_02_23_113238_create_household_table.php" afterPath="$PROJECT_DIR$/database/migrations/2019_02_23_113238_create_household_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/custom.css" afterPath="$PROJECT_DIR$/public/css/custom.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/vue-checkin-functions.js" afterPath="$PROJECT_DIR$/public/js/vue-checkin-functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/attendance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/attendance.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/overview.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/overview.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_create_personal.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_create_personal.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_header.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_header.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_household-vue.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_household-vue.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_household.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_household.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/_personal.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/_personal.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/activity.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/activity.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/show.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/test.blade.php" afterPath="$PROJECT_DIR$/resources/views/test.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <ignored path="go2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,33 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/people/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5631537">
-              <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PeopleController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/People/PeopleController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-32.407406">
-              <caret line="117" column="52" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="52" />
-              <folding>
-                <element signature="e#47#54#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HouseholdController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/People/HouseholdController.php">
-          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="32" />
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -129,6 +56,40 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="EventController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventInstanceController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.76427996">
+              <caret line="55" column="94" selection-start-line="55" selection-start-column="94" selection-end-line="55" selection-end-column="94" />
+              <folding>
+                <element signature="e#46#53#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EventInstance.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/Event/EventInstance.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+              <folding>
+                <element signature="e#36#49#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Household.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/People/Household.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -137,6 +98,32 @@
               <folding>
                 <element signature="e#37#46#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="attendance.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="239" column="28" selection-start-line="239" selection-start-column="28" selection-end-line="239" selection-end-column="28" />
+              <folding>
+                <marker date="1552644559934" expanded="true" signature="10443:10660" placeholder="..." />
+                <marker date="1552644559934" expanded="true" signature="10457:10658" placeholder="..." />
+                <marker date="1552644559934" expanded="true" signature="28642:28660" placeholder="..." />
+                <marker date="1552644559934" expanded="true" signature="28642:28669" placeholder="..." />
+                <marker date="1552644559934" expanded="true" signature="28778:28796" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_create_instance.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/event/_create_instance.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -195,7 +182,6 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/People/HouseholdController.php" />
         <option value="$PROJECT_DIR$/app/Models/Account/Account.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Account/AccountController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Event/StatsController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/MIsc/CronController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/MIsc/FileController.php" />
@@ -218,6 +204,7 @@
         <option value="$PROJECT_DIR$/resources/views/people/_household-vue.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/people/_household.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/people/show.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php" />
       </list>
     </option>
   </component>
@@ -753,17 +740,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vendor/symfony/process/Process.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.3588092">
-          <caret line="167" column="5" selection-start-line="167" selection-start-column="5" selection-end-line="167" selection-end-column="5" />
-          <folding>
-            <element signature="e#7#236#0#PHP" expanded="true" />
-            <element signature="e#276#341#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Controller.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -884,35 +860,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="239" column="28" selection-start-line="239" selection-start-column="28" selection-end-line="239" selection-end-column="28" />
-          <folding>
-            <marker date="1552644559934" expanded="true" signature="10443:10660" placeholder="..." />
-            <marker date="1552644559934" expanded="true" signature="10457:10658" placeholder="..." />
-            <marker date="1552644559934" expanded="true" signature="28642:28660" placeholder="..." />
-            <marker date="1552644559934" expanded="true" signature="28642:28669" placeholder="..." />
-            <marker date="1552644559934" expanded="true" signature="28778:28796" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8588957">
           <caret line="217" column="12" selection-start-line="217" selection-start-column="12" selection-end-line="217" selection-end-column="12" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Event/EventInstance.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08045052">
-          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
-          <folding>
-            <element signature="e#36#49#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -956,32 +908,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8447305">
           <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/AttendanceController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0659695">
-          <caret line="53" column="85" selection-start-line="53" selection-start-column="85" selection-end-line="53" selection-end-column="85" />
-          <folding>
-            <element signature="e#46#53#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30168948">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16090104">
-          <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1135,16 +1061,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="247" column="63" selection-start-line="247" selection-start-column="63" selection-end-line="247" selection-end-column="63" />
-          <folding>
-            <element signature="e#23#30#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/People/SchoolController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08045052">
@@ -1221,6 +1137,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/people/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/people/_household.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.0">
@@ -1229,11 +1153,73 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/people/show.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/AttendanceController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5631537">
-          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+        <state vertical-scroll-proportion="1.0659695">
+          <caret line="53" column="85" selection-start-line="53" selection-start-column="85" selection-end-line="53" selection-end-column="85" />
+          <folding>
+            <element signature="e#46#53#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="247" column="63" selection-start-line="247" selection-start-column="63" selection-end-line="247" selection-end-column="63" />
+          <folding>
+            <element signature="e#23#30#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/event/attendance.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="239" column="28" selection-start-line="239" selection-start-column="28" selection-end-line="239" selection-end-column="28" />
+          <folding>
+            <marker date="1552644559934" expanded="true" signature="10443:10660" placeholder="..." />
+            <marker date="1552644559934" expanded="true" signature="10457:10658" placeholder="..." />
+            <marker date="1552644559934" expanded="true" signature="28642:28660" placeholder="..." />
+            <marker date="1552644559934" expanded="true" signature="28642:28669" placeholder="..." />
+            <marker date="1552644559934" expanded="true" signature="28778:28796" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/event/_create_instance.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Event/EventInstance.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+          <folding>
+            <element signature="e#36#49#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/EventInstanceController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.76427996">
+          <caret line="55" column="94" selection-start-line="55" selection-start-column="94" selection-end-line="55" selection-end-column="94" />
+          <folding>
+            <element signature="e#46#53#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

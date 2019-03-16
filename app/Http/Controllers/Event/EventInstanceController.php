@@ -53,7 +53,7 @@ class EventInstanceController extends Controller {
         $instance = EventInstance::create($instance_request);
         Toastr::success("Event created");
 
-        return redirect("/event/$instance->eid/attendance/".$instance->start->format('Y-m-d'));
+        return redirect("/event/$instance->eid/attendance/".$instance->start->timezone('tz')->format('Y-m-d'));
     }
 
     /**
