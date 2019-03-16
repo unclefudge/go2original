@@ -82,8 +82,6 @@ class PeopleHistory extends Model {
         if (!$a) $a = $user;
         $result = [];
 
-        echo "Creating history for $user->name<br>";
-
         $p1 = '{"1": {"field": "Name", "before": " ", "after": "John Doe"}, "2": {"field": "Type", "before": "", "after": "Student"}}';
         $s2 = '{"1": {"field": "Grade", "before": "", "after": "10th"}, "2": {"field": "School", "before": "", "after": "Clarence High"}}';
         $new = '{"1": {"title": "Personal", "data": [' . $p1 . ']}, "2": {"title": "Student", "data": [' . $s2 . ']}}';
@@ -209,7 +207,7 @@ class PeopleHistory extends Model {
         if ($type == 'profile') {
             // Adjust timestamp for Profile created if User has attended events prior to User creation date ie. backdating
             //  - a cleaner way to reflect profile creation for when users + events have been imported
-            $action = (PeopleHistory::where('uid', $user->id)->where('type', $type)->first()) ? 'updated' : 'created';
+            $action = (PeopleHistory::where('uid', $user->id)->where('type', $type)->where('action', 'created')->first()) ? 'updated' : 'created';
             if ($action == 'created')
                 $timestamp = ($user->firstEvent() && $user->firstEvent()->start->lt($user->created_at)) ? $user->firstEvent()->start : $user->created_at;
         }

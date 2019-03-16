@@ -101,7 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/import-students', 'Misc\ImportController@importStudents');
     Route::get('/import-adults', 'Misc\ImportController@importAdults');
     Route::get('/import-events', 'Misc\ImportController@importEvents');
-    Route::get('/create-user-history', 'Misc\ImportController@createUserHistory');
+    Route::get('/create-people-history', 'Misc\ImportController@createPeopleHistory');
     Route::get('/form-households', 'Misc\ImportController@formHouseholds');
     Route::get('/copy-address', 'Misc\ImportController@copyAddress');
     Route::get('/copy-address/{from}/{to}', 'Misc\ImportController@copyAddressDone');

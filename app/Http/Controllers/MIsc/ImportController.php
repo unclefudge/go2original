@@ -198,11 +198,14 @@ class ImportController extends Controller {
 
     public function createPeopleHistory()
     {
-        echo "<h3>Create profile history</h3>";
-        $users = User::find(3);
-        PeopleHistory::addHistory($users, 'profile');
+        echo "<h3>Add profile creation</h3>";
+        $users = User::all();
         foreach ($users as $user) {
-
+            $exists = PeopleHistory::where('uid', $user->id)->where('type', 'profile')->where('action', 'created')->first();
+            if (!$exists) {
+                echo "Adding profile creation for $user->name<br>";
+                PeopleHistory::addHistory($user, 'profile');
+            }
         }
         /*
         $fillable = [

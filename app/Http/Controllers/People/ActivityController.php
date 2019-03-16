@@ -24,6 +24,7 @@ class ActivityController extends Controller {
 
         $activity = [];
 
+
         // Attendance
         foreach ($user->attendance as $attend) {
             $array = [];
