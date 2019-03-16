@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePeopleTables extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -32,9 +32,10 @@ class CreatePeopleTables extends Migration
             $table->softDeletes();
         });
 
-        // People
-        Schema::create('people', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+
+            // Personal Details
             $table->string('firstname', 50)->nullable();
             $table->string('lastname', 50)->nullable();
             $table->string('type', 50)->nullable();
@@ -42,7 +43,8 @@ class CreatePeopleTables extends Migration
             $table->dateTime('dob')->nullable();
 
             // Contact Details
-            $table->string('email', 255)->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone', 50)->nullable();
             $table->string('instagram', 50)->nullable();
 
@@ -58,16 +60,26 @@ class CreatePeopleTables extends Migration
             $table->unsignedInteger('school_id')->nullable();
             $table->dateTime('media_consent')->nullable();
             $table->unsignedInteger('media_consent_by')->nullable();
+            $table->dateTime('media_consent_at')->nullable();
             $table->string('photo', 255)->nullable();
             $table->string('wwc_no', 50)->nullable();
             $table->dateTime('wwc_exp')->nullable();
             $table->dateTime('wwc_verified')->nullable();
             $table->unsignedInteger('wwc_verified_by')->nullable();
-
             $table->string('minhub', 50)->nullable();
             $table->text('notes')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->unsignedInteger('aid')->nullable();
+
+            // Login Details
+            $table->tinyInteger('login')->default(0);
+            $table->string('username', 50)->unique()->nullable();
+            $table->string('password', 60)->nullable();
+            $table->timestamp('password_reset')->nullable();
+            $table->string('activation')->nullable();
+            $table->string('last_ip', 25)->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->rememberToken();
 
             // Foreign keys
             $table->foreign('aid')->references('id')->on('accounts')->onDelete('cascade');
@@ -80,10 +92,10 @@ class CreatePeopleTables extends Migration
             $table->softDeletes();
         });
 
-        // People Medical
-        Schema::create('people_medical', function (Blueprint $table) {
+        // User Medical
+        Schema::create('users_medical', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
             $table->string('emergency_name1', 255)->nullable();
             $table->string('emergency_phone1', 50)->nullable();
             $table->string('emergency_name2', 255)->nullable();
@@ -101,7 +113,7 @@ class CreatePeopleTables extends Migration
             $table->unsignedInteger('verified_by')->nullable();
 
             // Foreign keys
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
 
             // Modify info
             $table->unsignedInteger('created_by')->nullable();
@@ -110,15 +122,15 @@ class CreatePeopleTables extends Migration
             $table->softDeletes();
         });
 
-        // People Notes
-        Schema::create('people_notes', function (Blueprint $table) {
+        // User Notes
+        Schema::create('users_notes', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
             $table->text('info')->nullable();
             $table->tinyInteger('private')->default(1);
 
             // Foreign keys
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
 
             // Modify info
             $table->unsignedInteger('created_by')->nullable();
@@ -127,16 +139,16 @@ class CreatePeopleTables extends Migration
             $table->softDeletes();
         });
 
-        // People Relationships
-        Schema::create('people_relationships', function (Blueprint $table) {
+        // User Relationships
+        Schema::create('users_relationships', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
             $table->string('relationship', 50)->nullable();
             $table->unsignedInteger('related2')->nullable();
             $table->tinyInteger('primary')->default(0);
 
             // Foreign keys
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
 
             // Modify info
             $table->unsignedInteger('created_by')->nullable();
@@ -145,34 +157,34 @@ class CreatePeopleTables extends Migration
             $table->softDeletes();
         });
 
-        // People Linked
-        Schema::create('people_linked', function (Blueprint $table) {
+        // User History
+        Schema::create('users_history', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
+            $table->string('type', '50')->nullable();
+            $table->string('subtype', '50')->nullable();
+            $table->string('action', '255')->nullable();
+            $table->unsignedInteger('ref')->nullable();
+            $table->text('data')->nullable();
+
+            // Foreign keys
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
+
+            // Modify info
+            $table->unsignedInteger('created_by')->nullable();
+            $table->timestamps();
+        });
+
+        // Users Linked
+        Schema::create('users_linked', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('uid')->nullable();
             $table->unsignedInteger('linked2')->nullable();
             $table->dateTime('linked2_modified')->nullable();
 
             // Foreign keys
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
-            $table->foreign('linked2')->references('id')->on('people')->onDelete('cascade');
-
-            // Modify info
-            $table->unsignedInteger('created_by')->nullable();
-            $table->unsignedInteger('updated_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        // People Linked
-        Schema::create('users_people', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('uid')->nullable();
-            $table->unsignedInteger('pid')->nullable();
-            $table->tinyInteger('primary')->default(1);
-
-            // Foreign keys
             $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('linked2')->references('id')->on('users')->onDelete('cascade');
 
             // Modify info
             $table->unsignedInteger('created_by')->nullable();
@@ -189,12 +201,12 @@ class CreatePeopleTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_people');
-        Schema::dropIfExists('people_linked');
-        Schema::dropIfExists('people_relationships');
-        Schema::dropIfExists('people_notes');
-        Schema::dropIfExists('people_medical');
-        Schema::dropIfExists('people');
+        Schema::dropIfExists('users_linked');
+        Schema::dropIfExists('users_history');
+        Schema::dropIfExists('users_relationships');
+        Schema::dropIfExists('users_notes');
+        Schema::dropIfExists('users_medical');
+        Schema::dropIfExists('users');
         Schema::dropIfExists('schools');
     }
 }

@@ -13,29 +13,11 @@ class CreateAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 255)->nullable();
-            $table->string('slug', 100)->unique()->nullable();
-            $table->string('timezone', 255)->nullable();
-            $table->string('dateformat', 25)->nullable();
-            $table->string('country', 100)->nullable();
-            $table->string('banner', 255)->nullable();
-            $table->dateTime('grade_adv')->nullable();
-            $table->tinyInteger('status')->default(1);
-
-            // Modify info
-            $table->unsignedInteger('created_by')->nullable();
-            $table->unsignedInteger('updated_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('accounts_security', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('aid')->nullable();
             $table->unsignedInteger('uid')->nullable();
-            $table->tinyInteger('people')->nullable();
+            $table->tinyInteger('users')->nullable();
             $table->tinyInteger('events')->nullable();
             $table->tinyInteger('groups')->nullable();
             $table->tinyInteger('settings')->nullable();
@@ -79,6 +61,5 @@ class CreateAccountsTable extends Migration
     {
         Schema::dropIfExists('accounts_linked');
         Schema::dropIfExists('accounts_security');
-        Schema::dropIfExists('accounts');
     }
 }

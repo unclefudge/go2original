@@ -6,20 +6,20 @@
         state_default: '', state_now: '',
         member_search: false, household_search: false, //join_household: false,
         person: {
-            id: "{{ $people->id }}",
-            name: "{{ $people->name }}",
-            firstname: "{{ $people->firstname }}",
-            lastname: "{{ $people->lastname }}",
-            households: "{{ $people->households->count() }}"
+            id: "{{ $user->id }}",
+            name: "{{ $user->name }}",
+            firstname: "{{ $user->firstname }}",
+            lastname: "{{ $user->lastname }}",
+            households: "{{ $user->households->count() }}"
         },
         household: {
-            id: "{{ ($people->households->count()) ? $people->households->first()->id : 0 }}",
-            name: "{{ ($people->households->count()) ? $people->households->first()->name : $people->lastname.' household' }}",
-            pid: "{{ ($people->households->count()) ? $people->households->first()->head->id : 0 }}",
+            id: "{{ ($user->households->count()) ? $user->households->first()->id : 0 }}",
+            name: "{{ ($user->households->count()) ? $user->households->first()->name : $user->lastname.' household' }}",
+            uid: "{{ ($user->households->count()) ? $user->households->first()->head->id : 0 }}",
             members: [],
         },
         join_household_with: {
-            pid: '',
+            uid: '',
             name: '',
         },
         searchQuery: "{!! app('request')->input('query') !!}",
@@ -36,11 +36,11 @@
             deleteMember: function (person) {
                 // get index of object to delete
                 var removeIndex = this.xx.household.members.map(function (item) {
-                    return item.pid;
-                }).indexOf(person.pid);
+                    return item.uid;
+                }).indexOf(person.uid);
 
                 // Prompt if person is current profile
-                if (person.pid == this.xx.person.id) {
+                if (person.uid == this.xx.person.id) {
                     swal({
                         title: "Are you sure?",
                         html: "You are able to remove <b>" + this.xx.person.name + "</b> from this household.</b>",
@@ -58,7 +58,7 @@
                     this.xx.household.members.splice(removeIndex, 1); // delete object
             },
             headMember: function (person) {
-                this.xx.household.pid = person.pid;
+                this.xx.household.uid = person.uid;
             },
         }
     })
@@ -90,7 +90,7 @@
                 // Add single member to current household
                 if (this.xx.state_now == 'SingleHousehold') {
                     this.xx.member_search = false;
-                    var exists = objectFindByKey(this.xx.household.members, 'pid', person.pid);
+                    var exists = objectFindByKey(this.xx.household.members, 'uid', person.uid);
                     if (!exists) {
                         person.hid = this.xx.household.id;
                         xx.household.members.push(person);
@@ -99,12 +99,12 @@
                 }
                 // Join a household
                 if (this.xx.state_now == 'NoHousehold' || this.xx.state_now == 'MultiHousehold') {
-                    $.getJSON('/data/household/members/' + person.pid, function (data) {
+                    $.getJSON('/data/household/members/' + person.uid, function (data) {
                         this.xx.households2 = data[0];
                         this.xx.members2 = data[2];
                         this.xx.search_household = false;
                         this.xx.state_now = 'JoinHousehold';
-                        this.xx.join_household_with.pid = person.pid;
+                        this.xx.join_household_with.uid = person.uid;
                         this.xx.join_household_with.name = person.name;
                     }.bind(this));
                 }
@@ -127,7 +127,7 @@
             joinHousehold: function (household) {
                 this.updateHouseholdArray(household, this.xx.members2);
                 // Add current profile to household too
-                this.xx.household.members.push({hid: household.id, pid: this.xx.person.id, name: this.xx.person.name})
+                this.xx.household.members.push({hid: household.id, uid: this.xx.person.id, name: this.xx.person.name})
                 // Update database
                 updateHouseholdDB(this.xx.household).then(function (result) {
                     if (result) window.location.href = "/people/" + this.xx.person.id;
@@ -140,7 +140,7 @@
                 // Create household record
                 this.xx.household.id = household.id;
                 this.xx.household.name = household.name;
-                this.xx.household.pid = household.pid;
+                this.xx.household.uid = household.uid;
                 // Add members
                 this.xx.household.members = [];
                 $.each(members, function (key, val) {
@@ -184,7 +184,7 @@
                 this.xx.member_search = false;
                 this.xx.household_search = false;
                 this.xx.state_now = this.xx.state_default;
-                this.xx.join_household_with.pid = '';
+                this.xx.join_household_with.uid = '';
                 this.xx.join_household_with.name = '';
                 $("#modal_household").modal('hide');
             }
@@ -195,11 +195,11 @@
     // Create household
     //
     function createHousehold() {
-        this.xx.household.pid = this.xx.person.id; // set current profile as head of household
+        this.xx.household.uid = this.xx.person.id; // set current profile as head of household
         this.xx.household.name = this.xx.person.lastname + ' household'; // set current profile as head of household
         this.xx.household.members = [];
-        this.xx.household.members.push({pid: this.xx.person.id});
-        this.xx.household.members.push({pid: this.xx.join_household_with.pid});
+        this.xx.household.members.push({uid: this.xx.person.id});
+        this.xx.household.members.push({uid: this.xx.join_household_with.uid});
 
         // Store household to atabase
         createHouseholdDB(this.xx.household).then(function (result) {

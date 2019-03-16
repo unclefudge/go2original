@@ -4,18 +4,12 @@ namespace App\Models\People;
 
 use Auth;
 use App\User;
-use App\Models\Event\Event;
-use App\Models\Event\EventInstance;
-use App\Models\Event\Attendance;
-use App\Http\Utilities\Slim;
-use Carbon\Carbon;
-use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
 
 class Household extends Model {
 
     protected $table = 'households';
-    protected $fillable = ['name', 'pid', 'notes', 'aid', 'created_by', 'updated_by'];
+    protected $fillable = ['name', 'uid', 'notes', 'aid', 'created_by', 'updated_by'];
 
     /**
      * A Household belongs to a account
@@ -34,7 +28,7 @@ class Household extends Model {
      */
     public function head()
     {
-        return $this->belongsTo('App\Models\People\People', 'pid');
+        return $this->belongsTo('App\User', 'uid');
     }
 
     /**
@@ -44,7 +38,7 @@ class Household extends Model {
      */
     public function members()
     {
-        return $this->belongsToMany('App\Models\People\People', 'households_people', 'hid', 'pid');
+        return $this->belongsToMany('App\User', 'users_household', 'hid', 'uid');
     }
 
     /**
@@ -57,7 +51,7 @@ class Household extends Model {
             if (!$member->isStudent)
                 $adults[] = $member->id;
         }
-        return People::find($adults);
+        return User::find($adults);
     }
 
     /**
@@ -70,7 +64,7 @@ class Household extends Model {
             if ($member->isStudent)
                 $students[] = $member->id;
         }
-        return People::find($students);
+        return User::find($students);
     }
 
     /**

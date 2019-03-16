@@ -7,8 +7,6 @@ use Auth;
 use Validator;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
-use App\Models\Event\Attendance;
-use App\Models\People\People;
 use Carbon\Carbon;
 use Camroncade\Timezone\Facades\Timezone;
 use Kamaln7\Toastr\Facades\Toastr;

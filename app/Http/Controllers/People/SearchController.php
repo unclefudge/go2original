@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\People;
 
 use DB;
-use App\Models\People\People;
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -70,7 +70,7 @@ class SearchController extends Controller {
      */
     public function searchUsers(Request $request)
     {
-        return People::where('firstname', 'LIKE', '%'.$request->q.'%')->orWhere('lastname', 'LIKE', '%'.$request->q.'%')
+        return User::where('firstname', 'LIKE', '%'.$request->q.'%')->orWhere('lastname', 'LIKE', '%'.$request->q.'%')
         ->orWhereRaw("CONCAT(firstname, ' ', lastname) LIKE ?", ['%'.$request->q.'%'])->get();
     }
 }

@@ -112,14 +112,14 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group {!! fieldHasError('phone', $errors) !!}">
-                                    {!! Form::label('phone', 'Phone', ['class' => 'control-label']) !!}
+                                    {!! Form::label('phone', "Student's Phone", ['class' => 'control-label']) !!}
                                     {!! Form::text('phone', null, ['class' => 'form-control']) !!}
                                     {!! fieldErrorMessage('phone', $errors) !!}
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group {!! fieldHasError('email', $errors) !!}">
-                                    {!! Form::label('email', 'Email', ['class' => 'control-label']) !!}
+                                    {!! Form::label('email', "Student's Email", ['class' => 'control-label']) !!}
                                     {!! Form::text('email', null, ['class' => 'form-control']) !!}
                                     {!! fieldErrorMessage('email', $errors) !!}
                                 </div>
@@ -176,9 +176,9 @@
                                 <div class="form-group">
                                     <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
                                     <select name="school_id" class="form-control select2" id="school_id">
-                                        @foreach (\App\Models\Account\Account::find(1)->schools->sortBy('name') as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
+                                       {{--}}@foreach (Auth::user()->account->schools->sortBy('name') as $key => $value)
+                                            <option value="{{ $key }}>{{ $value }}</option>
+                                        @endforeach--}}
                                     </select>
                                 </div>
                             </div>
@@ -327,10 +327,6 @@
 <script src="/js/vue.min.js"></script>
 <script type="text/javascript">
 
-    // Form errors - show modal
-    if ($('#formerrors').val() == 'personal')
-        $('#modal_personal').modal('show');
-
     display_fields();
 
     function display_fields() {
@@ -339,7 +335,7 @@
         // Dynamic School dropdown from Grade
         $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
         var grade = $("#grade").val();
-        var school = $("#school_id").val();
+        var school = "{{ old('school_id', '') }}"; //"$("#school_id").val();
         if (grade) {
             $.ajax({
                 url: '/data/schools-by-grade/' + grade,
@@ -452,7 +448,7 @@
                     this.xx.parent_add = true;
                 }
                 else {
-                    this.xx.parent.id = person.pid
+                    this.xx.parent.id = person.uid
                     this.xx.searchQuery = person.name;
                     this.xx.search_options = false;
                 }

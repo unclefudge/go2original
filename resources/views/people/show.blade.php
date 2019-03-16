@@ -19,7 +19,7 @@
 
     <div>
         <div class="pull-right" style="font-size: 12px; font-weight: 200; padding: 10px 10px 0 0">
-            {!! $people->displayUpdatedBy() !!}
+            {!! $user->displayUpdatedBy() !!}
         </div>
     </div>
 @stop
@@ -139,7 +139,7 @@
     $("#but_del_person").click(function (e) {
         swal({
             title: "Are you sure?",
-            html: "All information and check-ins will be deleted for<br><b>" + "{{ $people->name }}" + "</b><br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i>You will not be able to recover this person!</span> ",
+            html: "All information and check-ins will be deleted for<br><b>" + "{{ $user->name }}" + "</b><br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i>You will not be able to recover this person!</span> ",
             cancelButtonText: "Cancel!",
             confirmButtonText: "Yes, delete it!",
             confirmButtonClass: "btn btn-danger",
@@ -148,13 +148,13 @@
             allowOutsideClick: true
         }).then(function (result) {
             if (result.value) {
-                window.location.href = "/people/" + "{{ $people->id }}" + '/del';
+                window.location.href = "/people/" + "{{ $user->id }}" + '/del';
             }
         });
     });
 
     $(".household-link").click(function (e) {
-        var split = this.id.split("-p");
+        var split = this.id.split("-u");
         var id = split[1];
         window.location.href = "/people/" + id;
     });

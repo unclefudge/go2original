@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Event;
 use DB;
 use Auth;
 use Validator;
+use App\User;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
-use App\Models\People\People;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -50,12 +50,13 @@ class StatsController extends Controller {
             if ($debug) print_r($instance_ids);
             $attendance = Attendance::whereIn('eid', $instance_ids)->get();
             $student = $new = 0;
+
             if ($attendance) {
                 if ($debug) echo "<br>Getting attendance<br>";
                 foreach ($attendance as $attend) {
-                    if ($debug) echo "$attend->eid:$attend->id : " . $attend->person->type . " : [" . $attend->person->id . '] ' . $attend->person->name . "<br>";
-                    if ($attend->person->isStudent) {
-                        if ($attend->person->firstEvent($event->id)->start->isSameDay($attend->instance->start))
+                    if ($debug) echo "$attend->eid:$attend->id : " . $attend->user->type . " : [" . $attend->user->id . '] ' . $attend->user->name . "<br>";
+                    if ($attend->user->isStudent) {
+                        if ($attend->user->firstEvent($event->id)->start->isSameDay($attend->instance->start))
                             $new ++;
                         else
                             $student ++;
@@ -109,7 +110,7 @@ class StatsController extends Controller {
                     $student = 0;
                     if ($attendance) {
                         foreach ($attendance as $attend)
-                            if ($attend->person->isStudent) $student ++;
+                            if ($attend->user->isStudent) $student ++;
                     }
 
                     // Average attendence by amount of events that month
@@ -148,16 +149,16 @@ class StatsController extends Controller {
     /**
      * Attendance Stats for individual Student
      */
-    public function studentAttendance($eid, $pid)
+    public function studentAttendance($eid, $uid)
     {
         $event = Event::findOrFail($eid);
-        $people = People::findOrFail($pid);
-        $firstDate = ($people->firstEvent($eid)) ? Carbon::createFromFormat('Y-m-d H:i', $people->firstEvent($eid)->start->format('Y-m-d') . '00:00') : '';
+        $user = User::findOrFail($uid);
+        $firstDate = ($user->firstEvent($eid)) ? Carbon::createFromFormat('Y-m-d H:i', $user->firstEvent($eid)->start->format('Y-m-d') . '00:00') : '';
         //echo $firstDate;
         $stats = [];
         if ($firstDate) {
-            $stats['attended_first'] = $people->firstEvent($eid)->start->diffForHumans();
-            $stats['attended_last'] = $people->lastEvent($eid)->start->diffForHumans();
+            $stats['attended_first'] = $user->firstEvent($eid)->start->diffForHumans();
+            $stats['attended_last'] = $user->lastEvent($eid)->start->diffForHumans();
 
             // Last Month
             $weeks = 4;
@@ -168,7 +169,7 @@ class StatsController extends Controller {
             $instances = $event->betweenUTCDates($from->format('Y-m-d'), $now->format('Y-m-d'));
             $count = 0;
             foreach ($instances as $instance) {
-                if ($instance->personAttend($pid))
+                if ($instance->userAttend($uid))
                     $count ++;
             }
             $stats['attended_month'] = "$count of " . count($instances);
@@ -184,7 +185,7 @@ class StatsController extends Controller {
             $instances = $event->betweenUTCDates($from->format('Y-m-d'), $now->format('Y-m-d'));
             $count = 0;
             foreach ($instances as $instance) {
-                if ($instance->personAttend($pid))
+                if ($instance->userAttend($uid))
                     $count ++;
             }
             $stats['attended_year'] = "$count of " . count($instances);

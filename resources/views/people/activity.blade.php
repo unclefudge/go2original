@@ -64,7 +64,7 @@
 
     <div>
         <div class="pull-right" style="font-size: 12px; font-weight: 200; padding: 10px 10px 0 0">
-            {!! $people->displayUpdatedBy() !!}
+            {!! $user->displayUpdatedBy() !!}
         </div>
     </div>
 @stop
@@ -93,9 +93,9 @@
 
         function getStats() {
             $.ajax({
-                url: '/stats/event/' + $("#event_id").val() + '/student/' + "{{ $people->id }}",
+                url: '/stats/event/' + $("#event_id").val() + '/student/' + "{{ $user->id }}",
                 method: "GET",
-                data: {pid: "{{ $people->id }}", eid: $("#event_id").val()},
+                data: {uid: "{{ $user->id }}", eid: $("#event_id").val()},
                 success: function (result) {
                     console.log(result.attended_last);
                     $("#attended_first").html(result.attended_first);
@@ -127,7 +127,7 @@
             $.ajax({
                 url: '/data/activity/',
                 method: "POST",
-                data: {pid: "{{ $people->id }}", offset: offset},
+                data: {uid: "{{ $user->id }}", offset: offset},
                 dataType: "text",
                 success: function (data) {
                     if (data != '') {

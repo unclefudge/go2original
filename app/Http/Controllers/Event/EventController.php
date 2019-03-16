@@ -8,7 +8,7 @@ use Validator;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
-use App\Models\People\People;
+use App\User;
 use Carbon\Carbon;
 use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Utilities\Slim;
@@ -266,12 +266,12 @@ class EventController extends Controller {
      */
     public function getPeople($id)
     {
-        $people = People::where('aid', session('aid'))->orderBy('firstname')->get();
+        $people = User::where('aid', session('aid'))->orderBy('firstname')->get();
         $instance = EventInstance::find($id);
         $people_array = [];
         foreach ($people as $person) {
             $checked_in = $method = null;
-            $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
+            $attended = Attendance::where('eid', $instance->id)->where('uid', $person->id)->first();
             $new = 0;
             if ($instance && $attended) {
                 $checked_in = Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
@@ -279,7 +279,7 @@ class EventController extends Controller {
                 $new = ($person->firstEvent()->start_local->isSameDay($instance->start_local)) ? 1 : 0;
             }
             $people_array[] = [
-                'pid'    => $person->id,
+                'uid'    => $person->id,
                 'in'     => $checked_in,
                 'name'   => $person->name,
                 'type'   => $person->type,

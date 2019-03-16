@@ -16,12 +16,12 @@ class CreateHouseholdTable extends Migration
         Schema::create('households', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100)->nullable();
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
             $table->text('notes')->nullable();
             $table->unsignedInteger('aid')->nullable();
 
             // Foreign keys
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('aid')->references('id')->on('accounts')->onDelete('cascade');
 
             // Modify info
@@ -30,14 +30,14 @@ class CreateHouseholdTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('households_people', function (Blueprint $table) {
+        Schema::create('users_household', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('hid')->nullable();
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
 
             // Foreign keys
             $table->foreign('hid')->references('id')->on('households')->onDelete('cascade');
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
 
             // Modify info
             $table->unsignedInteger('created_by')->nullable();
@@ -53,7 +53,7 @@ class CreateHouseholdTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('households_people');
+        Schema::dropIfExists('users_household');
         Schema::dropIfExists('households');
     }
 }

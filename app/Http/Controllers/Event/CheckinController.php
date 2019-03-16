@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Event;
 use DB;
 use Auth;
 use Validator;
+use App\User;
+use App\Models\People\Household;
+use App\Models\People\PeopleHistory;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
-use App\Models\People\People;
-use App\Models\People\Household;
 use Carbon\Carbon;
 use Camroncade\Timezone\Facades\Timezone;
-use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
 use Jenssegers\Agent\Agent;
 use App\Http\Controllers\Controller;
@@ -94,7 +94,7 @@ class CheckinController extends Controller {
             'lastname.required'            => 'The last name is required.',
             'photo.required'               => 'The photo is required.',
             'dob.date_format'              => 'The birthday format needs to be ' . session('df-datepicker'),
-            'parent_id.required'           => 'The parent / guardian name is required.',
+            'parent_id.required'           => 'The parent / guardian name is required2.',
             'parent_id.not_in'             => 'The parent / guardian name is required.',
             'parent_firstname.required_if' => 'The parents first name is required.',
             'parent_lastname.required_if'  => 'The parents last name is required.',
@@ -103,23 +103,22 @@ class CheckinController extends Controller {
         ];
         request()->validate($rules, $mesgs);
 
-        $people_request = request()->except('photo', 'parent_id');
-        $people_request['type'] = "Student";
+        $user_request = request()->except('photo', 'parent_id');
+        $user_request['type'] = "Student";
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
-            $people_request['state'] = null;
+            $user_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
-        //dd($people_request);
+        $user_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        //dd($user_request);
 
         // Create Student
-        $student = People::create($people_request);
-        $student->addHistoryData('profile');
+        $student = User::create($user_request);
+        PeopleHistory::addHistory($student, 'profile');
 
         // Handle attached photo
-        if (request()->photo)
-            $student->attachPhoto();
+        if (request()->photo) $student->attachPhoto();
 
         // Check student into event
         $student->checkin($instance);
@@ -129,20 +128,20 @@ class CheckinController extends Controller {
         //
         if (request('parent_id') != 'add') {
             // Existing Parent
-            $parent = People::findOrFail(request('parent_id'));
+            $parent = User::findOrFail(request('parent_id'));
 
             // If Parent has single house add student to it else create new one
             if ($parent->households->count() == 1) {
-                DB::table('households_people')->insert(['hid' => $parent->households->first()->id, 'pid' => $student->id]);
+                DB::table('users_household')->insert(['hid' => $parent->households->first()->id, 'uid' => $student->id]);
             } else {
                 // Create new household and put student + parent in
-                $household = Household::create(['name' => $parent->lastname . ' Household', 'pid' => $parent->id]);
-                DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $student->id]);
-                DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $parent->id]);
+                $household = Household::create(['name' => $parent->lastname . ' Household', 'uid' => $parent->id]);
+                DB::table('users_household')->insert(['hid' => $household->id, 'uid' => $student->id]);
+                DB::table('users_household')->insert(['hid' => $household->id, 'uid' => $parent->id]);
             }
         } else {
             // Create new parent profile
-            $parent = People::create([
+            $parent = User::create([
                 'type'      => 'Parent',
                 'firstname' => request('parent_firstname'),
                 'lastname'  => request('parent_lastname'),
@@ -153,11 +152,12 @@ class CheckinController extends Controller {
                 'state'     => $student->state,
                 'postcode'  => $student->postcode,
             ]);
+            PeopleHistory::addHistory($parent, 'profile');
 
             // Create new household and put student + parent in
-            $household = Household::create(['name' => $parent->lastname . ' Household', 'pid' => $parent->id]);
-            DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $student->id]);
-            DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $parent->id]);
+            $household = Household::create(['name' => $parent->lastname . ' Household', 'uid' => $parent->id]);
+            DB::table('users_household')->insert(['hid' => $household->id, 'uid' => $student->id]);
+            DB::table('users_household')->insert(['hid' => $household->id, 'uid' => $parent->id]);
         }
 
         Toastr::success("Student created");
@@ -186,26 +186,26 @@ class CheckinController extends Controller {
         ];
         request()->validate($rules, $mesgs);
 
-        $people_request = request()->except('photo');
-        $people_request['type'] = "Volunteer";
+        $user_request = request()->except('photo');
+        $user_request['type'] = "Volunteer";
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
-            $people_request['state'] = null;
+            $user_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
-        $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+        $user_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $user_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
-        //dd($people_request);
-        $people = People::create($people_request);
-        $people->addHistoryData('profile');
+        //dd($user_request);
+        $user = User::create($user_request);
+        PeopleHistory::addHistory($user, 'profile');
 
         // Handle attached photo
         if (request()->photo)
-            $people->attachPhoto();
+            $user->attachPhoto();
 
         // Check student into event
-        $people->checkin($instance);
+        $user->checkin($instance);
 
         Toastr::success("Volunteer created");
 
@@ -214,20 +214,20 @@ class CheckinController extends Controller {
 
 
     /**
-     * Get People (ajax)
+     * Get Users (ajax)
      */
     public function getPeople($eid)
     {
-        $people = People::where('status', 1)->where('aid', session('aid'))->orderBy('firstname')->get();
+        $users = User::where('status', 1)->where('aid', session('aid'))->orderBy('firstname')->get();
         $instance = EventInstance::find($eid);
         $people_array = [];
-        foreach ($people as $person) {
-            if ($person->isStudent || $person->isVolunteer) {
+        foreach ($users as $user) {
+            if ($user->isStudent || $user->isVolunteer) {
                 $checked_in = $checked_in2 = null;
-                $attended = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
+                $attended = Attendance::where('eid', $instance->id)->where('uid', $user->id)->first();
                 if ($instance && $attended)
                     $checked_in = Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
-                $people_array[] = ['pid' => $person->id, 'name' => $person->name, 'type' => $person->type, 'in' => $checked_in, 'photo' => $person->photoSmPath, 'eid' => $instance->id];
+                $people_array[] = ['uid' => $user->id, 'name' => $user->name, 'type' => $user->type, 'in' => $checked_in, 'photo' => $user->photoSmPath, 'eid' => $instance->id];
             }
         }
 
@@ -239,24 +239,24 @@ class CheckinController extends Controller {
      */
     public function getParents()
     {
-        $people = People::where('status', 1)->where('aid', session('aid'))->orderBy('firstname')->get();
-        $people_array = [];
-        foreach ($people as $person) {
-            if ($person->isParent) {
-                $people_array[] = [
-                    'pid'    => $person->id,
-                    'name'   => $person->name,
-                    'phone'  => $person->phone,
-                    'email'  => $person->email,
-                    'suburb' => $person->suburb,
-                    'state'  => $person->state,
-                    'photo'  => $person->photoSmPath
+        $users = User::where('status', 1)->where('aid', session('aid'))->orderBy('firstname')->get();
+        $users_array = [];
+        foreach ($users as $user) {
+            if ($user->isParent) {
+                $users_array[] = [
+                    'uid'    => $user->id,
+                    'name'   => $user->name,
+                    'phone'  => $user->phone,
+                    'email'  => $user->email,
+                    'suburb' => $user->suburb,
+                    'state'  => $user->state,
+                    'photo'  => $user->photoSmPath
                 ];
 
             }
         }
 
-        return $people_array;
+        return $users_array;
     }
 
     public function search()

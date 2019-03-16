@@ -603,7 +603,7 @@
                                     @foreach ($list as $pid => $count )
                                         <?php
                                         $x ++;
-                                        $student = \App\Models\People\People::find($pid);
+                                        $student = \App\User::find($pid);
                                         ?>
                                         <tr id="top-{{ $student->id }}" style="cursor: pointer" class="link-person">
                                             <td>

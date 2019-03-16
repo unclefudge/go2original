@@ -1,13 +1,13 @@
 {{-- Household Info --}}
 <div class="m-portlet">
     <div class="m-portlet__body">
-        @if ($people->households->count())
-            @foreach ($people->households->sortBy('name') as $household)
+        @if ($user->households->count())
+            @foreach ($user->households->sortBy('name') as $household)
                 {{-- Household Name --}}
                 @if ($loop->first)
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-10"><h4>{{ $household->name }}</h4></div>
-                        @if (true || $people->status)
+                        @if (true || $user->status)
                             <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
                         @endif
                     </div>
@@ -22,7 +22,7 @@
                 @if ($household->adults()->count())
                     <table class="table table-hover m-table" width="100%">
                         @foreach ($household->adults()->sortby('firstname') as $member)
-                            <tr class="household-link" style="cursor: pointer" id="h{{ $household->id }}-p{{ $member->id }}">
+                            <tr class="household-link" style="cursor: pointer" id="h{{ $household->id }}-u{{ $member->id }}">
                                 <td>
                                     <div style="font-size: 1.1rem">{{ $member->name }} {!! ($member->id == $household->head->id) ? "<i class='fa fa-star' style='font-size: 11px; color: #32c5d2'></i>" : '' !!}</div>
                                     <div> {!! ($member->dob) ? "<span style='color:#999'>$member->age years </span>" : '' !!}</div>
@@ -39,7 +39,7 @@
                     </div>
                     <table class="table table-hover m-table" width="100%">
                         @foreach ($household->students()->sortby('firstname') as $member)
-                            <tr class="household-link" style="cursor: pointer" id="h{{ $household->id }}-p{{ $member->id }}">
+                            <tr class="household-link" style="cursor: pointer" id="h{{ $household->id }}-u{{ $member->id }}">
                                 <td>
                                     <div style="font-size: 1.1rem">{{ $member->name }} {!! ($member->id == $household->head->id) ? "<i class='fa fa-star' style='font-size: 11px; color: #32c5d2'></i>" : '' !!}</div>
                                     <div>
@@ -57,13 +57,13 @@
             {{-- No Household --}}
             <div class="row" style="padding-bottom: 10px">
                 <div class="col-8"><h4>Household</h4></div>
-                @if (true || $people->status)
+                @if (true || $user->status)
                     <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
                 @endif
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-8 text-center">
-                    <br>{{ $people->firstname }} doesn't belong to any household<br><br>
+                    <br>{{ $user->firstname }} doesn't belong to any household<br><br>
                 </div>
             </div>
         @endif
@@ -150,7 +150,7 @@
                     <div class="col text-center">
                         <i class="fa fa-home fa-4x"></i><br>
                         <h3>No Household</h3>
-                        {{ $people->firstname }} has not been added to a household yet.<br><br>
+                        {{ $user->firstname }} has not been added to a household yet.<br><br>
                         <button v-if="!xx.household_search" v-on:click="xx.household_search = !xx.household_search" type="button" class="btn btn-brand">Add household</button>
                         <div v-if="xx.household_search">
                             <div class="input-group">
@@ -269,8 +269,8 @@
                     <span v-if="person.email" style='color:#999'><i class="fa fa-envelope" style="padding-right: 5px"></i>@{{ person.email }} </span>
                 </td>
                 <td width="40px" class="text-center" style="padding: 0px; margin: 0px">
-                    <div v-if="xx.household.pid == person.pid" style="height: 30px"><i class="fa fa-star member-star-head"></i></div> {{-- head member--}}
-                    <div v-if="xx.household.pid != person.pid" style="height: 30px"><i v-on:click="headMember(person)" class="fa fa-star member-star"></i></div> {{-- regular member --}}
+                    <div v-if="xx.household.uid == person.uid" style="height: 30px"><i class="fa fa-star member-star-head"></i></div> {{-- head member--}}
+                    <div v-if="xx.household.uid != person.uid" style="height: 30px"><i v-on:click="headMember(person)" class="fa fa-star member-star"></i></div> {{-- regular member --}}
                     <div style="height: 30px;"><i v-on:click="deleteMember(person)" class="fa fa-trash-alt member-delete" style="padding: 5px;"></i></div>
                 </td>
             </tr>

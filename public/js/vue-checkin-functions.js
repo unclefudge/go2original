@@ -1,69 +1,69 @@
 $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-// Add person to Database Attendance and return a 'promise'
-function addAttendanceDB(person, method) {
-    person.in = moment().format('YYYY-MM-DD HH:mm:ss');
-    person.method = method;
-    //console.log('Adding person:' + person.name + ' method:' + person.method);
+// Add user to Database Attendance and return a 'promise'
+function addAttendanceDB(user, method) {
+    user.in = moment().format('YYYY-MM-DD HH:mm:ss');
+    user.method = method;
+    //console.log('Adding user:' + user.name + ' method:' + user.method);
     return new Promise(function (resolve, reject) {
-        delete person._method; // ensure _method not set else throws a Laravel MethodNotAllowedHttpException error. Requires a POST request to store
+        delete user._method; // ensure _method not set else throws a Laravel MethodNotAllowedHttpException error. Requires a POST request to store
         $.ajax({
             url: '/attendance',
             type: 'POST',
-            data: person,
+            data: user,
             success: function (result) {
-                //console.log('DB added person:[' + result.eid + '] ' + person.name);
+                //console.log('DB added user:[' + result.eid + '] ' + user.name);
                 resolve(result);
             },
             error: function (result) {
-                alert("Failed check-in for " + person.name + '. Please refresh the page to resync attendance');
-                //console.log('DB added person FAILED:[' + result.eid + '] ' + person.name);
+                alert("Failed check-in for " + user.name + '. Please refresh the page to resync attendance');
+                //console.log('DB added user FAILED:[' + result.eid + '] ' + user.name);
                 reject(false);
             }
         });
     });
 }
 
-// Delete person from Database Attendance and return a 'promise'
-function delAttendanceDB(person) {
-    //console.log('Deleting person:[' + person.eid + '] ' + person.name);
+// Delete user from Database Attendance and return a 'promise'
+function delAttendanceDB(user) {
+    //console.log('Deleting user:[' + user.eid + '] ' + user.name);
     return new Promise(function (resolve, reject) {
-        person._method = 'delete';
+        user._method = 'delete';
         $.ajax({
-            url: '/attendance/' + person.eid,
+            url: '/attendance/' + user.eid,
             type: 'POST',
-            data: person,
+            data: user,
             success: function (result) {
-                delete person._method;
-                person.in = null;
-                //console.log('DB deleted person:[' + person.eid + '] ' + person.name);
-                resolve(person);
+                delete user._method;
+                user.in = null;
+                //console.log('DB deleted user:[' + user.eid + '] ' + user.name);
+                resolve(user);
             },
             error: function (result) {
-                alert("Failed check-out " + person.name + '. Please refresh the page to resync attendance');
-                //console.log('DB deleted person FAILED:[' + person.eid + '] ' + person.name);
+                alert("Failed check-out " + user.name + '. Please refresh the page to resync attendance');
+                //console.log('DB deleted user FAILED:[' + user.eid + '] ' + user.name);
                 reject(false);
             }
         });
     });
 }
 
-// Update person in Database Attendance and return a 'promise'
-function updateAttendanceDB(person) {
+// Update user in Database Attendance and return a 'promise'
+function updateAttendanceDB(user) {
     return new Promise(function (resolve, reject) {
-        person._method = 'patch';
+        user._method = 'patch';
         $.ajax({
-            url: '/attendance/' + person.eid,
+            url: '/attendance/' + user.eid,
             type: 'POST',
-            data: person,
+            data: user,
             success: function (result) {
-                delete person._method;
-                //console.log('DB updated person:[' + person.eid + '] ' + person.name);
+                delete user._method;
+                //console.log('DB updated user:[' + user.eid + '] ' + user.name);
                 resolve(task);
             },
             error: function (result) {
-                alert("failed updating attendance " + person.name + '. Please refresh the page to resync attendance');
-                //console.log('DB updated person FAILED:[' + person.eid + '] ' + person.name);
+                alert("failed updating attendance " + user.name + '. Please refresh the page to resync attendance');
+                //console.log('DB updated user FAILED:[' + user.eid + '] ' + user.name);
                 reject(false);
             }
         });

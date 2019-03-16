@@ -5,7 +5,7 @@ namespace App\Http\Controllers\People;
 use DB;
 use Auth;
 use Validator;
-use App\Models\People\People;
+use App\User;
 use App\Models\People\PeopleHistory;
 use App\Models\Event\Event;
 use Carbon\Carbon;
@@ -23,10 +23,10 @@ class PeopleController extends Controller {
     public function index()
     {
         // Check authorisation
-        $people = People::where('aid', session('aid'))->get()->sortBy('firstname');
+        $users = User::where('aid', session('aid'))->get()->sortBy('firstname');
         $agent = new Agent();
 
-        return view('people/index', compact('people', 'agent'));
+        return view('people/index', compact('users', 'agent'));
     }
 
     /**
@@ -35,9 +35,9 @@ class PeopleController extends Controller {
      */
     public function show($id)
     {
-        $people = People::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('people/show', compact('people'));
+        return view('people/show', compact('user'));
     }
 
 
@@ -47,11 +47,11 @@ class PeopleController extends Controller {
      */
     public function activity($id)
     {
-        $people = People::findOrFail($id);
+        $user = User::findOrFail($id);
         $events = Event::where('recur', 1)->where('aid', session('aid'))->pluck('name', 'id')->toArray();
         asort($events);
 
-        return view('people/activity', compact('people', 'events'));
+        return view('people/activity', compact('user', 'events'));
     }
 
     /**
@@ -86,40 +86,40 @@ class PeopleController extends Controller {
         }
         //dd(request()->all());
 
-        $people_request = request()->all();
+        $user_request = request()->all();
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
-            $people_request['state'] = null;
+            $user_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $user_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
 
         // Student details
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
             // Media Consent
             if (request('media_consent')) {
-                $people_request['media_consent'] = Carbon::now()->toDateTimeString();
-                $people_request['media_consent_by'] = Auth::user()->id;
+                $user_request['media_consent'] = Carbon::now()->toDateTimeString();
+                $user_request['media_consent_by'] = Auth::user()->id;
             } else
-                $people_request['media_consent'] = null;
+                $user_request['media_consent'] = null;
 
         } else {
-            $people_request['grade'] = $people_request['school_id'] = null;
-            $people_request['media_consent'] = $people_request['media_consent_by'] = null;
+            $user_request['grade'] = $user_request['school_id'] = null;
+            $user_request['media_consent'] = $user_request['media_consent_by'] = null;
         }
 
         // Volunteer details
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+            $user_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
         // Create history record
-        $people = People::create($people_request);
-        $people->addHistoryData('profile');
+        $user = User::create($user_request);
+        PeopleHistory::addHistory($user, 'profile');
 
         Toastr::success("Profile created");
 
-        return redirect("/people/$people->id");
+        return redirect("/people/$user->id");
     }
 
     /**
@@ -127,8 +127,8 @@ class PeopleController extends Controller {
      */
     public function update($id)
     {
-        $people = People::findOrFail($id);
-        $peopleBefore = People::findOrFail($id);
+        $user = User::findOrFail($id);
+        $userBefore = User::findOrFail($id);
 
         // Validate
         $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
@@ -146,46 +146,46 @@ class PeopleController extends Controller {
             return back()->withErrors($validator)->withInput();
         }
 
-        $people_request = request()->all();
+        $user_request = request()->all();
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
-            $people_request['state'] = null;
+            $user_request['state'] = null;
 
-        $people_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
+        $user_request['dob'] = (request('dob')) ? Carbon::createFromFormat(session('df') . ' H:i', request('dob') . '00:00')->toDateTimeString() : null;
 
         // Student details
         if (in_array(request('type'), ['Student', 'Student/Volunteer'])) {
             // Media Consent
             if (request('media_consent')) {
-                if (!$people->media_consent) {
+                if (!$user->media_consent) {
                     // New approved media request
-                    $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
-                    $people_request['media_consent_by'] = Auth::user()->id;
+                    $user_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
+                    $user_request['media_consent_by'] = Auth::user()->id;
                 }
             } else {
-                if ($people->media_consent) {
+                if ($user->media_consent) {
                     // Previous media approval changed to denied
-                    $people_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
-                    $people_request['media_consent_by'] = Auth::user()->id;
+                    $user_request['media_consent'] = request('media_consent') ? Carbon::now()->toDateTimeString() : null;
+                    $user_request['media_consent_by'] = Auth::user()->id;
                 }
             }
         } else {
-            $people_request['grade'] = $people_request['school_id'] = null;
-            $people_request['media_consent'] = $people_request['media_consent_by'] = null;
+            $user_request['grade'] = $user_request['school_id'] = null;
+            $user_request['media_consent'] = $user_request['media_consent_by'] = null;
         }
 
         // Volunteer details
         if (in_array(request('type'), ['Volunteer', 'Student/Volunteer', 'Parent/Volunteer']))
-            $people_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
+            $user_request['wwc_exp'] = (request('wwc_exp')) ? Carbon::createFromFormat(session('df') . ' H:i', request('wwc_exp') . '00:00')->toDateTimeString() : null;
 
-        //dd($people_request);
-        $people->update($people_request);
-        $people->addHistoryData('profile', $peopleBefore);
+        //dd($user_request);
+        $user->update($user_request);
+        PeopleHistory::addHistory($user, 'profile', $userBefore);
 
         Toastr::success("Saved changes");
 
-        return redirect("/people/$people->id");
+        return redirect("/people/$user->id");
     }
 
     /**
@@ -193,21 +193,21 @@ class PeopleController extends Controller {
      */
     public function updatePhoto($id)
     {
-        $people = People::findOrFail($id);
-        $path = storage_path("app/account/$people->aid/images/people/");   // Server path
+        $user = User::findOrFail($id);
+        $path = storage_path("app/account/$user->aid/images/users/");   // Server path
 
         // Handle attached photo
         if (request()->photo)
-            $people->attachPhoto();
+            $user->attachPhoto();
         elseif (request('previous_photo')) {
             // Delete file
-            if ($people->photo && file_exists($path . $people->photo))
-                unlink($path . $people->photo);
-            $people->photo = null;
-            $people->save();
+            if ($user->photo && file_exists($path . $user->photo))
+                unlink($path . $user->photo);
+            $user->photo = null;
+            $user->save();
         }
 
-        return redirect("/people/$people->id");
+        return redirect("/people/$user->id");
     }
 
     /**
@@ -216,9 +216,9 @@ class PeopleController extends Controller {
     public function status($id, $status)
     {
         //dd(request()->all());
-        $people = People::findOrFail($id);
-        $people->status = request('status');
-        $people->save();
+        $user = User::findOrFail($id);
+        $user->status = request('status');
+        $user->save();
 
         if (request()->ajax())
             return response()->json(['success', '200']);
@@ -231,7 +231,7 @@ class PeopleController extends Controller {
      */
     public function destroy($id)
     {
-        $people = People::findOrFail($id)->delete();
+        $user = User::findOrFail($id)->delete();
 
         if (request()->ajax())
             return response()->json(['success', '200']);
@@ -385,52 +385,52 @@ class PeopleController extends Controller {
             $status = [0, 1];
 
         //dd($types);
-        $people = People::select([
-            'people.id', 'people.type', 'people.firstname', 'people.lastname', 'people.phone', 'people.email', 'people.address', 'people.suburb', 'people.state', 'people.postcode',
-            'people.grade', 'people.school_id', 'people.media_consent', 'people.wwc_no', 'people.wwc_verified', 'people.status', 'people.aid',
+        $users = User::select([
+            'users.id', 'users.type', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.address', 'users.suburb', 'users.state', 'users.postcode',
+            'users.grade', 'users.school_id', 'users.media_consent', 'users.wwc_no', 'users.wwc_verified', 'users.status', 'users.aid',
             'schools.id As sid', 'schools.name AS school_name',
-            DB::raw('CONCAT(people.firstname, " ", people.lastname) AS full_name'),
-            DB::raw('DATE_FORMAT(people.wwc_exp, "%b %Y") AS wwc_exp2')])
-            ->leftJoin('schools', 'people.school_id', '=', 'schools.id')
-            ->whereIn('people.type', $types)
-            ->where('people.aid', session('aid'))
-            ->whereIn('people.status', $status);
+            DB::raw('CONCAT(users.firstname, " ", users.lastname) AS full_name'),
+            DB::raw('DATE_FORMAT(users.wwc_exp, "%b %Y") AS wwc_exp2')])
+            ->leftJoin('schools', 'users.school_id', '=', 'schools.id')
+            ->whereIn('users.type', $types)
+            ->where('users.aid', session('aid'))
+            ->whereIn('users.status', $status);
 
-        $dt = Datatables::of($people)
+        $dt = Datatables::of($users)
             //->filterColumn('full_name', 'whereRaw', "CONCAT(firstname,' ',lastname) like ?", ["%$1%"])
-            //->addColumn('view2', function ($people) {
-            //    return '<div class="text-center"><a href="/people/' . $people->id . '"><i class="fa fa-search"></i></a></div>';
+            //->addColumn('view2', function ($user) {
+            //    return '<div class="text-center"><a href="/people/' . $user->id . '"><i class="fa fa-search"></i></a></div>';
             //})
-            ->editColumn('full_name', function ($people) {
-                $string = $people->firstname . ' ' . $people->lastname;
-                if (!$people->status)
+            ->editColumn('full_name', function ($user) {
+                $string = $user->firstname . ' ' . $user->lastname;
+                if (!$user->status)
                     $string .= "<br>** INACTIVE **";
 
                 return $string;
             })
-            ->editColumn('address', function ($people) {
+            ->editColumn('address', function ($user) {
                 $address = '';
-                if ($people->address) $address .= "$people->address, ";
-                if ($people->suburb) $address .= strtoupper($people->suburb) . ", ";
-                if ($people->state) $address .= "$people->state ";
-                if ($people->postcode) $address .= "$people->postcode";
+                if ($user->address) $address .= "$user->address, ";
+                if ($user->suburb) $address .= strtoupper($user->suburb) . ", ";
+                if ($user->state) $address .= "$user->state ";
+                if ($user->postcode) $address .= "$user->postcode";
 
                 return $address;
             })
-            ->editColumn('media_consent', function ($people) {
-                if (!in_array($people->type, ['Student', 'Student/Volenteer'])) return "<i class='fa fa-user m--font-metal'>";
+            ->editColumn('media_consent', function ($user) {
+                if (!in_array($user->type, ['Student', 'Student/Volenteer'])) return "<i class='fa fa-user m--font-metal'>";
 
-                return ($people->media_consent) ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
+                return ($user->media_consent) ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
             })
-            ->editColumn('wwc_exp2', function ($people) {
-                return ($people->wwc_verified) ? $people->wwc_exp2 : $people->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash m--font-danger'>";
+            ->editColumn('wwc_exp2', function ($user) {
+                return ($user->wwc_verified) ? $user->wwc_exp2 : $user->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash m--font-danger'>";
             })
-            ->addColumn('action', function ($people) {
+            ->addColumn('action', function ($user) {
                 $actions = '';
-                if ($people->status)
-                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-archive' style='background: inherit;' data-remote='/people/$people->id/status/0' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt'></i></button>";
+                if ($user->status)
+                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-archive' style='background: inherit;' data-remote='/people/$user->id/status/0' data-name='$user->firstname $user->lastname'><i class='fa fa-trash-alt'></i></button>";
                 else
-                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete inactive-person' style='background: inherit; color:#fff' data-remote='/people/$people->id/status/1' data-name='$people->firstname $people->lastname'><i class='fa fa-trash-alt
+                    $actions .= "<button class='btn dark btn-sm sbold uppercase margin-bottom btn-delete inactive-person' style='background: inherit; color:#fff' data-remote='/people/$user->id/status/1' data-name='$user->firstname $user->lastname'><i class='fa fa-trash-alt
 '></i></button>";
 
                 return $actions;

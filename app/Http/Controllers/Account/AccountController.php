@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Account;
 use DB;
 use Validator;
 use App\Models\Account\Account;
-use Yajra\Datatables\Datatables;
 use Kamaln7\Toastr\Facades\Toastr;
 use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Controllers\Controller;

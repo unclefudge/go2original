@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model {
 
     protected $table = 'events_attendance';
-    protected $fillable = [
-        'eid', 'pid', 'in', 'out', 'method', 'aid', 'created_by', 'updated_by'];
+    protected $fillable = ['eid', 'uid', 'in', 'out', 'method', 'aid', 'created_by', 'updated_by'];
     protected $dates = ['in', 'out'];
 
     /**
@@ -25,13 +24,13 @@ class Attendance extends Model {
     }
 
     /**
-     * A Attendance belongs to a EventInstance
+     * A Attendance belongs to a User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function person()
+    public function user()
     {
-        return $this->belongsTo('App\Models\People\People', 'pid');
+        return $this->belongsTo('App\User', 'uid');
     }
 
 

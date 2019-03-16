@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Misc;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

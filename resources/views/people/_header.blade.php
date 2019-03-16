@@ -1,5 +1,5 @@
 {{-- Member bar --}}
-<div class="member-bar {{ (!$people->status) ? 'member-inactive' : '' }}">
+<div class="member-bar {{ (!$user->status) ? 'member-inactive' : '' }}">
     <!--<i class="iicon-user-member-bar hidden-xs-down"></i>-->
 
     <style>
@@ -73,24 +73,24 @@
     <div class="member-name">
         {{-- Avatar --}}
         <div class="avatar-container" id="avatar">
-            <img class="avatar-image" src="{{ $people->photoSmPath }}?<?=rand(1, 32000)?>" alt="Avatar">
+            <img class="avatar-image" src="{{ $user->photoSmPath }}?<?=rand(1, 32000)?>" alt="Avatar">
             <div class="avatar-overlay">
                 <a href="#" class="avatar-edit" title="Edit" id="avatar-edit">
                     <img  class="avatar-icon" src="/img/icon-edit-avatar.png" height="35px">
                 </a>
             </div>
         </div>
-        <div class="member-fullname">{{ $people->firstname }} {{ $people->lastname }}</div>
-        <span class="member-number">{{ $people->type }}</span>
+        <div class="member-fullname">{{ $user->firstname }} {{ $user->lastname }}</div>
+        <span class="member-number">{{ $user->type }}</span>
         <span class="member-split">&nbsp;|&nbsp;</span>
         <span class="dropdown" style="text-transform: none">
             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" style="padding: 1px 1px 1px 8px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ ($people->status) ? 'Active' : 'Inactive' }}
+                {{ ($user->status) ? 'Active' : 'Inactive' }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ ($people->status) ? '#' : "/people/$people->id/status/1" }}">Active</a>
-                <a class="dropdown-item" href="{{ (!$people->status) ? '#' : "/people/$people->id/status/0" }}">Inactive</a>
-                @if (!$people->status)
+                <a class="dropdown-item" href="{{ ($user->status) ? '#' : "/people/$user->id/status/1" }}">Active</a>
+                <a class="dropdown-item" href="{{ (!$user->status) ? '#' : "/people/$user->id/status/0" }}">Inactive</a>
+                @if (!$user->status)
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" id="but_del_person">Delete</a>
                 @endif
@@ -110,10 +110,10 @@
     ?>
 
     <ul class="member-bar-menu">
-        <li class="member-bar-item {{ $active_profile }}"><i class="iicon-profile"></i><a class="member-bar-link" href="/people/{{ $people->id }}" title="Profile">PROFILE</a></li>
-        <li class="member-bar-item "><i class="iicon-document"></i><a class="member-bar-link" href="/people/{{ $people->id }}/activity" title="Activity">Activity</a></li>
+        <li class="member-bar-item {{ $active_profile }}"><i class="iicon-profile"></i><a class="member-bar-link" href="/people/{{ $user->id }}" title="Profile">PROFILE</a></li>
+        <li class="member-bar-item "><i class="iicon-document"></i><a class="member-bar-link" href="/people/{{ $user->id }}/activity" title="Activity">Activity</a></li>
 
-        <li class="member-bar-item "><i class="iicon-lock"></i><a class="member-bar-link" href="/people/{{ $people->id }}" title="Security">SECURITY</a></li>
+        <li class="member-bar-item "><i class="iicon-lock"></i><a class="member-bar-link" href="/people/{{ $user->id }}" title="Security">SECURITY</a></li>
     </ul>
 </div>
 
@@ -123,13 +123,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background: #32c5d2">
-                <h5 class="modal-title text-white" id="ModalLabel">{{ $people->name }}</h5>
+                <h5 class="modal-title text-white" id="ModalLabel">{{ $user->name }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             {{-- Photo --}}
-            <img class="img-fluid" width=100%" src="{{ $people->photo_path }}">
+            <img class="img-fluid" width=100%" src="{{ $user->photo_path }}">
 
             <div class="text-center">
                 <button type="button" class="btn btn-secondary" style="border: 0; background: #FFF" data-dismiss="modal">Close</button>
@@ -142,10 +142,10 @@
 <div class="modal fade" id="modal_avatar_edit" tabindex="-1" role="dialog" aria-labelledby="Avatar Edit" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            {!! Form::model($people, ['action' => ['People\PeopleController@updatePhoto', $people->id]]) !!}
-            {!! Form::hidden('previous_photo', $people->photo, ['id' => 'photo_name']) !!}
+            {!! Form::model($user, ['action' => ['People\PeopleController@updatePhoto', $user->id]]) !!}
+            {!! Form::hidden('previous_photo', $user->photo, ['id' => 'photo_name']) !!}
             <div class="modal-header" style="background: #32c5d2">
-                <h5 class="modal-title text-white" id="ModalLabel">{{ $people->name }}</h5>
+                <h5 class="modal-title text-white" id="ModalLabel">{{ $user->name }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -153,8 +153,8 @@
 
             {{-- Slim Photo --}}
             <div class="slim {!! fieldHasError('photo', $errors) !!}" data-ratio="1:1" data-push=true data-download="true" data-size="400,400" data-label="<i class='fa fa-camera fa-4x'></i><br>Click and smile!">
-                @if ($people->photo)
-                    <img src="{{ $people->photo_path }}?<?=rand(1, 32000)?>" alt=""/>
+                @if ($user->photo)
+                    <img src="{{ $user->photo_path }}?<?=rand(1, 32000)?>" alt=""/>
                 @endif
                 <input type="file" name="photo"/>
             </div>

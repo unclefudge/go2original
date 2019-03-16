@@ -21,7 +21,6 @@ Route::get('/logout', 'Auth\LoginController@logout');
 Route::get('/home', 'Misc\HomeController@index')->name('home');
 Route::get('/signup', 'Misc\HomeController@index')->name('home')->middleware('guest');
 
-
 // Logged in Routes
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/metronic', 'Misc\HomeController@metronic');
@@ -29,18 +28,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/test', function () {return view('test');});
 
 
-    // Protect access the People photos + thumbs
+    // Protect access the Users photos + thumbs
     Route::get('/image/{aid}/{type}/{filename}', 'Misc\FileController@getPhoto'); //->where('filename', '^(.+)\/([^\/]+)$');
     Route::get('/log/{aid}/{type}/{filename}', 'Misc\FileController@getLog'); //->where('filename', '^(.+)\/([^\/]+)$');
 
     //Route::get('/storage/{aid}/thumbs/{filename}', 'Misc\FileController@getThumb'); //->where('filename', '^(.+)\/([^\/]+)$');
 
-    //Route::get('/data/people', 'Account\AccountController@getPeople');
+    //Route::get('/data/users', 'Account\AccountController@getPeople');
     Route::resource('/account', 'Account\AccountController');
 
     // People
     Route::get('/data/people', 'People\PeopleController@getPeople');
-    Route::get('/data/people/search-add', 'People\PeopleController@searchAddPeople');
+    Route::get('/data/people/search-add', 'People\PeopleController@searchAddUser');
     Route::any('/people/{id}/activity', 'People\PeopleController@activity');
     Route::any('/people/{id}/status/{status}', 'People\PeopleController@status');
     Route::get('/people/{id}/del', 'People\PeopleController@destroy');
@@ -89,7 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/attendance', 'Event\AttendanceController');
 
     // Stats
-    Route::any('/stats/event/{eid}/student/{pid}', 'Event\StatsController@studentAttendance');
+    Route::any('/stats/event/{eid}/student/{uid}', 'Event\StatsController@studentAttendance');
     Route::any('/stats/event/weekly-totals', 'Event\StatsController@weekTotals');
     Route::any('/stats/event/compare-year/{years}', 'Event\StatsController@compareYear');
 
@@ -102,6 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/import-students', 'Misc\ImportController@importStudents');
     Route::get('/import-adults', 'Misc\ImportController@importAdults');
     Route::get('/import-events', 'Misc\ImportController@importEvents');
+    Route::get('/create-user-history', 'Misc\ImportController@createUserHistory');
     Route::get('/form-households', 'Misc\ImportController@formHouseholds');
     Route::get('/copy-address', 'Misc\ImportController@copyAddress');
     Route::get('/copy-address/{from}/{to}', 'Misc\ImportController@copyAddressDone');
@@ -110,5 +110,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Search
     Route::view('/search', 'search');
-    Route::get('/user/find', 'People\SearchController@searchUsers');
+    Route::get('/user/find', 'Users\SearchController@searchUsers');
 });

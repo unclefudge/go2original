@@ -3,7 +3,7 @@
     <div class="m-portlet__body">
         <div class="row" style="padding-bottom: 10px">
             <div class="col-10"><h4>Personal Info</h4></div>
-            @if ($people->status)
+            @if ($user->status)
                 <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a></div>
             @endif
         </div>
@@ -11,17 +11,17 @@
             <div class="col-md-5">
                 <div class="row" style="padding: 5px 0px">
                     <div class="col-1">
-                        @if ($people->gender == 'Male')
+                        @if ($user->gender == 'Male')
                             <i class="fa fa-2x fa-male"></i>
-                        @elseif ($people->gender == 'Female')
+                        @elseif ($user->gender == 'Female')
                             <i class="fa fa-2x fa-female" style="padding-right: 5px"></i>
                         @else
                             <i class="fa fa-user" style="padding-right: 5px"></i>
                         @endif
                     </div>
                     <div class="col">
-                        {{ $people->type }} <br>
-                        {!! ($people->dob) ? "$people->age years old &nbsp; (".$people->dob->format('j M Y').") <br>" : '' !!}
+                        {{ $user->type }} <br>
+                        {!! ($user->dob) ? "$user->age years old &nbsp; (".$user->dob->format('j M Y').") <br>" : '' !!}
                     </div>
                 </div>
 
@@ -29,15 +29,15 @@
             <div class="col-md-7">
                 <div class="row" style="padding: 5px 0px">
                     <div class="col-1 col-lg-3"><i class="fa fa-envelope" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Email</span></div>
-                    <div class="col col-lg-9">{!! ($people->email) ? "<a href='mailto:$people->email'> $people->email</a>" : '-' !!}</div>
+                    <div class="col col-lg-9">{!! ($user->email) ? "<a href='mailto:$user->email'> $user->email</a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">
                     <div class="col-1 col-lg-3"><i class="fa fa-phone" style="padding-right: 4px"></i><span class="d-none d-lg-inline">Phone</span></div>
-                    <div class="col col-lg-9">{!! ($people->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $people->phone)."> $people->phone </a>" : '-' !!}</div>
+                    <div class="col col-lg-9">{!! ($user->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $user->phone)."> $user->phone </a>" : '-' !!}</div>
                 </div>
                 <div class="row" style="padding: 5px 0px">
                     <div class="col-1 col-lg-3"><i class="fa fa-map-marker-alt" style="padding-right: 5px"></i><span class="d-none d-lg-inline">Address</span></div>
-                    <div class="col col-lg-9">{!! ($people->address_formatted) ? $people->address_formatted : '-' !!}</div>
+                    <div class="col col-lg-9">{!! ($user->address_formatted) ? $user->address_formatted : '-' !!}</div>
                 </div>
 
             </div>
@@ -46,7 +46,7 @@
         <hr class="field-hr">
 
         {{-- Student --}}
-        @if ($people->type == 'Student')
+        @if ($user->type == 'Student')
             <div class="row">
                 {{-- School --}}
                 <div class="col-md-5">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="row">
                         <div class="col-1"><i class="fa fa-apple-alt"></i></div>
-                        <div class="col">{!! ($people->grade) ? "Grade $people->grade" : '-' !!}<br>{!! $people->school_name !!}</div>
+                        <div class="col">{!! ($user->grade) ? "Grade $user->grade" : '-' !!}<br>{!! $user->school_name !!}</div>
                     </div>
                 </div>
 
@@ -67,15 +67,15 @@
                         <div class="col-2"><!--<a href="#" class="pull-right" data-toggle="modal" data-target="#modal_profile"> <i class="fa fa-edit"></i></a>--></div>
                     </div>
                     <div class="row">
-                        <div class="col-1">{!! ($people->media_consent) ? '<i class="fa fa-user m--font-success"></i>' : '<i class="fa fa-user-slash m--font-danger"></i>'!!}</div>
-                        <div class="col">{!! ($people->media_consent) ? 'Consent given by '.$people->mediaConsentByUser->name.' ('.$people->media_consent->format(session('df')).')' : 'No Media Consent' !!}</div>
+                        <div class="col-1">{!! ($user->media_consent) ? '<i class="fa fa-user m--font-success"></i>' : '<i class="fa fa-user-slash m--font-danger"></i>'!!}</div>
+                        <div class="col">{!! ($user->media_consent) ? 'Consent given by '.$user->mediaConsentByUser->name.' ('.$user->media_consent->format(session('df')).')' : 'No Media Consent' !!}</div>
                     </div>
                 </div>
             </div>
         @endif
 
         {{-- Volunteer --}}
-        @if ($people->type == 'Volunteer' || $people->type == 'Parent/Volunteer')
+        @if ($user->type == 'Volunteer' || $user->type == 'Parent/Volunteer')
             <div class="row">
                 {{-- School --}}
                 <div class="col-md-12">
@@ -85,14 +85,14 @@
                     </div>
                     <div class="row">
                         <div class="col-2">No.</div>
-                        <div class="col">{!! ($people->wwc_no) ? "$people->wwc_no" : '-' !!}</div>
+                        <div class="col">{!! ($user->wwc_no) ? "$user->wwc_no" : '-' !!}</div>
                     </div>
                     <div class="row">
                         <div class="col-2">Expiry</div>
-                        <div class="col">{!! ($people->wwc_exp) ? $people->wwc_exp->format(session('df')) : '' !!}</div>
+                        <div class="col">{!! ($user->wwc_exp) ? $user->wwc_exp->format(session('df')) : '' !!}</div>
                     </div>
                     <div class="row">
-                        <div class="col">{!! ($people->wwc_verified_by) ? "<br>Verified by ".$people->wwcVerifiedByUser->name." on ".$people->wwc_verified->format(session('df')) : '<br><span class="m--font-danger">Not Verified Yet</span>' !!} </div>
+                        <div class="col">{!! ($user->wwc_verified_by) ? "<br>Verified by ".$user->wwcVerifiedByUser->name." on ".$user->wwc_verified->format(session('df')) : '<br><span class="m--font-danger">Not Verified Yet</span>' !!} </div>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 <div class="modal fade" id="modal_personal" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            {!! Form::model($people, ['method' => 'PATCH', 'action' => ['People\PeopleController@update', $people->id]]) !!}
+            {!! Form::model($user, ['method' => 'PATCH', 'action' => ['People\PeopleController@update', $user->id]]) !!}
             <div class="modal-header" style="background: #32c5d2">
                 <h5 class="modal-title text-white" id="ModalLabel">Edit Profile</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -198,7 +198,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', ($people->dob) ? $people->dob->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
+                                {!! Form::text('dob', ($user->dob) ? $user->dob->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
                             </div>
                             {!! fieldErrorMessage('dob', $errors) !!}
                         </div>
@@ -212,7 +212,7 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group {!! fieldHasError('type', $errors) !!}">
                             {!! Form::label('type', 'Type', ['class' => 'control-label']) !!}
-                            {!! Form::select('type', \App\Models\People\People::types(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('type', \App\User::types(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('type', $errors) !!}
                         </div>
                     </div>
@@ -238,8 +238,8 @@
                             <div class="form-group">
                                 <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
                                 <select name="school_id" class="form-control select2" id="school_id">
-                                    @foreach (\App\Models\Account\Account::find(1)->schools->sortBy('name') as $key => $value)
-                                        <option value="{{ $key }}" {{ ($people->school_id == $key) ? 'selected' : '' }}>{{ $value }}</option>
+                                    @foreach ($user->account->schools->sortBy('name') as $key => $value)
+                                        <option value="{{ $key }}" {{ ($user->school_id == $key) ? 'selected' : '' }}>{{ $value }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -248,7 +248,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('media_consent', $errors) !!}">
                                 {!! Form::label('media_consent', 'Media Consent', ['class' => 'control-label']) !!}
-                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], ($people->media_consent) ? 1 : 0, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], ($user->media_consent) ? 1 : 0, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                                 {!! fieldErrorMessage('media_consent', $errors) !!}
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', ($people->wwc_exp) ? $people->wwc_exp->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
+                                    {!! Form::text('wwc_exp', ($user->wwc_exp) ? $user->wwc_exp->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
                                 </div>
                                 {!! fieldErrorMessage('wwc_exp', $errors) !!}
                             </div>

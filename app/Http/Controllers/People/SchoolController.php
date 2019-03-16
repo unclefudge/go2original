@@ -77,7 +77,6 @@ class SchoolController extends Controller {
                     $list[$school->id] = $school->name;
             }
         }
-
         return json_encode($list);
     }
 }

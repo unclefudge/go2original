@@ -5,7 +5,7 @@ namespace App\Http\Controllers\People;
 use DB;
 use Auth;
 use Validator;
-use App\Models\People\People;
+use App\User;
 use App\Models\People\Household;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class HouseholdController extends Controller {
             // Add Members
             if (request('members')) {
                 foreach (request('members') as $member)
-                    DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $member['pid']]);
+                    DB::table('users_household')->insert(['hid' => $household->id, 'uid' => $member['uid']]);
             }
 
             return $household;
@@ -44,13 +44,13 @@ class HouseholdController extends Controller {
             $household->update(request()->all());
 
             // Delete Members
-            $member = DB::table('households_people')->where('hid', $id)->delete();
+            $member = DB::table('users_household')->where('hid', $id)->delete();
             //$member->members()->sync(request('members'));
 
             // Add Members
             if (request('members')) {
                 foreach (request('members') as $member)
-                    DB::table('households_people')->insert(['hid' => $id, 'pid' => $member['pid']]);
+                    DB::table('users_household')->insert(['hid' => $id, 'uid' => $member['uid']]);
             } else
                 $household->delete();
 
@@ -80,18 +80,18 @@ class HouseholdController extends Controller {
      */
     public function getMembers($id)
     {
-        $person = People::findOrFail($id);
+        $person = User::findOrFail($id);
         $households = [];
         $household1 = [];
         $members = [];
         $household_count = 0;
         foreach ($person->households->sortBy('name') as $household) {
             $household_count ++;
-            $households[] = ['id' => $household->id, 'name' => $household->name, 'pid' => $household->pid, 'count' => $household->members->count()];
+            $households[] = ['id' => $household->id, 'name' => $household->name, 'uid' => $household->uid, 'count' => $household->members->count()];
             foreach ($household->members as $member) {
                 $array = [
                     'hid'    => $household->id,
-                    'pid'    => $member->id,
+                    'uid'    => $member->id,
                     'name'   => $member->name,
                     'type'   => $member->type,
                     'phone'  => $member->phone,
@@ -108,10 +108,10 @@ class HouseholdController extends Controller {
 
         // Active people
         $people = [];
-        //foreach (People::where('aid', session('aid'))->where('status', 1)->get() as $person)
-        foreach (People::where('aid', session('aid'))->get() as $person)
+        //foreach (User::where('aid', session('aid'))->where('status', 1)->get() as $person)
+        foreach (User::where('aid', session('aid'))->get() as $person)
             $people[] = [
-                'pid'    => $person->id,
+                'uid'    => $person->id,
                 'name'   => $person->name,
                 'type'   => $person->type,
                 'phone'  => $person->phone,

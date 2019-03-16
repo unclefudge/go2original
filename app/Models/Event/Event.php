@@ -3,7 +3,6 @@
 namespace App\Models\Event;
 
 use App\User;
-use App\Models\People\People;
 use Carbon\Carbon;
 use Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +24,6 @@ class Event extends Model {
     {
         return $this->belongsTo('App\Models\Account\Account', 'aid');
     }
-
 
     /**
      * A Event has many EventInstance.
@@ -59,16 +57,16 @@ class Event extends Model {
         $students = [];
         if ($attendance) {
             foreach ($attendance as $attend) {
-                if ($attend->person->isStudent && !in_array($attend->pid, $students)) {
-                    if ($new && $attend->person->firstEvent($this->id)->start->isSameDay($attend->instance->start))
-                        $students[] = $attend->pid;
+                if ($attend->user && $attend->user->isStudent && !in_array($attend->uid, $students)) {
+                    if ($new && $attend->user->firstEvent($this->id)->start->isSameDay($attend->instance->start))
+                        $students[] = $attend->uid;
                     elseif (!$new)
-                        $students[] = $attend->pid;
+                        $students[] = $attend->uid;
                 }
             }
         }
 
-        return People::find($students);
+        return User::find($students);
     }
 
     /**
@@ -83,11 +81,11 @@ class Event extends Model {
         $students = [];
         if ($attendance) {
             foreach ($attendance as $attend) {
-                if ($attend->person->isStudent) {
-                    if (isset($students[$attend->pid]))
-                        $students[$attend->pid] = $students[$attend->pid] + 1;
+                if ($attend->user->isStudent) {
+                    if (isset($students[$attend->uid]))
+                        $students[$attend->uid] = $students[$attend->uid] + 1;
                     else
-                        $students[$attend->pid] = 1;
+                        $students[$attend->uid] = 1;
                 }
             }
         }
@@ -103,15 +101,15 @@ class Event extends Model {
     {
         $active_students = $this->studentAttendance($weeks)->pluck('id')->toArray();
         $instance_ids = $this->instances->pluck('id')->toArray();
-        $previous_attenders = Attendance::whereIn('eid', $instance_ids)->pluck('pid')->toArray();
-        $people = People::find($previous_attenders);
+        $previous_attenders = Attendance::whereIn('eid', $instance_ids)->pluck('uid')->toArray();
+        $users = User::find($previous_attenders);
         $mia = [];
-        foreach ($people as $person) {
-            if ($person->status && $person->isStudent && !in_array($person->id, $active_students))
-                $mia[] = $person->id;
+        foreach ($users as $user) {
+            if ($user->status && $user->isStudent && !in_array($user->id, $active_students))
+                $mia[] = $user->id;
         }
 
-        return People::find($mia);
+        return User::find($mia);
     }
 
 

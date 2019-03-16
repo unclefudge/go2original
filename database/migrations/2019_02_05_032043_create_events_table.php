@@ -104,14 +104,14 @@ class CreateEventsTable extends Migration
         Schema::create('events_attendance', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('eid')->nullable();
-            $table->unsignedInteger('pid')->nullable();
+            $table->unsignedInteger('uid')->nullable();
             $table->dateTime('in')->nullable();
             $table->dateTime('out')->nullable();
             $table->string('method', 25)->nullable();
 
             // Foreign keys
             $table->foreign('eid')->references('id')->on('events_instance')->onDelete('cascade');
-            $table->foreign('pid')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('uid')->references('id')->on('users')->onDelete('cascade');
 
             // Modify info
             $table->unsignedInteger('created_by')->nullable();

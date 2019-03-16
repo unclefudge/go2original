@@ -19,7 +19,7 @@ class AttendanceController extends Controller {
         //dd(request('method'));
         if (request()->ajax()) {
             // Ensure we don't check someone in who's already checked in
-            $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->first();
+            $attend = Attendance::where('eid', request('eid'))->where('uid', request('uid'))->first();
             if (!$attend)
                 $attend = Attendance::create(request()->all());
 
@@ -51,7 +51,7 @@ class AttendanceController extends Controller {
     {
 
         if (request()->ajax()) {
-            $attend = Attendance::where('eid', request('eid'))->where('pid', request('pid'))->delete();
+            $attend = Attendance::where('eid', request('eid'))->where('uid', request('uid'))->delete();
 
             return response()->json(['success', '200']);
         }

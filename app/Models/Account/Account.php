@@ -3,7 +3,6 @@
 namespace App\Models\Account;
 
 use App\User;
-use App\Models\People\People;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -15,13 +14,13 @@ class Account extends Model
 
 
     /**
-     * A Account has many People
+     * A Account has many Users
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function people()
+    public function users()
     {
-        return $this->hasMany('App\Models\People\People', 'aid');
+        return $this->hasMany('App\User', 'aid');
     }
 
     /**

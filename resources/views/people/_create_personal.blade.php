@@ -107,7 +107,7 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group {!! fieldHasError('type', $errors) !!}">
                             {!! Form::label('type', 'Type', ['class' => 'control-label']) !!}
-                            {!! Form::select('type', \App\Models\People\People::types(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('type', \App\User::types(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                             {!! fieldErrorMessage('type', $errors) !!}
                         </div>
                     </div>

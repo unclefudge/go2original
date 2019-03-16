@@ -48,13 +48,13 @@ class EventInstance extends Model
 
 
     /**
-     * Did Person Attend.
+     * Did User Attend.
      *
      * @return EventAttendance
      */
-    public function personAttend($pid)
+    public function userAttend($pid)
     {
-        return $this->attendance->where('pid', $pid)->first();
+        return $this->attendance->where('uid', $pid)->first();
     }
 
     /**

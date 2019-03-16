@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <?php $people = \App\Models\People\People::find(67) ?>
+    <?php $people = \App\User::find(67) ?>
 
     {{-- Member bar --}}
     <div class="mbar {{ (!$people->status) ? 'mbar-inactive' : '' }}">

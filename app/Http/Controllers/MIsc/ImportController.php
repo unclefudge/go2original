@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Misc;
 
 use DB;
 use Auth;
+use App\User;
 use App\Models\Account\Account;
-use App\Models\People\People;
 use App\Models\People\School;
 use App\Models\People\Household;
 use App\Models\People\PeopleHistory;
@@ -26,7 +26,6 @@ class ImportController extends Controller {
 
     public function importStudents()
     {
-
         // Import Students
         echo "Importing Students<br><br>";
         //$account = \App\Models\Account\Account::create(['name' => 'Young Life Hobart', 'slug' => 'yl'])->first();
@@ -63,9 +62,9 @@ class ImportController extends Controller {
                 if (!$school)
                     $school = School::create(['name' => $school_name, 'grade_from' => 1, 'grade_to' => 12])->first();
 
-                $people = People::where('firstname', $firstname)->where('lastname', $lastname)->first();
-                if (!$people) {
-                    $people = People::create(
+                $user = User::where('firstname', $firstname)->where('lastname', $lastname)->first();
+                if (!$user) {
+                    $user = User::create(
                         ['firstname' => $firstname, 'lastname' => $lastname, 'dob' => $dob, 'gender' => $gender, 'email' => $email,
                          'school_id' => $school->id, 'grade' => $grade, 'status' => $status, 'minhub' => $minhub, 'type' => 'Student']);
                 }
@@ -113,9 +112,9 @@ class ImportController extends Controller {
 
                 echo "<br>$minhub -  $firstname - $lastname - $dob - $gender - $phone - $email - $address - $suburb - $type - $status<br>";
 
-                $people = People::where('firstname', $firstname)->where('lastname', $lastname)->first();
-                if (!$people) {
-                    $people = People::create(
+                $user = User::where('firstname', $firstname)->where('lastname', $lastname)->first();
+                if (!$user) {
+                    $user = User::create(
                         ['firstname' => $firstname, 'lastname' => $lastname, 'dob' => $dob, 'gender' => $gender, 'email' => $email,
                          'address'   => $address, 'suburb' => $suburb, 'state' => $state, 'postcode' => $postcode, 'status' => $status, 'minhub' => $minhub, 'type' => $type, 'aid' => session('aid')]);
                 }
@@ -182,12 +181,12 @@ class ImportController extends Controller {
 
                     // Add Student attendance to event
                     foreach ($students as $student) {
-                        $person = People::where('minhub', $student)->first();
-                        if ($person) {
+                        $user = User::where('minhub', $student)->first();
+                        if ($user) {
                             // Check person into event
-                            $attend = Attendance::where('eid', $instance->id)->where('pid', $person->id)->first();
+                            $attend = Attendance::where('eid', $instance->id)->where('uid', $user->id)->first();
                             if (!$attend)
-                                $attend = Attendance::create(['eid' => $instance->id, 'pid' => $person->id, 'in' => $start, 'method' => 'imported']);
+                                $attend = Attendance::create(['eid' => $instance->id, 'uid' => $user->id, 'in' => $start, 'method' => 'imported']);
                         }
                     }
                 }
@@ -197,45 +196,126 @@ class ImportController extends Controller {
         echo "<br><br>Completed<br>-------------<br>";
     }
 
+    public function createPeopleHistory()
+    {
+        echo "<h3>Create profile history</h3>";
+        $users = User::find(3);
+        PeopleHistory::addHistory($users, 'profile');
+        foreach ($users as $user) {
+
+        }
+        /*
+        $fillable = [
+            'type', 'gender', 'dob', 'email', 'phone', 'instagram',
+            'grade', 'school_id', 'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by',
+            'media_consent', 'media_consent_by', 'notes'];
+        $address = ['address', 'address2', 'suburb', 'state', 'postcode', 'country'];
+        $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent'];
+        foreach ($users as $user) {
+            $array = [];
+            // Name
+            if ($user->firstname || $user->lastname) {
+                $array['Name'] = '';
+                if ($user->firstname) $array['Name'] .= "$user->firstname";
+                if ($user->lastname) $array['Name'] .= " $user->lastname";
+            }
+
+            // Address
+            if ($user->address || $user->suburb || $user->state || $user->postcode) {
+                $array['Address'] = '';
+                if ($user->address) $array['Address'] .= "$user->address<br>";
+                if ($user->suburb) $array['Address'] .= "$user->suburb, ";
+                if ($user->state) $array['Address'] .= "$user->state ";
+                if ($user->postcode) $array['Address'] .= "$user->postcode";
+            }
+
+            $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+            foreach ($fillable as $key) {
+                $KEY = ucfirst($key);
+                if ($key == 'dob') $KEY = 'Birthdate';
+                if (isset($user[$key]) && $user[$key]) {
+                    if (in_array($key, $dates))
+                        $array[$KEY] = $user[$key]->format(session('df'));
+                    elseif ($key == 'school_id')
+                        $array['School'] = $user->school->name;
+                    elseif ($key == 'grade') {
+                        if (is_numeric($user->grade)) {
+                            if ($user->grade > 12)
+                                $array[$KEY] = "Young Adult";
+                            elseif (($user->grade %100) >= 11 && ($user->grade %100) <= 13)
+                                $array[$KEY] = $user->grade. 'th';
+                            else
+                                $array[$KEY] = $user->grade. $ends[$user->grade % 10];
+                        } else
+                            $array[$KEY] = $user->grade;
+                    }
+                    else
+                        $array[$KEY] = $user[$key];
+                }
+            }
+            echo "<br><br>$user->name<br>";
+            // {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}}
+            print_r($array);
+            $json = "{";
+            $x=1;
+            foreach ($array as $key => $val){
+                $json .= '"'.($x++).'": {"field": "'.$key.'", "before": "", "after": "'.$val.'"}, ';
+            }
+            $json = rtrim($json, ', ');
+            $json .= "}";
+            echo "<br>$json<br>";
+            $history = DB::table('users_history')->insert([
+                'uid' => $user->id,
+                'action' => 'created',
+                'type' => 'profile',
+                'subtype' => 'personal',
+                'data' => $json,
+                'created_by' => ($user->firstEvent() && $user->firstEvent()->start->lt(Carbon::now()->subWeeks(4))) ? 2 : 3,
+                'created_at' => ($user->firstEvent() && $user->firstEvent()->start->lt($user->created_at)) ? $user->firstEvent()->start : $user->created_at,
+                'updated_at' => ($user->firstEvent() && $user->firstEvent()->start->lt($user->created_at)) ? $user->firstEvent()->start : $user->updated_at,
+            ]);
+        }*/
+    }
+
     public function formHouseholds()
     {
-        $people = People::all()->sortby('lastname');
+        $users = User::all()->sortby('lastname');
 
         echo "<h1>Form Households<h1>";
         echo "<table><tr><td width=50>#H</td><td width='200'>Last name</td><td width='150'>First name</td><td width=100>Type</td><td width=60>Grade</td><td>Address</td></tr>";
-        foreach ($people as $person) {
-            if ($person->type != 'Volunteer') {
-                $person->address = trim($person->address);
-                $person->suburb = trim($person->suburb);
-                $person->postcode = trim($person->postcode);
-                $person->state = ($person->suburb || $person->postcode || $person->address) ? 'TAS' : '';
-                if (!$person->postcode) {
-                    if ($person->suburb == 'CLARENDON VALE') $person->postcode = '7019';
-                    if ($person->suburb == 'ROKEBY') $person->postcode = '7019';
-                    if ($person->suburb == 'WEST MOONAH') $person->postcode = '7009';
-                    if ($person->suburb == 'MIDWAY POINT') $person->postcode = '7171';
-                    if ($person->suburb == 'GAGEBROOK') $person->postcode = '7030';
-                    if ($person->suburb == 'KINGSTON') $person->postcode = '7050';
-                    if ($person->suburb == 'GLENORCHY') $person->postcode = '7030';
-                    if ($person->suburb == 'SANDFORD') $person->postcode = '7020';
-                    if ($person->suburb == 'HOWRAH') $person->postcode = '7018';
-                    if ($person->suburb == 'HONEYWOOD') $person->postcode = '7010';
-                    if ($person->suburb == 'CLARENCE CITY') $person->postcode = '7018';
-                    if ($person->suburb == 'LENAH VALLEY') $person->postcode = '7008';
-                    if ($person->suburb == 'PONTVILLE') $person->postcode = '7030';
-                    if ($person->suburb == 'RISDON VALE') $person->postcode = '7018';
-                    if ($person->suburb == 'TRANMERE') $person->postcode = '7030';
-                    if ($person->suburb == 'AUSTINS FERRY') $person->postcode = '7011';
-                    if ($person->suburb == 'LINDISFARNE') $person->postcode = '7015';
-                    if ($person->suburb == 'TAROONA') $person->postcode = '7053';
+        foreach ($users as $user) {
+            if ($user->type != 'Volunteer') {
+                $user->address = trim($user->address);
+                $user->suburb = trim($user->suburb);
+                $user->postcode = trim($user->postcode);
+                $user->state = ($user->suburb || $user->postcode || $user->address) ? 'TAS' : '';
+                if (!$user->postcode) {
+                    if ($user->suburb == 'CLARENDON VALE') $user->postcode = '7019';
+                    if ($user->suburb == 'ROKEBY') $user->postcode = '7019';
+                    if ($user->suburb == 'WEST MOONAH') $user->postcode = '7009';
+                    if ($user->suburb == 'MIDWAY POINT') $user->postcode = '7171';
+                    if ($user->suburb == 'GAGEBROOK') $user->postcode = '7030';
+                    if ($user->suburb == 'KINGSTON') $user->postcode = '7050';
+                    if ($user->suburb == 'GLENORCHY') $user->postcode = '7030';
+                    if ($user->suburb == 'SANDFORD') $user->postcode = '7020';
+                    if ($user->suburb == 'HOWRAH') $user->postcode = '7018';
+                    if ($user->suburb == 'HONEYWOOD') $user->postcode = '7010';
+                    if ($user->suburb == 'CLARENCE CITY') $user->postcode = '7018';
+                    if ($user->suburb == 'LENAH VALLEY') $user->postcode = '7008';
+                    if ($user->suburb == 'PONTVILLE') $user->postcode = '7030';
+                    if ($user->suburb == 'RISDON VALE') $user->postcode = '7018';
+                    if ($user->suburb == 'TRANMERE') $user->postcode = '7030';
+                    if ($user->suburb == 'AUSTINS FERRY') $user->postcode = '7011';
+                    if ($user->suburb == 'LINDISFARNE') $user->postcode = '7015';
+                    if ($user->suburb == 'TAROONA') $user->postcode = '7053';
                 }
-                $person->save();
+                $user->save();
 
-                $house = ($person->households->count() > 0) ? 'Y' : '';
-                $bg = ($person->status) ? '#eee' : '#aaa';
+                $house = ($user->households->count() > 0) ? 'Y' : '';
+                $bg = ($user->status) ? '#eee' : '#aaa';
                 $bg2 = ($house) ? '#FFFF00' : $bg;
-                echo "<tr style='background: $bg'><td style='text-align:center; background: $bg2'>$house</td><td>$person->lastname</td><td><a href='/people/$person->id' target='_blank'>$person->firstname</a></td>
-            <td>$person->type</td><td>$person->grade</td><td>$person->address, $person->suburb $person->postcode</td></tr>";
+                echo "<tr style='background: $bg'><td style='text-align:center; background: $bg2'>$house</td><td>$user->lastname</td><td><a href='/people/$user->id' target='_blank'>$user->firstname</a></td>
+            <td>$user->type</td><td>$user->grade</td><td>$user->address, $user->suburb $user->postcode</td></tr>";
             }
         }
         echo "</table>";
@@ -266,8 +346,8 @@ class ImportController extends Controller {
 
     public function copyAddressDone($from, $to)
     {
-        $from = People::find($from);
-        $to = People::find($to);
+        $from = User::find($from);
+        $to = User::find($to);
 
         echo "<h3>Copied address from $from->firstname to $to->firstname</h3>";
         if (!$to->address) $to->address = $from->address;
@@ -280,88 +360,6 @@ class ImportController extends Controller {
 
     public function quick()
     {
-
-        $people = People::find(67);
-        $people->genHistoryData();
-
-        $people = People::find(214);
-        $people->genHistoryData();
-
-        /*
-        echo "<h3>Insert profile history</h3>";
-        $people = People::all();
-        $fillable = [
-            'type', 'gender', 'dob', 'email', 'phone', 'instagram',
-            'grade', 'school_id', 'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by',
-            'media_consent', 'media_consent_by', 'notes'];
-        $address = ['address', 'address2', 'suburb', 'state', 'postcode', 'country'];
-        $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent'];
-        foreach ($people as $person) {
-            $array = [];
-            // Name
-            if ($person->firstname || $person->lastname) {
-                $array['Name'] = '';
-                if ($person->firstname) $array['Name'] .= "$person->firstname";
-                if ($person->lastname) $array['Name'] .= " $person->lastname";
-            }
-
-            // Address
-            if ($person->address || $person->suburb || $person->state || $person->postcode) {
-                $array['Address'] = '';
-                if ($person->address) $array['Address'] .= "$person->address<br>";
-                if ($person->suburb) $array['Address'] .= "$person->suburb, ";
-                if ($person->state) $array['Address'] .= "$person->state ";
-                if ($person->postcode) $array['Address'] .= "$person->postcode";
-            }
-
-            $ends = array('th','st','nd','rd','th','th','th','th','th','th');
-            foreach ($fillable as $key) {
-                $KEY = ucfirst($key);
-                if ($key == 'dob') $KEY = 'Birthdate';
-                if (isset($person[$key]) && $person[$key]) {
-                    if (in_array($key, $dates))
-                        $array[$KEY] = $person[$key]->format(session('df'));
-                    elseif ($key == 'school_id')
-                        $array['School'] = $person->school->name;
-                    elseif ($key == 'grade') {
-                        if (is_numeric($person->grade)) {
-                            if ($person->grade > 12)
-                                $array[$KEY] = "Young Adult";
-                            elseif (($person->grade %100) >= 11 && ($person->grade %100) <= 13)
-                                $array[$KEY] = $person->grade. 'th';
-                            else
-                                $array[$KEY] = $person->grade. $ends[$person->grade % 10];
-                        } else
-                            $array[$KEY] = $person->grade;
-                    }
-                    else
-                        $array[$KEY] = $person[$key];
-                }
-            }
-            echo "<br><br>$person->name<br>";
-            // {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}}
-            print_r($array);
-            $json = "{";
-            $x=1;
-            foreach ($array as $key => $val){
-                $json .= '"'.($x++).'": {"field": "'.$key.'", "before": "", "after": "'.$val.'"}, ';
-            }
-            $json = rtrim($json, ', ');
-            $json .= "}";
-            echo "<br>$json<br>";
-            $history = DB::table('people_history')->insert([
-                'pid' => $person->id,
-                'action' => 'created',
-                'type' => 'profile',
-                'subtype' => 'personal',
-                'data' => $json,
-                'created_by' => ($person->firstEvent() && $person->firstEvent()->start->lt(Carbon::now()->subWeeks(4))) ? 2 : 3,
-                'created_at' => ($person->firstEvent() && $person->firstEvent()->start->lt($person->created_at)) ? $person->firstEvent()->start : $person->created_at,
-                'updated_at' => ($person->firstEvent() && $person->firstEvent()->start->lt($person->created_at)) ? $person->firstEvent()->start : $person->updated_at,
-            ]);
-        }
-*/
-
         /*
                 echo "<h3>Testing timezone out dates</h3>";
                 $x = 0;
@@ -403,7 +401,7 @@ class ImportController extends Controller {
         $x = 0;
         $attendance = Attendance::all();
         foreach($attendance as $attend) {
-            $at = Attendance::where('eid', $attend->eid)->where('pid', $attend->pid)->get();
+            $at = Attendance::where('eid', $attend->eid)->where('uid', $attend->uid)->get();
             if ($at->count() > 1) {
                 echo $attend->instance->name . " : " . $attend->person->name . "<br>";
                 $attend->delete();

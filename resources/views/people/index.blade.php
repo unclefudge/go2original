@@ -40,14 +40,14 @@
             {!! Form::hidden('pagelength', ($agent->isMobile() ? 100 : 25), ['id' => 'pagelength']) !!}
             {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
             {!! Form::hidden('show_inactive', '0', ['id' => 'show_inactive']) !!}
-            {!! Form::hidden('count_all', count($people->where('status', 1)), ['id' => 'count_all']) !!}
-            {!! Form::hidden('count_students', count($people->where('status', 1)->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'count_students']) !!}
-            {!! Form::hidden('count_parents', count($people->where('status', 1)->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'count_parents']) !!}
-            {!! Form::hidden('count_volunteers', count($people->where('status', 1)->whereIn('type', ['Volunteer', 'Parent/Volunteer'])), ['id' => 'count_volunteers']) !!}
-            {!! Form::hidden('counti_all', count($people), ['id' => 'counti_all']) !!}
-            {!! Form::hidden('counti_students', count($people->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'counti_students']) !!}
-            {!! Form::hidden('counti_parents', count($people->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'counti_parents']) !!}
-            {!! Form::hidden('counti_volunteers', count($people->whereIn('type', ['Volunteer', 'Parent/Volunteer'])), ['id' => 'counti_volunteers']) !!}
+            {!! Form::hidden('count_all', count($users->where('status', 1)), ['id' => 'count_all']) !!}
+            {!! Form::hidden('count_students', count($users->where('status', 1)->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'count_students']) !!}
+            {!! Form::hidden('count_parents', count($users->where('status', 1)->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'count_parents']) !!}
+            {!! Form::hidden('count_volunteers', count($users->where('status', 1)->whereIn('type', ['Volunteer', 'Parent/Volunteer'])), ['id' => 'count_volunteers']) !!}
+            {!! Form::hidden('counti_all', count($users), ['id' => 'counti_all']) !!}
+            {!! Form::hidden('counti_students', count($users->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'counti_students']) !!}
+            {!! Form::hidden('counti_parents', count($users->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'counti_parents']) !!}
+            {!! Form::hidden('counti_volunteers', count($users->whereIn('type', ['Volunteer', 'Parent/Volunteer'])), ['id' => 'counti_volunteers']) !!}
 
             <style>
                 #datatable1 tbody td.selected {
@@ -90,7 +90,7 @@
     <div class="modal fade" id="modal_create_person2" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
-                {!! Form::model('people', ['action' => ['People\PeopleController@store']]) !!}
+                {!! Form::model('users', ['action' => ['People\PeopleController@store']]) !!}
                 <div class="modal-header" style="background: #32c5d2; padding: 20px">
                     <h3 class="modal-title text-white" id="ModalLabel" style="font-size: 20px">Add a Person</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -227,20 +227,20 @@
             }
         },
         columns: [
-            {data: 'id', name: 'people.id', visible: false},
+            {data: 'id', name: 'users.id', visible: false},
             {data: 'full_name', name: 'full_name', orderable: true, searchable: false},
-            {data: 'type', name: 'people.type', orderable: false},
-            {data: 'phone', name: 'people.phone', orderable: false},
-            {data: 'email', name: 'people.email', orderable: false},
-            {data: 'address', name: 'people.address', orderable: false},
-            {data: 'grade', name: 'people.grade', orderable: true},
+            {data: 'type', name: 'users.type', orderable: false},
+            {data: 'phone', name: 'users.phone', orderable: false},
+            {data: 'email', name: 'users.email', orderable: false},
+            {data: 'address', name: 'users.address', orderable: false},
+            {data: 'grade', name: 'users.grade', orderable: true},
             {data: 'school_name', name: 'schools.name', orderable: true},
-            {data: 'media_consent', name: 'people.media_consent', orderable: true},
-            {data: 'wwc_exp2', name: 'people.wwc_exp', visible: false, orderable: true},
+            {data: 'media_consent', name: 'users.media_consent', orderable: true},
+            {data: 'wwc_exp2', name: 'users.wwc_exp', visible: false, orderable: true},
             {data: 'action', name: 'action', orderable: false, searchable: false},
-            {data: 'status', name: 'people.status', visible: false},
-            {data: 'firstname', name: 'people.firstname', visible: false},
-            {data: 'lastname', name: 'people.lastname', visible: false},
+            {data: 'status', name: 'users.status', visible: false},
+            {data: 'firstname', name: 'users.firstname', visible: false},
+            {data: 'lastname', name: 'users.lastname', visible: false},
         ],
         order: [
             [1, "asc"]
@@ -442,6 +442,7 @@
                             school_names.push(value);
                         });
                         school_names.sort();
+                        console.log(school_names);
                         var other_key = 0;
                         for (var i = 0; i < school_names.length; i++) {
                             var val = school_names[i];

@@ -28,12 +28,12 @@
             border-top: 4px solid #fff;
         }
 
-        .person_inactive {
+        .user_inactive {
             background: #777;
             color: #fff;
         }
 
-        .person_inactive:hover {
+        .user_inactive:hover {
             /*background: #777;*/
             color: #FF0000;
         }
@@ -224,7 +224,7 @@
                             <div class="row" style="padding: 5px">
                                 <div class="col-12">
                                     <h4 v-if="xx.estatus == 0" class="m--font-warning">Check-ins currently disabled due to event is INACTIVE</h4>
-                                    <attendance-grid :data="xx.people" :columns="xx.columns" :filter-key="xx.searchQuery"></attendance-grid>
+                                    <attendance-grid :data="xx.users" :columns="xx.columns" :filter-key="xx.searchQuery"></attendance-grid>
                                 </div>
                             </div>
 
@@ -260,49 +260,49 @@
             </tr>
             </thead>
             <tbody>
-            <template v-for="person in filteredData">
-                <tr v-if="show(person)" :class="{ person_inactive: !person.status }">
-                    {{-- Active People --}}
-                    <td v-if="person.status && xx.estatus == 1" v-on:click="cellSelect(person)" class="text-center" style="cursor: pointer;">
+            <template v-for="user in filteredData">
+                <tr v-if="show(user)" :class="{ user_inactive: !user.status }">
+                    {{-- Active Users --}}
+                    <td v-if="user.status && xx.estatus == 1" v-on:click="cellSelect(user)" class="text-center" style="cursor: pointer;">
                         {{-- Icons --}}
                         <div v-if="!xx.show_photos">
-                            <span v-if="person.in"><i class="fa fa-check-square fa-2x" style="color: #45ccb1"></i></span>
-                            <span v-if="!person.in"><i class="far fa-square fa-2x" style="color: #c4c5d6"></i></span>
+                            <span v-if="user.in"><i class="fa fa-check-square fa-2x" style="color: #45ccb1"></i></span>
+                            <span v-if="!user.in"><i class="far fa-square fa-2x" style="color: #c4c5d6"></i></span>
                         </div>
                         {{-- Photos --}}
                         <div v-if="xx.show_photos">
-                            <div v-if="person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)">
+                            <div v-if="user.in && xx.show_photos" class="avatar" :style="backgroundImage(user)">
                                 <img src="/img/check-32.png" height="32px" style="margin: 10px">
                             </div>
-                            <div v-if="!person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)"></div>
+                            <div v-if="!user.in && xx.show_photos" class="avatar" :style="backgroundImage(user)"></div>
                         </div>
                     </td>
 
-                    {{-- Deleted People --}}
-                    <td v-if="!person.status || xx.estatus == 0" class="text-center">
+                    {{-- Deleted Users --}}
+                    <td v-if="!user.status || xx.estatus == 0" class="text-center">
                         {{-- Icons --}}
                         <div v-if="!xx.show_photos">
-                            <span v-if="person.in && !xx.show_photos"><i class="fa fa-check-square fa-2x" style="color: #45ccb1; cursor: default"></i></span>
-                            <span v-if="!person.in && !xx.show_photos"><i class="far fa-square fa-2x" style="color: #c4c5d6; cursor: default"></i></span>
+                            <span v-if="user.in && !xx.show_photos"><i class="fa fa-check-square fa-2x" style="color: #45ccb1; cursor: default"></i></span>
+                            <span v-if="!user.in && !xx.show_photos"><i class="far fa-square fa-2x" style="color: #c4c5d6; cursor: default"></i></span>
                         </div>
                         {{-- Photos --}}
                         <div v-if="xx.show_photos">
-                            <div v-if="person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)">
+                            <div v-if="user.in && xx.show_photos" class="avatar" :style="backgroundImage(user)">
                                 <img src="/img/check-32.png" height="32px" style="margin: 10px">
                             </div>
-                            <div v-if="!person.in && xx.show_photos" class="avatar" :style="backgroundImage(person)"></div>
+                            <div v-if="!user.in && xx.show_photos" class="avatar" :style="backgroundImage(user)"></div>
                         </div>
                     </td>
 
                     {{-- Remaining Columns --}}
                     <td style="padding: 10px">
-                        @{{person.name}}
-                        <span v-if="person.new == 1" class="m-badge m-badge--warning m-badge--wide">NEW</span>
-                        <span v-if="!person.status" style="padding-left: 20px">** INACTIVE **</span>
+                        @{{user.name}}
+                        <span v-if="user.new == 1" class="m-badge m-badge--warning m-badge--wide">NEW</span>
+                        <span v-if="!user.status" style="padding-left: 20px">** INACTIVE **</span>
                     </td>
-                    <td style="padding: 10px">@{{person.type}}</td>
-                    <td style="padding: 10px">@{{person.grade}}</td>
-                    <td style="padding: 10px">@{{person.school}}</td>
+                    <td style="padding: 10px">@{{user.type}}</td>
+                    <td style="padding: 10px">@{{user.grade}}</td>
+                    <td style="padding: 10px">@{{user.school}}</td>
                 </tr>
             </template>
             </tbody>
@@ -338,7 +338,7 @@
         count_grades: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}, count_schools: {},
         searchQuery: "{!! app('request')->input('query') !!}",
         edit_name: false, show_photos: false, show_checked: true, show_inactive: true,
-        people: [], columns: ['in', 'name', 'type', 'grade', 'school'],
+        users: [], columns: ['in', 'name', 'type', 'grade', 'school'],
     };
 
     $(document).ready(function () {
@@ -442,19 +442,19 @@
                 this.sortKey = key
                 this.sortOrders[key] = this.sortOrders[key] * -1
             },
-            show: function (person) {
+            show: function (user) {
                 // Hide Parents
-                if (person.type == 'Parent')
+                if (user.type == 'Parent')
                     return false;
 
                 // Hide Non Checked-in unless Checked-in checked
-                if (this.xx.show_checked && !person.in)
+                if (this.xx.show_checked && !user.in)
                     return false;
-                // Hide Deleted People unless Deleted checked
-                if (!this.xx.show_inactive && !person.status)
+                // Hide Deleted Users unless Deleted checked
+                if (!this.xx.show_inactive && !user.status)
                     return false;
-                // Hide Deleted People unless Deleted checked + Person Checked-in checked
-                if (this.xx.show_inactive && !person.status && !person.in)
+                // Hide Deleted Users unless Deleted checked + Person Checked-in checked
+                if (this.xx.show_inactive && !user.status && !user.in)
                     return false;
 
                 return true;
@@ -462,28 +462,28 @@
             url: function () {
                 return "url";
             },
-            backgroundImage: function (person) {
+            backgroundImage: function (user) {
                 var str;
-                if (person.in)
-                    str = "background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('" + person.photo + "')";
+                if (user.in)
+                    str = "background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('" + user.photo + "')";
                 else
-                    str = "background-image: url('" + person.photo + "')";
+                    str = "background-image: url('" + user.photo + "')";
 
-                // Set cursor to defaul tfor inactive people to ensure user doesn't think they can click + update
-                if (!person.status)
+                // Set cursor to defaul tfor inactive users to ensure user doesn't think they can click + update
+                if (!user.status)
                     str = str + '; cursor:default';
 
                 return str;
 
             },
-            cellSelect: function (person) {
-                if (person.in)
-                    delAttendanceDB(person).then(function (result) {
+            cellSelect: function (user) {
+                if (user.in)
+                    delAttendanceDB(user).then(function (result) {
                         if (result)
                             this.updateAttendance();
                     }.bind(this));
                 else
-                    addAttendanceDB(person, 'manual').then(function (result) {
+                    addAttendanceDB(user, 'manual').then(function (result) {
                         if (result)
                             this.updateAttendance();
                     }.bind(this));
@@ -499,14 +499,14 @@
         el: '#vue-app',
         data: {xx: xx,},
         created: function () {
-            this.getPeople();
+            this.getUsers();
         },
         methods: {
-            getPeople: function () {
+            getUsers: function () {
                 if (this.xx.instance.id != 0) {
                     this.xx.searching = true;
                     $.getJSON('/data/event/people/' + this.xx.instance.id, function (data) {
-                        this.xx.people = data;
+                        this.xx.users = data;
                         this.xx.searching = false;
                         this.countAttendance();
                         this.xx.date_format = moment(this.xx.date).format("{{ session('df-moment') }}");
@@ -548,33 +548,33 @@
         this.xx.count_female = 0;
         this.xx.count_grades = {'1': 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, "8": 0, "9": 0, '10': 0, 11: 0, 12: 0, Unknown: 0};
         this.xx.count_schools = {Other: 0};
-        this.xx.people.forEach(function (person) {
-            if (person.in) {
+        this.xx.users.forEach(function (user) {
+            if (user.in) {
                 this.xx.count_all++;
-                if (person.type == 'Student' || person.type == 'Student/Volunteer') {
+                if (user.type == 'Student' || user.type == 'Student/Volunteer') {
                     this.xx.count_students++;
                     // Gender
-                    if (person.gender == 'Male')
+                    if (user.gender == 'Male')
                         this.xx.count_male++;
-                    if (person.gender == 'Female')
+                    if (user.gender == 'Female')
                         this.xx.count_female++;
                     // Grade
-                    if (person.grade)
-                        this.xx.count_grades[person.grade]++;
+                    if (user.grade)
+                        this.xx.count_grades[user.grade]++;
                     else
                         this.xx.count_grades['Unknown']++;
 
-                    if (person.school) {
-                        if (person.school in this.xx.count_schools)
-                            this.xx.count_schools[person.school]++;
+                    if (user.school) {
+                        if (user.school in this.xx.count_schools)
+                            this.xx.count_schools[user.school]++;
                         else
-                            this.xx.count_schools[person.school] = 1;
+                            this.xx.count_schools[user.school] = 1;
                     } else
                         this.xx.count_schools['Other']++;
 
                     // School
                 }
-                if (person.type == 'Volunteer' || person.type == 'Student/Volunteer' || person.type == 'Parent/Volunteer')
+                if (user.type == 'Volunteer' || user.type == 'Student/Volunteer' || user.type == 'Parent/Volunteer')
                     this.xx.count_volunteers++;
             }
         });

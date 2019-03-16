@@ -5,9 +5,7 @@ namespace App\Http\Controllers\People;
 use DB;
 use Auth;
 use Validator;
-use App\Models\People\People;
-use App\Models\People\PeopleHistory;
-use App\Models\People\Household;
+use App\User;
 use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,83 +13,19 @@ use Illuminate\Http\Request;
 class ActivityController extends Controller {
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store()
-    {
-        /* {"1": {"after": "Clifton TAS 7000", "field": "Address", "before": "44 Church St"}, "2": {"after": "", "field": "Birthdate", "before": "1973-10-11"}} */
-        if (request()->ajax()) {
-            // Create Household
-            $household = Household::create(request()->all());
-
-            // Add Members
-            if (request('members')) {
-                foreach (request('members') as $member)
-                    DB::table('households_people')->insert(['hid' => $household->id, 'pid' => $member['pid']]);
-            }
-
-            return $household;
-        }
-
-        return abort(404);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update($id)
-    {
-        if (request()->ajax()) {
-            // Update Household
-            $household = Household::findOrFail($id);
-            $household->update(request()->all());
-
-            // Delete Members
-            $member = DB::table('households_people')->where('hid', $id)->delete();
-            //$member->members()->sync(request('members'));
-
-            // Add Members
-            if (request('members')) {
-                foreach (request('members') as $member)
-                    DB::table('households_people')->insert(['hid' => $id, 'pid' => $member['pid']]);
-            } else
-                $household->delete();
-
-            return $household;
-        }
-
-        return abort(404);
-    }
-
-    /**
-     * Delete the specified resource in storage.
-     */
-
-    public function destroy()
-    {
-        if (request()->ajax()) {
-            $deleted = Household::where('id', request('id'))->delete();
-
-            return response()->json(['success', '200']);
-        }
-
-        return abort(404);
-    }
-
-    /**
      * Get Activity (ajax)
      */
     public function getActivity()
     {
-        //$person = People::find(3);
+        //$user = User::find(3);
         //$offset = 0;
-        $person = People::findOrFail(request('pid'));
+        $user = User::findOrFail(request('uid'));
         $offset = request('offset');
 
         $activity = [];
 
         // Attendance
-        foreach ($person->attendance as $attend) {
+        foreach ($user->attendance as $attend) {
             $array = [];
             $array['datetime'] = Timezone::convertFromUTC($attend->instance->start, session('tz'));
             $array['icon'] = "<i class='fa fa-map-marker-alt' style='color: #32c5d2'></i>";
@@ -105,18 +39,25 @@ class ActivityController extends Controller {
         }
 
         // History
-        foreach ($person->history as $history) {
+        foreach ($user->history as $history) {
             $array = [];
             $array['datetime'] = Timezone::convertFromUTC($history->created_at, session('tz'));
             $array['icon'] = ($history->action == 'created') ? "<i class='fa fa-user-plus' style='color:#5867dd'></i>" : "<i class='fa fa-user-edit' style='color:#5867dd'></i>";
-            $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->user->primary->name;
+            $array['title'] = "Profile " . ucfirst($history->action) . " by " . $history->updateByUser->name;
             $array['date'] = $history->created_at->timezone(session('tz'))->format('F jS, Y');
+            $array['data'] = '';
 
             if ($history->data) {
-                $array['data'] = "<h5>".ucwords($history->subtype)."</h5><div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
                 $json = json_decode($history->data);
-                foreach ($json as $obj)
-                    $array['data'] .= "<div class='row' style='padding:5px'><div class='col-3'>$obj->field</div><div class='col-4' style='color: #999'>$obj->before</div><div class='col-4'>$obj->after</div></div>";
+                //dd($json);
+                foreach ($json as $category) {
+                    $array['data'] .= "<h5>".ucwords($category->title)."</h5><div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
+                    foreach ($category->data as $row) {
+                        foreach ($row as $field)
+                            $array['data'] .= "<div class='row' style='padding:5px'><div class='col-3'>$field->field</div><div class='col-4' style='color: #999'>$field->before</div><div class='col-4'>$field->after</div></div>";
+                        $array['data'] .= '<br>';
+                    }
+                }
                 $activity[] = (object) $array;
             }
         }
@@ -133,7 +74,6 @@ class ActivityController extends Controller {
             if ($offset < count($activity))
                 foreach ($activity as $act) {
                     if ($x > $offset && $x <= ($offset + $records)) {
-                        //echo "x:$x offset:$offset<br>";
                         $output .= "
             <div class='m-accordion__item'>
                 <div class='m-accordion__item-head collapsed'  role='tab' id='m_accordion_item_" . $x . "_head' data-toggle='collapse' href='#m_accordion_item_" . $x . "_body' aria-expanded=' false'>
@@ -157,7 +97,6 @@ class ActivityController extends Controller {
                         break;
                 }
 
-            //echo "act:" . count($activity) . "xx:$x<br>";
             if (count($activity) >= $x)
                 $output .= '
             <div id="remove-row">
@@ -167,13 +106,6 @@ class ActivityController extends Controller {
             $output = 'No past activity<br><br><br><br><br><br><br><br>';
         }
 
-        //dd($activity);
         return $output;
     }
-
-    public function show()
-    {
-        //
-    }
-
 }
