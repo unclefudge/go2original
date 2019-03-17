@@ -131,6 +131,27 @@
         @endforeach
     </div>
 
+    <div id="vue-dragableList">
+        <div class="root"></div>
+    </div>
+
+    {{-- list template --}}
+    <script type="text/x-template" id="list-template">
+        <div class="root">
+            <div class="row">
+                <div class="col-3">
+                    <SortableList lockAxis="y" v-model="items">
+                        <SortableItem v-for="(item, index) in items" :index="index" :key="index" :item="item">
+                    </SortableList>
+
+                    <button v-on:click="add()">Add</button>
+                    <button v-on:click="save()">Save Me</button>
+                    <br><br>
+                    <pre>@{{ $data }}</pre>
+                </div>
+            </div>
+        </div>
+    </script>
 @stop
 
 
@@ -141,4 +162,71 @@
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
+<script src="/js/vue.min.js"></script>
+<script src="https://unpkg.com/vue-slicksort@latest/dist/vue-slicksort.min.js"></script>
+<script>
+
+    var { ContainerMixin, ElementMixin, HandleDirective } = window.VueSlicksort;
+    var xx = 'xx';
+    //var xx = {
+    //    items: [{id: 'cat', order: '0', name: 'Cat'}, {id: 'dog', order: '1', name: 'Dog'}, {id: 'cow', order: '2', name: 'Cow'}]
+    //};
+
+    const SortableList = {
+        mixins: [ContainerMixin],
+        template: '<ul class="list-group"> <slot /> </ul>',
+    };
+
+    const SortableItem = {
+        mixins: [ElementMixin],
+        props: ['item', 'index'],
+        //template: "#list-template",  // v-bind:xx.item.order="index"
+        template: `
+                <li v-bind:sortEnd="movedItem()" v-bind:item.order="index" class="list-group-item">
+                   <i class="fa fa-arrows-alt-v" style="color:#bbb; padding-right:20px"></i> @{{item.name}}
+                </li>`,
+        methods: {
+            movedItem: function () {
+                this.item.order = this.index;
+                console.log('moved: [' + this.index + '] ' + this.item.name);
+            }
+        }
+    };
+
+    const DraggableList = {
+        template: '#list-template',
+        components: {
+            SortableItem,
+            SortableList,
+        },
+        data() {
+            return {items: []};
+        },
+        created: function () {
+            this.getList();
+        },
+        methods: {
+            getList: function () {
+                this.items = [{id: 'cat', order: '0', name: 'Cat'}, {id: 'dog', order: '1', name: 'Dog'}, {id: 'cow', order: '2', name: 'Cow'}];
+            },
+            save: function () {
+                this.items.forEach(function (item) {
+                    console.log('Order: ' + item.order + ' Name: ' + item.name);
+                });
+            },
+            add: function () {
+                this.items.push({id: 'new', order: '3', name: 'new'});
+            }
+        }
+    };
+
+    const root = new Vue({
+        el: '#vue-dragableList',
+        data: {xx: xx,},
+        render: function (h) {
+            return h(DraggableList)
+        }
+        //render: (h) => h(DraggableList),
+    });
+</script>
 @stop

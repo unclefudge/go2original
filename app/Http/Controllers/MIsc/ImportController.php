@@ -292,15 +292,6 @@ class ImportController extends Controller {
 
     public function quick()
     {
-        $attends = Attendance::all();
-        echo "attend<br>";
-        foreach ($attends as $attend) {
-            if ($attend->method == 'checkin') {
-                echo "id: $attend->id<br>";
-                $attend->method = 'check-in';
-                $attend->save();
-            }
-        }
 
         /*
                 echo "<h3>Testing timezone out dates</h3>";

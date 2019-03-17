@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/metronic', 'Misc\HomeController@metronic');
     Route::get('/fudge', 'Misc\HomeController@fudge');
     Route::get('/test', function () {return view('test');});
+    Route::get('/test2', function () {return view('test2');});
 
 
     // Protect access the Users photos + thumbs
@@ -60,6 +61,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Schools
     Route::get('/data/schools-by-grade/{grade}', 'People\SchoolController@schoolsByGrade');
+    Route::resource('/school', 'People\SchoolController');
+
+    // Grades
+    Route::get('/data/grades', 'People\GradeController@getGrades');
+    Route::resource('/grade', 'People\GradeController');
 
     // Events
     //Route::get('/data/event/dates/{id}', 'Event\EventController@getDates');
@@ -94,6 +100,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Reports
     Route::any('/report/nightly', 'Misc\ReportController@nightly');
+
+    // Settings
 
 
     Route::get('/group', 'Misc\HomeController@group');

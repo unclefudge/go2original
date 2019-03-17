@@ -13,25 +13,6 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        // Schools
-        Schema::create('schools', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 255)->nullable();
-            $table->string('grade_from', 25)->nullable();
-            $table->string('grade_to', 25)->nullable();
-            $table->tinyInteger('status')->default(1);
-            $table->unsignedInteger('aid')->nullable();
-
-            // Foreign keys
-            $table->foreign('aid')->references('id')->on('accounts')->onDelete('cascade');
-
-            // Modify info
-            $table->unsignedInteger('created_by')->nullable();
-            $table->unsignedInteger('updated_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
 
@@ -207,6 +188,5 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users_notes');
         Schema::dropIfExists('users_medical');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('schools');
     }
 }
