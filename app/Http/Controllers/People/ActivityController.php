@@ -28,14 +28,18 @@ class ActivityController extends Controller {
         // Attendance
         foreach ($user->attendance as $attend) {
             $array = [];
+            $event_name = $attend->event->name;
+            $instance_name = $attend->instance->name;
+            $instance_startLocal =  $attend->instance->startLocal;
+            $attend_time = ($attend->method == 'check-in') ? $attend->inLocal->format('g:i a') : $instance_startLocal->format('g:i a');
             $array['datetime'] = Timezone::convertFromUTC($attend->instance->start, session('tz'));
             $array['icon'] = "<i class='fa fa-map-marker-alt' style='color: #32c5d2'></i>";
-            $array['title'] = "Checked in to " . $attend->instance->event->name;
-            $array['title'] .= ($attend->instance->name && $attend->instance->name != $attend->instance->event->name) ? ' <small> - ' . $attend->instance->name . '</small>' : '';
-            $array['date'] = $attend->instance->start->timezone(session('tz'))->format('F jS, Y');
-            $array['data'] = "<div class='row'><div class='col-3'>Event:</div><div class='col'>" . $attend->instance->name . "</div></div>";
-            $array['data'] .= "<div class='row'><div class='col-3'>Time:</div><div class='col'>" . $attend->instance->start->timezone(session('tz'))->format('g:i a') . "</div></div>";
-            $array['data'] .= "<div class='row'><div class='col-3'>Method:</div><div class='col'>$attend->method</div></div>";
+            $array['title'] = "Checked in to $event_name";
+            $array['title'] .= ($instance_name && $instance_name != $event_name) ? " <small> - $instance_name</small>" : '';
+            $array['date'] = $instance_startLocal->format('F jS, Y');
+            $array['data'] = "<div class='row'><div class='col-3'>Event:</div><div class='col'>$instance_name</div><div class='col-2'><a href='/event/". $attend->event->id."/attendance/".$instance_startLocal->format('Y-m-d')."'><i class='fa fa-external-link-alt activity-event-link pull-right'></i></a></div></div>";
+            $array['data'] .= "<div class='row'><div class='col-3'>Time:</div><div class='col'>$attend_time</div></div>";
+            $array['data'] .= "<div class='row'><div class='col-3'>Method:</div><div class='col'>".ucfirst($attend->method)."</div></div>";
             $activity[] = (object) $array;
         }
 
@@ -55,7 +59,7 @@ class ActivityController extends Controller {
                 $json = json_decode($history->data);
                 //dd($json);
                 foreach ($json as $category) {
-                    $array['data'] .= "<h5>" . ucwords($category->title) . "</h5><div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
+                    $array['data'] .= "<h5 style='font-weight:400'>" . strtoupper($category->title) . "</h5><div class='row' style='padding:5px; border-bottom: 1px solid #ccc; font-size: 14px'><div class='col-3'></div><div class='col-4'>Before</div><div class='col-4'>After</div></div>";
                     foreach ($category->data as $row) {
                         foreach ($row as $field)
                             $array['data'] .= "<div class='row' style='padding:5px'><div class='col-3'>$field->field</div><div class='col-4' style='color: #999'>$field->before</div><div class='col-4'>$field->after</div></div>";

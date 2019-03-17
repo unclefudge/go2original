@@ -298,7 +298,7 @@
                             count_attendance();
                     }.bind(this));
                 } else {
-                    addAttendanceDB(person, 'checkin').then(function (result) {
+                    addAttendanceDB(person, 'check-in').then(function (result) {
                         if (result)
                             count_attendance();
                     }.bind(this));

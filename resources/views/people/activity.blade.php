@@ -38,6 +38,15 @@
         </div>
 
         {{-- Activity --}}
+        <style>
+            .activity-event-link {
+                color: #bbb;
+            }
+
+            .activity-event-link:hover {
+                color: #32c5d2;
+            }
+        </style>
         <div class="col-lg-8">
             <div class="m-portlet">
                 <div class="m-portlet__body">

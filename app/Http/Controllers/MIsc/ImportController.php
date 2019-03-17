@@ -292,24 +292,14 @@ class ImportController extends Controller {
 
     public function quick()
     {
-
-        $household = Household::find(1);
-        $members_before = (object) ['name' => $household->name, 'members' => []];
-        $members_after = (object)  ['name' => $household->name, 'members' => $household->members->sortBy('firstname')->pluck('name')->toArray()];
-
-
-        $data = [];
-        if ($members_after->members != $members_before->members) {
-            $data['Members'] = [];
-            $data['Members']['b'] = '';
-            $data['Members']['a'] = '';
-            foreach ($members_after->members as $member)
-                $data['Members']['a'] .= "$member<br>";
-            foreach ($members_before->members as $member)
-                $data['Members']['b'] .= "$member<br>";
+        $attends = Attendance::all();
+        foreach ($attends as $attend) {
+            if ($attend->method == 'checkin') {
+                $attend->method = 'check-in';
+                $attend->save();
+            }
         }
-        dd($data);
-        dd($members_before);
+
         /*
                 echo "<h3>Testing timezone out dates</h3>";
                 $x = 0;

@@ -91,7 +91,7 @@
                                             <a href="/checkin/{{ $event->id }}" class="btn btn-accent m-btn btn-block"><i class="fa fa-sign-in-alt"></i> &nbsp; Check-In</a>
                                         </div>--}}
                                     @else
-                                        <div class="col-12 text-center" style="padding: 10px">Unable to checkin on inactive events</div>
+                                        <div class="col-12 text-center" style="padding: 10px">Unable to check-in on inactive events</div>
                                     @endif
 
                                 </div>

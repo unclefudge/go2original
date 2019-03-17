@@ -117,7 +117,7 @@ class User extends Authenticatable
     /**
      * Check person into EventInstance
      */
-    public function checkin($instance, $method = 'checkin')
+    public function checkin($instance, $method = 'check-in')
     {
         $attend = Attendance::create([
             'eid'    => $instance->id,

@@ -14,16 +14,6 @@ class Attendance extends Model {
     protected $dates = ['in', 'out'];
 
     /**
-     * A Attendance belongs to a EventInstance
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function instance()
-    {
-        return $this->belongsTo('App\Models\Event\EventInstance', 'eid');
-    }
-
-    /**
      * A Attendance belongs to a User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -33,6 +23,15 @@ class Attendance extends Model {
         return $this->belongsTo('App\User', 'uid');
     }
 
+    /**
+     * A Attendance belongs to a EventInstance
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function instance()
+    {
+        return $this->belongsTo('App\Models\Event\EventInstance', 'eid');
+    }
 
     /**
      * Set date to UTC format for Timezone localization
@@ -54,6 +53,15 @@ class Attendance extends Model {
     {
         return $this->in->timezone(session('tz'));
     }
+
+    /**
+     * Get Event instance belongs to
+     */
+    public function getEventAttribute()
+    {
+        return $this->instance->event;
+    }
+
 
     /**
      * Display records last update_by + date
