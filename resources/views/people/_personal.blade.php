@@ -233,7 +233,7 @@
                             <br><h6>Student Details</h6>
                         </div>
                         {{-- Grade --}}
-                        <div class="col-lg-3 col-md-3">
+                        <div class="col-lg-3 col-md-4">
                             <div class="form-group {!! fieldHasError('grade_id', $errors) !!}">
                                 {!! Form::label('grade_id', 'Grade', ['class' => 'control-label']) !!}
                                 {!! Form::select('grade_id', $user->account->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
@@ -241,7 +241,7 @@
                             </div>
                         </div>
                         {{-- School --}}
-                        <div class="col-lg-5 col-md-9">
+                        <div class="col-lg-5 col-md-8">
                             <div class="form-group">
                                 <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
                                 <select name="school_id" class="form-control select2" id="school_id">

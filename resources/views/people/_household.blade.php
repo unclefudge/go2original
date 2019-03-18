@@ -45,7 +45,7 @@
                                     <div>
                                         {!! ($member->dob) ? "<span style='color:#999'>$member->age years </span>" : '' !!}
                                         {!! ($member->dob && $member->grade) ? "<span style='color:#999'> - </span>" : '' !!}
-                                        {!! ($member->grade) ? "<span style='color:#999'> Grade $member->grade</span>" : '' !!}
+                                        {!! ($member->grade_id) ? "<span style='color:#999'> $member->grade_name</span>" : '' !!}
                                     </div>
                                 </td>
                             </tr>
