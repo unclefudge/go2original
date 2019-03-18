@@ -37,7 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('country', 100)->nullable();
 
             // Additional fields
-            $table->string('grade', 100)->nullable();
+            $table->unsignedInteger('grade_id')->nullable();
             $table->unsignedInteger('school_id')->nullable();
             $table->dateTime('media_consent')->nullable();
             $table->unsignedInteger('media_consent_by')->nullable();
@@ -64,6 +64,7 @@ class CreateUsersTable extends Migration
 
             // Foreign keys
             $table->foreign('aid')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('grade_id')->references('id')->on('grades');
             $table->foreign('school_id')->references('id')->on('schools');
 
             // Modify info
