@@ -292,20 +292,6 @@ class ImportController extends Controller {
 
     public function quick()
     {
-        echo "<h3>updating student grades</h3>";
-
-        $users = User::all();
-        foreach ($users as $user) {
-            if ($user->grade_id) {
-                $old = $user->grade_id;
-                if ($user->grade_id > 12)
-                    $user->grade_id = 15;
-                else
-                    $user->grade_id = $user->grade_id + 2;
-                echo "$old => $user->grade_id<br>";
-                $user->save();
-            }
-        }
 
         /*
                 echo "<h3>Testing timezone out dates</h3>";
