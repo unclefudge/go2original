@@ -34,6 +34,16 @@ class Account extends Model
     }
 
     /**
+     * A Account has many Grades
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function grades()
+    {
+        return $this->hasMany('App\Models\People\Grade', 'aid');
+    }
+
+    /**
      * A dropdown list of schools for this account
      *
      * @return array
@@ -50,9 +60,31 @@ class Account extends Model
         if ($prompt == 'all')
             return ($prompt && count($array) > 1) ? $array = array('' => 'All Schools') + $array : $array;
         if ($prompt == 'ALL')
-            return ($prompt && count($array) > 1) ? $array = array('all' => 'All School') + $array : $array;
+            return ($prompt && count($array) > 1) ? $array = array('all' => 'All Schools') + $array : $array;
 
         return ($prompt && count($array) > 1) ? $array = array('' => 'Select School') + $array : $array;
+    }
+
+    /**
+     * A dropdown list of grades for this account
+     *
+     * @return array
+     */
+    public function gradesSelect($prompt = '', $status = 1)
+    {
+        $array = [];
+        foreach ($this->grades as $grade)
+            if ($grade->status == $status)
+                $array[$grade->id] =  $grade->name;
+
+        asort($array);
+
+        if ($prompt == 'all')
+            return ($prompt && count($array) > 1) ? $array = array('' => 'All Grades') + $array : $array;
+        if ($prompt == 'ALL')
+            return ($prompt && count($array) > 1) ? $array = array('all' => 'All Grades') + $array : $array;
+
+        return ($prompt && count($array) > 1) ? $array = array('' => 'Select Grade') + $array : $array;
     }
 
 

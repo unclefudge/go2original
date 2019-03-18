@@ -56,7 +56,7 @@
                     </div>
                     <div class="row">
                         <div class="col-1"><i class="fa fa-apple-alt"></i></div>
-                        <div class="col">{!! ($user->grade) ? "Grade $user->grade" : '-' !!}<br>{!! $user->school_name !!}</div>
+                        <div class="col">{!! ($user->grade_id) ? "$user->grade_name" : '-' !!}<br>{!! $user->school_name !!}</div>
                     </div>
                 </div>
 

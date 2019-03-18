@@ -2,6 +2,7 @@
 
 namespace App\Models\People;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Grade extends Model
@@ -18,6 +19,25 @@ class Grade extends Model
     {
         return $this->belongsTo('App\Models\Account\Account', 'aid');
     }
+
+    /**
+     * A Grade has many Students
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function students()
+    {
+        return $this->hasMany('App\User', 'uid');
+    }
+
+    /**
+     * Number of Students in this grade (getter)
+     */
+    /*
+    public function getCountAttribute()
+    {
+        return User::where('grade', $this->name)->count();
+    }*/
 
     /**
      * The "booting" method of the model.

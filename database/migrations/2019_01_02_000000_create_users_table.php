@@ -37,7 +37,7 @@ class CreateUsersTable extends Migration
             $table->string('country', 100)->nullable();
 
             // Additional fields
-            $table->string('grade', 25)->nullable();
+            $table->string('grade', 100)->nullable();
             $table->unsignedInteger('school_id')->nullable();
             $table->dateTime('media_consent')->nullable();
             $table->unsignedInteger('media_consent_by')->nullable();

@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Grades
     Route::get('/data/grades', 'People\GradeController@getGrades');
-    Route::resource('/grade', 'People\GradeController');
+    Route::resource('/grades', 'People\GradeController');
 
     // Events
     //Route::get('/data/event/dates/{id}', 'Event\EventController@getDates');

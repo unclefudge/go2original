@@ -59,7 +59,7 @@ function updateAttendanceDB(user) {
             success: function (result) {
                 delete user._method;
                 //console.log('DB updated user:[' + user.eid + '] ' + user.name);
-                resolve(task);
+                resolve(user);
             },
             error: function (result) {
                 alert("failed updating attendance " + user.name + '. Please refresh the page to resync attendance');

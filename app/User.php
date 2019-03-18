@@ -23,7 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'firstname', 'lastname', 'type', 'email', 'phone', 'gender', 'dob', 'instagram',
         'address', 'address2', 'suburb', 'state', 'postcode', 'country',
-        'grade', 'school_id', 'media_consent', 'media_consent_by', 'media_consent_at', 'photo',
+        'grade_id', 'school_id', 'media_consent', 'media_consent_by', 'media_consent_at', 'photo',
         'wwc_no', 'wwc_exp', 'wwc_verified', 'wwc_verified_by', 'notes', 'minhub', 'status', 'aid',
         'login', 'username', 'password', 'password_reset', 'email_verified_at', 'last_ip', 'last_login', 'created_by', 'updated_by'];
     protected $dates = ['dob', 'wwc_exp', 'wwc_verified', 'media_consent_at', 'last_login'];
@@ -42,6 +42,16 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Account\Account', 'aid');
     }
 
+
+    /**
+     * A User May belongs to a grade
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function grade()
+    {
+        return $this->belongsTo('App\Models\People\Grade', 'grade_id');
+    }
 
     /**
      * A User May belongs to a school
@@ -210,6 +220,16 @@ class User extends Authenticatable
     public function getSchoolNameAttribute()
     {
         return ($this->attributes['school_id']) ? $this->school->name : '';
+    }
+
+    /**
+     * Get the Grade name  (getter)
+     *
+     * @return string;
+     */
+    public function getGradeNameAttribute()
+    {
+        return ($this->attributes['grade_id']) ? $this->grade->name : '';
     }
 
     /**
