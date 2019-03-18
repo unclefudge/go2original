@@ -165,10 +165,10 @@
                             </div>
                             {{-- Grade --}}
                             <div class="col-md-4">
-                                <div class="form-group {!! fieldHasError('grade', $errors) !!}">
-                                    {!! Form::label('grade', 'Grade', ['class' => 'control-label']) !!}
-                                    {!! Form::select('grade', ['' => 'Select grade', '5' => 'Grade 5', '6' => 'Grade 6', '7' => 'Grade 7', '8' => 'Grade 8', '9' => 'Grade 9', '10' => 'Grade 10', '11' => 'Grade 11', '12' => 'Grade 12'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
-                                    {!! fieldErrorMessage('grade', $errors) !!}
+                                <div class="form-group {!! fieldHasError('grade_id', $errors) !!}">
+                                    {!! Form::label('grade_id', 'Grade', ['class' => 'control-label']) !!}
+                                    {!! Form::select('grade_id', Auth::user()->account->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                    {!! fieldErrorMessage('grade_id', $errors) !!}
                                 </div>
                             </div>
                             {{-- School --}}
@@ -334,11 +334,11 @@
 
         // Dynamic School dropdown from Grade
         $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
-        var grade = $("#grade").val();
+        var gid = $("#grade_id").val();
         var school = "{{ old('school_id', '') }}"; //"$("#school_id").val();
-        if (grade) {
+        if (gid) {
             $.ajax({
-                url: '/data/schools-by-grade/' + grade,
+                url: '/data/schools-by-grade/' + gid,
                 type: "GET",
                 dataType: "json",
                 beforeSend: function () {
@@ -383,7 +383,7 @@
         }
     }
 
-    $("#grade").change(function () {
+    $("#grade_id").change(function () {
         display_fields();
     });
 

@@ -67,13 +67,13 @@ class SchoolController extends Controller {
     /**
      * List of Schools by Grade (ajax)
      */
-    public function schoolsByGrade($grade)
+    public function schoolsByGrade($gid)
     {
         $list = [];
         $schools = School::where('aid', session('aid'))->orderBy('name')->get();
         if ($schools) {
             foreach ($schools as $school) {
-                if ($school->grade_from <= $grade && $school->grade_to >= $grade)
+                if ($school->grades->where('id', $gid)->first())
                     $list[$school->id] = $school->name;
             }
         }

@@ -105,7 +105,7 @@ class PeopleController extends Controller {
                 $user_request['media_consent_at'] = $user_request['media_consent_by'] = null;
 
         } else {
-            $user_request['grade'] = $user_request['school_id'] = null;
+            $user_request['grade_id'] = $user_request['school_id'] = null;
             $user_request['media_consent'] = $user_request['media_consent_by'] = null;
         }
 
@@ -163,7 +163,7 @@ class PeopleController extends Controller {
 
             }
         } else {
-            $user_request['grade'] = $user_request['school_id'] = null;
+            $user_request['grade_id'] = $user_request['school_id'] = null;
             $user_request['media_consent_at'] = $user_request['media_consent_by'] = null;
         }
 
@@ -379,11 +379,12 @@ class PeopleController extends Controller {
         //dd($types);
         $users = User::select([
             'users.id', 'users.type', 'users.firstname', 'users.lastname', 'users.phone', 'users.email', 'users.address', 'users.suburb', 'users.state', 'users.postcode',
-            'users.grade', 'users.school_id', 'users.media_consent', 'users.wwc_no', 'users.wwc_verified', 'users.status', 'users.aid',
-            'schools.id As sid', 'schools.name AS school_name',
+            'users.grade_id', 'users.school_id', 'users.media_consent', 'users.wwc_no', 'users.wwc_verified', 'users.status', 'users.aid',
+            'schools.id As sid', 'schools.name AS school_name', 'grades.id AS gid', 'grades.name AS grade_name',
             DB::raw('CONCAT(users.firstname, " ", users.lastname) AS full_name'),
             DB::raw('DATE_FORMAT(users.wwc_exp, "%b %Y") AS wwc_exp2')])
             ->leftJoin('schools', 'users.school_id', '=', 'schools.id')
+            ->leftJoin('grades', 'users.grade_id', '=', 'grades.id')
             ->whereIn('users.type', $types)
             ->where('users.aid', session('aid'))
             ->whereIn('users.status', $status);

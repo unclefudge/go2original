@@ -266,28 +266,28 @@ class EventController extends Controller {
      */
     public function getPeople($id)
     {
-        $people = User::where('aid', session('aid'))->orderBy('firstname')->get();
+        $users = User::where('aid', session('aid'))->orderBy('firstname')->get();
         $instance = EventInstance::find($id);
         $people_array = [];
-        foreach ($people as $person) {
+        foreach ($users as $user) {
             $checked_in = $method = null;
-            $attended = Attendance::where('eid', $instance->id)->where('uid', $person->id)->first();
+            $attended = Attendance::where('eid', $instance->id)->where('uid', $user->id)->first();
             $new = 0;
             if ($instance && $attended) {
                 $checked_in = Timezone::convertFromUTC($attended->in, session('tz')); // Need to convert to local tz due to front-end moment.js
                 $method = $attended->method;
-                $new = ($person->firstEvent()->start_local->isSameDay($instance->start_local)) ? 1 : 0;
+                $new = ($user->firstEvent()->start_local->isSameDay($instance->start_local)) ? 1 : 0;
             }
             $people_array[] = [
-                'uid'    => $person->id,
+                'uid'    => $user->id,
                 'in'     => $checked_in,
-                'name'   => $person->name,
-                'type'   => $person->type,
-                'gender' => $person->gender,
-                'grade'  => $person->grade,
-                'school' => $person->school_name,
-                'photo'  => $person->photo_path,
-                'status' => $person->status,
+                'name'   => $user->name,
+                'type'   => $user->type,
+                'gender' => $user->gender,
+                'grade'  => $user->grade_name,
+                'school' => $user->school_name,
+                'photo'  => $user->photo_path,
+                'status' => $user->status,
                 'new'    => $new,
                 'method' => $method,
                 'eid'    => $instance->id

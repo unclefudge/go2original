@@ -60,7 +60,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/activity', 'People\ActivityController');
 
     // Schools
-    Route::get('/data/schools-by-grade/{grade}', 'People\SchoolController@schoolsByGrade');
+    Route::get('/data/schools-by-grade/{gid}', 'People\SchoolController@schoolsByGrade');
     Route::resource('/school', 'People\SchoolController');
 
     // Grades

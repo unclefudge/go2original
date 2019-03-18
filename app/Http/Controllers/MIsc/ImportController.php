@@ -31,7 +31,7 @@ class ImportController extends Controller {
         //$account = \App\Models\Account\Account::create(['name' => 'Young Life Hobart', 'slug' => 'yl'])->first();
         $school = School::where('name', 'Other')->first();
         if (!$school)
-            $other_school = School::create(['name' => 'Other', 'grade_from' => 1, 'grade_to' => 12]);
+            $other_school = School::create(['name' => 'Other']);
 
         $row = 0;
         if (($handle = fopen(public_path("students.csv"), "r")) !== false) {
@@ -58,15 +58,27 @@ class ImportController extends Controller {
 
                 echo "<br>$minhub -  $firstname - $lastname - $dob - $gender - $phone - $email - $school_name - $grade - $status<br>";
 
-                $school = School::where('name', $school_name)->first();
+                // Get school else create
+                $school = School::where('name', $school_name)->where('aid', session('aid'))->first();
                 if (!$school)
-                    $school = School::create(['name' => $school_name, 'grade_from' => 1, 'grade_to' => 12])->first();
+                    $school = School::create(['name' => $school_name])->first();
+
+                // Get grade else create
+                $grade = Grade::where('name', "Grade $grade")->where('aid', session('aid'))->first();
+                if (!$grade)
+                    $grade = Grade::create(['name' => "Grade $grade"]);
+
+                // Add grade to school if not already
+                $exists = $school->grades->where('id', $grade->id)->first();
+                if (!$exists)
+                    DB::table('schools_grades')->insert([
+                        'sid', $school->id, 'gid' => $grade->id, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
 
                 $user = User::where('firstname', $firstname)->where('lastname', $lastname)->first();
                 if (!$user) {
                     $user = User::create(
                         ['firstname' => $firstname, 'lastname' => $lastname, 'dob' => $dob, 'gender' => $gender, 'email' => $email,
-                         'school_id' => $school->id, 'grade' => $grade, 'status' => $status, 'minhub' => $minhub, 'type' => 'Student']);
+                         'school_id' => $school->id, 'grade' => $grade->id, 'status' => $status, 'minhub' => $minhub, 'type' => 'Student']);
                 }
             }
             fclose($handle);
@@ -247,7 +259,7 @@ class ImportController extends Controller {
                 $bg = ($user->status) ? '#eee' : '#aaa';
                 $bg2 = ($house) ? '#FFFF00' : $bg;
                 echo "<tr style='background: $bg'><td style='text-align:center; background: $bg2'>$house</td><td>$user->lastname</td><td><a href='/people/$user->id' target='_blank'>$user->firstname</a></td>
-            <td>$user->type</td><td>$user->grade</td><td>$user->address, $user->suburb $user->postcode</td></tr>";
+            <td>$user->type</td><td>$user->grade_name</td><td>$user->address, $user->suburb $user->postcode</td></tr>";
             }
         }
         echo "</table>";
@@ -292,7 +304,19 @@ class ImportController extends Controller {
 
     public function quick()
     {
+        /*
+        echo "<h3>Adding grades to schools<h3>";
+        foreach (School::all() as $school) {
+            // Add grade to school if not already
+            if ($school->id != 1) {
+                for ($x=)
+                $exists = $school->grades->where('id', $grade->id)->first();
+                if (!$exists)
+                    DB::table('schools_grades')->insert([
+                        'sid', $school->id, 'gid' => $grade->id, 'created_by' => Auth::user()->id, 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
 
+            }
+        }*/
         /*
                 echo "<h3>Testing timezone out dates</h3>";
                 $x = 0;

@@ -237,6 +237,7 @@ class User extends Authenticatable
      *
      * @return string;
      */
+    /*
     public function getGradeOrdinalAttribute()
     {
         $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
@@ -248,7 +249,7 @@ class User extends Authenticatable
         }
 
         return $this->grade;
-    }
+    }*/
 
     /**
      * Get Photo Path (getter)

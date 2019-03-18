@@ -233,7 +233,7 @@
             {data: 'phone', name: 'users.phone', orderable: false},
             {data: 'email', name: 'users.email', orderable: false},
             {data: 'address', name: 'users.address', orderable: false},
-            {data: 'grade', name: 'users.grade', orderable: true},
+            {data: 'grade_name', name: 'grades.name', orderable: true},
             {data: 'school_name', name: 'schools.name', orderable: true},
             {data: 'media_consent', name: 'users.media_consent', orderable: true},
             {data: 'wwc_exp2', name: 'users.wwc_exp', visible: false, orderable: true},
@@ -422,11 +422,11 @@
 
             // Dynamic School dropdown from Grade
             $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
-            var grade = $("#grade").val();
+            var gid = $("#grade_id").val();
             var school = $("#school_id").val();
-            if (grade) {
+            if (gid) {
                 $.ajax({
-                    url: '/data/schools-by-grade/' + grade,
+                    url: '/data/schools-by-grade/' + gid,
                     type: "GET",
                     dataType: "json",
                     beforeSend: function () {
@@ -473,7 +473,7 @@
         }
 
         $("#type").change(function () {display_fields();});
-        $("#grade").change(function () {display_fields();});
+        $("#grade_id").change(function () {display_fields();});
 
         // DOB
         $("#dob").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});

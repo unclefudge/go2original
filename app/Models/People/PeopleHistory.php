@@ -92,10 +92,11 @@ class PeopleHistory extends Model {
             // Student
             //
             $data = [];
-            $student = ['grade', 'school_id', 'media_consent'];
+            $student = ['grade_id', 'school_id', 'media_consent'];
             foreach ($student as $key) {
                 if ($a[$key] != $b[$key]) {
                     $KEY = ucfirst($key);
+                    if ($key == 'grade_id') $KEY = 'Grade';
                     if ($key == 'school_id') $KEY = 'School';
                     if ($key == 'media_consent') $KEY = 'Media Consent';
 
@@ -104,9 +105,9 @@ class PeopleHistory extends Model {
                     if ($key == 'school_id') {
                         $data[$KEY]['a'] = ($a->school_id) ? $a->school->name : '';
                         $data[$KEY]['b'] = ($b->school_id) ? $b->school->name : '';
-                    } elseif ($key == 'grade') {
-                        $data[$KEY]['a'] = ($a->grade) ? $a->grade_ordinal : '';
-                        $data[$KEY]['b'] = ($b->grade) ? $b->grade_ordinal : '';
+                    } elseif ($key == 'grade_id') {
+                        $data[$KEY]['a'] = ($a->grade_id) ? $a->grade->name : '';
+                        $data[$KEY]['b'] = ($b->grade_id) ? $b->grade->name : '';
                     } elseif ($key == 'media_consent') {
                         $data[$KEY]['a'] = ($a->media_consent) ? "$a->media_consent<br>" . $a->media_consent_at->format(session('df')) . "<br>By " . $a->mediaConsentByUser->name : '';
                         $data[$KEY]['b'] = ($b->media_consent) ? "$b->media_consent<br>" . $b->media_consent_at->format(session('df')) . "<br>By " . $b->mediaConsentByUser->name : '';

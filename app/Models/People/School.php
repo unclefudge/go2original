@@ -20,6 +20,16 @@ class School extends Model
     }
 
     /**
+     * A School has many grades.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function grades()
+    {
+        return $this->belongsToMany('App\Models\People\Grade', 'schools_grades', 'sid', 'gid');
+    }
+
+    /**
      * The "booting" method of the model.
      *
      * Overrides parent function

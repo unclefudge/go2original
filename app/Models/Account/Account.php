@@ -75,16 +75,22 @@ class Account extends Model
         $array = [];
         foreach ($this->grades as $grade)
             if ($grade->status == $status)
-                $array[$grade->id] =  $grade->name;
+                $array[$grade->id] =  "$grade->order:$grade->name";
 
-        asort($array);
+        // Sort array by the Sort Order field we added to front o string, Once sorted remove it
+        asort($array, SORT_NUMERIC);
+        $sorted_array = [];
+        foreach ($array as $key => $value) {
+            $split = explode(':', $value, 2);
+            $sorted_array[$key] = $split[1];
+        }
 
         if ($prompt == 'all')
-            return ($prompt && count($array) > 1) ? $array = array('' => 'All Grades') + $array : $array;
+            return ($prompt && count($sorted_array) > 1) ? $sorted_array = array('' => 'All Grades') + $sorted_array : $sorted_array;
         if ($prompt == 'ALL')
-            return ($prompt && count($array) > 1) ? $array = array('all' => 'All Grades') + $array : $array;
+            return ($prompt && count($sorted_array) > 1) ? $sorted_array = array('all' => 'All Grades') + $sorted_array : $sorted_array;
 
-        return ($prompt && count($array) > 1) ? $array = array('' => 'Select Grade') + $array : $array;
+        return ($prompt && count($array) > 1) ? $sorted_array = array('' => 'Select Grade') + $sorted_array : $sorted_array;
     }
 
 

@@ -37,7 +37,7 @@ class ReportController extends Controller {
 
                     if ($attend_count < 5) {
                         echo "<tr style='background:#ccc'><td><a href='/people/$user->id' target='_blank'>$user->firstname $user->lastname</a></td>";
-                        echo "<td>$attend_count</td><td>$attend_last</td><td>$user->grade<td>$user->address, $user->suburb, $user->state</td></tr>";
+                        echo "<td>$attend_count</td><td>$attend_last</td><td>$user->grade_name<td>$user->address, $user->suburb, $user->state</td></tr>";
                     }
                 }
             }

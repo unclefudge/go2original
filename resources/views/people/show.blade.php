@@ -60,11 +60,11 @@
 
         // Dynamic School dropdown from Grade
         $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
-        var grade = $("#grade").val();
+        var gid = $("#grade_id").val();
         var school = $("#school_id").val();
-        if (grade) {
+        if (gid) {
             $.ajax({
-                url: '/data/schools-by-grade/' + grade,
+                url: '/data/schools-by-grade/' + gid,
                 type: "GET",
                 dataType: "json",
                 beforeSend: function () {
@@ -124,7 +124,7 @@
         display_fields();
     });
 
-    $("#grade").change(function () {
+    $("#grade_id").change(function () {
         display_fields();
     });
 

@@ -229,15 +229,15 @@
                 <div id="fields_student">
                     <hr>
                     <div class="row">
-                        <div class="col-lg-3 col-md-12">
+                        <div class="col-lg-2 col-md-12">
                             <br><h6>Student Details</h6>
                         </div>
                         {{-- Grade --}}
-                        <div class="col-lg-2 col-md-3">
-                            <div class="form-group {!! fieldHasError('grade', $errors) !!}">
-                                {!! Form::label('grade', 'Grade', ['class' => 'control-label']) !!}
-                                {!! Form::select('grade', ['' => 'Grade', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10', '11' => '11', '12' => '12', 'Young Adult' => 'Young Adult'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
-                                {!! fieldErrorMessage('grade', $errors) !!}
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group {!! fieldHasError('grade_id', $errors) !!}">
+                                {!! Form::label('grade_id', 'Grade', ['class' => 'control-label']) !!}
+                                {!! Form::select('grade_id', $user->account->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! fieldErrorMessage('grade_id', $errors) !!}
                             </div>
                         </div>
                         {{-- School --}}
