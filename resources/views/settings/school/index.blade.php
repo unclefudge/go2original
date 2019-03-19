@@ -6,7 +6,7 @@
             color: #aaa;
             cursor: pointer;
             float: right;
-            padding-left: 10px;
+            padding-left: 15px;
         }
 
         .item-edit:hover {
@@ -18,7 +18,7 @@
             color: #aaa;
             cursor: pointer;
             float: right;
-            padding-left: 10px;
+            padding-left: 15px;
         }
 
         .item-del:hover {
