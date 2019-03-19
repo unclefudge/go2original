@@ -60,7 +60,7 @@
                         <div class="col">
                             {{-- Schools --}}
                             <div class="row" style="padding: 5px">
-                                <div class="col-lg-6 col-md-9">
+                                <div class="col-xl-6 col-lg-8 col-md-10">
                                     <school-list :data="xx.users" :columns="xx.columns" :filter-key="xx.searchQuery"></school-list>
                                 </div>
                             </div>
