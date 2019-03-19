@@ -91,7 +91,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                     <div class="alert m-alert m-alert--default" role="alert">
                         A list of school grades to be used by your students.<br><br>
                         Simply drag them into the correct order of school progression.<br><br>
-                        You can delete any grades you don't use or add additional ones.
+                        You can hide or delete any grades you don't use or add additional ones.
                     </div>
                     <div class="input-group" style="padding-bottom: 20px">
                         <input v-model="xx.addItem" type="text" class="form-control form-control m-input" placeholder="Add new grade">
@@ -127,10 +127,12 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
 
     {{-- Items template --}}
     <script type="text/x-template" id="item-template">
-        <li v-bind:sortEnd="movedItem()" v-bind:item.order="index" class="list-group-item">
+        <li v-bind:sortEnd="movedItem()" v-bind:item.order="index" class="list-group-item" :style="itemStyle(item)">
             <i class="fa fa-arrows-alt-v" style="color:#bbb; padding-right:20px"></i> @{{item.name}}
             <i v-on:click="delItem(item)" class="fa fa-trash-alt item-del" style=""></i>
-            <i v-on:click="editItem(item)" class="fa fa-edit item-edit" style=""></i>
+            <i v-if="item.status == 0" v-on:click="showItem(item)" class="fa fa-eye-slash item-edit" style=""></i>
+            <i v-if="item.status == 1" v-on:click="hideItem(item)" class="fa fa-eye item-edit" style=""></i>
+            <i v-if="item.status == 1" v-on:click="editItem(item)" class="fa fa-edit item-edit" style=""></i>
         </li>
     </script>
 
@@ -211,13 +213,19 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                 //console.log('moved: [' + this.index + '] ' + this.item.name);
             },
             editItem: function (item) {
-                console.log('edit id:' + item.id + ' name:' + item.name);
+                //console.log('edit id:' + item.id + ' name:' + item.name);
                 $('#grade_name').val(item.name);
                 $('#grade_id').val(item.id);
                 $('#modal_edit_grade').modal('show');
             },
+            showItem: function (item) {
+                item.status = 1;
+            },
+            hideItem: function (item) {
+                item.status = 0;
+            },
             delItem: function (item) {
-                console.log('delete id:' + item.id + ' name:' + item.name);
+                //console.log('delete id:' + item.id + ' name:' + item.name);
                 if (item.count > 0) {
                     swal({
                         title: "Are you sure?",
@@ -245,6 +253,14 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
 
                 //alert(item.name);
             },
+            itemStyle: function (item) {
+                //console.log(item.name);
+                var style;
+                if (item.status == 0)
+                    style =  "opacity: .5"
+
+                return style;
+            }
         }
     };
 
@@ -268,9 +284,6 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                 }.bind(this));
             },
             save: function () {
-                this.xx.items.forEach(function (item) {
-                    console.log('Order: ' + item.order + ' Name: ' + item.name);
-                });
                 $('#saveList1').html('Saving');
                 $('#saveList1').addClass('m-loader m-loader--light m-loader--right');
 

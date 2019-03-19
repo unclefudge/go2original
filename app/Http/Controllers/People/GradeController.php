@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\People;
 
+use App\User;
 use App\Models\Account\Account;
 use App\Models\People\Grade;
 use App\Models\People\School;
@@ -45,12 +46,10 @@ class GradeController extends Controller {
                         $grade = Grade::create(['name' => $obj->name, 'order' => $obj->order]);
                     else {
                         $grade = Grade::findOrFail($obj->id);
-                        if ($grade->name != $obj->name) {
+                        if ($grade->name != $obj->name || $grade->order != $obj->order || $grade->status != $obj->status) {
                             $grade->name = $obj->name;
-                            $grade->save();
-                        }
-                        if ($grade->order != $obj->order) {
                             $grade->order = $obj->order;
+                            $grade->status = $obj->status;
                             $grade->save();
                         }
                     }
@@ -58,22 +57,21 @@ class GradeController extends Controller {
                 }
             }
 
-            // Delete (make inactive) any grades not passed to update
-            $account = Account::find($aid);
+            // Delete any grades not passed to update
+            $account = Account::findOrFail($aid);
             foreach ($account->grades as $grade) {
-                if ($grade->status && !in_array($grade->id, $grade_ids)) {
-                    $grade->status = 0;
-                    $grade->save();
-
+                if (!in_array($grade->id, $grade_ids)) {
                     // Clear the grade field for any Students in this grade
-                    /*
-                    $students = User::where('aid', session('aid'))->where('grade', $grade->name)->get();
+                    $students = User::where('aid', session('aid'))->where('grade_id', $grade->id)->get();
                     if ($students) {
                         foreach ($students as $student) {
-                            $student->grade = null;
+                            $student->grade_id = null;
                             $student->save();
                         }
-                    }*/
+                    }
+
+                    // Delete grade
+                    $grade->delete();
                 }
             }
         }
@@ -109,7 +107,7 @@ class GradeController extends Controller {
     public function getGrades()
     {
         $list = [];
-        $grades = Grade::where('aid', session('aid'))->where('status', 1)->orderBy('order')->get();
+        $grades = Grade::where('aid', session('aid'))->orderBy('order')->get();
         if ($grades) {
             foreach ($grades as $grade) {
                 $list[] = [

@@ -35,7 +35,6 @@ class CreateSchoolsTable extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100)->nullable();
-            $table->string('key', 50)->nullable();
             $table->tinyInteger('order')->nullable;
             $table->text('notes')->nullable();
             $table->tinyInteger('status')->default(1);

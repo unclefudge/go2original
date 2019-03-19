@@ -27,7 +27,7 @@ class Grade extends Model
      */
     public function students()
     {
-        return $this->hasMany('App\User', 'uid');
+        return $this->hasMany('App\User', 'grade_id');
     }
 
     /**

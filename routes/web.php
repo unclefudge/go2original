@@ -59,13 +59,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/data/activity', 'People\ActivityController@getActivity');
     Route::resource('/activity', 'People\ActivityController');
 
+    // Grades
+    Route::get('/data/grades', 'People\GradeController@getGrades');
+    Route::resource('/school/grades', 'People\GradeController');
+    
     // Schools
     Route::get('/data/schools-by-grade/{gid}', 'People\SchoolController@schoolsByGrade');
     Route::resource('/school', 'People\SchoolController');
-
-    // Grades
-    Route::get('/data/grades', 'People\GradeController@getGrades');
-    Route::resource('/grades', 'People\GradeController');
 
     // Events
     //Route::get('/data/event/dates/{id}', 'Event\EventController@getDates');
