@@ -10,8 +10,21 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
         <div class="col-lg-8">
             <div class="m-portlet">
                 <div class="m-portlet__body">
-                    <div class="row" style="padding-bottom: 10px">
-                        <div class="col-12"><h4>Grades</h4></div>
+                    <div class="row">
+                        <div class="col" style="padding-right: 0px">
+                            <ul class="nav nav-tabs m-tabs-line m-tabs-line--primary m-tabs-line--2x">
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="/settings/schools" role="tab" aria-selected="true" id="type_schools">
+                                        <i class="fa fa-graduation-cap"></i> Schools
+                                    </a>
+                                </li>
+                                <li class="nav-item m-tabs__item">
+                                    <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#" role="tab" aria-selected="true" id="type_grades">
+                                        <i class="fa fa-book"></i> Grades
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col">
@@ -56,7 +69,6 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
             </div>
         </div>
     </div>
-
 
     <style>
         .item-edit {
@@ -119,7 +131,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                 </div>
             </div>
 
-            <!--<br><br>
+            <br><br>
             <pre>@{{ $data }}</pre>
             -->
         </div>
@@ -128,15 +140,27 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
     {{-- Items template --}}
     <script type="text/x-template" id="item-template">
         <li v-bind:sortEnd="movedItem()" v-bind:item.order="index" class="list-group-item" :style="itemStyle(item)">
-            <i class="fa fa-arrows-alt-v" style="color:#bbb; padding-right:20px"></i> @{{item.name}}
-            <i v-on:click="delItem(item)" class="fa fa-trash-alt item-del" style=""></i>
-            <i v-if="item.status == 0" v-on:click="showItem(item)" class="fa fa-eye-slash item-edit" style=""></i>
-            <i v-if="item.status == 1" v-on:click="hideItem(item)" class="fa fa-eye item-edit" style=""></i>
-            <i v-if="item.status == 1" v-on:click="editItem(item)" class="fa fa-edit item-edit" style=""></i>
+            <div v-if="item.edit == 0">
+                <i class="fa fa-arrows-alt-v" style="color:#bbb; padding-right:20px"></i> @{{item.name}}
+                <i v-on:click="delItem(item)" class="fa fa-trash-alt item-del" style=""></i>
+                <i v-if="item.status == 0" v-on:click="showItem(item)" class="fa fa-eye-slash item-edit" style=""></i>
+                <i v-if="item.status == 1" v-on:click="hideItem(item)" class="fa fa-eye item-edit" style=""></i>
+                <i v-if="item.status == 1" v-on:click="editItem(item)" class="fa fa-edit item-edit" style=""></i>
+            </div>
+            <div v-if="item.edit == 1">
+                <div class="input-group">
+                    <input v-on:keyup="editVerify(item)" v-model="item.name" type="text" class="form-control m-input">
+                    <div v-if="xx.editOK == 1" class="input-group-append">
+                        <span v-on:click="saveItem(item)" class="input-group-text" style="color: #FFFFFF; background: #5867dd; padding: 0px 10px; cursor: pointer">Save</span>
+                    </div>
+                    <span></span>
+                </div>
+            </div>
         </li>
     </script>
 
     {{-- Edit Grade Modal --}}
+    {{--}}
     <div class="modal fade" id="modal_edit_grade" tabindex="-1" role="dialog" aria-labelledby="Edit Item" aria-hidden="true">
         <div class="modal-dialog modal-med" role="document">
             <div class="modal-content">
@@ -147,7 +171,6 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                     </button>
                 </div>
                 <div class="modal-body" style="background-color: #F7F7F7; padding:20px;">
-                    {{-- Name --}}
                     <div class="row">
                         <div class="col">
                             <div class="form-group m-form__group {!! fieldHasError('name', $errors) !!}">
@@ -166,6 +189,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
             </div>
         </div>
     </div>
+    --}}
 @stop
 
 
@@ -185,7 +209,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
     var { ContainerMixin, ElementMixin, HandleDirective } = window.VueSlicksort;
     //var xx = 'xx';
     var xx = {
-        addItem: '',
+        addItem: '', editOK: 1,
         items: [],
         original: []
         //items: [{id: '1', order: '0', name: 'Catty'}, {id: '2', order: '1', name: 'Dog'}, {id: '3', order: '2', name: 'Bird'}]
@@ -214,9 +238,21 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
             },
             editItem: function (item) {
                 //console.log('edit id:' + item.id + ' name:' + item.name);
-                $('#grade_name').val(item.name);
-                $('#grade_id').val(item.id);
-                $('#modal_edit_grade').modal('show');
+                item.edit = 1;
+                //$('#grade_name').val(item.name);
+                //$('#grade_id').val(item.id);
+                //$('#modal_edit_grade').modal('show');
+            },
+            editVerify: function (item) {
+                if (item.name == '')
+                    this.xx.editOK = 0;
+                else
+                    this.xx.editOK = 1;
+
+            },
+            saveItem: function (item) {
+                //console.log('edit id:' + item.id + ' name:' + item.name);
+                item.edit = 0;
             },
             showItem: function (item) {
                 item.status = 1;
@@ -257,7 +293,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                 //console.log(item.name);
                 var style;
                 if (item.status == 0)
-                    style =  "opacity: .5"
+                    style = "opacity: .5"
 
                 return style;
             }
@@ -289,7 +325,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
 
                 updateGradeDB(JSON.stringify(this.xx.items)).then(function (result) {
                     if (result)
-                        window.location.href = "/grades";
+                        window.location.href = "/settings/grades";
                 }.bind(this));
             },
             add: function () {
@@ -318,7 +354,7 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
             var grades = {grades: items};
             grades._method = 'patch';
             $.ajax({
-                url: '/grades/'+"{{ session('aid') }}",
+                url: '/grades/' + "{{ session('aid') }}",
                 type: 'POST',
                 data: grades,
                 success: function (result) {
@@ -331,11 +367,28 @@ $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '
                 }
             });
         });
-    };
+    }
+    ;
 
+
+    // Tab Page Links
+    $("#type_schools").click(function () {
+        window.location.href = "/settings/schools";
+    });
+
+    $("#type_grades").click(function () {
+        window.location.href = "/settings/grades";
+    });
 
     // Hide Edit Grade Save button on empty name
     $("#grade_name").keyup(function () {
+        $('#but_edit_grade').hide();
+        if ($('#grade_name').val() != '')
+            $('#but_edit_grade').show();
+    });
+    // Hide Edit Grade Save button on empty name
+    $(".edit-name").keyup(function () {
+        alert('key');
         $('#but_edit_grade').hide();
         if ($('#grade_name').val() != '')
             $('#but_edit_grade').show();

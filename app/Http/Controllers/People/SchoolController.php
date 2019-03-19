@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\People;
 
+use DB;
+use App\User;
+use App\Models\Account\Account;
 use App\Models\People\School;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +16,10 @@ class SchoolController extends Controller {
      */
     public function index()
     {
-        //
+        // Check authorisation
+        $schools = School::where('aid', session('aid'))->get()->sortBy('name');
+
+        return view('settings/school/index', compact('events'));
     }
 
     /**
@@ -37,7 +43,7 @@ class SchoolController extends Controller {
      */
     public function show($id)
     {
-        //
+        echo 'here';
     }
 
     /**
@@ -77,6 +83,36 @@ class SchoolController extends Controller {
                     $list[$school->id] = $school->name;
             }
         }
+
         return json_encode($list);
     }
+
+    /**
+     * Get Schools (ajax)
+     */
+    public function getSchools()
+    {
+        $account = Account::findOrFail(session('aid'));
+        $schools = School::where('aid', session('aid'))->orderBy('name')->get();
+        $school_array = [];
+        foreach ($schools as $school) {
+            $grade_array = [];
+            $grades = $account->grades->sortBy('order');
+            foreach ($grades as $grade) {
+                $students = User::where('school_id', $school->id)->where('grade_id', $grade->id)->count();
+                $linked = (DB::table('schools_grades')->where('sid', $school->id)->where('gid', $grade->id)->first()) ? 1 : 0;
+                $grade_array[] = (object) ['id' => $grade->id, 'name' => $grade->name, 'students' => $students, 'linked' => $linked, 'status' => $grade->status];
+            }
+            $school_array[] = [
+                'id'       => $school->id,
+                'name'     => $school->name,
+                'students' => $school->students->count(),
+                'status'   => $school->status,
+                'grades'   => $grade_array,
+            ];
+        }
+
+        return $school_array;
+    }
+
 }

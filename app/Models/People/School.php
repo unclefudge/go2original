@@ -20,6 +20,16 @@ class School extends Model
     }
 
     /**
+     * A School has many Students
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function students()
+    {
+        return $this->hasMany('App\User', 'school_id');
+    }
+
+    /**
      * A School has many grades.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany

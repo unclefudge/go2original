@@ -16,7 +16,7 @@ class GradeController extends Controller {
      */
     public function index()
     {
-        return view('people/grade/index');
+        return view('settings/school/grades');
     }
 
     /**
@@ -117,16 +117,10 @@ class GradeController extends Controller {
                     'order'  => $grade->order,
                     'count'  => $grade->students->count(),
                     'status' => $grade->status,
+                    'edit'  => 0,
                 ];
             }
         }
-
-        /*$list = [];
-        $list[] = ['id' => 1, 'name' => 'Cat', 'key' => 1, 'order'  => 0];
-        $list[] = ['id' => 2, 'name' => 'Dog', 'key' => 2, 'order'  => 1];
-        $list[] = ['id' => 3, 'name' => 'Bird', 'key' => 3, 'order'  => 2];*/
-
-
         return json_encode($list);
     }
 }
