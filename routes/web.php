@@ -66,6 +66,8 @@ Route::group(['middleware' => 'auth'], function () {
     // Schools
     Route::get('/data/schools', 'People\SchoolController@getSchools');
     Route::get('/data/schools-by-grade/{gid}', 'People\SchoolController@schoolsByGrade');
+    Route::get('/data/school/{sid}/grade/{gid}/link/{link}', 'People\SchoolController@linkSchool2Grade');
+
     Route::resource('/settings/schools', 'People\SchoolController');
 
     // Events

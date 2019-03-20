@@ -84,18 +84,15 @@
 
 
     {{-- Attendence template --}}
-    <script type="text/x-template" id="school-template">
+    <div type="text/x-template" id="school-template">
         <div class="m-accordion m-accordion--bordered" id="school_list" role="tablist">
             <template v-for="school in xx.schools">
                 <div class="m-accordion__item">
                     <div class="m-accordion__item-head collapsed" role="tab" :id="idHead(school)" data-toggle="collapse" :href="idHref(school)" aria-expanded=" false">
                         <span class="m-accordion__item-icon"></span>
-                        <span class="m-accordion__item-title"><div>@{{school.name}} &nbsp;
-                                <small style="color:#888">#@{{ school.students }}</small>
-                            </div></span>
+                        <span class="m-accordion__item-title">@{{school.name}}</span>
                         <span class="m-accordion__item-mode"></span>
                     </div>
-
                     <div class="m-accordion__item-body collapse" :id="idBody(school)" role="tabpanel" :aria-labelledby="idHead(school)" data-parent="#school_list">
                         <div class='m-accordion__item-content'>
                             {{-- Display School Name + edit/del icons --}}
@@ -104,8 +101,8 @@
                                     <h5 style="font-weight:400" style="margin-left: 10px">@{{ school.name }}</h5>
                                 </div>
                                 <div class='col-sm-3'>
-                                    <i v-on:click="delSchool(school)" class="fa fa-trash-alt item-del" style=""></i>
-                                    <i v-on:click="editSchool(school)" class="fa fa-edit item-edit" style=""></i>
+                                    <i v-if="school.name != 'Other'" v-on:click="delSchool(school)" class="fa fa-trash-alt item-del"></i>
+                                    <i v-if="school.name != 'Other'" v-on:click="editSchool(school)" class="fa fa-edit item-edit"></i>
                                 </div>
                             </div>
                             {{-- Edit School Name --}}
@@ -114,7 +111,7 @@
                                     <div class="input-group">
                                         <input v-model="xx.new_name" type="text" class="form-control m-input new_name" id="new_name">
                                         <div class="input-group-append">
-                                            <span v-on:click="saveName(school)" class="input-group-text" style="color: #FFFFFF; background: #5867dd; padding: 0px 10px; cursor: pointer">Save</span>
+                                            <span v-on:click="saveName(school)" class="input-group-text" style="color: #FFFFFF; background: #5867dd; padding: 0px 10px; cursor: pointer"  id="save_name">Save</span>
                                             <!--<span v-on:click="cancelName(school)" class="input-group-text" style="color: #FFFFFF; background: #666; padding: 0px 10px; cursor: pointer">Cancel</span>-->
                                         </div>
                                         <span></span>
@@ -131,22 +128,39 @@
 
                             <?php $counter = 0 ?>
                             <template v-for="grade, counter in school.grades">
-                                <div v-on:click="toggleGrade(grade)" :class='gradeClass(grade)'>
+                                {{-- Grade toggle / count --}}
+                                <div v-if="school.name != 'Other'" v-on:click="toggleGrade(school, grade)" :class='gradeClass(grade)'>
                                     <div class='col-1'>
-                                        <i v-if="grade.status && grade.linked == 0" v-on:click="showGrade(grade)" class="fa fa-times" style="color: #f4516c"></i>
-                                        <i v-if="grade.status && grade.linked == 1" v-on:click="hideGrade(grade)" class="fa fa-check" style="color: #34bfa3"></i>
+                                        <i v-if="grade.status && grade.linked == 0" class="fa fa-times" style="color: #f4516c"></i>
+                                        <i v-if="grade.status && grade.linked == 1" class="fa fa-check" style="color: #34bfa3"></i>
                                     </div>
                                     <div class='col-5'> @{{ grade.name }}</div>
                                     <div class='col-5'> @{{ grade.students }}</div>
-                                    <?php $counter ++ ?>
                                 </div>
+                                {{-- Can't toggle grades for 'Other' school --}}
+                                <div v-if="school.name == 'Other'" :class='gradeClass2(grade)' style="padding: 5px;">
+                                    <div class='col-1'>
+                                        <i v-if="grade.status" class="fa fa-check" style="color: #34bfa3"></i>
+                                    </div>
+                                    <div class='col-5'> @{{ grade.name }}</div>
+                                    <div class='col-5'> @{{ grade.students }}</div>
+                                </div>
+                                <?php $counter ++ ?>
                             </template>
+
+                            {{-- Totals --}}
+                            <div class='row' style='padding:5px; border-top: 1px solid #ccc; font-size: 14px'>
+                                <div class='col-1'></div>
+                                <div class='col-5 text-right'>Total</div>
+                                <div class='col-5'>@{{ school.students }}</div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </template>
         </div>
-    </script>
+    </div>
 @stop
 
 
@@ -184,9 +198,6 @@
             idHref: function (item) {
                 return "#m_accordion_item_" + item.id + "_body";
             },
-            toggleEditName: function () {
-
-            },
             editSchool: function (school) {
                 // Create slight delay to ensure showing of edit_name isn't prevented by our listener
                 // to clear this text box on outside clicks
@@ -196,57 +207,51 @@
                 }, 100);
             },
             saveName: function (school) {
-                this.xx.edit_name = !this.xx.edit_name;
-                school.name = this.xx.new_name;
+                updateSchoolDB(school, this.xx.new_name).then(function (result) {
+                    if (result) {
+                        this.xx.edit_name = !this.xx.edit_name;
+                        school.name = this.xx.new_name;
+                    }
+                }.bind(this));
             },
             cancelName: function (school) {
                 this.xx.edit_name = !this.xx.edit_name;
             },
-            showItem: function (item) {
-                item.status = 1;
+            toggleGrade: function (school, grade) {
+                updateSchoolGradeDB(school, grade).then(function (result) {
+                    if (result)
+                        grade.linked = !grade.linked;
+                }.bind(this));
             },
-            hideItem: function (item) {
-                item.status = 0;
-            },
-            showGrade: function (grade) {
-                grade.linked = 1;
-            },
-            hideGrade: function (grade) {
-                grade.linked = 0;
-            },
-            toggleGrade: function (grade) {
-                grade.linked = !grade.linked;
-            },
-            delSchool: function (item) {
+            delSchool: function (school) {
                 //console.log('delete id:' + item.id + ' name:' + item.name);
-                if (item.count > 0) {
-                    swal({
-                        title: "Are you sure?",
-                        html: "You currently have <b>" + item.count + " students</b> in this school.<br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i> All these students grades will be cleared!</span> ",
-                        cancelButtonText: "Cancel!",
-                        confirmButtonText: "Yes, delete it!",
-                        confirmButtonClass: "btn btn-danger",
-                        showCancelButton: true,
-                        reverseButtons: true,
-                        allowOutsideClick: true
-                    }).then(function (result) {
-                        if (result.value) {
-                            // Delete grade
-                            this.xx.items = this.items.filter(function (obj) {
-                                return obj.id !== item.id;
-                            });
-                        }
-                    }.bind(this));
-                } else {
-                    // Delete grade
-                    this.xx.items = this.items.filter(function (obj) {
-                        return obj.id !== item.id;
-                    });
-                }
+                swal({
+                    title: "Are you sure?",
+                    html: "You currently have <b>" + school.students + " students</b> in this school.<br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i> All these students will be moved to 'Other' school</span> ",
+                    cancelButtonText: "Cancel!",
+                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonClass: "btn btn-danger",
+                    showCancelButton: true,
+                    reverseButtons: true,
+                    allowOutsideClick: true
+                }).then(function (result) {
+                    if (result.value) {
+                        // Delete grade
+                        this.xx.schools = this.xx.schools.filter(function (obj) {
+                            return obj.id !== school.id;
+                        });
+                    }
+                }.bind(this));
+
             },
             gradeClass: function (grade) {
                 if (grade.status == 1)
                     return "row grade-active";
+                return "row grade-inactive";
+            },
+            gradeClass2: function (grade) {
+                if (grade.status == 1)
+                    return "row";
                 return "row grade-inactive";
             }
         }
@@ -271,13 +276,54 @@
     });
 
 
+    // Update Event Instance in Database Attendance and return a 'promise'
+    function updateSchoolDB(school, new_name) {
+        return new Promise(function (resolve, reject) {
+            var record = {id: school.id, name: new_name, _method: 'patch'};
+            //school._method = 'patch';
+            //school.name = new_name;
+            $.ajax({
+                url: '/settings/schools/' + school.id,
+                type: 'POST',
+                data: record,
+                success: function (result) {
+                    //console.log('DB updated school:[' + school.id + '] ' + school.name);
+                    resolve(school);
+                },
+                error: function (result) {
+                    alert("Something went wrong updating school " + school.name + '. Please refresh the page to resync.');
+                    //console.log('DB updated school grade FAILED:[' + school.id + '] ' + school.name);
+                    reject(false);
+                }
+            });
+        });
+    }
+
+    // Update Event Instance in Database Attendance and return a 'promise'
+    function updateSchoolGradeDB(school, grade) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: '/data/school/' + school.id + '/grade/' + grade.id + '/link/' + grade.linked,
+                type: 'GET',
+                success: function (result) {
+                    //console.log('DB updated school:[' + school.id + '] ' + school.name);
+                    resolve(true);
+                },
+                error: function (result) {
+                    alert("Something went wrong updating school grade " + school.name + '. Please refresh the page to resync.');
+                    //console.log('DB updated school grade FAILED:[' + school.id + '] ' + school.name);
+                    reject(false);
+                }
+            });
+        });
+    }
+
+
     $(document).ready(function () {
-
-
         // Clear New Name for School each click within list
-        // - listens for any mouse clicks outside of id #new_name
-        $(document).on('click', function(event) {
-            if (!$(event.target).closest('#new_name').length) {
+        // - listens for any mouse clicks outside of id #new_name or #save_name
+        $(document).on('click', function (event) {
+            if (!($(event.target).closest('#new_name').length ||$(event.target).closest('#save_name').length)) {
                 xx.edit_name = 0;
                 xx.new_name = '';
             }
@@ -289,22 +335,6 @@
 
         $("#type_grades").click(function () {
             window.location.href = "/settings/grades";
-        });
-
-        // Hide Edit Grade Save button on empty name
-        $("#grade_name").keyup(function () {
-            $('#but_edit_grade').hide();
-            if ($('#grade_name').val() != '')
-                $('#but_edit_grade').show();
-        });
-
-        // Save new grade name to item array
-        $("#but_edit_grade").click(function () {
-            $('#modal_edit_grade').modal('hide');
-            $.each(xx.items, function (key, value) {
-                if (value.id == $('#grade_id').val())
-                    value.name = $('#grade_name').val()
-            });
         });
     });
 

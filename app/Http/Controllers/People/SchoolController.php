@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\People;
 
 use DB;
+use Auth;
 use App\User;
 use App\Models\Account\Account;
 use App\Models\People\School;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -23,14 +25,6 @@ class SchoolController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('people/school/create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store()
@@ -39,27 +33,19 @@ class SchoolController extends Controller {
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        echo 'here';
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update($id)
     {
-        //
+        if (request()->ajax()) {
+            //dd(request()->all());
+            $school = School::findOrFail($id);
+            $school->update(request()->all());
+
+            return $school;
+        }
+
+        return abort(404);
     }
 
     /**
@@ -67,7 +53,12 @@ class SchoolController extends Controller {
      */
     public function destroy($id)
     {
-        //
+        if (request()->ajax()) {
+            $school = School::findOrFail($id)->delete();
+
+            return response()->json(['success', '200']);
+        }
+
     }
 
     /**
@@ -85,6 +76,24 @@ class SchoolController extends Controller {
         }
 
         return json_encode($list);
+    }
+
+    /**
+     * Link a School to a Grade (ajax)
+     */
+    public function linkSchool2Grade($sid, $gid, $link)
+    {
+        echo "s: $sid g:$gid l:$link<br>";
+        // Link
+        if ($link == 0) {
+            $exists = DB::table('schools_grades')->where('sid', $sid)->where('gid', $gid)->first();
+            if (!$exists)
+                DB::table('schools_grades')->insert(
+                    ['sid' => $sid, 'gid' => $gid, 'created_by' => Auth::user()->id,  'updated_by' => Auth::user()->id,
+                     'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]);
+        } else
+            DB::table('schools_grades')->where('sid', $sid)->where('gid', $gid)->delete();
+
     }
 
     /**

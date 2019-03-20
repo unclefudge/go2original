@@ -611,7 +611,7 @@
                                             </td>
                                             <td>
                                                 <div style="font-size: 14px">{{ $student->name }}</div>
-                                                <div style="font-size: 10px;">{{ ($student->grade) ? "Grade $student->grade" : '' }}</div>
+                                                <div style="font-size: 10px;">{{ ($student->grade_id) ? "$student->grade_name" : '' }}</div>
                                             </td>
                                             <td>
                                                 <div style="font-size: 18px" data-container="body" data-toggle="m-popover" data-placement="left" data-original-title="" title="" data-content="{{ $count }}/{{ count($instances) }}">

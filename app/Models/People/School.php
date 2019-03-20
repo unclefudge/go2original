@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class School extends Model
 {
     protected $table = 'schools';
-    protected $fillable = ['name', 'grade_from', 'grade_to', 'status', 'aid',  'created_by', 'updated_by'];
+    protected $fillable = ['name', 'status', 'aid',  'created_by', 'updated_by'];
 
     /**
      * A School belongs to a account
