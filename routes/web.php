@@ -27,6 +27,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/fudge', 'Misc\HomeController@fudge');
     Route::get('/test', function () {return view('test');});
     Route::get('/test2', function () {return view('test2');});
+    Route::get('/metronic', function () {return view('metronic');});
+    Route::get('/metronic2', function () {return view('metronic2');});
 
 
     // Protect access the Users photos + thumbs
