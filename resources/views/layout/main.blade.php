@@ -181,6 +181,10 @@
 <script src="/massets/vendors/general/jquery.repeater/src/jquery.input.js" type="text/javascript"></script>
 <script src="/massets/vendors/general/jquery.repeater/src/repeater.js" type="text/javascript"></script>
 <script src="/massets/vendors/general/dompurify/dist/purify.js" type="text/javascript"></script>
+
+{{-- Ones I added --}}
+<script src="/massets/app/custom/general/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
+<script src="/massets/app/custom/general/crud/forms/widgets/select2.js" type="text/javascript"></script>
 <!--end:: Global Optional Vendors -->
 
 @yield('vendor-scripts')

@@ -7,11 +7,6 @@
     {{-- Member bar --}}
     <div class="mbar {{ (!$people->status) ? 'mbar-inactive' : '' }}">
         <!--<i class="iicon-user-member-bar hidden-xs-down"></i>-->
-
-        <style>
-
-
-        </style>
         <div class="mbar-name">
             {{-- Avatar --}}
             <div class="avatar-container" id="avatar">

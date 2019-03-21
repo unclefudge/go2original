@@ -19,25 +19,6 @@ li.m-menu__item.m-menu__item--active {
     color: #00FF00 !important;
 }
 
-/* Left sidebar */
-#my-sidebar2 {
-    -ms-flex: 0 0 250px;
-    flex: 0 0 250px;
-    background-color: #FFF;
-    border-radius: 5px 5px 0px 0px;
-    box-shadow: 2px 0px 1px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 2px 0px 1px rgba(0, 0, 0, 0.03);
-    -webkit-box-shadow: 2px 0px 1px rgba(0, 0, 0, 0.03);
-    -o-box-shadow: 2px 0px 1px rgba(0, 0, 0, 0.03);
-
-    margin: 0px 10px 50px 0px;
-}
-
-@media (max-width: 690px) {
-    #my-sidebar2 {
-        display: none;
-    }
-}
 
 /* Loading Spinner */
 .loadSpinnerOverlay {
