@@ -37,7 +37,7 @@
                 <div class="col left-sidebar-menu">
                     <style>
                         #sidebar-wrapper {
-                            min-height: 100vh;
+                            /*min-height: 100vh;*/
                             -webkit-transition: margin .25s ease-out;
                             -moz-transition: margin .25s ease-out;
                             -o-transition: margin .25s ease-out;
@@ -52,6 +52,15 @@
 
                         #sidebar-wrapper .list-group {
                             /*width: 15rem;*/
+                        }
+
+                        #sidebar-wrapper .list-group .list-group-item:first-child {
+                            border-top: 0px;
+                            border-bottom: 1px solid #ebedf2;
+                        }
+
+                        #sidebar-wrapper .list-group .list-group-item {
+                            border-bottom: 1px solid #ebedf2;
                         }
 
                         #sidebar-wrapper .list-group-item-action:hover {
@@ -76,10 +85,11 @@
 
                     <!-- Sidebar -->
                     <div id="sidebar-wrapper">
-                        <div class="sidebar-heading">Start Bootstrap</div>
+                        <!--<div class="sidebar-heading">Start Bootstrap</div>-->
+                        <br>
                         <div class="list-group list-group-flush">
                             <a href="#" class="list-group-item list-group-item-action">Dashboard</a>
-                            <a href="#" class="list-group-item list-group-item-action active">Shortcuts</a>
+                            <a href="#" class="list-group-item list-group-item-action ">Shortcuts</a>
                             <a href="#" class="list-group-item list-group-item-action">Overview</a>
                             <a href="#" class="list-group-item list-group-item-action">Events</a>
                             <a href="#" class="list-group-item list-group-item-action">Profile</a>
@@ -88,16 +98,6 @@
                     </div>
                     <!-- /#sidebar-wrapper -->
 
-
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action active">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
-                    </div>
                 </div>
 
                 {{-- Right Cpntent --}}
@@ -158,7 +158,7 @@
 
 
     </div>
-    {{--}}
+
     <div class="kt-content kt-grid__item kt-grid__item--fluid">
         <div class="alert alert-light alert-elevate" role="alert">
             <div class="alert-icon alert-icon-top"><i class="flaticon-warning kt-font-brand"></i></div>
@@ -195,8 +195,7 @@
             </div>
         </div>
     </div>
-
-    --}}
+    
 @endsection
 
 @section('vendor-scripts')

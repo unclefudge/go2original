@@ -10,9 +10,9 @@
 
 
         background: #ffffff; /* Old browsers */
-        background: -moz-linear-gradient(top, #ffffff 60%, #faf9fd 100%, #faf9fd 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top, #ffffff 60%,#faf9fd 100%,#faf9fd 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom, #ffffff 60%,#faf9fd 100%,#faf9fd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        background: -moz-linear-gradient(top, #ffffff 70%, #faf9fd 100%, #faf9fd 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #ffffff 70%,#faf9fd 100%,#faf9fd 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #ffffff 70%,#faf9fd 100%,#faf9fd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#faf9fd',GradientType=0 );
 
 
