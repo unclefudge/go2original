@@ -95,11 +95,11 @@
                                                     </div>
                                                 </li>--}}
                                             </ul>
-                                            <div style="height: 200px; overflow-y: scroll;">
+                                            <div>
                                                 <div class="tab-content">
                                                     {{-- New Students --}}
                                                     <div class="tab-pane active show" id="m_tabs_3_1" role="tabpanel">
-                                                        <div class="table-responsive">
+                                                        <div class="table-responsive" style="height: 200px; overflow-y: scroll;">
                                                             <table class="table table-hover">
                                                                 <thead>
                                                                 <tr>
