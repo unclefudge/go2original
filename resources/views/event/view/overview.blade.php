@@ -188,12 +188,6 @@
                                                         something
                                                     </div>
                                                 </div>
-                                                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                                </div>
-                                                <div class="ps__rail-y" style="top: 0px; height: 200px; right: 0px;">
-                                                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 40px;"></div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -211,7 +205,7 @@
                                     </div>
                                 </div>
                                 <div class="kt-portlet__body">
-                                    <div class="kt-scroll ps ps--active-y" data-scroll="true" data-height="400" data-scrollbar-shown="true" style="height: 400px; overflow: hidden;">
+                                    <div style="height: 400px; overflow-y: scroll;">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <tbody>
