@@ -137,7 +137,7 @@
 
                                             <div v-if="xx.date == 0">
                                                 <br>No {{ $event->name }} events have occured yet. Please add one.
-                                                <a href="#" class="btn btn-sm m-btn--pill btn-outline-primary" data-toggle="modal" data-target="#modal_attendance">Add Past Event</a>
+                                                <a href="#" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modal_attendance">Add Past Event</a>
                                                 &nbsp; or &nbsp; <a href="/checkin/{{ $event->id }}" class="btn btn-sm btn-outline-primary">Check-in one for today</a>
                                             </div>
                                             <div v-if="xx.date">

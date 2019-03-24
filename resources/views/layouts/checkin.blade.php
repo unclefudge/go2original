@@ -29,6 +29,7 @@
 
     <!--begin::Page Vendors Styles -->
     <link href="/css/custom.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/custom2.css" rel="stylesheet" type="text/css"/>
     <!--<link href="/css/reseller.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="//framework.dreamscape.cloud/scripts/reseller/framework/vendors.bundle.js?vendors_timestamp=1539856691"></script>-->
     @yield('page-styles')

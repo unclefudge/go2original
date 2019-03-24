@@ -68,10 +68,12 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="kt-portlet kt-portlet--height-fluid">
-                                <div class="kt-portlet__body">
-                                    <div class="row" style="padding-bottom: 10px">
-                                        <div class="col-12"><h4>Activity</h4></div>
+                                <div class="kt-portlet__head kt-portlet__head--noborder">
+                                    <div class="kt-portlet__head-label">
+                                        <h3 class="kt-portlet__head-title">Activity</h3>
                                     </div>
+                                </div>
+                                <div class="kt-portlet__body">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="accordion accordion-toggle-plus" id="activity" role="tablist">

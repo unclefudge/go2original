@@ -109,6 +109,44 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #fd397a;
 }
 
+/*
+@media (max-width: 800px) {
+    .kt-header-mobile {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: 0 15px;
+        height: 60px;
+        background-color: #fff;
+        -webkit-box-shadow: 0px 1px 9px -3px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 1px 9px -3px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+}
+
+@media (max-width: 800px) {
+    .kt-header-mobile--fixed .kt-header-mobile {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 97;
+    }
+}
+
+@media (min-width: 801px) {
+    .kt-header-mobile,  .kt-header-mobile--fixed .kt-header-mobile {
+        display: none;
+    }
+    .kt-header, .kt-header .kt-header-fixed, .kt-header-menu{
+        display: flex;
+    }
+}*/
+
 /***************************************************************************
 * Member Bar
 ***************************************************************************/
@@ -311,8 +349,8 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0px 10px 50px 0px;
     min-height: auto;
 
-    -ms-flex: 0 0 200px;
-    flex: 0 0 200px;
+    -ms-flex: 0 0 170px;
+    flex: 0 0 170px;
 
     background: #ffffff; /* Old browsers */
     background: -moz-linear-gradient(top, #ffffff 70%, #faf9fd 100%, #faf9fd 100%); /* FF3.6-15 */
@@ -488,4 +526,75 @@ h1, h2, h3, h4, h5, h6 {
     height: 10px;
     margin: 0px 10px 0px 20px;
     padding-left: 4px;
+}
+
+/***************************************************************************
+* Additional buttons
+***************************************************************************/
+.btn-accent {
+    color: #fff;
+    background-color: #00c5dc;
+    border-color: #00c5dc
+}
+
+.btn-accent:hover {
+    color: #fff;
+    background-color: #00a3b6;
+    border-color: #0097a9
+}
+
+.btn-accent:focus, .btn-accent.focus {
+    -webkit-box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5);
+    box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5)
+}
+
+.btn-accent.disabled, .btn-accent:disabled {
+    color: #fff;
+    background-color: #00c5dc;
+    border-color: #00c5dc
+}
+
+.btn-accent:not(:disabled):not(.disabled):active, .btn-accent:not(:disabled):not(.disabled).active, .show > .btn-accent.dropdown-toggle {
+    color: #fff;
+    background-color: #0097a9;
+    border-color: #008c9c
+}
+
+.btn-accent:not(:disabled):not(.disabled):active:focus, .btn-accent:not(:disabled):not(.disabled).active:focus, .show > .btn-accent.dropdown-toggle:focus {
+    -webkit-box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5);
+    box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5)
+}
+
+.btn-outline-accent {
+    color: #00c5dc;
+    background-color: transparent;
+    background-image: none;
+    border-color: #00c5dc
+}
+
+.btn-outline-accent:hover {
+    color: #fff;
+    background-color: #00c5dc;
+    border-color: #00c5dc
+}
+
+.btn-outline-accent:focus, .btn-outline-accent.focus {
+    -webkit-box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5);
+    box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5)
+}
+
+.btn-outline-accent.disabled, .btn-outline-accent:disabled {
+    color: #00c5dc;
+    background-color: transparent
+}
+
+.btn-outline-accent:not(:disabled):not(.disabled):active, .btn-outline-accent:not(:disabled):not(.disabled).active, .show > .btn-outline-accent.dropdown-toggle {
+    color: #fff;
+    background-color: #00c5dc;
+    border-color: #00c5dc
+}
+
+.btn-outline-accent:not(:disabled):not(.disabled):active:focus, .btn-outline-accent:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-accent.dropdown-toggle:focus {
+    -webkit-box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5);
+    box-shadow: 0 0 0 .2rem rgba(0, 197, 220, 0.5)
 }

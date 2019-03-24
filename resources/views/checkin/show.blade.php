@@ -1,13 +1,4 @@
-@extends('layouts/checkin')
-
-{{--
- style="
-    background-image: url(/img/bg/full-purple.jpg);height: 100%;
-    background-attachment: fixed !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;"
---}}
+@extends('layout/checkin')
 
 @section('content')
     <style>
@@ -27,6 +18,10 @@
 
         .search-row {
             padding: 30px 80px;
+        }
+
+        .search-row:hover {
+           background: inherit;
         }
 
         .btn-register {
@@ -162,21 +157,16 @@
             }
         }
     </style>
+    <body style="background: #F7F7F7" style="height: 100%">
     <div id="vue-app">
-
-        <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
-            <div class="col text-center">
-                <a href="/event"><img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px"></a>
-                <h1 style="padding-top: 10px">{{ $event->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
-            </div>
-        </div>
+       @include('checkin/_header')
 
         {{-- Check-in Search  --}}
         <div class="row search-row">
             <div class="col-12">
                 <input v-model="xx.instance_id" type="hidden" value="{{ $instance->id }}">
                 <div class="input-group">
-                    <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for someone" name="query">
+                    <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg" placeholder="Search for someone" name="query">
                     <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                     <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent btn-lg btn-register">Register</a>
                 </div>
@@ -192,32 +182,26 @@
 
         <br><br><br>
 
-        <footer class="m-grid__item m-footer footer ">
-            <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
-                <div class="m-footer__wrapper">
-                    <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
-                        <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
-                            <span class="m-footer__copyright">© Go2Youth | All rights reserved</span>
+        <div class="kt-footer  kt-footer--extended  kt-grid__item footer" id="kt_footer" style="background-image: url('/massets/media/bg/bg-2.jpg');">
+            <div class="kt-footer__bottom">
+                <div class="kt-container">
+                    <div class="kt-footer__wrapper">
+                        <div class="kt-footer__logo">
+                            <div class="kt-footer__copyright">
+                                &copy; Go2Youth | All rights reserved
+                            </div>
                         </div>
-                        <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
-                            <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
-                                <li class="m-nav__item">
-                                    <a href="#" class="m-nav__link"><span class="m-nav__link-text">Students: @{{ xx.student_count }}</span></a>
-                                </li>
-                                <li class="m-nav__item">
-                                    <a href="#" class="m-nav__link"><span class="m-nav__link-text">Volunteers: @{{ xx.volunteer_count }}</span></a>
-                                </li>
-                                <li class="m-nav__item m-nav__item--last">
-                                    <a href="#" class="m-nav__link" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="Support Center">
-                                        <i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                        <div class="kt-footer__menu">
+                            <a class="text-white" href="#">Students: @{{ xx.student_count }}</a>
+                            <a class="text-white" href="#" target="_blank">Volunteers: @{{ xx.volunteer_count }}</a>
+                            <a href="#" class="" data-toggle="kt-tooltip" title="Support Center" data-placement="left">
+                                <i class="flaticon-questions-circular-button" style="font-size: 15px;"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
 
         <!-- loading Spinner -->
         <div v-show="xx.searching" style="background-color: #FFF; padding: 20px;">
@@ -228,6 +212,7 @@
         <!--<pre style="background: #fff">@{{ $data }}</pre>
             -->
     </div>
+    </body>
 
 
     <!-- component template -->

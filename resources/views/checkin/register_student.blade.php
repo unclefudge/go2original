@@ -1,13 +1,13 @@
 @inject('ozstates', 'App\Http\Utilities\Ozstates')
-@extends('layouts/checkin')
+@extends('layout/checkin')
 
 @section('content')
     <style>
         body, html {
             @if ($instance->event->background)
-                  background-image: url("{!! $instance->event->background_path !!}") !important;
+                   background-image: url("{!! $instance->event->background_path !!}") !important;
             @endif
-                  height: 100%; /* set height */
+                   height: 100%; /* set height */
 
             /* Create the parallax scrolling effect */
             background-attachment: fixed !important;
@@ -45,30 +45,25 @@
         }
     </style>
     <div>
-        <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
-            <div class="col text-center">
-                <img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px">
-                <h1 style="padding-top: 10px">{{ $instance->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
-            </div>
-        </div>
+        @include('checkin/_header')
 
         {{-- Student Rego  --}}
         <div class="row justify-content-lg-center" style="padding: 30px">
             <div class="col-lg-8">
-                <div class="m-portlet">
-                    <div class="m-portlet__body">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head kt-portlet__head--noborder">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">Student Registration</h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <a href="/checkin/{{ $instance->eid }}" class="btn btn-light btn-icon-sm"><i class="la la-long-arrow-left"></i>Return to check-in</a>
+                            <a href="/checkin/{{ $instance->id }}/register/volunteer" class="btn btn-primary" style="margin-left: 20px">Switch to Volunteer</a>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
                         {!! Form::model('people', ['action' => ['Event\CheckinController@studentRegister', $instance->id], 'files' => true]) !!}
                         @include('form-error')
 
-                        <div class="row" style="padding-bottom: 10px">
-                            <div class="col-md-5">
-                                <h4>Student Registration</h4>
-                            </div>
-                            <div class="col-md-7">
-                                <a href="/checkin/{{ $instance->id }}/register/volunteer" class="btn btn-brand pull-right" style="margin-left: 20px">Switch to Volunteer</a>
-                                <a href="/checkin/{{ $instance->eid }}" class="btn btn-secondary pull-right">Return to check-in</a>
-                            </div>
-                        </div>
                         {{-- First + Last Name --}}
                         <div class="row">
                             <div class="col-md-6">
@@ -159,7 +154,7 @@
                         </div>
 
                         {{-- Grade + School --}}
-                        <div class="row" style="background-color: #F7F7F7; margin: 10px -25px; padding: 10px 30px">
+                        <div class="row" style="background-color: #F7F7F7;  padding: 10px 30px">
                             <div class="col-md-3">
                                 <br><h6>School details</h6>
                             </div>
@@ -176,9 +171,9 @@
                                 <div class="form-group">
                                     <label for="school_id" class="control-label">School <span id="loader" style="visibility: hidden"><i class="fa fa-spinner fa-spin"></i></span></label>
                                     <select name="school_id" class="form-control select2" id="school_id">
-                                       {{--}}@foreach (Auth::user()->account->schools->sortBy('name') as $key => $value)
-                                            <option value="{{ $key }}>{{ $value }}</option>
-                                        @endforeach--}}
+                                        {{--}}@foreach (Auth::user()->account->schools->sortBy('name') as $key => $value)
+                                             <option value="{{ $key }}>{{ $value }}</option>
+                                         @endforeach--}}
                                     </select>
                                 </div>
                             </div>
@@ -273,8 +268,24 @@
             </div>
         </div>
 
-        <div class="footer">
-            <p><a href="/event" class="btn btn-secondary">Back to Events</a></p>
+        <div class="kt-footer  kt-footer--extended  kt-grid__item footer" id="kt_footer" style="background-image: url('/massets/media/bg/bg-2.jpg');">
+            <div class="kt-footer__bottom">
+                <div class="kt-container">
+                    <div class="kt-footer__wrapper">
+                        <div class="kt-footer__logo">
+                            <div class="kt-footer__copyright">
+                                &copy; Go2Youth | All rights reserved
+                            </div>
+                        </div>
+                        <div class="kt-footer__menu">
+                            <a class="text-white" href="/checkin/{{ $instance->eid }}">Return to Check-ins</a>
+                            <a href="#" class="" data-toggle="kt-tooltip" title="Support Center" data-placement="left">
+                                <i class="flaticon-questions-circular-button" style="font-size: 15px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

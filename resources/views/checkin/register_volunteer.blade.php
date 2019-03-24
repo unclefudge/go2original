@@ -1,13 +1,13 @@
 @inject('ozstates', 'App\Http\Utilities\Ozstates')
-@extends('layouts/checkin')
+@extends('layout/checkin')
 
 @section('content')
     <style>
         body, html {
             @if ($instance->event->background)
-              background-image: url("{!! $instance->event->background_path !!}") !important;
+               background-image: url("{!! $instance->event->background_path !!}") !important;
             @endif
-              height: 100%; /* set height */
+               height: 100%; /* set height */
 
             /* Create the parallax scrolling effect */
             background-attachment: fixed !important;
@@ -28,29 +28,25 @@
 
     </style>
     <div>
-        <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
-            <div class="col text-center">
-                <img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px">
-                <h1 style="padding-top: 10px">{{ $instance->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
-            </div>
-        </div>
+        @include('checkin/_header')
 
         {{-- Volunteer Rego  --}}
         <div class="row justify-content-lg-center" style="padding: 30px">
             <div class="col-lg-8">
-                <div class="m-portlet">
-                    <div class="m-portlet__body">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head kt-portlet__head--noborder">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">Volunteer Registration</h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <a href="/checkin/{{ $instance->eid }}" class="btn btn-light btn-icon-sm"><i class="la la-long-arrow-left"></i>Return to check-in</a>
+                            <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-primary" style="margin-left: 20px">Switch to Student</a>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
                         {!! Form::model('people', ['action' => ['Event\CheckinController@volunteerRegister', $instance->id], 'files' => true]) !!}
                         @include('form-error')
-                        <div class="row" style="padding-bottom: 10px">
-                            <div class="col-md-5">
-                                <h4>Volunteer Registration</h4>
-                            </div>
-                            <div class="col-md-7">
-                                <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-brand pull-right" style="margin-left: 20px">Switch to Student</a>
-                                <a href="/checkin/{{ $instance->eid }}" class="btn btn-secondary pull-right">Return to check-in</a>
-                            </div>
-                        </div>
+
                         {{-- First + Last Name --}}
                         <div class="row">
                             <div class="col-md-6">
@@ -140,7 +136,7 @@
                         </div>
 
                         {{-- WWC info --}}
-                        <div class="row" style="background-color: #F7F7F7; margin: 10px -25px; padding: 10px 30px">
+                        <div class="row" style="background-color: #F7F7F7; padding: 10px 30px">
                             <div class="col-md-3">
                                 <br><h6>WWC Registration</h6>
                             </div>
