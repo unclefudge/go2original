@@ -151,9 +151,6 @@ var KTDatatableLocalSortDemo = function() {
 				}],
 		});
 
-		var p = datatable.getDataSourceQuery();
-		console.log(p);
-
     $('#kt_form_status').on('change', function() {
       datatable.search($(this).val().toLowerCase(), 'Status');
     });

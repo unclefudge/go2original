@@ -21,7 +21,7 @@ var freeze$2 = Object.freeze || function (x) {
 
 var html$1 = freeze$2(['accept', 'action', 'align', 'alt', 'autocomplete', 'background', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'coords', 'crossorigin', 'datetime', 'default', 'dir', 'disabled', 'download', 'enctype', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'integrity', 'ismap', 'label', 'lang', 'list', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'multiple', 'name', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'type', 'usemap', 'valign', 'value', 'width', 'xmlns']);
 
-var svg$1 = freeze$2(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'tabindex', 'targetx', 'targety', 'transform', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
+var svg$1 = freeze$2(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'tabindex', 'targetx', 'targety', 'transform', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
 
 var mathMl$1 = freeze$2(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
 
@@ -47,30 +47,39 @@ function addToSet(set, array) {
     // Prevent prototype setters from intercepting set as a this value.
     setPrototypeOf(set, null);
   }
+
   var l = array.length;
   while (l--) {
     var element = array[l];
     if (typeof element === 'string') {
       var lcElement = element.toLowerCase();
       if (lcElement !== element) {
-        array[l] = lcElement;
+        // Config presets (e.g. tags.js, attrs.js) are immutable.
+        if (!Object.isFrozen(array)) {
+          array[l] = lcElement;
+        }
+
         element = lcElement;
       }
     }
+
     set[element] = true;
   }
+
   return set;
 }
 
 /* Shallow clone an object */
 function clone(object) {
   var newObject = {};
+
   var property = void 0;
   for (property in object) {
     if (apply$1(hasOwnProperty, object, [property])) {
       newObject[property] = object[property];
     }
   }
+
   return newObject;
 }
 
@@ -138,7 +147,7 @@ var _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes,
         return html$$1;
       }
     });
-  } catch (e) {
+  } catch (error) {
     // Policy creation failed (most likely another DOMPurify script has
     // already run). Skip creating the policy, as this will only cause errors
     // if TT are enforced.
@@ -158,7 +167,7 @@ function createDOMPurify() {
    * Version label, exposed for easier checks
    * if DOMPurify is up to date or not
    */
-  DOMPurify.version = '1.0.9';
+  DOMPurify.version = '1.0.10';
 
   /**
    * Array of elements that DOMPurify removed during sanitation.
@@ -337,6 +346,7 @@ function createDOMPurify() {
     if (!cfg || (typeof cfg === 'undefined' ? 'undefined' : _typeof(cfg)) !== 'object') {
       cfg = {};
     }
+
     /* Set configuration parameters */
     ALLOWED_TAGS = 'ALLOWED_TAGS' in cfg ? addToSet({}, cfg.ALLOWED_TAGS) : DEFAULT_ALLOWED_TAGS;
     ALLOWED_ATTR = 'ALLOWED_ATTR' in cfg ? addToSet({}, cfg.ALLOWED_ATTR) : DEFAULT_ALLOWED_ATTR;
@@ -375,16 +385,19 @@ function createDOMPurify() {
         addToSet(ALLOWED_TAGS, html);
         addToSet(ALLOWED_ATTR, html$1);
       }
+
       if (USE_PROFILES.svg === true) {
         addToSet(ALLOWED_TAGS, svg);
         addToSet(ALLOWED_ATTR, svg$1);
         addToSet(ALLOWED_ATTR, xml);
       }
+
       if (USE_PROFILES.svgFilters === true) {
         addToSet(ALLOWED_TAGS, svgFilters);
         addToSet(ALLOWED_ATTR, svg$1);
         addToSet(ALLOWED_ATTR, xml);
       }
+
       if (USE_PROFILES.mathMl === true) {
         addToSet(ALLOWED_TAGS, mathMl);
         addToSet(ALLOWED_ATTR, mathMl$1);
@@ -397,14 +410,18 @@ function createDOMPurify() {
       if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
         ALLOWED_TAGS = clone(ALLOWED_TAGS);
       }
+
       addToSet(ALLOWED_TAGS, cfg.ADD_TAGS);
     }
+
     if (cfg.ADD_ATTR) {
       if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
         ALLOWED_ATTR = clone(ALLOWED_ATTR);
       }
+
       addToSet(ALLOWED_ATTR, cfg.ADD_ATTR);
     }
+
     if (cfg.ADD_URI_SAFE_ATTR) {
       addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR);
     }
@@ -442,7 +459,7 @@ function createDOMPurify() {
     DOMPurify.removed.push({ element: node });
     try {
       node.parentNode.removeChild(node);
-    } catch (err) {
+    } catch (error) {
       node.outerHTML = emptyHTML;
     }
   };
@@ -459,12 +476,13 @@ function createDOMPurify() {
         attribute: node.getAttributeNode(name),
         from: node
       });
-    } catch (err) {
+    } catch (error) {
       DOMPurify.removed.push({
         attribute: null,
         from: node
       });
     }
+
     node.removeAttribute(name);
   };
 
@@ -494,7 +512,7 @@ function createDOMPurify() {
     if (useDOMParser) {
       try {
         doc = new DOMParser().parseFromString(dirty, 'text/html');
-      } catch (err) {}
+      } catch (error) {}
     }
 
     /* Remove title to fix a mXSS bug in older MS Edge */
@@ -537,15 +555,16 @@ function createDOMPurify() {
         if (doc.querySelector('svg img')) {
           useDOMParser = true;
         }
-      } catch (err) {}
+      } catch (error) {}
     })();
+
     (function () {
       try {
         var doc = _initDocument('<x/><title>&lt;/title&gt;&lt;img&gt;');
         if (doc.querySelector('title').innerHTML.match(/<\/title/)) {
           removeTitle = true;
         }
-      } catch (err) {}
+      } catch (error) {}
     })();
   }
 
@@ -571,9 +590,11 @@ function createDOMPurify() {
     if (elm instanceof Text || elm instanceof Comment) {
       return false;
     }
+
     if (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function') {
       return true;
     }
+
     return false;
   };
 
@@ -615,6 +636,7 @@ function createDOMPurify() {
    * @param   {Node} currentNode to check for permission to exist
    * @return  {Boolean} true if node was killed, false if left alive
    */
+  // eslint-disable-next-line complexity
   var _sanitizeElements = function _sanitizeElements(currentNode) {
     var content = void 0;
 
@@ -643,8 +665,20 @@ function createDOMPurify() {
         try {
           var htmlToInsert = currentNode.innerHTML;
           currentNode.insertAdjacentHTML('AfterEnd', trustedTypesPolicy ? trustedTypesPolicy.createHTML(htmlToInsert) : htmlToInsert);
-        } catch (err) {}
+        } catch (error) {}
       }
+
+      _forceRemove(currentNode);
+      return true;
+    }
+
+    /* Remove in case a noscript/noembed XSS is suspected */
+    if (tagName === 'noscript' && currentNode.innerHTML.match(/<\/noscript/i)) {
+      _forceRemove(currentNode);
+      return true;
+    }
+
+    if (tagName === 'noembed' && currentNode.innerHTML.match(/<\/noembed/i)) {
       _forceRemove(currentNode);
       return true;
     }
@@ -685,16 +719,11 @@ function createDOMPurify() {
    * @param  {string} value Attribute value.
    * @return {Boolean} Returns true if `value` is valid, otherwise false.
    */
+  // eslint-disable-next-line complexity
   var _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
     /* Make sure attribute cannot clobber */
     if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
       return false;
-    }
-
-    /* Sanitize attribute content to be template-safe */
-    if (SAFE_FOR_TEMPLATES) {
-      value = value.replace(MUSTACHE_EXPR$$1, ' ');
-      value = value.replace(ERB_EXPR$$1, ' ');
     }
 
     /* Allow valid data-* attributes: At least one character after "-"
@@ -733,6 +762,7 @@ function createDOMPurify() {
     } else {
       return false;
     }
+
     return true;
   };
 
@@ -744,9 +774,8 @@ function createDOMPurify() {
    * @protect removeAttribute
    * @protect setAttribute
    *
-   * @param  {Node} node to sanitize
+   * @param  {Node} currentNode to sanitize
    */
-  // eslint-disable-next-line complexity
   var _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
     var attr = void 0;
     var value = void 0;
@@ -813,12 +842,19 @@ function createDOMPurify() {
         if (name === 'id') {
           currentNode.setAttribute(name, '');
         }
+
         _removeAttribute(name, currentNode);
       }
 
       /* Did the hooks approve of the attribute? */
       if (!hookEvent.keepAttr) {
         continue;
+      }
+
+      /* Sanitize attribute content to be template-safe */
+      if (SAFE_FOR_TEMPLATES) {
+        value = value.replace(MUSTACHE_EXPR$$1, ' ');
+        value = value.replace(ERB_EXPR$$1, ' ');
       }
 
       /* Is `value` valid for this attribute? */
@@ -835,8 +871,9 @@ function createDOMPurify() {
           /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
           currentNode.setAttribute(name, value);
         }
+
         DOMPurify.removed.pop();
-      } catch (err) {}
+      } catch (error) {}
     }
 
     /* Execute a hook if present */
@@ -917,10 +954,12 @@ function createDOMPurify() {
         if (typeof dirty === 'string') {
           return window.toStaticHTML(dirty);
         }
+
         if (_isNode(dirty)) {
           return window.toStaticHTML(dirty.outerHTML);
         }
       }
+
       return dirty;
     }
 
@@ -943,11 +982,12 @@ function createDOMPurify() {
         /* Node is already a body, use as is */
         body = importedNode;
       } else {
+        // eslint-disable-next-line unicorn/prefer-node-append
         body.appendChild(importedNode);
       }
     } else {
       /* Exit directly if we have nothing to do */
-      if (!RETURN_DOM && !WHOLE_DOCUMENT && dirty.indexOf('<') === -1) {
+      if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT && dirty.indexOf('<') === -1) {
         return trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
       }
 
@@ -1004,6 +1044,7 @@ function createDOMPurify() {
         returnNode = createDocumentFragment.call(body.ownerDocument);
 
         while (body.firstChild) {
+          // eslint-disable-next-line unicorn/prefer-node-append
           returnNode.appendChild(body.firstChild);
         }
       } else {
@@ -1023,6 +1064,13 @@ function createDOMPurify() {
     }
 
     var serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+
+    /* Sanitize final string template-safe */
+    if (SAFE_FOR_TEMPLATES) {
+      serializedHTML = serializedHTML.replace(MUSTACHE_EXPR$$1, ' ');
+      serializedHTML = serializedHTML.replace(ERB_EXPR$$1, ' ');
+    }
+
     return trustedTypesPolicy ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
   };
 
@@ -1062,6 +1110,7 @@ function createDOMPurify() {
     if (!CONFIG) {
       _parseConfig({});
     }
+
     var lcTag = tag.toLowerCase();
     var lcName = attr.toLowerCase();
     return _isValidAttribute(lcTag, lcName, value);
@@ -1078,6 +1127,7 @@ function createDOMPurify() {
     if (typeof hookFunction !== 'function') {
       return;
     }
+
     hooks[entryPoint] = hooks[entryPoint] || [];
     hooks[entryPoint].push(hookFunction);
   };

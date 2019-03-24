@@ -2,7 +2,7 @@
 <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
     <div class="kt-header-mobile__logo">
         <a href="/">
-            <img alt="Logo" src="/massets/media/logos/logo-4-sm.png"/>
+            <img alt="Logo" src="/img/logo-sm.png"/>
         </a>
     </div>
     <div class="kt-header-mobile__toolbar">

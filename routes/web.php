@@ -18,7 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::get('/home', 'Misc\HomeController@index')->name('home');
+Route::get('/dashboard', 'Misc\HomeController@index')->name('home');
 Route::get('/signup', 'Misc\HomeController@index')->name('home')->middleware('guest');
 
 // Logged in Routes
@@ -31,13 +31,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/metronic2', function () {return view('metronic2');});
 
 
+    // Update Session
+    Route::post('/uset', 'Auth\SessionController@update');
+
     // Protect access the Users photos + thumbs
     Route::get('/image/{aid}/{type}/{filename}', 'Misc\FileController@getPhoto'); //->where('filename', '^(.+)\/([^\/]+)$');
     Route::get('/log/{aid}/{type}/{filename}', 'Misc\FileController@getLog'); //->where('filename', '^(.+)\/([^\/]+)$');
 
-    //Route::get('/storage/{aid}/thumbs/{filename}', 'Misc\FileController@getThumb'); //->where('filename', '^(.+)\/([^\/]+)$');
-
     //Route::get('/data/users', 'Account\AccountController@getPeople');
+    Route::get('/account', 'Account\AccountController@profile');
+    Route::get('/account/schools', 'Account\AccountController@schools');
+    Route::get('/account/grades', 'Account\AccountController@grades');
     Route::resource('/account', 'Account\AccountController');
 
     // People
@@ -63,7 +67,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Grades
     Route::get('/data/grades', 'People\GradeController@getGrades');
-    Route::resource('/settings/grades', 'People\GradeController');
+    //Route::resource('/settings/grades', 'People\GradeController');
 
     // Schools
     Route::get('/data/schools', 'People\SchoolController@getSchools');
@@ -107,8 +111,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/report/nightly', 'Misc\ReportController@nightly');
 
     // Settings
-
-
     Route::get('/group', 'Misc\HomeController@group');
     Route::get('/quick', 'Misc\ImportController@quick');
     Route::get('/import-students', 'Misc\ImportController@importStudents');

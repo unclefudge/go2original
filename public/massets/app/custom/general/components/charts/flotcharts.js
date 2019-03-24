@@ -266,7 +266,7 @@ var KTFlotchartsDemo = function() {
             cos.push([i, Math.cos(i)]);
         }
 
-        plot = $.plot($("#kt_flotcharts_3"), [{
+        var plot = $.plot($("#kt_flotcharts_3"), [{
             data: sin,
             label: "sin(x) = -0.00",
             lines: {
@@ -514,7 +514,7 @@ var KTFlotchartsDemo = function() {
             var start = 100 + added;
             var end = 200 + added;
 
-            for (i = 1; i <= 20; i++) {
+            for (var i = 1; i <= 20; i++) {
                 var d = Math.floor(Math.random() * (end - start + 1) + start);
                 data.push([i, d]);
                 start++;

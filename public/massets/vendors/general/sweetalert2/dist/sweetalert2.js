@@ -1,5 +1,5 @@
 /*!
-* sweetalert2 v8.0.7
+* sweetalert2 v8.5.0
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -307,7 +307,7 @@ var prefix = function prefix(items) {
 
   return result;
 };
-var swalClasses = prefix(['container', 'shown', 'height-auto', 'iosfix', 'popup', 'modal', 'no-backdrop', 'toast', 'toast-shown', 'toast-column', 'fade', 'show', 'hide', 'noanimation', 'close', 'title', 'header', 'content', 'actions', 'confirm', 'cancel', 'footer', 'icon', 'icon-text', 'image', 'input', 'file', 'range', 'select', 'radio', 'checkbox', 'label', 'textarea', 'inputerror', 'validation-message', 'progresssteps', 'activeprogressstep', 'progresscircle', 'progressline', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen', 'rtl']);
+var swalClasses = prefix(['container', 'shown', 'height-auto', 'iosfix', 'popup', 'modal', 'no-backdrop', 'toast', 'toast-shown', 'toast-column', 'fade', 'show', 'hide', 'noanimation', 'close', 'title', 'header', 'content', 'actions', 'confirm', 'cancel', 'footer', 'icon', 'image', 'input', 'file', 'range', 'select', 'radio', 'checkbox', 'label', 'textarea', 'inputerror', 'validation-message', 'progress-steps', 'active-progress-step', 'progress-step', 'progress-step-line', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen', 'rtl']);
 var iconTypes = prefix(['success', 'warning', 'info', 'question', 'error']);
 
 var states = {
@@ -370,7 +370,7 @@ var hide = function hide(elem) {
 }; // borrowed from jquery $(elem).is(':visible') implementation
 
 var isVisible = function isVisible(elem) {
-  return elem && (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+  return !!(elem && (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length));
 };
 var contains = function contains(haystack, needle) {
   if (typeof haystack.contains === 'function') {
@@ -382,9 +382,13 @@ var getContainer = function getContainer() {
   return document.body.querySelector('.' + swalClasses.container);
 };
 
-var elementByClass = function elementByClass(className) {
+var elementBySelector = function elementBySelector(selectorString) {
   var container = getContainer();
-  return container ? container.querySelector('.' + className) : null;
+  return container ? container.querySelector(selectorString) : null;
+};
+
+var elementByClass = function elementByClass(className) {
+  return elementBySelector('.' + className);
 };
 
 var getPopup = function getPopup() {
@@ -393,6 +397,12 @@ var getPopup = function getPopup() {
 var getIcons = function getIcons() {
   var popup = getPopup();
   return toArray(popup.querySelectorAll('.' + swalClasses.icon));
+};
+var getIcon = function getIcon() {
+  var visibleIcon = getIcons().filter(function (icon) {
+    return isVisible(icon);
+  });
+  return visibleIcon.length ? visibleIcon[0] : null;
 };
 var getTitle = function getTitle() {
   return elementByClass(swalClasses.title);
@@ -404,19 +414,22 @@ var getImage = function getImage() {
   return elementByClass(swalClasses.image);
 };
 var getProgressSteps = function getProgressSteps() {
-  return elementByClass(swalClasses.progresssteps);
+  return elementByClass(swalClasses['progress-steps']);
 };
 var getValidationMessage = function getValidationMessage() {
   return elementByClass(swalClasses['validation-message']);
 };
 var getConfirmButton = function getConfirmButton() {
-  return elementByClass(swalClasses.confirm);
+  return elementBySelector('.' + swalClasses.actions + ' .' + swalClasses.confirm);
 };
 var getCancelButton = function getCancelButton() {
-  return elementByClass(swalClasses.cancel);
+  return elementBySelector('.' + swalClasses.actions + ' .' + swalClasses.cancel);
 };
 var getActions = function getActions() {
   return elementByClass(swalClasses.actions);
+};
+var getHeader = function getHeader() {
+  return elementByClass(swalClasses.header);
 };
 var getFooter = function getFooter() {
   return elementByClass(swalClasses.footer);
@@ -461,7 +474,7 @@ var isNodeEnv = function isNodeEnv() {
   return typeof window === 'undefined' || typeof document === 'undefined';
 };
 
-var sweetHTML = "\n <div aria-labelledby=\"".concat(swalClasses.title, "\" aria-describedby=\"").concat(swalClasses.content, "\" class=\"").concat(swalClasses.popup, "\" tabindex=\"-1\">\n   <div class=\"").concat(swalClasses.header, "\">\n     <ul class=\"").concat(swalClasses.progresssteps, "\"></ul>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.error, "\">\n       <span class=\"swal2-x-mark\"><span class=\"swal2-x-mark-line-left\"></span><span class=\"swal2-x-mark-line-right\"></span></span>\n     </div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.question, "\">\n       <span class=\"").concat(swalClasses['icon-text'], "\">?</span>\n      </div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.warning, "\">\n       <span class=\"").concat(swalClasses['icon-text'], "\">!</span>\n      </div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.info, "\">\n       <span class=\"").concat(swalClasses['icon-text'], "\">i</span>\n      </div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.success, "\">\n       <div class=\"swal2-success-circular-line-left\"></div>\n       <span class=\"swal2-success-line-tip\"></span> <span class=\"swal2-success-line-long\"></span>\n       <div class=\"swal2-success-ring\"></div> <div class=\"swal2-success-fix\"></div>\n       <div class=\"swal2-success-circular-line-right\"></div>\n     </div>\n     <img class=\"").concat(swalClasses.image, "\" />\n     <h2 class=\"").concat(swalClasses.title, "\" id=\"").concat(swalClasses.title, "\"></h2>\n     <button type=\"button\" class=\"").concat(swalClasses.close, "\">\xD7</button>\n   </div>\n   <div class=\"").concat(swalClasses.content, "\">\n     <div id=\"").concat(swalClasses.content, "\"></div>\n     <input class=\"").concat(swalClasses.input, "\" />\n     <input type=\"file\" class=\"").concat(swalClasses.file, "\" />\n     <div class=\"").concat(swalClasses.range, "\">\n       <input type=\"range\" />\n       <output></output>\n     </div>\n     <select class=\"").concat(swalClasses.select, "\"></select>\n     <div class=\"").concat(swalClasses.radio, "\"></div>\n     <label for=\"").concat(swalClasses.checkbox, "\" class=\"").concat(swalClasses.checkbox, "\">\n       <input type=\"checkbox\" />\n       <span class=\"").concat(swalClasses.label, "\"></span>\n     </label>\n     <textarea class=\"").concat(swalClasses.textarea, "\"></textarea>\n     <div class=\"").concat(swalClasses['validation-message'], "\" id=\"").concat(swalClasses['validation-message'], "\"></div>\n   </div>\n   <div class=\"").concat(swalClasses.actions, "\">\n     <button type=\"button\" class=\"").concat(swalClasses.confirm, "\">OK</button>\n     <button type=\"button\" class=\"").concat(swalClasses.cancel, "\">Cancel</button>\n   </div>\n   <div class=\"").concat(swalClasses.footer, "\">\n   </div>\n </div>\n").replace(/(^|\n)\s*/g, '');
+var sweetHTML = "\n <div aria-labelledby=\"".concat(swalClasses.title, "\" aria-describedby=\"").concat(swalClasses.content, "\" class=\"").concat(swalClasses.popup, "\" tabindex=\"-1\">\n   <div class=\"").concat(swalClasses.header, "\">\n     <ul class=\"").concat(swalClasses['progress-steps'], "\"></ul>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.error, "\">\n       <span class=\"swal2-x-mark\"><span class=\"swal2-x-mark-line-left\"></span><span class=\"swal2-x-mark-line-right\"></span></span>\n     </div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.question, "\"></div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.warning, "\"></div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.info, "\"></div>\n     <div class=\"").concat(swalClasses.icon, " ").concat(iconTypes.success, "\">\n       <div class=\"swal2-success-circular-line-left\"></div>\n       <span class=\"swal2-success-line-tip\"></span> <span class=\"swal2-success-line-long\"></span>\n       <div class=\"swal2-success-ring\"></div> <div class=\"swal2-success-fix\"></div>\n       <div class=\"swal2-success-circular-line-right\"></div>\n     </div>\n     <img class=\"").concat(swalClasses.image, "\" />\n     <h2 class=\"").concat(swalClasses.title, "\" id=\"").concat(swalClasses.title, "\"></h2>\n     <button type=\"button\" class=\"").concat(swalClasses.close, "\">&times;</button>\n   </div>\n   <div class=\"").concat(swalClasses.content, "\">\n     <div id=\"").concat(swalClasses.content, "\"></div>\n     <input class=\"").concat(swalClasses.input, "\" />\n     <input type=\"file\" class=\"").concat(swalClasses.file, "\" />\n     <div class=\"").concat(swalClasses.range, "\">\n       <input type=\"range\" />\n       <output></output>\n     </div>\n     <select class=\"").concat(swalClasses.select, "\"></select>\n     <div class=\"").concat(swalClasses.radio, "\"></div>\n     <label for=\"").concat(swalClasses.checkbox, "\" class=\"").concat(swalClasses.checkbox, "\">\n       <input type=\"checkbox\" />\n       <span class=\"").concat(swalClasses.label, "\"></span>\n     </label>\n     <textarea class=\"").concat(swalClasses.textarea, "\"></textarea>\n     <div class=\"").concat(swalClasses['validation-message'], "\" id=\"").concat(swalClasses['validation-message'], "\"></div>\n   </div>\n   <div class=\"").concat(swalClasses.actions, "\">\n     <button type=\"button\" class=\"").concat(swalClasses.confirm, "\">OK</button>\n     <button type=\"button\" class=\"").concat(swalClasses.cancel, "\">Cancel</button>\n   </div>\n   <div class=\"").concat(swalClasses.footer, "\">\n   </div>\n </div>\n").replace(/(^|\n)\s*/g, '');
 /*
  * Add modal + backdrop to DOM
  */
@@ -640,8 +653,18 @@ var renderActions = function renderActions(params) {
 
   confirmButton.className = swalClasses.confirm;
   addClass(confirmButton, params.confirmButtonClass);
+
+  if (params.customClass) {
+    addClass(confirmButton, params.customClass.confirmButton);
+  }
+
   cancelButton.className = swalClasses.cancel;
-  addClass(cancelButton, params.cancelButtonClass); // Buttons styling
+  addClass(cancelButton, params.cancelButtonClass);
+
+  if (params.customClass) {
+    addClass(cancelButton, params.customClass.cancelButton);
+  } // Buttons styling
+
 
   if (params.buttonsStyling) {
     addClass([confirmButton, cancelButton], swalClasses.styled); // Buttons background colors
@@ -688,7 +711,12 @@ var renderIcon = function renderIcon(params) {
   if (params.type) {
     if (Object.keys(iconTypes).indexOf(params.type) !== -1) {
       var icon = Swal.getPopup().querySelector(".".concat(swalClasses.icon, ".").concat(iconTypes[params.type]));
-      show(icon); // Animate icon
+      show(icon); // Custom class
+
+      if (params.customClass) {
+        addClass(icon, params.customClass.icon);
+      } // Animate icon
+
 
       if (params.animation) {
         addClass(icon, "swal2-animate-".concat(params.type, "-icon"));
@@ -724,6 +752,10 @@ var renderImage = function renderImage(params) {
     if (params.imageClass) {
       addClass(image, params.imageClass);
     }
+
+    if (params.customClass) {
+      addClass(image, params.customClass.image);
+    }
   } else {
     hide(image);
   }
@@ -742,19 +774,19 @@ var renderProgressSteps = function renderProgressSteps(params) {
     }
 
     params.progressSteps.forEach(function (step, index) {
-      var circle = document.createElement('li');
-      addClass(circle, swalClasses.progresscircle);
-      circle.innerHTML = step;
+      var stepEl = document.createElement('li');
+      addClass(stepEl, swalClasses['progress-step']);
+      stepEl.innerHTML = step;
 
       if (index === currentProgressStep) {
-        addClass(circle, swalClasses.activeprogressstep);
+        addClass(stepEl, swalClasses['active-progress-step']);
       }
 
-      progressStepsContainer.appendChild(circle);
+      progressStepsContainer.appendChild(stepEl);
 
       if (index !== params.progressSteps.length - 1) {
         var line = document.createElement('li');
-        addClass(line, swalClasses.progressline);
+        addClass(line, swalClasses['progress-step-line']);
 
         if (params.progressStepsDistance) {
           line.style.width = params.progressStepsDistance;
@@ -786,22 +818,22 @@ var renderTitle = function renderTitle(params) {
  * Global function to determine if SweetAlert2 popup is shown
  */
 
-var isVisible$1 = function isVisible() {
-  return !!getPopup();
+var isVisible$1 = function isVisible$$1() {
+  return isVisible(getPopup());
 };
 /*
  * Global function to click 'Confirm' button
  */
 
 var clickConfirm = function clickConfirm() {
-  return getConfirmButton().click();
+  return getConfirmButton() && getConfirmButton().click();
 };
 /*
  * Global function to click 'Cancel' button
  */
 
 var clickCancel = function clickCancel() {
-  return getCancelButton().click();
+  return getCancelButton() && getCancelButton().click();
 };
 
 function fire() {
@@ -1089,9 +1121,16 @@ var defaultParams = {
   onBeforeOpen: null,
   onAfterClose: null,
   onOpen: null,
-  onClose: null
+  onClose: null,
+  scrollbarPadding: true
 };
-var deprecatedParams = [];
+var deprecatedParams = {
+  customContainerClass: 'customClass',
+  confirmButtonClass: 'customClass',
+  cancelButtonClass: 'customClass',
+  imageClass: 'customClass',
+  inputClass: 'customClass'
+};
 var toastIncompatibleParams = ['allowOutsideClick', 'allowEnterKey', 'backdrop', 'focusConfirm', 'focusCancel', 'heightAuto', 'keydownListenerCapture'];
 /**
  * Is valid parameter
@@ -1115,7 +1154,7 @@ var isUpdatableParameter = function isUpdatableParameter(paramName) {
  */
 
 var isDeprecatedParameter = function isDeprecatedParameter(paramName) {
-  return deprecatedParams.indexOf(paramName) !== -1;
+  return deprecatedParams[paramName];
 };
 /**
  * Show relevant warnings for given params
@@ -1134,7 +1173,7 @@ var showWarningsForParams = function showWarningsForParams(params) {
     }
 
     if (isDeprecatedParameter(param)) {
-      warnOnce("The parameter \"".concat(param, "\" is deprecated and will be removed in the next major release."));
+      warnOnce("The parameter \"".concat(param, "\" is deprecated and will be removed in the next major release. Please use \"").concat(isDeprecatedParameter(param), "\" instead."));
     }
   }
 };
@@ -1154,11 +1193,13 @@ var staticMethods = Object.freeze({
 	getTitle: getTitle,
 	getContent: getContent,
 	getImage: getImage,
+	getIcon: getIcon,
 	getIcons: getIcons,
 	getCloseButton: getCloseButton,
 	getActions: getActions,
 	getConfirmButton: getConfirmButton,
 	getCancelButton: getCancelButton,
+	getHeader: getHeader,
 	getFooter: getFooter,
 	getFocusableElements: getFocusableElements,
 	getValidationMessage: getValidationMessage,
@@ -1665,7 +1706,7 @@ function setParameters(params) {
   } // Set popup padding
 
 
-  if (params.padding) {
+  if (params.padding !== null) {
     popup.style.padding = typeof params.padding === 'number' ? params.padding + 'px' : params.padding;
   } // Set popup background
 
@@ -1683,6 +1724,10 @@ function setParameters(params) {
 
   var container = getContainer();
   var closeButton = getCloseButton();
+  var header = getHeader();
+  var title = getTitle();
+  var content = getContent();
+  var actions = getActions();
   var footer = getFooter(); // Title
 
   renderTitle(params); // Content
@@ -1732,11 +1777,18 @@ function setParameters(params) {
     addClass(popup, swalClasses.toast);
   } else {
     addClass(popup, swalClasses.modal);
-  } // Custom Class
+  } // Custom classes
 
 
   if (params.customClass) {
-    addClass(popup, params.customClass);
+    addClass(container, params.customClass.container);
+    addClass(popup, typeof params.customClass === 'string' ? params.customClass : params.customClass.popup);
+    addClass(header, params.customClass.header);
+    addClass(title, params.customClass.title);
+    addClass(closeButton, params.customClass.closeButton);
+    addClass(content, params.customClass.content);
+    addClass(actions, params.customClass.actions);
+    addClass(footer, params.customClass.footer);
   }
 
   if (params.customContainerClass) {
@@ -1808,7 +1860,10 @@ var openPopup = function openPopup(params) {
   }
 
   if (isModal()) {
-    fixScrollbar();
+    if (params.scrollbarPadding) {
+      fixScrollbar();
+    }
+
     iOSfix();
     IEfix();
     setAriaHidden(); // sweetalert2/issues/1247
@@ -1951,7 +2006,7 @@ function _main(userParams) {
       switch (e.type) {
         case 'click':
           // Clicked 'confirm'
-          if (targetedConfirm && constructor.isVisible()) {
+          if (targetedConfirm) {
             _this.disableButtons();
 
             if (innerParams.input) {
@@ -1985,7 +2040,7 @@ function _main(userParams) {
               confirm(true);
             } // Clicked 'cancel'
 
-          } else if (targetedCancel && constructor.isVisible()) {
+          } else if (targetedCancel) {
             _this.disableButtons();
 
             dismissWith(constructor.DismissReason.cancel);
@@ -2220,6 +2275,10 @@ function _main(userParams) {
         addClass(inputContainer, innerParams.inputClass);
       }
 
+      if (innerParams.customClass) {
+        addClass(inputContainer, innerParams.customClass.input);
+      }
+
       hide(inputContainer);
     }
 
@@ -2443,7 +2502,7 @@ function update(params) {
     if (Swal.isUpdatableParameter(param)) {
       validUpdatableParams[param] = params[param];
     } else {
-      warn("Invalid parameter to update: \"".concat(param, "\". Updatable params are listed here: TODO (@limonte) add link"));
+      warn("Invalid parameter to update: \"".concat(param, "\". Updatable params are listed here: https://github.com/sweetalert2/sweetalert2/blob/master/src/utils/params.js"));
     }
   });
   var innerParams = privateProps.innerParams.get(this);
@@ -2556,7 +2615,7 @@ Object.keys(instanceMethods).forEach(function (key) {
   };
 });
 SweetAlert.DismissReason = DismissReason;
-SweetAlert.version = '8.0.7';
+SweetAlert.version = '8.5.0';
 
 var Swal = SweetAlert;
 Swal.default = Swal;

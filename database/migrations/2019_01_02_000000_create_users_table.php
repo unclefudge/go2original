@@ -39,7 +39,7 @@ class CreateUsersTable extends Migration
             // Additional fields
             $table->unsignedInteger('grade_id')->nullable();
             $table->unsignedInteger('school_id')->nullable();
-            $table->dateTime('media_consent')->nullable();
+            $table->string('media_consent', 50)->nullable();
             $table->unsignedInteger('media_consent_by')->nullable();
             $table->dateTime('media_consent_at')->nullable();
             $table->string('photo', 255)->nullable();

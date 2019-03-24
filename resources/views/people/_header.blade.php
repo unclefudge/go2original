@@ -1,120 +1,64 @@
-{{-- Member bar --}}
-<div class="member-bar {{ (!$user->status) ? 'member-inactive' : '' }}">
-    <!--<i class="iicon-user-member-bar hidden-xs-down"></i>-->
-
-    <style>
-        /* Container needed to position the overlay. Adjust the width as needed */
-        .avatar-container {
-            position: relative;
-            width: 90px;
-
-            margin: -20px 20px -20px -90px;  /* margin: 0 20px 0 -80px; */
-            cursor: pointer;
-            float: left;
-        }
-
-        /* The overlay effect (full height and width) - lays on top of the container and over the image */
-        .avatar-overlay {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            width: 96px;
-            opacity: 0;
-            transition: .3s ease;
-            background: rgb(0, 0, 0);
-            background: rgba(0, 0, 0, 0.3); /* Black see-through */
-            /*border-radius: 0%;*/
-        }
-
-        /* When you mouse over the container, fade in the overlay icon*/
-        .avatar-container:hover .avatar-overlay {
-            opacity: 1;
-        }
-        .avatar-image {
-            height: 96px;
-            border-radius: 0%;
-        }
-
-        .avatar-edit:hover {
-            color: #FF0000;
-            background: rgb(0, 0, 0);
-            background: rgba(0, 0, 0, 0.3); /* Black see-through */
-        }
-
-        .avatar-icon {
-            position: absolute;
-            bottom: 1px;
-            right: 1px;
-        }
-
-        @media screen and (max-width: 825px) {
-            .avatar-container {
-                display: block;
-                float: none;
-                margin: 0px;
-                width: auto;
-                text-align: center;
-            }
-            .avatar-overlay {
-                left: 50%;
-                right: 50%;
-                width: auto;
-            }
-            .avatar-icon {
-                position: absolute;
-                top:60px;
-                left: 12px
-            }
-        }
-    </style>
-    <div class="member-name">
-        {{-- Avatar --}}
-        <div class="avatar-container" id="avatar">
-            <img class="avatar-image" src="{{ $user->photoSmPath }}?<?=rand(1, 32000)?>" alt="Avatar">
-            <div class="avatar-overlay">
-                <a href="#" class="avatar-edit" title="Edit" id="avatar-edit">
-                    <img  class="avatar-icon" src="/img/icon-edit-avatar.png" height="35px">
-                </a>
-            </div>
-        </div>
-        <div class="member-fullname">{{ $user->firstname }} {{ $user->lastname }}</div>
-        <span class="member-number">{{ $user->type }}</span>
-        <span class="member-split">&nbsp;|&nbsp;</span>
-        <span class="dropdown" style="text-transform: none">
-            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" style="padding: 1px 1px 1px 8px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ ($user->status) ? 'Active' : 'Inactive' }}
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ ($user->status) ? '#' : "/people/$user->id/status/1" }}">Active</a>
-                <a class="dropdown-item" href="{{ (!$user->status) ? '#' : "/people/$user->id/status/0" }}">Inactive</a>
-                @if (!$user->status)
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" id="but_del_person">Delete</a>
+<div class="kt-subheader kt-grid__item" id="kt_subheader">
+    <div class="kt-subheader__main">
+        {{-- Member bar --}}
+        <div class="mbar">
+            <div class="mbar-name">
+                {{-- Avatar --}}
+                <div class="avatar-container" id="avatar">
+                    <img class="avatar-image" src="{{ $user->photoSmPath }}?<?=rand(1, 32000)?>" alt="Avatar">
+                    <div class="avatar-overlay">
+                        <a href="#" class="avatar-edit" title="Edit" id="avatar-edit"><img class="avatar-icon" src="/img/icon-edit-avatar.png" height="35px"></a>
+                    </div>
+                </div>
+                <div class="mbar-fullname">
+                    {{ $user->firstname }} {{ $user->lastname }} <a href="/people" class="btn btn-secondary mbar-btn" style="margin-left: 15px"  data-toggle="modal" data-target="#modal_personal"> Edit</a>
+                </div>
+                <span class="mbar-type">{{ $user->type }}</span>
+                @if ($user->phone)
+                    <span class="mbar-split">&nbsp;|&nbsp;</span>
+                    <span class="mbar-link">{!! ($user->phone) ? "<a href='tel:'".preg_replace("/[^0-9]/", "", $user->phone)."> $user->phone </a>" : '' !!}</span>
+                @endif
+                @if ($user->email)
+                    <span class="mbar-split">&nbsp;|&nbsp;</span>
+                    <span class="mbar-link"><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></span>
                 @endif
             </div>
-        </span>
+        </div>
     </div>
 
-    <?php
-    $active_profile = $active_settings = $active_attendance = '';
-    list($first, $rest) = explode('/', Request::path(), 2);
-    if (!ctype_digit($rest)) {
-        list($uid, $rest) = explode('/', $rest, 2);
-        $active_settings = (preg_match('/^settings*/', $rest)) ? 'active' : '';
-        $active_attendance = (preg_match('/^attendance*/', $rest)) ? 'active' : '';
-    } else
-        $active_profile = 'active';
-    ?>
-
-    <ul class="member-bar-menu">
-        <li class="member-bar-item {{ $active_profile }}"><i class="iicon-profile"></i><a class="member-bar-link" href="/people/{{ $user->id }}" title="Profile">PROFILE</a></li>
-        <li class="member-bar-item "><i class="iicon-document"></i><a class="member-bar-link" href="/people/{{ $user->id }}/activity" title="Activity">Activity</a></li>
-
-        <li class="member-bar-item "><i class="iicon-lock"></i><a class="member-bar-link" href="/people/{{ $user->id }}" title="Security">SECURITY</a></li>
-    </ul>
+    <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+            <div>
+                <div class="dropdown dropdown-inline">
+                    <a href="#" class="btn btn-light kt-subheader__btn-options dropdown-toggle" style="padding: .5rem 1rem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ ($user->status) ? 'Active' : 'Inactive' }}</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        @if (!$user->status)
+                            <a class="dropdown-item" href="{{ ($user->status) ? '#' : "/people/$user->id/status/1" }}"><i class="fa fa-eye" style="width: 25px"></i> Make active</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" id="but_del_person"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
+                            @else<a class="dropdown-item" href="{{ (!$user->status) ? '#' : "/people/$user->id/status/0" }}"><i class="fa fa-eye-slash" style="width: 25px"></i> Make inactive</a>
+                        @endif
+                    </div>
+                </div>
+                <div class="dropdown dropdown-inline">
+                    <a href="#" class="btn kt-subheader__btn-secondary kt-subheader__btn-options" style="padding: 1.4rem 1rem;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog" style="font-size: 18px !important; color: #fff"></i> </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#"><i class="fa fa-lock" style="width: 25px"></i> Permissions</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-user-friends" style="width: 25px"></i> Merge this profile</a>
+                        @if (!$user->status)
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" id="but_del_person"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 10px; opacity: .8">
+                <span style="color: #fff">
+                    {{ $user->gender }} {{ ($user->gender && $user->dob) ? '|' : '' }} {{ ($user->dob) ? "$user->age years" : '' }}
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
 
 

@@ -1801,7 +1801,7 @@ var KTApp = function() {
             var skin = (options && options.skin) ? options.skin : 'light';
             var alignment = (options && options.alignment) ? options.alignment : 'right';
             var size = (options && options.size) ? 'kt-spinner--' + options.size : '';
-            var classes = 'kt-loader ' + 'kt-loader--' + skin + ' kt-loader--' + alignment + ' kt-loader--' + size;
+            var classes = 'kt-spinner ' + 'kt-spinner--' + skin + ' kt-spinner--' + alignment + ' kt-spinner--' + size; 
 
             KTApp.unprogress(target);
 
@@ -1827,6 +1827,188 @@ var KTApp = function() {
 $(document).ready(function() {
     KTApp.init(KTAppOptions);
 });
+"use strict";
+
+// plugin setup
+var KTDialog = function(options) {
+    // Main object
+    var the = this;
+
+    // Get element object
+    var element;
+    var body = KTUtil.get('body');  
+
+    // Default options
+    var defaultOptions = {
+        'placement' : 'top center',
+        'type'  : 'loader',
+        'width' : 100,
+        'state' : 'default',
+        'message' : 'Loading...' 
+    };    
+
+    ////////////////////////////
+    // ** Private Methods  ** //
+    ////////////////////////////
+
+    var Plugin = {
+        /**
+         * Construct
+         */
+
+        construct: function(options) {
+            Plugin.init(options);
+
+            return the;
+        },
+
+        /**
+         * Handles subtoggle click toggle
+         */
+        init: function(options) {
+            the.events = [];
+
+            // merge default and user defined options
+            the.options = KTUtil.deepExtend({}, defaultOptions, options);
+
+            the.state = false;
+        },
+
+        /**
+         * Show dialog
+         */
+        show: function() {
+            Plugin.eventTrigger('show');
+
+            element = document.createElement("DIV");
+            KTUtil.setHTML(element, the.options.message);
+            
+            KTUtil.addClass(element, 'kt-dialog kt-dialog--shown');
+            KTUtil.addClass(element, 'kt-dialog--' + the.options.state);
+            KTUtil.addClass(element, 'kt-dialog--' + the.options.type); 
+
+            if (the.options.placement == 'top center') {
+                KTUtil.addClass(element, 'kt-dialog--top-center');
+            }
+
+            body.appendChild(element);
+
+            the.state = 'shown';
+
+            Plugin.eventTrigger('shown');
+
+            return the;
+        },
+
+        /**
+         * Hide dialog
+         */
+        hide: function() {
+            if (element) {
+                Plugin.eventTrigger('hide');
+
+                element.remove();
+                the.state = 'hidden';
+
+                Plugin.eventTrigger('hidden');
+            }
+
+            return the;
+        },
+
+        /**
+         * Trigger events
+         */
+        eventTrigger: function(name) {
+            for (var i = 0; i < the.events.length; i++) {
+                var event = the.events[i];
+
+                if (event.name == name) {
+                    if (event.one == true) {
+                        if (event.fired == false) {
+                            the.events[i].fired = true;                            
+                            event.handler.call(this, the);
+                        }
+                    } else {
+                        event.handler.call(this, the);
+                    }
+                }
+            }
+        },
+
+        addEvent: function(name, handler, one) {
+            the.events.push({
+                name: name,
+                handler: handler,
+                one: one,
+                fired: false
+            });
+
+            return the;
+        }
+    };
+
+    //////////////////////////
+    // ** Public Methods ** //
+    //////////////////////////
+
+    /**
+     * Set default options 
+     */
+
+    the.setDefaults = function(options) {
+        defaultOptions = options;
+    };
+
+    /**
+     * Check shown state 
+     */
+    the.shown = function() {
+        return the.state == 'shown';
+    };
+
+    /**
+     * Check hidden state 
+     */
+    the.hidden = function() {
+        return the.state == 'hidden';
+    };
+
+    /**
+     * Show dialog 
+     */
+    the.show = function() {
+        return Plugin.show();
+    };
+
+    /**
+     * Hide dialog
+     */
+    the.hide = function() {
+        return Plugin.hide();
+    };
+
+    /**
+     * Attach event
+     * @returns {KTToggle}
+     */
+    the.on = function(name, handler) {
+        return Plugin.addEvent(name, handler);
+    };
+
+    /**
+     * Attach event that will be fired once
+     * @returns {KTToggle}
+     */
+    the.one = function(name, handler) {
+        return Plugin.addEvent(name, handler, true);
+    };
+
+    // Construct plugin
+    Plugin.construct.apply(the, [options]);
+
+    return the;
+};
 'use strict';
 (function($) {
 
@@ -2680,7 +2862,7 @@ $(document).ready(function() {
 									width = maxWidthList[field];
 								}
 								else {
-									var cells = $(datatable.table).find('.' + pfx + 'datatable__cell[data-field="' + field + '"]');
+									var cells = $(datatable.tableBody).find('.' + pfx + 'datatable__cell[data-field="' + field + '"]');
 									width = maxWidthList[field] = Math.max.apply(null,
 											$(cells).map(function() {
 												return $(this).outerWidth();
@@ -3568,6 +3750,10 @@ $(document).ready(function() {
 						if (!nav.prev) $(pagerPrev).remove();
 						if (!nav.next) $(pagerNext).remove();
 						if (!nav.last) $(pagerLast).remove();
+						if (!nav.more) {
+							$(pagerMorePrev).remove();
+							$(pagerMoreNext).remove();
+						}
 					},
 				};
 				pg.init(meta);
@@ -4989,9 +5175,9 @@ $(document).ready(function() {
 			 */
 			rows: function(selector) {
 				if (Plugin.isLocked()) {
-					Plugin.nodeTr = Plugin.recentNode = t(datatable.tableBody).find(selector).filter('.' + pfx + 'datatable__lock--scroll > .' + pfx + 'datatable__row');
+					Plugin.nodeTr = Plugin.recentNode = $(datatable.tableBody).find(selector).filter('.' + pfx + 'datatable__lock--scroll > .' + pfx + 'datatable__row');
 				} else {
-					Plugin.nodeTr = Plugin.recentNode = t(datatable.tableBody).find(selector).filter('.' + pfx + 'datatable__row');
+					Plugin.nodeTr = Plugin.recentNode = $(datatable.tableBody).find(selector).filter('.' + pfx + 'datatable__row');
 				}
 				return datatable;
 			},
@@ -5290,10 +5476,11 @@ $(document).ready(function() {
 
 					// navigation buttons
 					navigation: {
-						prev: true, // display prev link
-						next: true, // display next link
-						first: true, // display first link
-						last: true, // display last link
+						prev: true, // display prev button
+						next: true, // display next button
+						first: true, // display first button
+						last: true, // display last button
+						more: false // display more button
 					},
 
 					// page size select
@@ -5618,188 +5805,6 @@ if (KTUtil.isRTL()) {
 
 $.extend(true, $.fn.KTDatatable.defaults, defaults);
 "use strict";
-
-// plugin setup
-var KTDialog = function(options) {
-    // Main object
-    var the = this;
-
-    // Get element object
-    var element;
-    var body = KTUtil.get('body');  
-
-    // Default options
-    var defaultOptions = {
-        'placement' : 'top center',
-        'type'  : 'loader',
-        'width' : 100,
-        'state' : 'default',
-        'message' : 'Loading...' 
-    };    
-
-    ////////////////////////////
-    // ** Private Methods  ** //
-    ////////////////////////////
-
-    var Plugin = {
-        /**
-         * Construct
-         */
-
-        construct: function(options) {
-            Plugin.init(options);
-
-            return the;
-        },
-
-        /**
-         * Handles subtoggle click toggle
-         */
-        init: function(options) {
-            the.events = [];
-
-            // merge default and user defined options
-            the.options = KTUtil.deepExtend({}, defaultOptions, options);
-
-            the.state = false;
-        },
-
-        /**
-         * Show dialog
-         */
-        show: function() {
-            Plugin.eventTrigger('show');
-
-            element = document.createElement("DIV");
-            KTUtil.setHTML(element, the.options.message);
-            
-            KTUtil.addClass(element, 'kt-dialog kt-dialog--shown');
-            KTUtil.addClass(element, 'kt-dialog--' + the.options.state);
-            KTUtil.addClass(element, 'kt-dialog--' + the.options.type); 
-
-            if (the.options.placement == 'top center') {
-                KTUtil.addClass(element, 'kt-dialog--top-center');
-            }
-
-            body.appendChild(element);
-
-            the.state = 'shown';
-
-            Plugin.eventTrigger('shown');
-
-            return the;
-        },
-
-        /**
-         * Hide dialog
-         */
-        hide: function() {
-            if (element) {
-                Plugin.eventTrigger('hide');
-
-                element.remove();
-                the.state = 'hidden';
-
-                Plugin.eventTrigger('hidden');
-            }
-
-            return the;
-        },
-
-        /**
-         * Trigger events
-         */
-        eventTrigger: function(name) {
-            for (var i = 0; i < the.events.length; i++) {
-                var event = the.events[i];
-
-                if (event.name == name) {
-                    if (event.one == true) {
-                        if (event.fired == false) {
-                            the.events[i].fired = true;                            
-                            event.handler.call(this, the);
-                        }
-                    } else {
-                        event.handler.call(this, the);
-                    }
-                }
-            }
-        },
-
-        addEvent: function(name, handler, one) {
-            the.events.push({
-                name: name,
-                handler: handler,
-                one: one,
-                fired: false
-            });
-
-            return the;
-        }
-    };
-
-    //////////////////////////
-    // ** Public Methods ** //
-    //////////////////////////
-
-    /**
-     * Set default options 
-     */
-
-    the.setDefaults = function(options) {
-        defaultOptions = options;
-    };
-
-    /**
-     * Check shown state 
-     */
-    the.shown = function() {
-        return the.state == 'shown';
-    };
-
-    /**
-     * Check hidden state 
-     */
-    the.hidden = function() {
-        return the.state == 'hidden';
-    };
-
-    /**
-     * Show dialog 
-     */
-    the.show = function() {
-        return Plugin.show();
-    };
-
-    /**
-     * Hide dialog
-     */
-    the.hide = function() {
-        return Plugin.hide();
-    };
-
-    /**
-     * Attach event
-     * @returns {KTToggle}
-     */
-    the.on = function(name, handler) {
-        return Plugin.addEvent(name, handler);
-    };
-
-    /**
-     * Attach event that will be fired once
-     * @returns {KTToggle}
-     */
-    the.one = function(name, handler) {
-        return Plugin.addEvent(name, handler, true);
-    };
-
-    // Construct plugin
-    Plugin.construct.apply(the, [options]);
-
-    return the;
-};
-"use strict";
 var KTHeader = function(elementId, options) {
     // Main object
     var the = this;
@@ -5982,248 +5987,6 @@ var KTHeader = function(elementId, options) {
      */
     the.on = function(name, handler) {
         return Plugin.addEvent(name, handler);
-    };
-
-    ///////////////////////////////
-    // ** Plugin Construction ** //
-    ///////////////////////////////
-
-    // Run plugin
-    Plugin.construct.apply(the, [options]);
-
-    // Init done
-    init = true;
-
-    // Return plugin instance
-    return the;
-};
-"use strict";
-var KTOffcanvas = function(elementId, options) {
-    // Main object
-    var the = this;
-    var init = false;
-
-    // Get element object
-    var element = KTUtil.get(elementId);
-    var body = KTUtil.get('body');
-
-    if (!element) {
-        return;
-    }
-
-    // Default options
-    var defaultOptions = {};
-
-    ////////////////////////////
-    // ** Private Methods  ** //
-    ////////////////////////////
-
-    var Plugin = {
-        construct: function(options) {
-            if (KTUtil.data(element).has('offcanvas')) {
-                the = KTUtil.data(element).get('offcanvas');
-            } else {
-                // reset offcanvas
-                Plugin.init(options);
-                
-                // build offcanvas
-                Plugin.build();
-
-                KTUtil.data(element).set('offcanvas', the);
-            }
-
-            return the;
-        },
-
-        init: function(options) {
-            the.events = [];
-
-            // merge default and user defined options
-            the.options = KTUtil.deepExtend({}, defaultOptions, options);
-            the.overlay;
-
-            the.classBase = the.options.baseClass;
-            the.classShown = the.classBase + '--on';
-            the.classOverlay = the.classBase + '-overlay';
-
-            the.state = KTUtil.hasClass(element, the.classShown) ? 'shown' : 'hidden';
-        },
-
-        build: function() {
-            // offcanvas toggle
-            if (the.options.toggleBy) {
-                if (typeof the.options.toggleBy === 'string') { 
-                    KTUtil.addEvent( the.options.toggleBy, 'click', function(e) {
-                        e.preventDefault();
-                        Plugin.toggle();
-                    }); 
-                } else if (the.options.toggleBy && the.options.toggleBy[0] && the.options.toggleBy[0].target) {
-                    for (var i in the.options.toggleBy) { 
-                        KTUtil.addEvent( the.options.toggleBy[i].target, 'click', function(e) {
-                            e.preventDefault();
-                            Plugin.toggle();
-                        }); 
-                    }
-                } else if (the.options.toggleBy && the.options.toggleBy.target) {
-                    KTUtil.addEvent( the.options.toggleBy.target, 'click', function(e) {
-                        e.preventDefault();
-                        Plugin.toggle();
-                    }); 
-                } 
-            }
-
-            // offcanvas close
-            var closeBy = KTUtil.get(the.options.closeBy);
-            if (closeBy) {
-                KTUtil.addEvent(closeBy, 'click', function(e) {
-                    e.preventDefault();
-                    Plugin.hide();
-                });
-            }
-        },
-
-        isShown: function(target) {
-            return (the.state == 'shown' ? true : false);
-        },
-
-        toggle: function() {;
-            Plugin.eventTrigger('toggle'); 
-
-            if (the.state == 'shown') {
-                Plugin.hide(this);
-            } else {
-                Plugin.show(this);
-            }
-        },
-
-        show: function(target) {
-            if (the.state == 'shown') {
-                return;
-            }
-
-            Plugin.eventTrigger('beforeShow');
-
-            Plugin.togglerClass(target, 'show');
-
-            // Offcanvas panel
-            KTUtil.addClass(body, the.classShown);
-            KTUtil.addClass(element, the.classShown);
-
-            the.state = 'shown';
-
-            if (the.options.overlay) {
-                the.overlay = KTUtil.insertAfter(document.createElement('DIV') , element );
-                KTUtil.addClass(the.overlay, the.classOverlay);
-                KTUtil.addEvent(the.overlay, 'click', function(e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    Plugin.hide(target);       
-                });
-            }
-
-            Plugin.eventTrigger('afterShow');
-        },
-
-        hide: function(target) {
-            if (the.state == 'hidden') {
-                return;
-            }
-
-            Plugin.eventTrigger('beforeHide');
-
-            Plugin.togglerClass(target, 'hide');
-
-            KTUtil.removeClass(body, the.classShown);
-            KTUtil.removeClass(element, the.classShown);
-
-            the.state = 'hidden';
-
-            if (the.options.overlay && the.overlay) {
-                KTUtil.remove(the.overlay);
-            }
-
-            Plugin.eventTrigger('afterHide');
-        },
-
-        togglerClass: function(target, mode) {
-            // Toggler
-            var id = KTUtil.attr(target, 'id');
-            var toggleBy;
-
-            if (the.options.toggleBy && the.options.toggleBy[0] && the.options.toggleBy[0].target) {
-                for (var i in the.options.toggleBy) {
-                    if (the.options.toggleBy[i].target === id) {
-                        toggleBy = the.options.toggleBy[i];
-                    }        
-                }
-            } else if (the.options.toggleBy && the.options.toggleBy.target) {
-                toggleBy = the.options.toggleBy;
-            }
-
-            if (toggleBy) {                
-                var el = KTUtil.get(toggleBy.target);
-                
-                if (mode === 'show') {
-                    KTUtil.addClass(el, toggleBy.state);
-                }
-
-                if (mode === 'hide') {
-                    KTUtil.removeClass(el, toggleBy.state);
-                }
-            }
-        },
-
-        eventTrigger: function(name, args) {
-            for (var i = 0; i < the.events.length; i++) {
-                var event = the.events[i];
-                if (event.name == name) {
-                    if (event.one == true) {
-                        if (event.fired == false) {
-                            the.events[i].fired = true;
-                            event.handler.call(this, the, args);
-                        }
-                    } else {
-                        event.handler.call(this, the, args);
-                    }
-                }
-            }
-        },
-
-        addEvent: function(name, handler, one) {
-            the.events.push({
-                name: name,
-                handler: handler,
-                one: one,
-                fired: false
-            });
-        }
-    };
-
-    //////////////////////////
-    // ** Public Methods ** //
-    //////////////////////////
-    the.setDefaults = function(options) {
-        defaultOptions = options;
-    };
-
-    the.isShown = function() {
-        return Plugin.isShown();
-    };
-
-    the.hide = function() {
-        return Plugin.hide();
-    };
-
-    the.show = function() {
-        return Plugin.show();
-    };
-
-    the.on = function(name, handler) {
-        return Plugin.addEvent(name, handler);
-    };
-
-    the.one = function(name, handler) {
-        return Plugin.addEvent(name, handler, true);
     };
 
     ///////////////////////////////
@@ -7048,6 +6811,248 @@ document.addEventListener("click", function (e) {
         }
     } 
 });
+"use strict";
+var KTOffcanvas = function(elementId, options) {
+    // Main object
+    var the = this;
+    var init = false;
+
+    // Get element object
+    var element = KTUtil.get(elementId);
+    var body = KTUtil.get('body');
+
+    if (!element) {
+        return;
+    }
+
+    // Default options
+    var defaultOptions = {};
+
+    ////////////////////////////
+    // ** Private Methods  ** //
+    ////////////////////////////
+
+    var Plugin = {
+        construct: function(options) {
+            if (KTUtil.data(element).has('offcanvas')) {
+                the = KTUtil.data(element).get('offcanvas');
+            } else {
+                // reset offcanvas
+                Plugin.init(options);
+                
+                // build offcanvas
+                Plugin.build();
+
+                KTUtil.data(element).set('offcanvas', the);
+            }
+
+            return the;
+        },
+
+        init: function(options) {
+            the.events = [];
+
+            // merge default and user defined options
+            the.options = KTUtil.deepExtend({}, defaultOptions, options);
+            the.overlay;
+
+            the.classBase = the.options.baseClass;
+            the.classShown = the.classBase + '--on';
+            the.classOverlay = the.classBase + '-overlay';
+
+            the.state = KTUtil.hasClass(element, the.classShown) ? 'shown' : 'hidden';
+        },
+
+        build: function() {
+            // offcanvas toggle
+            if (the.options.toggleBy) {
+                if (typeof the.options.toggleBy === 'string') { 
+                    KTUtil.addEvent( the.options.toggleBy, 'click', function(e) {
+                        e.preventDefault();
+                        Plugin.toggle();
+                    }); 
+                } else if (the.options.toggleBy && the.options.toggleBy[0] && the.options.toggleBy[0].target) {
+                    for (var i in the.options.toggleBy) { 
+                        KTUtil.addEvent( the.options.toggleBy[i].target, 'click', function(e) {
+                            e.preventDefault();
+                            Plugin.toggle();
+                        }); 
+                    }
+                } else if (the.options.toggleBy && the.options.toggleBy.target) {
+                    KTUtil.addEvent( the.options.toggleBy.target, 'click', function(e) {
+                        e.preventDefault();
+                        Plugin.toggle();
+                    }); 
+                } 
+            }
+
+            // offcanvas close
+            var closeBy = KTUtil.get(the.options.closeBy);
+            if (closeBy) {
+                KTUtil.addEvent(closeBy, 'click', function(e) {
+                    e.preventDefault();
+                    Plugin.hide();
+                });
+            }
+        },
+
+        isShown: function(target) {
+            return (the.state == 'shown' ? true : false);
+        },
+
+        toggle: function() {;
+            Plugin.eventTrigger('toggle'); 
+
+            if (the.state == 'shown') {
+                Plugin.hide(this);
+            } else {
+                Plugin.show(this);
+            }
+        },
+
+        show: function(target) {
+            if (the.state == 'shown') {
+                return;
+            }
+
+            Plugin.eventTrigger('beforeShow');
+
+            Plugin.togglerClass(target, 'show');
+
+            // Offcanvas panel
+            KTUtil.addClass(body, the.classShown);
+            KTUtil.addClass(element, the.classShown);
+
+            the.state = 'shown';
+
+            if (the.options.overlay) {
+                the.overlay = KTUtil.insertAfter(document.createElement('DIV') , element );
+                KTUtil.addClass(the.overlay, the.classOverlay);
+                KTUtil.addEvent(the.overlay, 'click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    Plugin.hide(target);       
+                });
+            }
+
+            Plugin.eventTrigger('afterShow');
+        },
+
+        hide: function(target) {
+            if (the.state == 'hidden') {
+                return;
+            }
+
+            Plugin.eventTrigger('beforeHide');
+
+            Plugin.togglerClass(target, 'hide');
+
+            KTUtil.removeClass(body, the.classShown);
+            KTUtil.removeClass(element, the.classShown);
+
+            the.state = 'hidden';
+
+            if (the.options.overlay && the.overlay) {
+                KTUtil.remove(the.overlay);
+            }
+
+            Plugin.eventTrigger('afterHide');
+        },
+
+        togglerClass: function(target, mode) {
+            // Toggler
+            var id = KTUtil.attr(target, 'id');
+            var toggleBy;
+
+            if (the.options.toggleBy && the.options.toggleBy[0] && the.options.toggleBy[0].target) {
+                for (var i in the.options.toggleBy) {
+                    if (the.options.toggleBy[i].target === id) {
+                        toggleBy = the.options.toggleBy[i];
+                    }        
+                }
+            } else if (the.options.toggleBy && the.options.toggleBy.target) {
+                toggleBy = the.options.toggleBy;
+            }
+
+            if (toggleBy) {                
+                var el = KTUtil.get(toggleBy.target);
+                
+                if (mode === 'show') {
+                    KTUtil.addClass(el, toggleBy.state);
+                }
+
+                if (mode === 'hide') {
+                    KTUtil.removeClass(el, toggleBy.state);
+                }
+            }
+        },
+
+        eventTrigger: function(name, args) {
+            for (var i = 0; i < the.events.length; i++) {
+                var event = the.events[i];
+                if (event.name == name) {
+                    if (event.one == true) {
+                        if (event.fired == false) {
+                            the.events[i].fired = true;
+                            event.handler.call(this, the, args);
+                        }
+                    } else {
+                        event.handler.call(this, the, args);
+                    }
+                }
+            }
+        },
+
+        addEvent: function(name, handler, one) {
+            the.events.push({
+                name: name,
+                handler: handler,
+                one: one,
+                fired: false
+            });
+        }
+    };
+
+    //////////////////////////
+    // ** Public Methods ** //
+    //////////////////////////
+    the.setDefaults = function(options) {
+        defaultOptions = options;
+    };
+
+    the.isShown = function() {
+        return Plugin.isShown();
+    };
+
+    the.hide = function() {
+        return Plugin.hide();
+    };
+
+    the.show = function() {
+        return Plugin.show();
+    };
+
+    the.on = function(name, handler) {
+        return Plugin.addEvent(name, handler);
+    };
+
+    the.one = function(name, handler) {
+        return Plugin.addEvent(name, handler, true);
+    };
+
+    ///////////////////////////////
+    // ** Plugin Construction ** //
+    ///////////////////////////////
+
+    // Run plugin
+    Plugin.construct.apply(the, [options]);
+
+    // Init done
+    init = true;
+
+    // Return plugin instance
+    return the;
+};
 "use strict";
 // plugin setup
 var KTPortlet = function(elementId, options) {
@@ -9055,7 +9060,7 @@ var KTLayout = function() {
 
             // Non functional links notice(can be removed in production)
             $('#kt_aside_menu, #kt_header_menu').on('click', '.kt-menu__link[href="#"]', function(e) {
-                swal("", "You have clicked on a non-functional dummy link!");
+                swal.fire("", "You have clicked on a non-functional dummy link!");
 
                 e.preventDefault();
             });

@@ -1,357 +1,171 @@
-@extends('layouts/checkin')
+@extends('layout/main')
 
-@section('content')
-    <style>
-        body, html {
-            @if ($event->background)
-             background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url("{!! $event->background_path !!}") !important;
-            @endif
-               height: 100%; /* set height */
+@section('bodystyle')
+    style="background-image: url(/img/head-purple.jpg)"
+@endsection
 
-            /* Create the parallax scrolling effect */
-            background-attachment: fixed !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            background-size: cover !important;
-        }
-
-        .search-row {
-            padding: 30px 80px;
-        }
-
-        .btn-register {
-            margin-left: 20px;
-            float: right;
-        }
-
-        .people-grid {
-            padding: 30px;
-        }
-
-        .people-container {
-            width: 95%;
-            margin: 10px auto;
-            position: relative;
-            text-align: center;
-        }
-
-        .people-cell {
-            font-size: 11px;
-            /*height: 100px;
-            width: 110px;*/
-            height: 80px;
-            width: 90px;
-            display: inline-block;
-            margin: 5px;
-            cursor: pointer;
-
-            position: relative;
-            /*background-color: #f6f6f6;*/
-            background-color: #eee;
-
-            background-position: 50% 50%;
-            background-position-x: 50%;
-            background-position-y: 50%;
-            background-size: cover;
-            overflow: hidden;
-        }
-
-        .people-in {
-            opacity: 0.5;
-            background-image: url('/img/avatar-user');
-        }
-
-        .people-label {
-            color: #fff;
-            background-color: #333;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 25px;
-            padding: 0px 3px;
-            line-height: 25px;
-            vertical-align: middle;
-        }
-
-        .leader-label {
-           /* background-color: #B2E2F0;*/ /* #2998B3;*/
-            background-color: #222;
-            color: #00c5dc;
-        }
-
-        .people-check {
-            position: absolute;
-            top: 5px;
-            left: 20px;
-            height: 50px;
-        }
-
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 50px;
-            background-color: white;
-            color: black;
-        }
-
-        @media screen and (max-width: 720px) {
-            /* 480px */
-            .search-row {
-                padding: 15px 20px;
-            }
-
-            .btn-register {
-                margin-left: 10px;
-            }
-
-            .people-grid {
-                padding: 10px;
-            }
-
-            .people-container {
-                margin: 10px;
-                width: 100%;
-            }
-
-            .people-cell {
-                height: 58px;
-                width: 65px;
-            }
-
-            .people-label {
-                height: 20px;
-                padding: 0px 3px;
-                line-height: 20px;
-                vertical-align: middle;
-            }
-
-            /* override metronic lg control */
-            .form-control-lg {
-                height: calc(2.95rem + 2px); /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
-                padding: .85rem 1.15rem;
-                font-size: 1rem;
-                line-height: 1.25;
-                border-radius: .25rem;
-            }
-
-            .input-group-append {
-                margin-left: -1px;
-                height: calc(2.95rem + 2px); /* 4.375rem + 2px, 1.25 rem 1.65rm, 1.25rem, .25rem */
-                font-size: 1rem !important;
-                line-height: 1.25 !important;
-            }
-
-            /* override metronic lg button */
-            .btn-lg {
-                padding: .85rem 1.15rem;
-                font-size: 1rem;
-                line-height: 1.25;
-            }
-        }
-    </style>
-    <div id="vue-app">
-
-        <div class="row text-white" style="height:70px; background: rgb(61, 59, 86)">
-            <div class="col text-center">
-                <a href="/event"><img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px"></a>
-                <h1 style="padding-top: 10px">{{ $event->name }} <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
-            </div>
+@section('subheader')
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader__main">
+            <h3 class="kt-subheader__title">Events</h3>
+            <h4 class="kt-subheader__desc">Events & check-ins</h4>
         </div>
-
-        {{-- Check-in Search  --}}
-        <div class="row search-row">
-            <div class="col-12">
-                <input v-model="xx.instance_id" type="hidden" value="{{ $instance->id }}">
-                <div class="input-group">
-                    <input v-model="xx.searchQuery" type="search" class="form-control form-control-lg m-input" placeholder="Search for someone" name="query">
-                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                    <a href="/checkin/{{ $instance->id }}/register/student" class="btn btn-accent btn-lg btn-register">Register</a>
-                </div>
-            </div>
-        </div>
-
-        {{-- People Grid --}}
-        <div class="row people-grid">
-            <div class="col-12">
-                <checkin-grid :data="xx.people" :filter-key="xx.searchQuery"></checkin-grid>
-            </div>
-        </div>
-
-        <br><br><br>
-
-        <footer class="m-grid__item m-footer footer ">
-            <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
-                <div class="m-footer__wrapper">
-                    <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
-                        <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
-                            <span class="m-footer__copyright">© Go2Youth | All rights reserved</span>
-                        </div>
-                        <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
-                            <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
-                                <li class="m-nav__item">
-                                    <a href="#" class="m-nav__link"><span class="m-nav__link-text">Students: @{{ xx.student_count }}</span></a>
-                                </li>
-                                <li class="m-nav__item">
-                                    <a href="#" class="m-nav__link"><span class="m-nav__link-text">Volunteers: @{{ xx.volunteer_count }}</span></a>
-                                </li>
-                                <li class="m-nav__item m-nav__item--last">
-                                    <a href="#" class="m-nav__link" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="Support Center">
-                                        <i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+        <div class="kt-subheader__toolbar">
+            <div class="kt-subheader__wrapper">
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_create_event">Add Event</a>
+                <div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="">
+                    <a href="#" class="btn kt-subheader__btn-secondary kt-subheader__btn-options" style="padding: 1.4rem 1rem;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog" style="font-size: 18px !important; color: #fff"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" onclick="uSet('show_inactive_events', 0)" id="but_hide_archived"><i class="fa fa-eye-slash" style="width: 25px"></i> Hide Inactive Events</button>
+                        <button class="dropdown-item" onclick="uSet('show_inactive_events', 1)" id="but_show_archived"><i class="fa fa-eye" style="width: 25px"></i> Show inactive events</button>
                     </div>
                 </div>
             </div>
-        </footer>
-
-        <!-- loading Spinner -->
-        <div v-show="xx.searching" style="background-color: #FFF; padding: 20px;">
-            <div class="loadSpinnerOverlay">
-                <div class="loadSpinner"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom"></i> Loading...</div>
-            </div>
         </div>
-        <!--<pre style="background: #fff">@{{ $data }}</pre>
-            -->
     </div>
+    @include('event/_create_event')
+@endsection
+@section('content')
+    <div class="kt-content kt-grid__item kt-grid__item--fluid">
+        <div class="container-fluid">
+            <div class="row">
+                @include('event/_sidebar')
+                {{-- Main Content --}}
+                <div class="col" style="height: 100% !important; min-height: 100% !important;">
+                    @include('event/_sidebar-mobile')
+                    <div class="row">
+                        <div class="col">
+                            {{-- Event List --}}
+                            <div class="kt-portlet kt-portlet--tabs" style="height: 100%; min-height: height: 100%">
+                                <div class="kt-portlet__head">
+                                    <div class="kt-portlet__head-toolbar">
+                                        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-primary nav-tabs-line-2x nav-tabs-line-right nav-tabs-bold">
+                                            <li class="nav-item">
+                                                <a class="nav-link active show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_recur">
+                                                    <i class="fa fa-redo"></i> Recurring Events
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link show" data-toggle="tab" href="#m_tabs_all" role="tab" aria-selected="true" id="type_onetime">
+                                                    <i class="fa fa-calendar"></i> One-Time Events
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__body">
+                                    {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
+                                    {!! Form::hidden('event_type', 'recur', ['id' => 'event_type']) !!}
+                                    {!! Form::hidden('show_archived', session('show_inactive_events'), ['id' => 'show_archived']) !!}
+                                    <div id="events_recur">
+                                        <div class="row">
+                                            @foreach ($events->where('recur', 1)->where('status', 1) as $event)
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="card card-image" style="height: 120px;
+                                                    background-size:100% auto; cursor: pointer; background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url({{ $event->backgroundMedPath}});
+                                                         margin-bottom:20px;" id="event-{{ $event->id }}">
+                                                        <span class="pull-right" style="padding: 5px; height:120px">&nbsp;</span>
+                                                        <div class="text-white text-center align-items-center rgba-black-strong">
+                                                            <div><h3 class="card-title pt-2 text-white"><strong>{{ $event->name }}</strong></h3></div>
+                                                            <div>
+                                                                <span style="font-size: 18px"><i class="flaticon2-laptop sidebar-menu-icon" style="font-size: 28px; padding-top: 10px"></i> Check-in</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
 
-
-    <!-- component template -->
-    <script type="text/x-template" id="grid-template">
-        <div class="people-container">
-            <div v-if="filteredData.length == 0 && !this.xx.searching">
-                <span style="position: relative; background: #ffffff; padding: 20px; border-radius: 4px;">
-                    <span style="font-size: 14px">Couldn't find the person you were looking for. </span>
-                </span>
-            </div>
-            <div v-else>
-                <template v-for="person in filteredData">
-                    <div v-if="!person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)">
-                        <div :class="labelClass(person)">@{{ person.name }}</div>
+                                    <div id="events_onetime">
+                                        One time
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div v-else="person.in" class="people-cell" v-on:click="cellSelect(person)" :style="backgroundImage(person)">
-                        <img class="people-check" src="/img/check-64.png" height="50px">
-                        <div :class="labelClass(person)">@{{ person.name }}</div>
-                    </div>
-                </template>
+                </div>
             </div>
-
         </div>
-    </script>
-@stop
-
-
-@section('vendor-scripts')
-@stop
+    </div>
+@endsection
 
 @section('page-styles')
-@stop
+@endsection
 
-@section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
-<script src="/js/vue.min.js"></script>
-<script src="/js/vue-checkin-functions.js"></script>
-<script type="text/javascript">
+@section('vendor-scripts')
+@endsection
 
-    var xx = {
-        student_count: 0, volunteer_count: 0,
-        people: [], instance_id: {{ $instance->id }}, searchQuery: "{!! app('request')->input('query') !!}",
-    };
+{{-- Metronic + custom Page Scripts --}}
+@section('page-scripts')
+    <script type="text/javascript">
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // register the grid component
-    Vue.component('checkin-grid', {
-        template: '#grid-template',
-        props: {
-            data: Array,
-            filterKey: String
-        },
-        data: function () {
-            return {xx: xx}
-        },
-        computed: {
-            filteredData: function () {
-                var filterKey = this.filterKey && this.filterKey.toLowerCase()
-                var data = this.data
-                if (filterKey) {
-                    data = data.filter(function (row) {
-                        return Object.keys(row).some(function (key) {
-                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-                        })
-                    })
-                }
-                return data
-            }
-        },
-        filters: {
-            capitalize: function (str) {
-                return str.charAt(0).toUpperCase() + str.slice(1)
-            }
-        },
-        methods: {
-            cellSelect: function (person) {
-                if (person.in) {
-                    delAttendanceDB(person).then(function (result) {
-                        if (result)
-                            count_attendance();
-                    }.bind(this));
-                } else {
-                    addAttendanceDB(person, 'check-in').then(function (result) {
-                        if (result)
-                            count_attendance();
-                    }.bind(this));
-                }
+        // Form errors - show modal
+        if ($('#formerrors').val() == 'event')
+            $('#modal_create_event').modal('show');
 
-            },
-            labelClass: function (person) {
-                var str = 'people-label';
+        var show_inactive_events = "{{ session('show_inactive_events') }}";
 
-                if (person.type == 'Volunteer' || person.type == 'Student/Volunteer' || person.type == 'Parent/Volunteer')
-                    str = str + ' leader-label';
-                return str;
-            },
-            backgroundImage: function (person) {
-                var str;
-                if (person.in)
-                    str = "background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('" + person.photo + "')";
-                else
-                    str = "background-image: url('" + person.photo + "')";
-                return str;
+        $(document).ready(function () {
 
-            },
-        }
-    })
+            display_fields();
 
-    var vue_app = new Vue({
-        el: '#vue-app',
-        data: {xx: xx},
-        created: function () {
-            this.getPeople();
-        },
-        methods: {
-            getPeople: function () {
-                this.xx.searching = true;
-                $.getJSON('/data/checkin/people/' + this.xx.instance_id, function (data) {
-                    this.xx.people = data;
-                    this.xx.searching = false;
-                    //console.log(data);
-                    count_attendance();
-                }.bind(this));
-            },
-        },
-    });
+            $("#type_recur").click(function () {
+                $("#event_type").val('recur');
+                display_fields();
+            });
 
-    function count_attendance() {
-        xx.student_count = 0;
-        xx.volunteer_count = 0;
-        $.each(xx.people, function (key, value) {
-            if (value.in && (value.type == 'Student' || value.type == 'Student/Volunteer'))
-                xx.student_count++;
-            if (value.in && (value.type == 'Volunteer' || value.type == 'Parent/Volunteer'))
-                xx.volunteer_count++;
+            $("#type_onetime").click(function () {
+                $("#event_type").val('onetime');
+                display_fields();
+            });
+
+            // Hide Create Event Save button until Name + Frequency selected
+            $("#name").keyup(function () {
+                $("#but_create_event").hide();
+                if ($("#name").val() != '' && $("#frequency").val() != '')
+                    $("#but_create_event").show();
+            });
+            $("#frequency").change(function () {
+                $("#but_create_event").hide();
+                if ($("#name").val() != '' && $("#frequency").val() != '')
+                    $("#but_create_event").show();
+            });
+
+            $(".card").click(function () {
+                var split = this.id.split("-");
+                var id = split[1];
+                window.location.href = "/checkin/" + id;
+            });
+
         });
-    }
-</script>
-@stop
+
+        function display_fields() {
+            var event_type = $("#event_type").val();
+            $('#events_recur').hide();
+            $('#events_onetime').hide();
+
+            if (event_type == 'recur')
+                $('#events_recur').show();
+            else
+                $('#events_onetime').show();
+
+            // Hide / Show Inactive events
+            $('#but_show_archived').hide();
+            $('#but_hide_archived').hide();
+            if (show_inactive_events == 1)
+                $('#but_hide_archived').show();
+            else
+                $('#but_show_archived').show();
+            var archived_events = document.getElementsByClassName('event-archived');
+            for (var i = 0; i < archived_events.length; ++i) {
+                var item = archived_events[i];
+                if (show_inactive_events == 1)
+                    item.classList.remove("kt-hide");
+                else
+                    item.classList.add("kt-hide");
+            }
+        }
+    </script>
+@endsection

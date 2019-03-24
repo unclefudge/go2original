@@ -63,10 +63,17 @@ const defaultParams = {
   onBeforeOpen: null,
   onAfterClose: null,
   onOpen: null,
-  onClose: null
+  onClose: null,
+  scrollbarPadding: true
 }
 
-export const deprecatedParams = []
+export const deprecatedParams = {
+  customContainerClass: 'customClass',
+  confirmButtonClass: 'customClass',
+  cancelButtonClass: 'customClass',
+  imageClass: 'customClass',
+  inputClass: 'customClass'
+}
 
 const toastIncompatibleParams = [
   'allowOutsideClick',
@@ -124,7 +131,7 @@ export const isUpdatableParameter = (paramName) => {
  * @param {String} paramName
  */
 export const isDeprecatedParameter = (paramName) => {
-  return deprecatedParams.includes(paramName)
+  return deprecatedParams[paramName]
 }
 
 /**
@@ -141,7 +148,7 @@ export const showWarningsForParams = (params) => {
       warn(`The parameter "${param}" is incompatible with toasts`)
     }
     if (isDeprecatedParameter(param)) {
-      warnOnce(`The parameter "${param}" is deprecated and will be removed in the next major release.`)
+      warnOnce(`The parameter "${param}" is deprecated and will be removed in the next major release. Please use "${isDeprecatedParameter(param)}" instead.`)
     }
   }
 }

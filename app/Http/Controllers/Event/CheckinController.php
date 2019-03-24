@@ -21,6 +21,19 @@ use Illuminate\Http\Request;
 class CheckinController extends Controller {
 
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        // Check authorisation
+        $events = Event::where('aid', session('aid'))->get()->sortBy('name');
+        //$agent = new Agent();
+
+        return view('checkin/index', compact('events'));
+    }
+
+
+    /**
      * Display the specified resource.
      *
      */
@@ -42,7 +55,7 @@ class CheckinController extends Controller {
             ]);
         }
 
-        return view('checkin/index', compact('event', 'instance'));
+        return view('checkin/show', compact('event', 'instance'));
     }
 
     /**

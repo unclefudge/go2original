@@ -6,11 +6,11 @@
 
 DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
 
-It's also very simple to use and get started with. DOMPurify was [started in February 2014](https://github.com/cure53/DOMPurify/commit/a630922616927373485e0e787ab19e73e3691b2b) and, meanwhile, has reached version 1.0.8.
+It's also very simple to use and get started with. DOMPurify was [started in February 2014](https://github.com/cure53/DOMPurify/commit/a630922616927373485e0e787ab19e73e3691b2b) and, meanwhile, has reached version 1.0.10.
 
 DOMPurify is written in JavaScript and works in all modern browsers (Safari, Opera (15+), Internet Explorer (10+), Edge, Firefox and Chrome - as well as almost anything else using Blink or WebKit). It doesn't break on MSIE6 or other legacy browsers. It either uses [a fall-back](#what-about-older-browsers-like-msie8) or simply does nothing.
 
-Our automated tests cover [21 different browsers](https://github.com/cure53/DOMPurify/blob/master/test/karma.custom-launchers.config.js#L5) right now, more to come. We also cover Node.js v6.0.0, v8.0.0, v9.0.0 and v10.0.0, running DOMPurify on [jsdom](https://github.com/tmpvar/jsdom).
+Our automated tests cover [25 different browsers](https://github.com/cure53/DOMPurify/blob/master/test/karma.custom-launchers.config.js#L5) right now, more to come. We also cover Node.js v8.0.0, v9.0.0 and v10.0.0, running DOMPurify on [jsdom](https://github.com/tmpvar/jsdom).
 
 DOMPurify is written by security people who have vast background in web attacks and XSS. Fear not. For more details please also read about our [Security Goals & Threat Model](https://github.com/cure53/DOMPurify/wiki/Security-Goals-&-Threat-Model). Please, read it. Like, really.
 
@@ -110,7 +110,24 @@ DOMPurify offers a fall-back behavior for older MSIE browsers. It uses the MSIE-
 
 If not even `toStaticHTML` is supported, DOMPurify does nothing at all. It simply returns exactly the string that you fed it.
 
-## Can I configure it?
+## What about DOMPurify and Trusted Types?
+
+In version 1.0.9, support for [Trusted Types API](https://github.com/WICG/trusted-types) was added to DOMPurify.
+
+When `DOMPurify.sanitize` is used in the environment where the Trusted Types API is available (this happens e.g. in Chrome `chrome://flags/#enable-experimental-web-platform-features`), it returns a `TrustedHTML` value instead of a string (the behavior for `RETURN_DOM`, `RETURN_DOM_FRAGMENT`, and `RETURN_DOM_IMPORT` config options does not change).
+
+That return value is implicitly casted to a string when needed, returning the actual sanitized HTML snippet. In particular, you can directly use it with DOM sinks like `innerHTML`, or concatenate it with other strings. For most use cases, the API change does not introduce any visible change.
+
+That said, `TrustedHTML` values are intentionally immutable, and don't inherit from `String.prototype`. In rare cases where you expect the value to implement String prototype functions (e.g. if you want to `String.replace` the sanitized output), cast the value to a string like so:
+
+```javascript
+const sanitizedAsString = (DOMPurify.sanitize(foo) + '');
+sanitizedAsString.replace(...)
+```
+
+Please note, that if that change breaks your application, you *might* be doing something wrong. The sanitized HTML snippet should not be modified, as it might introduce XSS vulnerabilities.
+
+## Can I configure DOMPurify?
 
 Yes. The included default configuration values are pretty good already - but you can of course override them. Check out the [`/demos`](https://github.com/cure53/DOMPurify/tree/master/demos) folder to see a bunch of examples on how you can [customize DOMPurify](https://github.com/cure53/DOMPurify/tree/master/demos#what-is-this).
 
@@ -119,6 +136,9 @@ Yes. The included default configuration values are pretty good already - but you
 var clean = DOMPurify.sanitize(dirty, {SAFE_FOR_JQUERY: true});
 
 // strip {{ ... }} and <% ... %> to make output safe for template systems
+// be careful please, this mode is not recommended for production usage.
+// allowing template parsing in user-controlled HTML is not advised at all.
+// only use this mode if there is really no alternative.
 var clean = DOMPurify.sanitize(dirty, {SAFE_FOR_TEMPLATES: true});
 
 // allow only <b>
@@ -271,7 +291,7 @@ Several people need to be listed here!
 
 Big thanks also go to [@ydaniv](https://github.com/ydaniv), [@asutherland](https://twitter.com/asutherland), [@mathias](https://twitter.com/mathias), [@cgvwzq](https://twitter.com/cgvwzq), [@robbertatwork](https://twitter.com/robbertatwork), [@giutro](https://twitter.com/giutro) and [@fhemberger](https://twitter.com/fhemberger)!
 
-Further, thanks [@neilj](https://twitter.com/neilj) and [@0xsobky](https://twitter.com/0xsobky) for their code reviews and countless small optimizations, fixes and beautifications.
+Further, thanks [@neilj](https://twitter.com/neilj) and [@0xsobky](https://twitter.com/0xsobky) for their code reviews and countless small optimizations, fixes and beautifications. Thanks also go out to [@kkotowicz](https://twitter.com/kkotowicz) for his Trusted Types implementation and the connected section on our README page.  
 
 Big thanks also go to [@tdeekens](https://twitter.com/tdeekens) for doing all the hard work and getting us on track with Travis CI and BrowserStack. And thanks to [@Joris-van-der-Wel](https://github.com/Joris-van-der-Wel) for setting up DOMPurify for jsdom and creating the additional test suite. And again [@tdeekens](https://twitter.com/tdeekens) for his [incredible efforts](https://github.com/cure53/DOMPurify/pull/206) and contribution to refactor DOMPurify into using ES201x, proper build tools, better test coverage and much more!
 

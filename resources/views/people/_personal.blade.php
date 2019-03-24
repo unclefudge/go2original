@@ -1,12 +1,16 @@
 {{-- Personal Info --}}
-<div class="m-portlet">
-    <div class="m-portlet__body">
-        <div class="row" style="padding-bottom: 10px">
-            <div class="col-10"><h4>Personal Info</h4></div>
+<div class="kt-portlet">
+    <div class="kt-portlet__head kt-portlet__head--noborder">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">Personal Info</h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
             @if ($user->status)
-                <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_personal">Edit</a></div>
+                <a href="#" class="btn btn-light btn-icon-sm" data-toggle="modal" data-target="#modal_personal">Edit</a>
             @endif
         </div>
+    </div>
+    <div class="kt-portlet__body">
         <div class="row">
             <div class="col-md-5">
                 <div class="row" style="padding: 5px 0px">
@@ -41,9 +45,10 @@
                 </div>
 
             </div>
+            <hr>
         </div>
 
-        <hr class="field-hr">
+        <div style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1);"></div>
 
         {{-- Student --}}
         @if ($user->type == 'Student')
@@ -71,10 +76,10 @@
                         <div class="col">
                             @if ($user->media_consent)
                                 <?php $media_action = ($user->media_consent == 'y') ? 'Consent given' : 'Media denied' ?>
-                                 {{ $media_action }} by {!! $user->mediaConsentByUser->name.' ('.$user->media_consent_at->format(session('df')).')' !!}
-                                @else
+                                {{ $media_action }} by {!! $user->mediaConsentByUser->name.' ('.$user->media_consent_at->format(session('df')).')' !!}
+                            @else
                                 No Media Consent
-                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -124,7 +129,7 @@
                 {{-- First + Last Name --}}
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group m-form__group {!! fieldHasError('firstname', $errors) !!}">
+                        <div class="form-group {!! fieldHasError('firstname', $errors) !!}">
                             {!! Form::label('firstname', 'First Name', ['class' => 'form-control-label']) !!}
                             {!! Form::text('firstname', null, ['class' => 'form-control', 'required']) !!}
                             {!! fieldErrorMessage('firstname', $errors) !!}
@@ -176,7 +181,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group {!! fieldHasError('state', $errors) !!}">
-                            {!! Form::select('state', $ozstates::all(), 'TAS', ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('state', $ozstates::all(), 'TAS', ['class' => 'form-control kt-selectpicker']) !!}
                             {!! fieldErrorMessage('state', $errors) !!}
                         </div>
                     </div>
@@ -196,7 +201,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="form-group {!! fieldHasError('gender', $errors) !!}">
                             {!! Form::label('gender', 'Gender', ['class' => 'control-label']) !!}
-                            {!! Form::select('gender', ['' => 'Gender', 'Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('gender', ['' => 'Gender', 'Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control kt-selectpicker']) !!}
                             {!! fieldErrorMessage('gender', $errors) !!}
                         </div>
                     </div>
@@ -205,7 +210,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', ($user->dob) ? $user->dob->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
+                                {!! Form::text('dob', ($user->dob) ? $user->dob->format(session('df')) : '', ['class' => 'form-control', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
                             </div>
                             {!! fieldErrorMessage('dob', $errors) !!}
                         </div>
@@ -219,7 +224,7 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group {!! fieldHasError('type', $errors) !!}">
                             {!! Form::label('type', 'Type', ['class' => 'control-label']) !!}
-                            {!! Form::select('type', \App\User::types(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('type', \App\User::types(), null, ['class' => 'form-control kt-selectpicker']) !!}
                             {!! fieldErrorMessage('type', $errors) !!}
                         </div>
                     </div>
@@ -236,7 +241,7 @@
                         <div class="col-lg-3 col-md-4">
                             <div class="form-group {!! fieldHasError('grade_id', $errors) !!}">
                                 {!! Form::label('grade_id', 'Grade', ['class' => 'control-label']) !!}
-                                {!! Form::select('grade_id', $user->account->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('grade_id', $user->account->gradesSelect('prompt'), null, ['class' => 'form-control kt-selectpicker']) !!}
                                 {!! fieldErrorMessage('grade_id', $errors) !!}
                             </div>
                         </div>
@@ -255,7 +260,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('media_consent', $errors) !!}">
                                 {!! Form::label('media_consent', 'Media Consent', ['class' => 'control-label']) !!}
-                                {!! Form::select('media_consent', ($user->media_consent) ? ['y' => 'Yes', 'n' => 'No'] : ['' => 'Select', 'y' => 'Yes', 'n' => 'No'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('media_consent', ($user->media_consent) ? ['y' => 'Yes', 'n' => 'No'] : ['' => 'Select', 'y' => 'Yes', 'n' => 'No'], null, ['class' => 'form-control kt-selectpicker']) !!}
                                 {!! fieldErrorMessage('media_consent', $errors) !!}
                             </div>
                         </div>
@@ -282,7 +287,7 @@
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', ($user->wwc_exp) ? $user->wwc_exp->format(session('df')) : '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
+                                    {!! Form::text('wwc_exp', ($user->wwc_exp) ? $user->wwc_exp->format(session('df')) : '', ['class' => 'form-control', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
                                 </div>
                                 {!! fieldErrorMessage('wwc_exp', $errors) !!}
                             </div>

@@ -1,17 +1,24 @@
 {{-- Household Info --}}
-<div class="m-portlet">
-    <div class="m-portlet__body">
+<div class="kt-portlet kt-portlet--height-fluid">
+    <div class="kt-portlet__head kt-portlet__head--noborder">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">
+                @if ($user->households->count())
+                    {{ $user->households->sortBy('name')->first()->name }}
+                @else
+                    Household
+                @endif
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <a href="#" class="btn btn-light btn-icon-sm" data-toggle="modal" data-target="#modal_household">Edit</a>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
         @if ($user->households->count())
             @foreach ($user->households->sortBy('name') as $household)
                 {{-- Household Name --}}
-                @if ($loop->first)
-                    <div class="row" style="padding-bottom: 10px">
-                        <div class="col-10"><h4>{{ $household->name }}</h4></div>
-                        @if (true || $user->status)
-                            <div class="col-2"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
-                        @endif
-                    </div>
-                @else
+                @if (!$loop->first)
                     <hr>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col"><h4>{{ $household->name }}</h4></div>
@@ -54,77 +61,14 @@
                 @endif
             @endforeach
         @else
-            {{-- No Household --}}
-            <div class="row" style="padding-bottom: 10px">
-                <div class="col-8"><h4>Household</h4></div>
-                @if (true || $user->status)
-                    <div class="col-4"><a href="#" class="pull-right" data-toggle="modal" data-target="#modal_household"> Edit</a></div>
-                @endif
-            </div>
             <div class="row justify-content-md-center">
                 <div class="col-8 text-center">
                     <br>{{ $user->firstname }} doesn't belong to any household<br><br>
                 </div>
             </div>
         @endif
-
     </div>
 </div>
-<style>
-    .member-star-head {
-        padding: 5px;
-        color: #32c5d2;
-    }
-
-    .member-star {
-        cursor: pointer;
-        padding: 5px;
-        color: #DDD;
-    }
-
-    .member-star:hover {
-        color: #32c5d2;
-    }
-
-    .member-delete {
-        cursor: pointer;
-    }
-
-    .member-delete:hover {
-        color: #FF0000;
-    }
-
-    .search-row {
-        cursor: pointer;
-    }
-
-    .search-row:hover {
-        background: #F8F9FB;
-    }
-
-    .search-title {
-        font-size: 1.1rem;
-        font-weight: bolder;
-        color: #5867dd;
-        margin-bottom: 3px
-    }
-
-    .search-info {
-        font-size: .8rem;
-    }
-
-    .household-edit {
-        cursor: pointer;
-        float: right;
-        color: #5867dd;
-        font-size: 1rem;
-        font-weight: normal;
-    }
-
-    .household-edit:hover {
-        text-decoration: underline;
-    }
-</style>
 
 {{-- Edit House Modal --}}
 <div class="modal fade" id="modal_household" tabindex="-1" role="dialog" aria-labelledby="Profile" aria-hidden="true">
@@ -151,10 +95,10 @@
                         <i class="fa fa-home fa-4x"></i><br>
                         <h3>No Household</h3>
                         {{ $user->firstname }} has not been added to a household yet.<br><br>
-                        <button v-if="!xx.household_search" v-on:click="xx.household_search = !xx.household_search" type="button" class="btn btn-brand">Add household</button>
+                        <button v-if="!xx.household_search" v-on:click="xx.household_search = !xx.household_search" type="button" class="btn btn-primary">Add household</button>
                         <div v-if="xx.household_search">
                             <div class="input-group">
-                                <input v-model="xx.searchQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
+                                <input v-model="xx.searchQuery" type="search" class="form-control" placeholder="Search for someone" name="query">
                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                             </div>
                             {{-- Search for household --}}
@@ -168,7 +112,7 @@
                 {{-- Single Household --}}
                 {{--                  --}}
                 <div v-if="xx.state_now == 'SingleHousehold'">
-                    <div class="form-group m-form__group row">
+                    <div class="form-group row">
                         {!! Form::label('name', 'Household', ['class' => 'col-2 col-form-label']) !!}
                         <div class="col-10">
                             <input v-model="xx.household.name" type="text" class="form-control">
@@ -187,8 +131,8 @@
                     {{-- Add Member --}}
                     <div v-if="!xx.member_search" class="row">
                         <div class="col">
-                            <button v-on:click="xx.member_search = !xx.member_search" type="button" class="btn btn-brand btn-sm">Add person</button>
-                            <button v-on:click="xx.state_now = 'MultiHousehold'" type="button" class="btn btn-outline-brand btn-sm brand pull-right">Other households</button>
+                            <button v-on:click="xx.member_search = !xx.member_search" type="button" class="btn btn-primary btn-sm">Add person</button>
+                            <button v-on:click="xx.state_now = 'MultiHousehold'" type="button" class="btn btn-outline-primary btn-sm primary pull-right">Other households</button>
                         </div>
                     </div>
 
@@ -196,7 +140,7 @@
                     <div v-if="xx.member_search" class="row">
                         <div class="col">
                             <div class="input-group">
-                                <input v-model="xx.searchQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
+                                <input v-model="xx.searchQuery" type="search" class="form-control" placeholder="Search for someone" name="query">
                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                             </div>
                             <search-member :data="xx.people" :filter-key="xx.searchQuery"></search-member>
@@ -219,11 +163,11 @@
                     {{-- Add Household --}}
                     <div class="row">
                         <div v-if="!xx.household_search" class="col">
-                            <button v-on:click="xx.household_search = !xx.household_search" type="button" class="btn btn-brand btn-sm">Add household</button>
+                            <button v-on:click="xx.household_search = !xx.household_search" type="button" class="btn btn-primary btn-sm">Add household</button>
                         </div>
                         <div v-if="xx.household_search" class="col">
                             <div class="input-group">
-                                <input v-model="xx.searchQuery" type="search" class="form-control m-input" placeholder="Search for someone" name="query">
+                                <input v-model="xx.searchQuery" type="search" class="form-control" placeholder="Search for someone" name="query">
                                 <div class="input-group-append"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                             </div>
                             {{-- Search for household --}}
@@ -240,7 +184,7 @@
                         <households-table :households="xx.households2" :members="xx.members2"></households-table>
                     </div>
                     <div v-if="!xx.households2.length" class="col text-center">
-                        <button v-on:click="createHousehold" type="button" class="btn btn-outline-brand btn-sm">Create new household with @{{ xx.person.name }} and @{{ xx.join_household_with.name }}</button>
+                        <button v-on:click="createHousehold" type="button" class="btn btn-outline-primary btn-sm">Create new household with @{{ xx.person.name }} and @{{ xx.join_household_with.name }}</button>
                     </div>
                 </div>
             </div>
@@ -295,10 +239,10 @@
                 </tbody>
             </table>
             <br>
-            <button v-if="xx.state_now == 'JoinHousehold'" v-on:click="joinHousehold(household)" type="button" class="btn btn-brand btn-sm">Join Household</button>
+            <button v-if="xx.state_now == 'JoinHousehold'" v-on:click="joinHousehold(household)" type="button" class="btn btn-primary btn-sm">Join Household</button>
         </li>
         <li>
-            <button v-if="xx.state_now == 'JoinHousehold'" v-on:click="createHousehold" type="button" class="btn btn-outline-brand btn-sm">Create new household with @{{ xx.person.name }} and @{{ xx.join_household_with.name }}</button>
+            <button v-if="xx.state_now == 'JoinHousehold'" v-on:click="createHousehold" type="button" class="btn btn-outline-primary btn-sm">Create new household with @{{ xx.person.name }} and @{{ xx.join_household_with.name }}</button>
         </li>
     </ul>
 </script>

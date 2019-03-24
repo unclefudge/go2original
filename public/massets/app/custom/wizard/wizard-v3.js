@@ -102,7 +102,7 @@ var KTWizard3 = function () {
 			invalidHandler: function(event, validator) {	 
 				KTUtil.scrollTop();
 
-				swal({
+				swal.fire({
 					"title": "", 
 					"text": "There are some errors in your submission. Please correct them.", 
 					"type": "error",
@@ -134,7 +134,7 @@ var KTWizard3 = function () {
 						KTApp.unprogress(btn);
 						//KTApp.unblock(formEl);
 
-						swal({
+						swal.fire({
 							"title": "", 
 							"text": "The application has been successfully submitted!", 
 							"type": "success",

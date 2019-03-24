@@ -1417,8 +1417,8 @@ var KTDashboard = function() {
                 range = start.format('MMM D') + ' - ' + end.format('MMM D');
             }
 
-            picker.find('.kt-subheader__daterange-date').html(range);
-            picker.find('.kt-subheader__daterange-title').html(title);
+            $('#kt_dashboard_daterangepicker_date').html(range);
+            $('#kt_dashboard_daterangepicker_title').html(title);
         }
 
         picker.daterangepicker({
@@ -1593,7 +1593,7 @@ var KTDashboard = function() {
 					if (number > 5) {
 						output = '<div class="kt-user-card-v2">\
 							<div class="kt-user-card-v2__pic">\
-								<img src="assets/media/users/' + user_img + '" alt="photo">\
+								<img src="https://keenthemes.com/metronic/preview/assets/media/users/' + user_img + '" alt="photo">\
 							</div>\
 							<div class="kt-user-card-v2__details">\
 								<a href="#" class="kt-user-card-v2__name">' + data.CompanyAgent + '</a>\
@@ -1920,7 +1920,7 @@ var KTDashboard = function() {
 
             setTimeout(function() {
                 loading.hide();
-            }, 4000);
+            }, 3000);
         }
     };
 }();

@@ -42,25 +42,7 @@ class EventController extends Controller {
     {
         $event = Event::findOrFail($id);
 
-        return view('event/overview', compact('event'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('event/create');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $event = Event::findOrFail($id);
-
-        return view('event/edit', compact('event'));
+        return view('event/view/overview', compact('event'));
     }
 
     /**
@@ -70,7 +52,7 @@ class EventController extends Controller {
     {
         $event = Event::findOrFail($id);
 
-        return view('event/settings', compact('event'));
+        return view('event/view/settings', compact('event'));
     }
 
     /**
@@ -94,12 +76,12 @@ class EventController extends Controller {
 
         $dates = [];
         foreach ($instances as $inst)
-            $dates[$inst->start_local->format('Y-m-d')] = $inst->start_local->format(session('df'). ' G:i') . " &nbsp; $inst->name";
+            $dates[$inst->start_local->format('Y-m-d')] = $inst->start_local->format(session('df')) . " &nbsp; $inst->name"; // ' G:i'
 
         krsort($dates);
 
         //dd($instance);
-        return view('event/attendance', compact('event', 'instance', 'date', 'dates'));
+        return view('event/view/attendance', compact('event', 'instance', 'date', 'dates'));
     }
 
 

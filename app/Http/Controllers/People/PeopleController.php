@@ -31,19 +31,17 @@ class PeopleController extends Controller {
 
     /**
      * Display the specified resource.
-     *
      */
     public function show($id)
     {
         $user = User::findOrFail($id);
 
-        return view('people/show', compact('user'));
+        return view('people/profile', compact('user'));
     }
 
 
     /**
      * Display the specified resource.
-     *
      */
     public function activity($id)
     {
@@ -395,7 +393,7 @@ class PeopleController extends Controller {
             //    return '<div class="text-center"><a href="/people/' . $user->id . '"><i class="fa fa-search"></i></a></div>';
             //})
             ->editColumn('full_name', function ($user) {
-                $string = $user->firstname . ' ' . $user->lastname;
+                $string = "<a href='/people/$user->id'>$user->firstname $user->lastname</a>";
                 if (!$user->status)
                     $string .= "<br>** INACTIVE **";
 

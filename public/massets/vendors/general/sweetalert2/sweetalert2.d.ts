@@ -88,6 +88,11 @@ declare module 'sweetalert2' {
         function getCloseButton(): HTMLElement;
 
         /**
+         * Gets the current visible icon.
+         */
+        function getIcon(): HTMLElement | null;
+
+        /**
          * Gets all icons. The current visible icon will have `style="display: flex"`,
          * all other will be hidden by `style="display: none"`.
          */
@@ -323,6 +328,22 @@ declare module 'sweetalert2' {
         dismiss?: Swal.DismissReason;
     }
 
+    export interface SweetAlertCustomClass {
+        container?: string;
+        popup?: string;
+        header?: string;
+        title?: string;
+        closeButton?: string;
+        icon?: string;
+        image?: string;
+        content?: string;
+        input?: string;
+        actions?: string;
+        confirmButton?: string;
+        cancelButton?: string;
+        footer?: string;
+    }
+
     type SyncOrAsync<T> = T | Promise<T>;
 
     type ValueOrThunk<T> = T | (() => T);
@@ -424,7 +445,7 @@ declare module 'sweetalert2' {
          *
          * @default null
          */
-        padding?: number;
+        padding?: number | string;
 
         /**
          * Modal window background (CSS background property).
@@ -452,12 +473,34 @@ declare module 'sweetalert2' {
 
         /**
          * A custom CSS class for the modal.
+         * If a string value is provided, the classname will be applied to the popup.
+         * If an object is provided, the classnames will be applied to the corresponding fields:
+         *
+         * ex.
+         *   Swal.fire({
+         *     customClass: {
+         *       container: 'container-class',
+         *       popup: 'popup-class',
+         *       header: 'header-class',
+         *       title: 'title-class',
+         *       closeButton: 'close-button-class',
+         *       icon: 'icon-class',
+         *       image: 'image-class',
+         *       content: 'content-class',
+         *       input: 'input-class',
+         *       actions: 'actions-class',
+         *       confirmButton: 'confirm-button-class',
+         *       cancelButton: 'cancel-button-class',
+         *       footer: 'footer-class'
+         *     }
+         *   })
          *
          * @default ''
          */
-        customClass?: string;
+        customClass?: string | SweetAlertCustomClass;
 
         /**
+         * @deprecated
          * A custom CSS class for the container.
          *
          * @default ''
@@ -574,6 +617,7 @@ declare module 'sweetalert2' {
         cancelButtonColor?: string;
 
         /**
+         * @deprecated
          * A custom CSS class for the "Confirm"-button.
          *
          * @default ''
@@ -581,6 +625,7 @@ declare module 'sweetalert2' {
         confirmButtonClass?: string;
 
         /**
+         * @deprecated
          * A custom CSS class for the "Cancel"-button.
          *
          * @default ''
@@ -700,6 +745,7 @@ declare module 'sweetalert2' {
         imageAlt?: string;
 
         /**
+         * @deprecated
          * A custom CSS class for the customized icon.
          *
          * @default ''
@@ -778,6 +824,7 @@ declare module 'sweetalert2' {
         validationMessage?: string;
 
         /**
+         * @deprecated
          * A custom CSS class for the input field.
          *
          * @default ''
@@ -832,6 +879,13 @@ declare module 'sweetalert2' {
          * @default null
          */
         onClose?: (modalElement: HTMLElement) => void;
+
+        /**
+         * Set to false to disable body padding adjustment when scrollbar is present.
+         *
+         * @default true
+         */
+        scrollbarPadding?: boolean;
     }
 
     export default Swal;

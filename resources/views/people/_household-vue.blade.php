@@ -41,15 +41,18 @@
 
                 // Prompt if person is current profile
                 if (person.uid == this.xx.person.id) {
-                    swal({
+                    Swal.fire({
                         title: "Are you sure?",
                         html: "You are able to remove <b>" + this.xx.person.name + "</b> from this household.</b>",
                         cancelButtonText: "Cancel!",
-                        confirmButtonText: "Yes, delete",
+                        cancelButtonClass: "btn btn-secondary",
+                        confirmButtonText: "Yes, delete it!",
                         confirmButtonClass: "btn btn-danger",
                         showCancelButton: true,
                         reverseButtons: true,
-                        allowOutsideClick: true
+                        allowOutsideClick: true,
+                        animation: false,
+                        customClass: {popup: 'animated tada'}
                     }).then(function (result) {
                         if (result.value)
                             this.xx.household.members.splice(removeIndex, 1); // delete object

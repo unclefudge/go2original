@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -54,6 +54,8 @@ class LoginController extends Controller
         session(['df' => Auth::user()->dateformat]);
         session(['df-datepicker' => (Auth::user()->dateformat == 'd/m/Y') ? 'dd/mm/yyyy' : 'mm/dd/yyyy']);
         session(['df-moment' => (Auth::user()->dateformat == 'd/m/Y') ? 'DD/MM/YYYY' : 'MM/DD/YYYY']);
+        session(['show_inactive_people' => '0']);
+        session(['show_inactive_events' => '0']);
         //return redirect()->intended($this->redirectPath());
     }
 

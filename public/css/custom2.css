@@ -1,0 +1,476 @@
+/* Loading Spinner */
+.loadSpinnerOverlay {
+    position: fixed;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: Black;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    -moz-opacity: 0.8;
+}
+
+.loadSpinner {
+    z-index: 1000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 150px;
+    /*height: 130px; */
+    background-color: White;
+    border-radius: 10px;
+    filter: alpha(opacity=100);
+    opacity: 1;
+    -moz-opacity: 1;
+}
+
+.hover-red:hover {
+    color: #fd397a;
+}
+
+/***************************************************************************
+* Table Headers - purple
+***************************************************************************/
+.table--head-bg-primary thead th {
+    background: #716aca;
+    color: #fff;
+    border-bottom: 0;
+    border-top: 0;
+}
+
+/* Vuejs sort headers */
+th.active .arrow {
+    opacity: 1;
+}
+
+.arrow {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    opacity: 0.4;
+}
+
+.arrow.asc {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #fff;
+}
+
+.arrow.dsc {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #fff;
+}
+
+
+/* Extending Metronic Fixed Width to larger screen sizes */
+@media (min-width: 1640px) {
+    .kt-container {
+        width: 1580px !important;
+    }
+}
+
+@media (min-width: 1740px) {
+    .kt-container {
+        width: 1680px !important;
+    }
+}
+
+/***************************************************************************
+* Override default Metronic Values
+***************************************************************************/
+h1, h2, h3, h4, h5, h6 {
+    color:#464457;
+}
+
+.kt-portlet__head-title {
+    font-size: 20px !important;
+}
+
+/* Sweet Alert 2 */
+.swal2-popup .swal2-content {
+    color: #6c7293;
+}
+.swal2-popup .swal2-styled.swal2-cancel {
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ebedf2;
+}
+.swal2-popup .swal2-styled.swal2-confirm {
+    color: #fff;
+    background-color: #fd397a;
+    border-color: #fd397a;
+}
+
+/***************************************************************************
+* Member Bar
+***************************************************************************/
+.mbar {
+    padding: 0;
+    overflow: hidden;
+    color: #fff;
+    position: relative;
+}
+
+/* mBar Name */
+.mbar .mbar-name {
+    width: 620px;
+    margin: 20px 0 16px 90px;
+    display: inline-block;
+    /*background: #ff0000;*/
+}
+
+.mbar-fullname {
+    font-weight: normal;
+    font-size: 26px;
+}
+
+.mbar .mbar-name .mbar-type, .mbar .mbar-name .mbar-split, .mbar .mbar-name .mbar-link {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 1.2rem;
+    opacity: 0.6;
+}
+
+.mbar .mbar-name .mbar-type {
+    text-transform: uppercase;
+}
+
+.mbar-link a {
+    color: #fff;
+}
+
+.mbar-link:hover {
+    opacity: 1 !important;
+}
+.mbar-fullname a {
+    padding: .2rem 1rem;
+    margin-left: 15px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    opacity: .8
+}
+.mbar-fullname a:hover {
+    color: #000;
+    opacity: 1 !important;
+}
+
+
+/*
+ * Avatar
+ */
+
+/* Container needed to position the overlay. Adjust the width as needed */
+.mbar .mbar-name .avatar-container {
+    position: relative;
+    width: 90px;
+    margin: -20px 20px -20px -90px; /* margin: 0 20px 0 -80px; */
+    cursor: pointer;
+    float: left;
+}
+
+/* The overlay effect (full height and width) - lays on top of the container and over the image */
+.mbar .mbar-name .avatar-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 96px;
+    opacity: 0;
+    transition: .3s ease;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3); /* Black see-through */
+    border-radius: 50%;
+}
+
+/* When you mouse over the container, fade in the overlay icon*/
+.mbar .mbar-name .avatar-container:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.mbar .mbar-name .avatar-image {
+    height: 96px;
+    border-radius: 50%;
+}
+
+.mbar .mbar-name .avatar-edit:hover {
+    color: #FF0000;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3); /* Black see-through */
+}
+
+.mbar .mbar-name .avatar-icon {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+}
+
+
+/* Mbar Menu (right side) */
+.mbar .mbar-menu {
+    padding: 0;
+    float: right;
+    margin: 0px;
+    background: #ff0000;;
+}
+
+.mbar .mbar-actions {
+    margin: 20px 20px 10px 0px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+/* Small devices */
+@media screen and (max-width: 625px) {
+    .mbar {
+        overflow: hidden;
+        margin-left: 25%;
+    }
+
+    .mbar .mbar-name {
+        margin: 20px auto 16px;
+        display: block;
+        text-align: center;
+        width: auto;
+    }
+
+    .mbar .mbar-name .avatar-container {
+        display: block;
+        float: none;
+        margin: 0px;
+        width: auto;
+        text-align: center;
+    }
+
+    .mbar .mbar-name .avatar-overlay {
+        left: 50%;
+        right: 50%;
+        width: auto;
+    }
+
+    .mbar .mbar-name .avatar-icon {
+        position: absolute;
+        top: 60px;
+        left: 12px
+    }
+
+    .mbar .mbar-menu {
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        text-align: center !important; /* attempt to center all content */
+    }
+
+    .mbar .mbar-actions {
+        margin: 0px;
+    }
+
+    .mbar .mbar-info {
+        margin: 10px 0px;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .mbar .mbar-name {
+        width: 530px;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    .mbar .mbar-name {
+        width: 430px;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .mbar .mbar-name {
+        width: 270px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mbar .mbar-name {
+        padding: 0 20px;
+    }
+}
+
+/***************************************************************************
+* Side Bar
+***************************************************************************/
+.left-sidebar-menu {
+    margin: 0px 10px 50px 0px;
+    min-height: auto;
+
+    -ms-flex: 0 0 200px;
+    flex: 0 0 200px;
+
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top, #ffffff 70%, #faf9fd 100%, #faf9fd 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #ffffff 70%, #faf9fd 100%, #faf9fd 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #ffffff 70%, #faf9fd 100%, #faf9fd 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#faf9fd', GradientType=0);
+
+    border-radius: 5px 5px 0px 0px;
+}
+
+#sidebar-wrapper {
+    /*min-height: 100vh;*/
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 20px 0px 10px 0px;
+    /*padding: 0.875rem 1.25rem;*/
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    /*width: 15rem;*/
+}
+
+#sidebar-wrapper .list-group .list-group-item:first-child {
+    border-top: 0px;
+    border-bottom: 1px solid #ebedf2;
+}
+
+#sidebar-wrapper .list-group .list-group-item {
+    border-bottom: 1px solid #ebedf2;
+    padding: 0.75rem 0.75rem;
+}
+
+#sidebar-wrapper .list-group-item-action:hover {
+    color: #5867dd;
+    background: #FBFCFD;
+    /*background: inherit;*/
+    /*width: 15rem;*/
+}
+
+#sidebar-wrapper .list-group-item.active {
+    color: #5867dd;
+    font-weight: 600;
+    background: inherit;
+    border: inherit;
+    border-bottom: 1px solid #5867dd !important;
+    /*background: #ff0000;(/
+    /*width: 15rem;*/
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+.sidebar-menu-icon {
+    padding-right: 5px;
+    font-size: 20px;
+    min-width: 40px;
+}
+
+/* Hide Side + Show Mobile dropdown */
+@media (max-width: 690px) {
+    .left-sidebar-menu {
+        display: none;
+    }
+
+    #left-sidebar-mobile {
+        display: block;
+    }
+}
+
+@media (min-width: 691px) {
+    #left-sidebar-mobile {
+        display: none;
+    }
+}
+
+/***************************************************************************
+* Households
+***************************************************************************/
+.member-star-head {
+    padding: 5px;
+    color: #32c5d2;
+}
+
+.member-star {
+    cursor: pointer;
+    padding: 5px;
+    color: #DDD;
+}
+
+.member-star:hover {
+    color: #32c5d2;
+}
+
+.member-delete {
+    cursor: pointer;
+}
+
+.member-delete:hover {
+    color: #FF0000;
+}
+
+.search-row {
+    cursor: pointer;
+}
+
+.search-row:hover {
+    background: #F8F9FB;
+}
+
+.search-title {
+    font-size: 1.1rem;
+    font-weight: bolder;
+    color: #5867dd;
+    margin-bottom: 3px
+}
+
+.search-info {
+    font-size: .8rem;
+}
+
+.household-edit {
+    cursor: pointer;
+    float: right;
+    color: #5867dd;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.household-edit:hover {
+    text-decoration: underline;
+}
+
+/***************************************************************************
+* People Activity
+***************************************************************************/
+
+.activity-event-link a {
+    color: #bbb !important;
+}
+
+.activity-event-link:hover {
+    color: #32c5d2 !important;
+}
+
+/***************************************************************************
+* Charts
+***************************************************************************/
+.legendColour {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0px 10px 0px 20px;
+    padding-left: 4px;
+}

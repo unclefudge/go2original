@@ -17,18 +17,35 @@ class AccountController extends Controller
      */
     public function index()
     {
-        // Check authorisation
-        return view('account/index', compact('people'));
+        $account = Account::findOrFail(session('aid'));
+        return view('account/profile', compact('account'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function profile()
     {
-        $account = Account::findOrFail($id);
-        //$timezone_select = Timezone::selectForm('Europe/London', '', ['class' => 'form-control m-bootstrap-select m_selectpicker', 'name' => 'timezone']);
-        return view('account/show', compact('account'));
+        $account = Account::findOrFail(session('aid'));
+        return view('account/profile', compact('account'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function schools()
+    {
+        $account = Account::findOrFail(session('aid'));
+        return view('account/school/index', compact('account'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function grades()
+    {
+        $account = Account::findOrFail(session('aid'));
+        return view('account/school/grades', compact('account'));
     }
 
     /**

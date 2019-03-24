@@ -83,22 +83,14 @@ class ActivityController extends Controller {
                 foreach ($activity as $act) {
                     if ($x > $offset && $x <= ($offset + $records)) {
                         $output .= "
-            <div class='m-accordion__item'>
-                <div class='m-accordion__item-head collapsed'  role='tab' id='m_accordion_item_" . $x . "_head' data-toggle='collapse' href='#m_accordion_item_" . $x . "_body' aria-expanded=' false'>
-                    <span class='m-accordion__item-icon'>$act->icon</span>
-                    <span class='m-accordion__item-title'>
-                        <div style='font-weight: 500'>$act->title</div>
-                        <div><small>$act->date</small> </div>
-                    </span>
-                    <span class='m-accordion__item-mode'></span>
-                </div>
-
-                <div class='m-accordion__item-body collapse' id='m_accordion_item_" . $x . "_body' role='tabpanel' aria-labelledby='m_accordion_item_" . $x . "_head' data-parent='#activity'>
-                    <div class='m-accordion__item-content'>
-                        <p>$act->data</p>
-                    </div>
-                </div>
-            </div>";
+                        <div class='card'>
+                           <div class='card-header' id='heading$x'>
+                             <div class='card-title collapsed' data-toggle='collapse' data-target='#collapse$x' aria-expanded='true' aria-controls='collapse$x'>$act->icon $act->title</div>
+                           </div>
+                           <div id='collapse$x' class='collapse' aria-labelledby='heading$x' data-parent='#activity'>
+                             <div class='card-body'>$act->data</div>
+                           </div>
+                       </div>";
                     }
                     $x ++;
                     if ($x > ($offset + $records))

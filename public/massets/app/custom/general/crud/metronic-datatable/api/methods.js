@@ -48,11 +48,17 @@ var KTDefaultDatatableDemo = function() {
 					type: 'number',
 					selector: {class: 'kt-checkbox--solid'},
 					textAlign: 'center',
-					locked: {left: 'lg'},
+				}, {
+					field: 'ID',
+					title: 'ID',
+					width: 30,
+					type: 'number',
+					template: function(row) {
+						return row.RecordID;
+					},
 				}, {
 					field: 'OrderID',
 					title: 'Order ID',
-					locked: {left: 'lg'},
 				}, {
 					field: 'Country',
 					title: 'Country',
@@ -148,11 +154,11 @@ var KTDefaultDatatableDemo = function() {
 		});
 
 		$('#kt_datatable_sort_asc').on('click', function() {
-			datatable.sort('CompanyName', 'asc');
+			datatable.sort('Status', 'asc');
 		});
 
 		$('#kt_datatable_sort_desc').on('click', function() {
-			datatable.sort('CompanyName', 'desc');
+			datatable.sort('Status', 'desc');
 		});
 
 		// get checked record and get value by column name
@@ -184,11 +190,11 @@ var KTDefaultDatatableDemo = function() {
 		});
 
 		$('#kt_datatable_hide_column').on('click', function() {
-			datatable.columns('email').visible(false);
+			datatable.columns('ShipDate').visible(false);
 		});
 
 		$('#kt_datatable_show_column').on('click', function() {
-			datatable.columns('email').visible(true);
+			datatable.columns('ShipDate').visible(true);
 		});
 
 		$('#kt_datatable_remove_row').on('click', function() {

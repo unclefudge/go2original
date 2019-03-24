@@ -7,6 +7,8 @@
     <title>Go2Youth</title>
     <meta name="description" content="Youth event & attendance management">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta id="token" name="token" value="{{ csrf_token() }}" />
 
     <!--begin::Fonts -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
@@ -58,6 +60,7 @@
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="/massets/demo/demo4/base/style.bundle.css" rel="stylesheet" type="text/css"/>
     <link href="/css/custom.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/custom2.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles -->
 
     <!--begin::Layout Skins(used by all pages) -->
@@ -65,12 +68,12 @@
 
     @yield('page-styles')
 
-    <link rel="shortcut icon" href="/massets/media/logos/favicon.ico"/>
+    <link rel="shortcut icon" href="/img/favicon.ico"/>
 </head>
 <!-- end::Head -->
 
 <!-- begin::Body -->
-<body @yield('headimage') class="kt-page--fixed kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading">
+<body @yield('bodystyle') class="kt-page--fixed kt-header--fixed kt-header--minimize-topbar kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-page--loading">
 
 <!-- begin:: Page -->
 @include('layout/section/header-mobile')
@@ -187,12 +190,12 @@
 <script src="/massets/app/custom/general/crud/forms/widgets/select2.js" type="text/javascript"></script>
 <!--end:: Global Optional Vendors -->
 
-@yield('vendor-scripts')
-
 <!--begin::Global Theme Bundle(used by all pages) -->
-{{--}}<script src="/massets/vendors/base/vendors.bundle.js" type="text/javascript"></script>--}}
 <script src="/massets/demo/demo4/base/scripts.bundle.js" type="text/javascript"></script>
+<script src="/js/global.js" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
+
+@yield('vendor-scripts')
 
 <!--begin::Page Scripts(used by this page) -->
 @yield('page-scripts')

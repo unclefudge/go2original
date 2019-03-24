@@ -8,19 +8,13 @@ import sweetAlert from '../../sweetalert2.js'
 const sweetHTML = `
  <div aria-labelledby="${swalClasses.title}" aria-describedby="${swalClasses.content}" class="${swalClasses.popup}" tabindex="-1">
    <div class="${swalClasses.header}">
-     <ul class="${swalClasses.progresssteps}"></ul>
+     <ul class="${swalClasses['progress-steps']}"></ul>
      <div class="${swalClasses.icon} ${iconTypes.error}">
        <span class="swal2-x-mark"><span class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span>
      </div>
-     <div class="${swalClasses.icon} ${iconTypes.question}">
-       <span class="${swalClasses['icon-text']}">?</span>
-      </div>
-     <div class="${swalClasses.icon} ${iconTypes.warning}">
-       <span class="${swalClasses['icon-text']}">!</span>
-      </div>
-     <div class="${swalClasses.icon} ${iconTypes.info}">
-       <span class="${swalClasses['icon-text']}">i</span>
-      </div>
+     <div class="${swalClasses.icon} ${iconTypes.question}"></div>
+     <div class="${swalClasses.icon} ${iconTypes.warning}"></div>
+     <div class="${swalClasses.icon} ${iconTypes.info}"></div>
      <div class="${swalClasses.icon} ${iconTypes.success}">
        <div class="swal2-success-circular-line-left"></div>
        <span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>
@@ -29,7 +23,7 @@ const sweetHTML = `
      </div>
      <img class="${swalClasses.image}" />
      <h2 class="${swalClasses.title}" id="${swalClasses.title}"></h2>
-     <button type="button" class="${swalClasses.close}">×</button>
+     <button type="button" class="${swalClasses.close}">&times;</button>
    </div>
    <div class="${swalClasses.content}">
      <div id="${swalClasses.content}"></div>

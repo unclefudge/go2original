@@ -13,7 +13,7 @@
                 {{-- First + Last Name --}}
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group m-form__group {!! fieldHasError('firstname', $errors) !!}">
+                        <div class="form-group {!! fieldHasError('firstname', $errors) !!}">
                             {!! Form::label('firstname', 'First Name', ['class' => 'form-control-label']) !!}
                             {!! Form::text('firstname', null, ['class' => 'form-control', 'required']) !!}
                             {!! fieldErrorMessage('firstname', $errors) !!}
@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group {!! fieldHasError('state', $errors) !!}">
-                            {!! Form::select('state', $ozstates::all(), 'TAS', ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('state', $ozstates::all(), 'TAS', ['class' => 'form-control kt-selectpicker']) !!}
                             {!! fieldErrorMessage('state', $errors) !!}
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="form-group {!! fieldHasError('gender', $errors) !!}">
                             {!! Form::label('gender', 'Gender', ['class' => 'control-label']) !!}
-                            {!! Form::select('gender', ['' => 'Gender', 'Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('gender', ['' => 'Gender', 'Male' => 'Male', 'Female' => 'Female'], null, ['class' => 'form-control kt-selectpicker']) !!}
                             {!! fieldErrorMessage('gender', $errors) !!}
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="form-group {!! fieldHasError('dob', $errors) !!}">
                             {!! Form::label('dob', 'Birthday', ['class' => 'control-label']) !!}
                             <div class="input-group date">
-                                {!! Form::text('dob', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
+                                {!! Form::text('dob', '', ['class' => 'form-control', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'dob']) !!}
                             </div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="form-group {!! fieldHasError('type', $errors) !!}">
                             {!! Form::label('type', 'Type', ['class' => 'control-label']) !!}
-                            {!! Form::select('type', \App\User::types(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                            {!! Form::select('type', \App\User::types(), null, ['class' => 'form-control kt-selectpicker']) !!}
                             {!! fieldErrorMessage('type', $errors) !!}
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group {!! fieldHasError('grade_id', $errors) !!}">
                                 {!! Form::label('grade_id', 'Grade', ['class' => 'control-label']) !!}
-                                {!! Form::select('grade_id', Auth::user()->account->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('grade_id', Auth::user()->account->gradesSelect('prompt'), null, ['class' => 'form-control kt-selectpicker']) !!}
                                 {!! fieldErrorMessage('grade_id', $errors) !!}
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                         <div class="col-lg-2 col-md-3">
                             <div class="form-group {!! fieldHasError('media_consent', $errors) !!}">
                                 {!! Form::label('media_consent', 'Media Consent', ['class' => 'control-label']) !!}
-                                {!! Form::select('media_consent', ['1' => 'Yes', '0' => 'No'], 0, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('media_consent', ['' => 'Select', 'y' => 'Yes', 'n' => 'No'], null, ['class' => 'form-control kt-selectpicker']) !!}
                                 {!! fieldErrorMessage('media_consent', $errors) !!}
                             </div>
                         </div>
@@ -167,7 +167,7 @@
                             <div class="form-group {!! fieldHasError('wwc_exp', $errors) !!}">
                                 {!! Form::label('wwc_exp', 'Expiry', ['class' => 'control-label']) !!}
                                 <div class="input-group date">
-                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control m-input', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
+                                    {!! Form::text('wwc_exp', '', ['class' => 'form-control', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'id' => 'wwc_exp']) !!}
                                 </div>
                             </div>
                         </div>

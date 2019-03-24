@@ -1,26 +1,8 @@
 @charset "UTF-8";
-/*
-$kt-media-breakpoints: (
-    // Small screen / phone
-    sm: 576px,
-    
-    // Medium screen / tablet
-    md: 768px,
-    
-    // Large screen / desktop
-    lg: 1024px,
-    
-    // Extra large screen / wide desktop
-    xl: 1200px,
-
-    // Extra large screen / wide desktop
-    xxl: 1600px
-)!default;
-*/
 /*!
- * Bootstrap v4.2.1 (https://getbootstrap.com/)
- * Copyright 2011-2018 The Bootstrap Authors
- * Copyright 2011-2018 Twitter, Inc.
+ * Bootstrap v4.3.1 (https://getbootstrap.com/)
+ * Copyright 2011-2019 The Bootstrap Authors
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
