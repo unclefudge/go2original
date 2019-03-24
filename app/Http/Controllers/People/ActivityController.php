@@ -37,7 +37,7 @@ class ActivityController extends Controller {
             $array['title'] = "Checked in to $event_name";
             $array['title'] .= ($instance_name && $instance_name != $event_name) ? " <small> - $instance_name</small>" : '';
             $array['date'] = $instance_startLocal->format('F jS, Y');
-            $array['data'] = "<div class='row'><div class='col-3'>Event</div><div class='col'>$instance_name</div><div class='col-2'><a href='/event/". $attend->event->id."/attendance/".$instance_startLocal->format('Y-m-d')."'><i class='fa fa-external-link-alt activity-event-link pull-right'></i></a></div></div>";
+            $array['data'] = "<div class='row'><div class='col-3'>Event</div><div class='col'>$instance_name</div><div class='col-2'><a href='/event/". $attend->event->id."/attendance/".$instance_startLocal->format('Y-m-d')."'><i class='fa fa-external-link-alt icon-edit'></i></a></div></div>";
             $array['data'] .= "<div class='row'><div class='col-3'>Time</div><div class='col'>$attend_time</div></div>";
             $array['data'] .= "<div class='row'><div class='col-3'>Method</div><div class='col'>".ucfirst($attend->method)."</div></div>";
             $activity[] = (object) $array;

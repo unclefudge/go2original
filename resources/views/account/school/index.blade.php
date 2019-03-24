@@ -120,8 +120,8 @@
                                     <h5 style="font-weight:400" style="margin-left: 10px">@{{ school.name }}</h5>
                                 </div>
                                 <div class='col-sm-3'>
-                                    <i v-if="school.name != 'Other'" v-on:click="delSchool(school)" class="fa fa-trash-alt item-del"></i>
-                                    <i v-if="school.name != 'Other'" v-on:click="editSchool(school)" class="fa fa-edit item-edit"></i>
+                                    <i v-if="school.name != 'Other'" v-on:click="delSchool(school)" class="fa fa-trash-alt icon-del"></i>
+                                    <i v-if="school.name != 'Other'" v-on:click="editSchool(school)" class="fa fa-edit icon-edit"></i>
                                 </div>
                             </div>
                             {{-- Edit School Name --}}

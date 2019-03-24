@@ -379,7 +379,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hide Side + Show Mobile dropdown */
-@media (max-width: 690px) {
+@media (max-width: 890px) {
     .left-sidebar-menu {
         display: none;
     }
@@ -389,7 +389,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-@media (min-width: 691px) {
+@media (min-width: 891px) {
     #left-sidebar-mobile {
         display: none;
     }
@@ -453,16 +453,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /***************************************************************************
-* People Activity
+* Accordian Icons
 ***************************************************************************/
 
-.activity-event-link a {
-    color: #bbb !important;
+.icon-edit {
+    color: #aaa;
+    cursor: pointer;
+    float: right;
+    padding-left: 20px;
 }
 
-.activity-event-link:hover {
-    color: #32c5d2 !important;
+.icon-edit:hover {
+    color: #5867dd;
 }
+
+.icon-del {
+    color: #aaa;
+    cursor: pointer;
+    float: right;
+    padding-left: 20px;
+}
+
+.icon-del:hover {
+    color: #fd397a;
+}
+
 
 /***************************************************************************
 * Charts

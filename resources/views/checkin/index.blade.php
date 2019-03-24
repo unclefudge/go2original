@@ -61,14 +61,17 @@
                                         <div class="row">
                                             @foreach ($events->where('recur', 1)->where('status', 1) as $event)
                                                 <div class="col-md-4 col-sm-6">
-                                                    <div class="card card-image" style="height: 120px;
-                                                    background-size:100% auto; cursor: pointer; background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url({{ $event->backgroundMedPath}});
-                                                         margin-bottom:20px;" id="event-{{ $event->id }}">
-                                                        <span class="pull-right" style="padding: 5px; height:120px">&nbsp;</span>
-                                                        <div class="text-white text-center align-items-center rgba-black-strong">
-                                                            <div><h3 class="card-title pt-2 text-white"><strong>{{ $event->name }}</strong></h3></div>
-                                                            <div>
-                                                                <span style="font-size: 18px"><i class="flaticon2-laptop sidebar-menu-icon" style="font-size: 28px; padding-top: 10px"></i> Check-in</span>
+                                                    <div class="card" style="height: 120px;
+                                                            background-size:100% auto; cursor: pointer; {!!  ($event->status) ?   "background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url($event->backgroundMedPath)"  : 'background: #777'!!};
+                                                            margin-bottom:20px;" id="event-{{ $event->id }}">
+                                                        <div class="row no-gutters">
+                                                            <div class="col-auto" style="height: 120px">
+                                                                <img src="/img/evt-checkin.jpg" class="img-fluid" alt="">
+                                                            </div>
+                                                            <div class="col text-center align-items-center rgba-black-strong" style="padding: 30px 30px 30px 0px; color: #FFF;">
+                                                                <div class="card-block px-2">
+                                                                    <h3 class="card-title pt-2 text-white" data-container="body" data-toggle="kt-tooltip" data-placement="bottom" title="" data-original-title="Check-in"><strong>{{ $event->name }}</strong></h3>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

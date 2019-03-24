@@ -9,30 +9,11 @@
 @endsection
 
 @section('content')
-    <style>
-        .item-edit {
-            color: #aaa;
-            cursor: pointer;
-            float: right;
-            padding-left: 20px;
-        }
+    <?php
+    $months_array = ['Month', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    $days_array = ['Day', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+    ?>
 
-        .item-edit:hover {
-            color: #34bfa3;
-            /*  #9DA8EB light brand */
-        }
-
-        .item-del {
-            color: #aaa;
-            cursor: pointer;
-            float: right;
-            padding-left: 20px;
-        }
-
-        .item-del:hover {
-            color: #fd397a;
-        }
-    </style>
     <div class="kt-content kt-grid__item kt-grid__item--fluid" id="vue-app">
         <div class="container-fluid">
             <div class="row">
@@ -71,39 +52,6 @@
                                     <div id="vue-dragableList">
                                         <div class="root"></div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            {{-- Grade Upgrade --}}
-                            <div class="kt-portlet kt-portlet--tabs">
-                                <div class="kt-portlet__head">
-                                    <div class="kt-portlet__head-toolbar">
-                                        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-primary nav-tabs-line-2x nav-tabs-line-right nav-tabs-bold">
-                                            <li class="nav-item">
-                                                <a class="nav-link show" data-toggle="tab" href="#" role="tab" aria-selected="true" id="type_schools">
-                                                    <i class="fa fa-graduation-cap"></i> Schools
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link show active" data-toggle="tab" href="/account/grades" role="tab" aria-selected="true" id="type_grades">
-                                                    <i class="fa fa-book"></i> Grades
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    {{--}}
-                                    <div class="pull-right" style="min-width:150px; padding:10px">
-                                        <button type="button" class="btn btn-secondary btn-sm  pull-right" style="margin-left: 10px" id="but_show_inactive"><i class="fa fa-eye"></i></button>
-                                        <button type="button" class="btn btn-sm pull-right" style="margin-left: 10px; color: #000000; background: #eee" id="but_hide_inactive"><i class="fa fa-eye-slash" style="padding-right: 5px"></i> Hide Inactive</button>
-                                        <button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#modal_create_person">Add</button>
-                                    </div>--}}
-                                </div>
-                                <div class="kt-portlet__body">
-                                   hhh
                                 </div>
                             </div>
                         </div>
@@ -150,6 +98,28 @@
                         <button v-on:click="save()" class="btn btn-primary" id="saveList1">Save</button>
                         <a href="#" v-on:click="restore()" style="margin-left: 30px">Restore previous grades</a>
                     </div>
+
+                    <div style="padding:20px; margin-top:20px; background: #716aca; color: #fff">
+                        <h3 class="kt-portlet__head-title text-center" style="color:#fff;">Beginning of School Year</h3>
+                        <p style="font-size: larger">
+                            Once a year Go2Youth will automatically move all your students up a grade because they are such excellent pupils.<br><br>
+                            What date would you like this to happen each year.
+                        </p>
+                        <div class="row justify-content-sm-center">
+                            <div class="col-lg-6 col-md-3 col-sm-4" style="padding-bottom: 20px">
+                                {!! Form::select('month', $months_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                            </div>
+                            <div class="col-lg-4 col-md-2 col-sm-3">
+                                {!! Form::select('day', $days_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row justify-content-sm-center">
+                            <div class="col-lg-6 col-md-3 col-sm-3">
+                                <button class="btn btn-light btn-block">Save</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6" style="padding-bottom: 30px">
                     <h5 class="text-center">Grade Order</h5>
@@ -176,10 +146,10 @@
         <li v-bind:sortEnd="movedItem()" v-bind:item.order="index" class="list-group-item" :style="itemStyle(item)">
             <div v-if="item.edit == 0">
                 <i class="fa fa-arrows-alt-v" style="color:#bbb; padding-right:20px"></i> @{{item.name}}
-                <i v-on:click="delItem(item)" class="fa fa-trash-alt item-del" style=""></i>
-                <i v-if="item.status == 0" v-on:click="showItem(item)" class="fa fa-eye-slash item-edit" style=""></i>
-                <i v-if="item.status == 1" v-on:click="hideItem(item)" class="fa fa-eye item-edit" style=""></i>
-                <i v-if="item.status == 1" v-on:click="editItem(item)" class="fa fa-edit item-edit" style=""></i>
+                <i v-if="item.status == 0" v-on:click="showItem(item)" class="fa fa-eye-slash icon-edit" style=""></i>
+                <i v-if="item.status == 1" v-on:click="hideItem(item)" class="fa fa-eye icon-edit" style=""></i>
+                <i v-if="item.status == 1" v-on:click="delItem(item)" class="fa fa-trash-alt icon-del" style=""></i>
+                <i v-if="item.status == 1" v-on:click="editItem(item)" class="fa fa-edit icon-edit" style=""></i>
             </div>
             <div v-if="item.edit == 1">
                 <div class="input-group">

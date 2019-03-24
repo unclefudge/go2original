@@ -6,7 +6,7 @@ if (Request::path() == 'account')
 else {
     list($first, $rest) = explode('/', Request::path(), 2);
     if ($rest) {
-        $active_school = (preg_match('/^settings*/', $rest)) ? 'active' : '';
+        $active_school = (preg_match('/^schools|grades*/', $rest)) ? 'active' : '';
     }
 }
 ?>

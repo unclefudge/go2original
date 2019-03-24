@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="col">
                             {{-- Event List --}}
-                            <div class="kt-portlet kt-portlet--tabs" style="height: 100%; min-height: height: 100%">
+                            <div class="kt-portlet kt-portlet--tabs">
                                 <div class="kt-portlet__head">
                                     <div class="kt-portlet__head-toolbar">
                                         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-primary nav-tabs-line-2x nav-tabs-line-right nav-tabs-bold">
