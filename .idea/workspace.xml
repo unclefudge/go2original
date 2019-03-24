@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/checkin/_header.blade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/layout/checkin.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/custom2.css" afterPath="$PROJECT_DIR$/public/css/custom2.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/register_student.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/register_volunteer.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/register_volunteer.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/checkin/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/checkin/show.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/view/attendance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/view/attendance.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/view/overview.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/view/overview.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/checkin.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/checkin.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/people/activity.blade.php" afterPath="$PROJECT_DIR$/resources/views/people/activity.blade.php" />
     </list>
     <ignored path="go2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -62,12 +53,17 @@
       <file leaf-file-name="overview.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/event/view/overview.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8186398">
-              <caret line="190" column="58" selection-start-line="190" selection-start-column="58" selection-end-line="190" selection-end-column="58" />
+            <state vertical-scroll-proportion="0.12594458">
+              <caret line="188" column="116" selection-start-line="188" selection-start-column="116" selection-end-line="188" selection-end-column="116" />
               <folding>
-                <marker date="1553469408611" expanded="true" signature="25138:25155" placeholder="..." />
-                <marker date="1553469408611" expanded="true" signature="27317:27334" placeholder="..." />
-                <marker date="1553469408611" expanded="true" signature="29423:29440" placeholder="..." />
+                <element signature="e#6882#6922#0#HTML" expanded="true" />
+                <element signature="e#6972#15632#0#HTML" expanded="false" />
+                <element signature="e#15705#15736#0#HTML" expanded="true" />
+                <element signature="e#15828#15858#0#HTML" expanded="true" />
+                <element signature="e#15993#16037#0#HTML" expanded="true" />
+                <marker date="1553469862332" expanded="true" signature="25078:25095" placeholder="..." />
+                <marker date="1553469862332" expanded="true" signature="27257:27274" placeholder="..." />
+                <marker date="1553469862332" expanded="true" signature="29363:29380" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -1212,14 +1208,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/custom2.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="352" column="16" selection-start-line="352" selection-start-column="16" selection-end-line="352" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Event/CheckinController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1242,14 +1230,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/custom2.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="352" column="16" selection-start-line="352" selection-start-column="16" selection-end-line="352" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/event/view/overview.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8186398">
-          <caret line="190" column="58" selection-start-line="190" selection-start-column="58" selection-end-line="190" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.12594458">
+          <caret line="188" column="116" selection-start-line="188" selection-start-column="116" selection-end-line="188" selection-end-column="116" />
           <folding>
-            <marker date="1553469408611" expanded="true" signature="25138:25155" placeholder="..." />
-            <marker date="1553469408611" expanded="true" signature="27317:27334" placeholder="..." />
-            <marker date="1553469408611" expanded="true" signature="29423:29440" placeholder="..." />
+            <element signature="e#6882#6922#0#HTML" expanded="true" />
+            <element signature="e#6972#15632#0#HTML" expanded="false" />
+            <element signature="e#15705#15736#0#HTML" expanded="true" />
+            <element signature="e#15828#15858#0#HTML" expanded="true" />
+            <element signature="e#15993#16037#0#HTML" expanded="true" />
+            <marker date="1553469862332" expanded="true" signature="25078:25095" placeholder="..." />
+            <marker date="1553469862332" expanded="true" signature="27257:27274" placeholder="..." />
+            <marker date="1553469862332" expanded="true" signature="29363:29380" placeholder="..." />
           </folding>
         </state>
       </provider>
