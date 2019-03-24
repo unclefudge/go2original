@@ -205,8 +205,8 @@
                                     </div>
                                 </div>
                                 <div class="kt-portlet__body">
-                                    <div style="height: 400px; overflow-y: scroll;">
-                                        <div class="table-responsive">
+                                    <div>
+                                        <div class="table-responsive" style="height: 400px; overflow-y: scroll;">
                                             <table class="table table-hover">
                                                 <tbody>
                                                 <?php
