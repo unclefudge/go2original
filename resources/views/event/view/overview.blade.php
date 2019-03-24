@@ -57,14 +57,14 @@
                                                 <p>Last Week</p>
                                             </div>
                                         </div>
-                                        <div class="text-center" class="col-md-4" style="height: 100px; margin-bottom: 10px">
-                                            <div style="background: #9DA8ED; padding: 10px 20px">
+                                        <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
+                                            <div class="text-center" style="background: #9DA8ED; padding: 10px 20px">
                                                 <h3 class="text-white" style="padding-top: 15px">{{ count($students_last_month) }} Students</h3>
                                                 <p>Last Month</p>
                                             </div>
                                         </div>
-                                        <div class="text-center" class="col-md-4" style="height: 100px; margin-bottom: 10px">
-                                            <div style="background: #9DA8ED; padding: 10px 20px;">
+                                        <div class="col-md-4" style="height: 100px; margin-bottom: 10px">
+                                            <div class="text-center" style="background: #9DA8ED; padding: 10px 20px;">
                                                 <h3 class="text-white" style="padding-top: 15px">{{ count($students_last_year) }} Students</h3>
                                                 <p>Last Year</p>
                                             </div>

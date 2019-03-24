@@ -54,17 +54,17 @@
         <entry file="file://$PROJECT_DIR$/resources/views/event/view/overview.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.6851385">
-              <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
+              <caret line="65" column="44" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
               <folding>
                 <element signature="e#682#743#0#HTML" expanded="true" />
                 <element signature="e#2802#2839#0#HTML" expanded="true" />
                 <element signature="e#2903#2945#0#HTML" expanded="true" />
                 <element signature="e#3016#3064#0#HTML" expanded="true" />
                 <element signature="e#3137#3162#0#HTML" expanded="true" />
-                <element signature="e#3455#3497#0#HTML" expanded="true" />
+                <element signature="e#3435#3477#0#HTML" expanded="true" />
                 <element signature="e#3548#3595#0#HTML" expanded="true" />
                 <element signature="e#3668#3693#0#HTML" expanded="true" />
-                <element signature="e#3988#4030#0#HTML" expanded="true" />
+                <element signature="e#3968#4010#0#HTML" expanded="true" />
                 <element signature="e#4081#4129#0#HTML" expanded="true" />
                 <element signature="e#4202#4227#0#HTML" expanded="true" />
                 <element signature="e#6981#7023#0#HTML" expanded="true" />
@@ -83,9 +83,9 @@
                 <element signature="e#18942#18965#0#HTML" expanded="true" />
                 <element signature="e#21861#21883#0#HTML" expanded="true" />
                 <element signature="e#22037#22062#0#HTML" expanded="true" />
-                <marker date="1553471517202" expanded="true" signature="23824:23841" placeholder="..." />
-                <marker date="1553471517202" expanded="true" signature="26003:26020" placeholder="..." />
-                <marker date="1553471517202" expanded="true" signature="28109:28126" placeholder="..." />
+                <marker date="1553471547792" expanded="true" signature="23824:23841" placeholder="..." />
+                <marker date="1553471547792" expanded="true" signature="26003:26020" placeholder="..." />
+                <marker date="1553471547792" expanded="true" signature="28109:28126" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -1263,17 +1263,17 @@
     <entry file="file://$PROJECT_DIR$/resources/views/event/view/overview.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6851385">
-          <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
+          <caret line="65" column="44" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
           <folding>
             <element signature="e#682#743#0#HTML" expanded="true" />
             <element signature="e#2802#2839#0#HTML" expanded="true" />
             <element signature="e#2903#2945#0#HTML" expanded="true" />
             <element signature="e#3016#3064#0#HTML" expanded="true" />
             <element signature="e#3137#3162#0#HTML" expanded="true" />
-            <element signature="e#3455#3497#0#HTML" expanded="true" />
+            <element signature="e#3435#3477#0#HTML" expanded="true" />
             <element signature="e#3548#3595#0#HTML" expanded="true" />
             <element signature="e#3668#3693#0#HTML" expanded="true" />
-            <element signature="e#3988#4030#0#HTML" expanded="true" />
+            <element signature="e#3968#4010#0#HTML" expanded="true" />
             <element signature="e#4081#4129#0#HTML" expanded="true" />
             <element signature="e#4202#4227#0#HTML" expanded="true" />
             <element signature="e#6981#7023#0#HTML" expanded="true" />
@@ -1292,9 +1292,9 @@
             <element signature="e#18942#18965#0#HTML" expanded="true" />
             <element signature="e#21861#21883#0#HTML" expanded="true" />
             <element signature="e#22037#22062#0#HTML" expanded="true" />
-            <marker date="1553471517202" expanded="true" signature="23824:23841" placeholder="..." />
-            <marker date="1553471517202" expanded="true" signature="26003:26020" placeholder="..." />
-            <marker date="1553471517202" expanded="true" signature="28109:28126" placeholder="..." />
+            <marker date="1553471547792" expanded="true" signature="23824:23841" placeholder="..." />
+            <marker date="1553471547792" expanded="true" signature="26003:26020" placeholder="..." />
+            <marker date="1553471547792" expanded="true" signature="28109:28126" placeholder="..." />
           </folding>
         </state>
       </provider>
