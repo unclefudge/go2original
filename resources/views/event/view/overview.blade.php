@@ -12,6 +12,12 @@
     @include('event/view/_header')
 @endsection
 @section('content')
+    <style>
+        .anyClass {
+            height:200px;
+            overflow-y: scroll;
+        }
+    </style>
     <div class="kt-content kt-grid__item kt-grid__item--fluid">
         <div class="container-fluid">
             <div class="row">
@@ -89,7 +95,7 @@
                                                     </div>
                                                 </li>--}}
                                             </ul>
-                                            <div class="kt-scroll ps ps--active-y" data-scroll="true" data-height="200" data-scrollbar-shown="true" style="height: 200px; overflow: hidden;">
+                                            <div style="height: 200px; overflow-y: scroll;">
                                                 <div class="tab-content">
                                                     {{-- New Students --}}
                                                     <div class="tab-pane active show" id="m_tabs_3_1" role="tabpanel">
