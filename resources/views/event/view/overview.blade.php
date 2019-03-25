@@ -359,7 +359,7 @@
                     $('#chart_loading').hide();
 
                 }).fail(function () {
-                    alert("Something went wrong. Please refresh the page."); // If there is no communication between the server, show an error
+                    alert("Something went wrong loading graphs. Please refresh the page."); // If there is no communication between the server, show an error
                 });
             }
 
@@ -397,7 +397,7 @@
                     })
                     $('#chart_loading').hide();
                 }).fail(function () {
-                    alert("Something went wrong. Please refresh the page."); // If there is no communication between the server, show an error
+                    alert("Something went wrong loading graphs. Please refresh the page."); // If there is no communication between the server, show an error
                 });
             }
 
@@ -435,7 +435,7 @@
                     })
                     $('#chart_loading').hide();
                 }).fail(function () {
-                    alert("Something went wrong. Please refresh the page."); // If there is no communication between the server, show an error
+                    alert("Something went wrong loading graphs. Please refresh the page."); // If there is no communication between the server, show an error
                 });
             }
         });
