@@ -12,8 +12,10 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #F7F7F7; padding:20px;">
-                <div class="alert m-alert m-alert--default text-center" role="alert">
-                    This allows you to create a past event of a {{ $event->name }} so you can manually check-in students/volunteers.
+                <div class="row">
+                    <div class="col text-center">
+                        This allows you to create a past event of a <b>{{ $event->name }}</b> so you can manually check-in students/volunteers.<br><br>
+                    </div>
                 </div>
                 {{-- Date --}}
                 <div class="row">
@@ -26,7 +28,7 @@
                             {!! fieldErrorMessage('pastdate', $errors) !!}
                         </div>
                     </div>
-                    </div>
+                </div>
 
                 {{-- Name --}}
                 <div class="row">
