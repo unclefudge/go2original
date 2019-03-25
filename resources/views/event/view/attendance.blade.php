@@ -310,7 +310,7 @@
             },
             count_all: 0, count_students: 0, count_volunteers: 0, count_male: 0, count_male_percent: 0, count_female: 0, count_female_percent: 0,
             count_grades: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}, count_schools: {},
-            searchQuery: "{!! app('request')->input('query') !!}",
+            searchQuery: "{!! app('request')->input('query') !!}", searching: false,
             edit_name: false, show_photos: false, show_checked: true, show_inactive: true,
             users: [], columns: ['in', 'name', 'type', 'grade', 'school'],
         };
@@ -318,6 +318,7 @@
         $(document).ready(function () {
             $('#date').select2({width: '100%'});
             $("#date").change(function () {
+                xx.searching = true;
                 window.location.href = "/event/" + xx.eid + '/attendance/' + $('#date').val();
             });
 
