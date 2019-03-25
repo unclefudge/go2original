@@ -268,7 +268,7 @@ class EventController extends Controller {
                 'gender' => $user->gender,
                 'grade'  => $user->grade_name,
                 'school' => $user->school_name,
-                'photo'  => $user->photo_path,
+                'photo'  => $user->photo_sm_path,
                 'status' => $user->status,
                 'new'    => $new,
                 'method' => $method,
