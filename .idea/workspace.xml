@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b4bcc47-dc49-4920-a141-65f46e403f7f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/view/_create_instance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/view/_create_instance.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/event/view/attendance.blade.php" afterPath="$PROJECT_DIR$/resources/views/event/view/attendance.blade.php" />
     </list>
     <ignored path="go2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,19 +49,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="attendance.blade.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="attendance.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/event/view/attendance.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="223" column="25" selection-start-line="223" selection-start-column="25" selection-end-line="223" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.3988245">
+              <caret line="144" column="70" selection-start-line="144" selection-start-column="70" selection-end-line="144" selection-end-column="70" />
               <folding>
                 <element signature="e#5431#5457#0#HTML" expanded="true" />
                 <element signature="e#7980#8077#0#HTML" expanded="true" />
                 <element signature="e#8757#8836#0#HTML" expanded="true" />
-                <marker date="1553475048955" expanded="true" signature="11976:12079" placeholder="..." />
-                <marker date="1553475048955" expanded="true" signature="11990:12077" placeholder="..." />
-                <marker date="1553475048955" expanded="true" signature="31645:31687" placeholder="..." />
-                <marker date="1553475048955" expanded="true" signature="31890:31934" placeholder="..." />
+                <marker date="1553475463471" expanded="true" signature="11976:12079" placeholder="..." />
+                <marker date="1553475463471" expanded="true" signature="11990:12077" placeholder="..." />
+                <marker date="1553475463471" expanded="true" signature="31645:31687" placeholder="..." />
+                <marker date="1553475463471" expanded="true" signature="31890:31934" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -78,11 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_create_instance.blade.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_create_instance.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/event/view/_create_instance.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2938707">
-              <caret line="16" column="151" selection-start-line="16" selection-start-column="151" selection-end-line="16" selection-end-column="151" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="29" column="26" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -194,8 +193,8 @@
         <option value="$PROJECT_DIR$/resources/views/form-error.blade.php" />
         <option value="$PROJECT_DIR$/app/helpers.php" />
         <option value="$PROJECT_DIR$/public/css/custom2.css" />
-        <option value="$PROJECT_DIR$/resources/views/event/view/attendance.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/event/view/_create_instance.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/event/view/attendance.blade.php" />
       </list>
     </option>
   </component>
@@ -1296,22 +1295,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/event/view/attendance.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="223" column="25" selection-start-line="223" selection-start-column="25" selection-end-line="223" selection-end-column="25" />
-          <folding>
-            <element signature="e#5431#5457#0#HTML" expanded="true" />
-            <element signature="e#7980#8077#0#HTML" expanded="true" />
-            <element signature="e#8757#8836#0#HTML" expanded="true" />
-            <marker date="1553475048955" expanded="true" signature="11976:12079" placeholder="..." />
-            <marker date="1553475048955" expanded="true" signature="11990:12077" placeholder="..." />
-            <marker date="1553475048955" expanded="true" signature="31645:31687" placeholder="..." />
-            <marker date="1553475048955" expanded="true" signature="31890:31934" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/account/school/grades.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1322,9 +1305,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/event/view/_create_instance.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2938707">
-          <caret line="16" column="151" selection-start-line="16" selection-start-column="151" selection-end-line="16" selection-end-column="151" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="26" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/event/view/attendance.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3988245">
+          <caret line="144" column="70" selection-start-line="144" selection-start-column="70" selection-end-line="144" selection-end-column="70" />
+          <folding>
+            <element signature="e#5431#5457#0#HTML" expanded="true" />
+            <element signature="e#7980#8077#0#HTML" expanded="true" />
+            <element signature="e#8757#8836#0#HTML" expanded="true" />
+            <marker date="1553475463471" expanded="true" signature="11976:12079" placeholder="..." />
+            <marker date="1553475463471" expanded="true" signature="11990:12077" placeholder="..." />
+            <marker date="1553475463471" expanded="true" signature="31645:31687" placeholder="..." />
+            <marker date="1553475463471" expanded="true" signature="31890:31934" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>

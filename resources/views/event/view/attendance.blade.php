@@ -142,7 +142,7 @@
                                             </div>
                                             <div v-if="xx.date">
                                                 <div class="row" style="padding: 20px 0px 10px 0px">
-                                                    <div class="col-md-8">
+                                                    <div class="col-lg-8">
                                                         <h1 v-if="!xx.edit_name">@{{ xx.instance.name }} <i v-if="xx.estatus != 0" v-on:click="toggleEditName" class="fa fa-edit" style="color: #9eacb4; font-size: 13px; padding: 7px 20px ; vertical-align: top; cursor: pointer"></i></h1>
                                                         {{-- Edit Instance Name --}}
                                                         <div v-if="xx.edit_name" style="padding-left: 5px">
