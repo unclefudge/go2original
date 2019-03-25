@@ -145,7 +145,7 @@
                                                     <div class="col-md-8">
                                                         <h1 v-if="!xx.edit_name">@{{ xx.instance.name }} <i v-if="xx.estatus != 0" v-on:click="toggleEditName" class="fa fa-edit" style="color: #9eacb4; font-size: 13px; padding: 7px 20px ; vertical-align: top; cursor: pointer"></i></h1>
                                                         {{-- Edit Instance Name --}}
-                                                        <div v-if="xx.edit_name" class="col-8" style="padding-left: 5px">
+                                                        <div v-if="xx.edit_name" style="padding-left: 5px">
                                                             <div class="input-group">
                                                                 <input v-model="xx.instance.name" type="text" class="form-control form-control-lg" style="font-size: 30px">
                                                                 <div class="input-group-append">
@@ -221,7 +221,7 @@
         </div>
     </div>
 
-    @include('event/_create_instance')
+    @include('event/view/_create_instance')
 
     {{-- Attendence template --}}
     <script type="text/x-template" id="attendance-template">
