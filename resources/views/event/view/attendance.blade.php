@@ -116,7 +116,7 @@
                                     <div class="kt-portlet__head-toolbar">
                                         <div v-if="xx.estatus != 0">
                                             <a href="#" class="btn btn-light btn-icon-sm" data-toggle="modal" data-target="#modal_create_instance"><i class="la la-long-arrow-left"></i>Add Past Event</a>
-                                            <button v-if="xx.instance.id != 0" class="btn btn-sm btn-clear hover-red" style="margin-left: 10px;" data-container="body" data-toggle="kt-tooltip" data-placement="top" data-original-title="Delete" id="but_delete_event"><i
+                                            <button v-if="xx.instance.id != 0" class="btn btn-sm btn-clear hover-red" style="margin-left: 10px;" id="but_delete_event"><i
                                                         class="fa fa-trash-alt fa-2x"></i></button>
                                         </div>
                                     </div>
