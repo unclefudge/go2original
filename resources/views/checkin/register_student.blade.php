@@ -5,7 +5,7 @@
     <style>
         body, html {
             @if ($instance->event->background)
-                   background-image: url("{!! $instance->event->background_path !!}") !important;
+                   background-image: url("{!! $instance->event->background_path2 !!}") !important;
             @endif
                    height: 100%; /* set height */
 
@@ -162,7 +162,7 @@
                             <div class="col-md-4">
                                 <div class="form-group {!! fieldHasError('grade_id', $errors) !!}">
                                     {!! Form::label('grade_id', 'Grade', ['class' => 'control-label']) !!}
-                                    {!! Form::select('grade_id', Auth::user()->account->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                    {!! Form::select('grade_id', $instance->event->gradesSelect('prompt'), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
                                     {!! fieldErrorMessage('grade_id', $errors) !!}
                                 </div>
                             </div>

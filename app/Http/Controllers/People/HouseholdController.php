@@ -81,8 +81,15 @@ class HouseholdController extends Controller {
                     $user = User::findOrFail($uid);
                     PeopleHistory::addHistory($user, 'household', $house_before, $house_after);
                 }
-            } else
+            } else {
+                // Delete household + update old members history
+                $house_after = (object)  ['name' => $household->name, 'members' => [], 'created_at' => $household->created_at];
+                foreach ($member_ids_before as $uid) {
+                    $user = User::findOrFail($uid);
+                    PeopleHistory::addHistory($user, 'household', $house_before, $house_after);
+                }
                 $household->delete();
+            }
 
             return $household;
         }

@@ -16,7 +16,7 @@ class GradeController extends Controller {
      */
     public function index()
     {
-        return view('settings/school/grades');
+        return view('account/school/grades');
     }
 
     /**
@@ -113,7 +113,6 @@ class GradeController extends Controller {
                 $list[] = [
                     'id'     => $grade->id,
                     'name'   => $grade->name,
-                    'key'    => $grade->type,
                     'order'  => $grade->order,
                     'count'  => $grade->students->count(),
                     'status' => $grade->status,

@@ -24,7 +24,7 @@
                             <div class="kt-portlet">
                                 <div class="kt-portlet__head kt-portlet__head--noborder">
                                     <div class="kt-portlet__head-label">
-                                        <h3 class="kt-portlet__head-title">Account Details</h3>
+                                        <h3 class="kt-portlet__head-title">Organisation Details</h3>
                                     </div>
                                     <div class="kt-portlet__head-toolbar">
                                         @if ($account->status)
@@ -129,14 +129,14 @@
                         <div class="col-md-7">
                             <div class="form-group {!! fieldHasError('timezone', $errors) !!}">
                                 {!! Form::label('timezone', 'Timezone', ['class' => 'control-label']) !!}
-                                {!! Form::select('timezone',$timezones::all(), null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('timezone',$timezones::all(), null, ['class' => 'form-control kt-selectpicker']) !!}
                                 {!! fieldErrorMessage('timezone', $errors) !!}
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group {!! fieldHasError('dateformat', $errors) !!}">
                                 {!! Form::label('dateformat', 'Date Format', ['class' => 'control-label']) !!}
-                                {!! Form::select('dateformat', ['d/m/Y' => 'Day/Month/Year', 'm/d/Y' => 'Month/Day/Year'], null, ['class' => 'form-control m-bootstrap-select m_selectpicker']) !!}
+                                {!! Form::select('dateformat', ['d/m/Y' => 'Day/Month/Year', 'm/d/Y' => 'Month/Day/Year'], null, ['class' => 'form-control kt-selectpicker']) !!}
                                 {!! fieldErrorMessage('dateformat', $errors) !!}
                             </div>
                         </div>

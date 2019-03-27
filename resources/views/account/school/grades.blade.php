@@ -79,44 +79,47 @@
     <script type="text/x-template" id="list-template">
         <div class="root">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="alert alert-secondary" role="alert">
                         <div class="alert-text">
                             A list of school grades to be used by your students.<br><br>
-                            Simply drag them into the correct order of school progression.<br><br>
-                            You can hide or delete any grades you don't use or add additional ones.
+                            Simply drag them into the correct order of school progression or hide/delete any grades you don't use.<br><br>
+                            Once you are happy with the order + settings ensure you click 'Save'.
                         </div>
                     </div>
                     <div class="input-group" style="padding-bottom: 20px">
-                        <input v-model="xx.addItem" type="text" class="form-control form-control m-input" placeholder="Add new grade">
+                        <input v-model="xx.addItem" type="text" class="form-control form-control" placeholder="Add new grade">
                         <div class="input-group-append">
                             <span v-on:click="add()" class="input-group-text" style="color: #FFFFFF; background: #666; padding: 0px 20px; cursor: pointer">Add</span>
                         </div>
                         <span></span>
                     </div>
+                    {{-- Tablet+ display --}}
                     <div class="d-none d-md-block">
                         <button v-on:click="save()" class="btn btn-primary" id="saveList1">Save</button>
-                        <a href="#" v-on:click="restore()" style="margin-left: 30px">Restore previous grades</a>
-                    </div>
+                        <a href="#" v-on:click="restore()" style="margin-left: 30px">Restore previous grades &nbsp;
+                            <i class="fa fa-question-circle" data-container="body" data-toggle="kt-tooltip" data-placement="top" title="" data-original-title="You can restore your previous 'saved' grade settings"></i> </a>
 
-                    <div style="padding:20px; margin-top:20px; background: #716aca; color: #fff">
-                        <h3 class="kt-portlet__head-title text-center" style="color:#fff;">Beginning of School Year</h3>
-                        <p style="font-size: larger">
-                            Once a year Go2Youth will automatically move all your students up a grade because they are such excellent pupils.<br><br>
-                            What date would you like this to happen each year.
-                        </p>
-                        <div class="row justify-content-sm-center">
-                            <div class="col-lg-6 col-md-3 col-sm-4" style="padding-bottom: 20px">
-                                {!! Form::select('month', $months_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                        {{-- Grade Upgrade - Standard --}}
+                        <div style="padding:20px; margin-top:20px; background: #716aca; color: #fff">
+                            <h3 class="kt-portlet__head-title text-center" style="color:#fff;">Beginning of School Year<br><small>(under development)</small></h3>
+                            <p style="font-size: larger">
+                                Once a year Go2Youth will automatically move all your students up a grade because they are such excellent pupils.<br><br>
+                                What date would you like this to happen each year.
+                            </p>
+                            <div class="row justify-content-sm-center">
+                                <div class="col-lg-6 col-md-6 col-sm-4" style="padding-bottom: 20px">
+                                    {!! Form::select('month', $months_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-3">
+                                    {!! Form::select('day', $days_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                                </div>
                             </div>
-                            <div class="col-lg-4 col-md-2 col-sm-3">
-                                {!! Form::select('day', $days_array, null, ['class' => 'form-control kt-selectpicker']) !!}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row justify-content-sm-center">
-                            <div class="col-lg-6 col-md-3 col-sm-3">
-                                <button class="btn btn-light btn-block">Save</button>
+                            <br>
+                            <div class="row justify-content-sm-center">
+                                <div class="col-lg-6 col-md-4 col-sm-3">
+                                    <button class="btn btn-light btn-block">Save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -126,14 +129,39 @@
                     <SortableList lockAxis="y" v-model="xx.items" distance="5">
                         <SortableItem v-for="(item, index) in xx.items" :index="index" :key="index" :item="item" :items="xx.items">
                     </SortableList>
+
+                    {{-- Mobile Display --}}
                     <div class="d-md-none">
                         <br><br>
                         <button v-on:click="save()" class="btn btn-primary">Save</button>
+
+                        {{-- Grade Upgrade - Mobile --}}
+                        <div style="padding:20px; margin-top:20px; background: #716aca; color: #fff">
+                            <h3 class="kt-portlet__head-title text-center" style="color:#fff;">Beginning of School Year</h3>
+                            <p style="font-size: larger">
+                                Once a year Go2Youth will automatically move all your students up a grade because they are such excellent pupils.<br><br>
+                                What date would you like this to happen each year.
+                            </p>
+                            <div class="row justify-content-sm-center">
+                                <div class="col-lg-6 col-md-6 col-sm-4" style="padding-bottom: 20px">
+                                    {!! Form::select('month', $months_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-3">
+                                    {!! Form::select('day', $days_array, null, ['class' => 'form-control kt-selectpicker']) !!}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row justify-content-sm-center">
+                                <div class="col-lg-6 col-md-4 col-sm-3">
+                                    <button class="btn btn-light btn-block">Save</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {{--}}
-            <div class="row">
+
+            {{--}}<div class="row">
                 <div class="col">
                     <pre>@{{ $data }}</pre>
                 </div>
@@ -153,7 +181,7 @@
             </div>
             <div v-if="item.edit == 1">
                 <div class="input-group">
-                    <input v-on:keyup="editVerify(item)" v-model="item.name" type="text" class="form-control m-input">
+                    <input v-on:keyup="editVerify(item)" v-model="item.name" type="text" class="form-control">
                     <div v-if="xx.editOK == 1" class="input-group-append">
                         <span v-on:click="saveItem(item)" class="input-group-text" style="color: #FFFFFF; background: #5867dd; padding: 0px 10px; cursor: pointer">Save</span>
                     </div>
@@ -238,14 +266,16 @@
                             title: "Are you sure?",
                             html: "You currently have <b>" + item.count + " students</b> in this grade.<br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i> All these students grades will be cleared!</span> ",
                             cancelButtonText: "Cancel!",
-                            cancelButtonClass: "btn btn-secondary",
-                            confirmButtonText: "Yes, delete it!",
-                            confirmButtonClass: "btn btn-danger",
+                            confirmButtonText: "Yes, delete!",
                             showCancelButton: true,
                             reverseButtons: true,
                             allowOutsideClick: true,
                             animation: false,
-                            customClass: {popup: 'animated tada'}
+                            customClass: {
+                                confirmButton: 'btn btn-danger',
+                                cancelButton: 'btn btn-secondary',
+                                popup: 'animated tada'
+                            }
                         }).then(function (result) {
                             if (result.value) {
                                 // Delete grade
@@ -295,16 +325,16 @@
                 },
                 save: function () {
                     $('#saveList1').html('Saving');
-                    $('#saveList1').addClass('m-loader m-loader--light m-loader--right');
+                    $('#saveList1').addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light');
 
                     updateGradeDB(JSON.stringify(this.xx.items)).then(function (result) {
                         if (result)
-                            window.location.href = "/settings/grades";
+                            window.location.href = "/account/grades";
                     }.bind(this));
                 },
                 add: function () {
                     if (this.xx.addItem != '')
-                        this.xx.items.push({id: 'new', order: '', name: this.xx.addItem});
+                        this.xx.items.push({id: 'new', order: '', name: this.xx.addItem, count:0, status: 1, edit: 0});
                     this.xx.addItem = '';
                 },
                 restore: function () {
@@ -328,7 +358,7 @@
                 var grades = {grades: items};
                 grades._method = 'patch';
                 $.ajax({
-                    url: '/grades/' + "{{ session('aid') }}",
+                    url: '/settings/grade/' + "{{ session('aid') }}",
                     type: 'POST',
                     data: grades,
                     success: function (result) {

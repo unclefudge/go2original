@@ -3,6 +3,7 @@
 namespace App\Models\Event;
 
 use App\User;
+use App\Models\People\Grade;
 use Carbon\Carbon;
 use Camroncade\Timezone\Facades\Timezone;
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +44,37 @@ class Event extends Model {
     public function betweenUTCDates($date1, $date2)
     {
         return EventInstance::where('eid', $this->id)->whereBetween('start', [$date1, $date2])->get();
+    }
+
+    /**
+     * A dropdown list of grades for this event
+     *
+     * @return array
+     */
+    public function gradesSelect($prompt = '', $status = 1)
+    {
+        $array = [];
+        $grade_ids = explode(',', $this->grades);
+        foreach ($grade_ids as $gid) {
+            $grade = Grade::find($gid);
+            if ($grade && $grade->status == $status)
+                $array[$grade->id] =  "$grade->order:$grade->name";
+        }
+
+        // Sort array by the Sort Order field we added to front o string, Once sorted remove it
+        asort($array, SORT_NUMERIC);
+        $sorted_array = [];
+        foreach ($array as $key => $value) {
+            $split = explode(':', $value, 2);
+            $sorted_array[$key] = $split[1];
+        }
+
+        if ($prompt == 'all')
+            return ($prompt && count($sorted_array) > 1) ? $sorted_array = array('' => 'All Grades') + $sorted_array : $sorted_array;
+        if ($prompt == 'ALL')
+            return ($prompt && count($sorted_array) > 1) ? $sorted_array = array('all' => 'All Grades') + $sorted_array : $sorted_array;
+
+        return ($prompt && count($array) > 1) ? $sorted_array = array('' => 'Select Grade') + $sorted_array : $sorted_array;
     }
 
     /**
@@ -121,6 +153,16 @@ class Event extends Model {
         $path = "/image/" . $this->attributes['aid'] . '/events/';
 
         return ($this->attributes['background']) ? $path . $this->attributes['background'] . '?' . rand(1, 32000) : '/img/bg-event.jpg';
+    }
+
+    /**
+     * Get Background Path (getter)
+     */
+    public function getBackgroundPath2Attribute()
+    {
+        $path = "/image/" . $this->attributes['aid'] . '/events/';
+
+        return ($this->attributes['background']) ? $path . $this->attributes['background'] : '/img/bg-event.jpg';
     }
 
     /**

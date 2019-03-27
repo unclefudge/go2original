@@ -15,9 +15,9 @@ if (!ctype_digit($rest)) {
         <br>
         <div class="list-group list-group-flush">
             <a href="/people/{{ $user->id }}" class="list-group-item list-group-item-action {{ $active_profile }}"><i class="flaticon-avatar sidebar-menu-icon"></i></span> &nbsp; Profile</a>
-            <a href="#" class="list-group-item list-group-item-action  {{ $active_medical }}"><i class="la la-medkit" style="font-size: 24px; width: 30px"></i> Medical</a>
+            <a href="/people/{{ $user->id }}/medical" class="list-group-item list-group-item-action  {{ $active_medical }}"><i class="la la-medkit" style="font-size: 24px; width: 30px"></i> Medical</a>
             <a href="/people/{{ $user->id }}/activity" class="list-group-item list-group-item-action  {{ $active_activity }}"><i class="flaticon2-rocket-2 sidebar-menu-icon"></i> Activity</a>
-            <a href="#" class="list-group-item list-group-item-action  {{ $active_notes }}"><i class="flaticon-notes sidebar-menu-icon"></i> &nbsp; Notes</a>
+            <a href="/people/{{ $user->id }}/notes" class="list-group-item list-group-item-action  {{ $active_notes }}"><i class="flaticon-notes sidebar-menu-icon"></i> &nbsp; Notes</a>
         </div>
     </div>
 </div>

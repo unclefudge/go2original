@@ -18,7 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::get('/dashboard', 'Misc\HomeController@index')->name('home');
+Route::get('/home', 'Misc\HomeController@index')->name('home');
 Route::get('/signup', 'Misc\HomeController@index')->name('home')->middleware('guest');
 
 // Logged in Routes
@@ -38,16 +38,36 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/image/{aid}/{type}/{filename}', 'Misc\FileController@getPhoto'); //->where('filename', '^(.+)\/([^\/]+)$');
     Route::get('/log/{aid}/{type}/{filename}', 'Misc\FileController@getLog'); //->where('filename', '^(.+)\/([^\/]+)$');
 
-    //Route::get('/data/users', 'Account\AccountController@getPeople');
+    // Account Admins
+    Route::get('/data/admins', 'Account\AdminController@getAdmins');
+    Route::post('/account/admin/add-admin', 'Account\AdminController@addAdmin');
+    Route::post('/account/admin/update-permissions/{id}', 'Account\AdminController@updatePermission');
+    Route::resource('/account/admin', 'Account\AdminController');
+
+    // Accounts
     Route::get('/account', 'Account\AccountController@profile');
     Route::get('/account/schools', 'Account\AccountController@schools');
     Route::get('/account/grades', 'Account\AccountController@grades');
+    Route::get('/account/admins', 'Account\AccountController@admins');
     Route::resource('/account', 'Account\AccountController');
+
+    // Grades
+    Route::get('/data/grades', 'People\GradeController@getGrades');
+    Route::resource('/settings/grade', 'People\GradeController');
+
+    // Schools
+    Route::get('/data/schools', 'People\SchoolController@getSchools');
+    Route::get('/data/schools-by-grade/{gid}', 'People\SchoolController@schoolsByGrade');
+    Route::get('/data/school/{sid}/grade/{gid}/link/{link}', 'People\SchoolController@linkSchool2Grade');
+    Route::resource('/settings/school', 'People\SchoolController');
+
 
     // People
     Route::get('/data/people', 'People\PeopleController@getPeople');
     Route::get('/data/people/search-add', 'People\PeopleController@searchAddUser');
+    Route::any('/people/{id}/medical', 'People\PeopleController@medical');
     Route::any('/people/{id}/activity', 'People\PeopleController@activity');
+    Route::any('/people/{id}/notes', 'People\PeopleController@notes');
     Route::any('/people/{id}/status/{status}', 'People\PeopleController@status');
     Route::get('/people/{id}/del', 'People\PeopleController@destroy');
     Route::post('/people/{id}/photo', 'People\PeopleController@updatePhoto');
@@ -65,16 +85,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/data/activity', 'People\ActivityController@getActivity');
     Route::resource('/activity', 'People\ActivityController');
 
-    // Grades
-    Route::get('/data/grades', 'People\GradeController@getGrades');
-    //Route::resource('/settings/grades', 'People\GradeController');
-
-    // Schools
-    Route::get('/data/schools', 'People\SchoolController@getSchools');
-    Route::get('/data/schools-by-grade/{gid}', 'People\SchoolController@schoolsByGrade');
-    Route::get('/data/school/{sid}/grade/{gid}/link/{link}', 'People\SchoolController@linkSchool2Grade');
-
-    Route::resource('/settings/schools', 'People\SchoolController');
 
     // Events
     //Route::get('/data/event/dates/{id}', 'Event\EventController@getDates');

@@ -3,21 +3,24 @@
 namespace App\Http\Controllers\Account;
 
 use DB;
+use Auth;
 use Validator;
+use App\User;
 use App\Models\Account\Account;
 use Kamaln7\Toastr\Facades\Toastr;
 use Camroncade\Timezone\Facades\Timezone;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class AccountController extends Controller
-{
+class AccountController extends Controller {
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $account = Account::findOrFail(session('aid'));
+
         return view('account/profile', compact('account'));
     }
 
@@ -27,6 +30,7 @@ class AccountController extends Controller
     public function profile()
     {
         $account = Account::findOrFail(session('aid'));
+
         return view('account/profile', compact('account'));
     }
 
@@ -36,6 +40,7 @@ class AccountController extends Controller
     public function schools()
     {
         $account = Account::findOrFail(session('aid'));
+
         return view('account/school/index', compact('account'));
     }
 
@@ -45,7 +50,18 @@ class AccountController extends Controller
     public function grades()
     {
         $account = Account::findOrFail(session('aid'));
+
         return view('account/school/grades', compact('account'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function admins()
+    {
+        $account = Account::findOrFail(session('aid'));
+
+        return view('account/admins', compact('account'));
     }
 
     /**

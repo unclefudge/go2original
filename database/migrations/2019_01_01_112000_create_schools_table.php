@@ -54,7 +54,7 @@ class CreateSchoolsTable extends Migration
             $table->unsignedInteger('gid')->nullable();
 
             // Foreign keys
-            $table->foreign('sid')->references('id')->on('schools');
+            $table->foreign('sid')->references('id')->on('schools')->onDelete('cascade');
             $table->foreign('gid')->references('id')->on('grades')->onDelete('cascade');
 
             // Modify info

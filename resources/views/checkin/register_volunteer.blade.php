@@ -5,7 +5,7 @@
     <style>
         body, html {
             @if ($instance->event->background)
-               background-image: url("{!! $instance->event->background_path !!}") !important;
+               background-image: url("{!! $instance->event->background_path2 !!}") !important;
             @endif
                height: 100%; /* set height */
 

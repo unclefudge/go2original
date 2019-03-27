@@ -48,10 +48,9 @@
             <hr>
         </div>
 
-        <div style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1);"></div>
-
         {{-- Student --}}
         @if ($user->type == 'Student')
+            <div style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1);"></div>
             <div class="row">
                 {{-- School --}}
                 <div class="col-md-5">
@@ -88,6 +87,7 @@
 
         {{-- Volunteer --}}
         @if ($user->type == 'Volunteer' || $user->type == 'Parent/Volunteer')
+            <div style="margin-top: 1rem; margin-bottom: 1rem; border: 0; border-top: 1px solid rgba(0, 0, 0, 0.1);"></div>
             <div class="row">
                 {{-- School --}}
                 <div class="col-md-12">

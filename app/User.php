@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Auth;
+use App\Models\Account\Admin;
 use App\Models\Event\Event;
 use App\Models\Event\EventInstance;
 use App\Models\Event\Attendance;
@@ -91,6 +92,21 @@ class User extends Authenticatable
     public function history()
     {
         return $this->hasMany('App\Models\People\PeopleHistory', 'uid');
+    }
+
+    /**
+     * A User has one permissions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function permissions()
+    {
+        return $this->hasOne('App\Models\Account\Admin', 'uid');
+    }
+
+    public function pLevel($permission)
+    {
+        return $this->hasMany('App\Models\Account\Admin', 'uid');
     }
 
 
@@ -293,6 +309,22 @@ class User extends Authenticatable
     public function getIsParentAttribute()
     {
         return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
+    }
+
+    /**
+     * This person is a Admin
+     */
+    public function getIsAdminAttribute()
+    {
+        return (in_array($this->type, ['Parent', 'Parent/Volunteer'])) ? true : false;
+    }
+
+    /**
+     * This person is a Admin
+     */
+    public function getIsOrgAdminAttribute()
+    {
+        return (Admin::where('aid', $this->aid)->where('uid', $this->id)->where('admin', 1)->first()) ? true : false;
     }
 
     /**

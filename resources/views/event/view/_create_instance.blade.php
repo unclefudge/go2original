@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body" style="background-color: #F7F7F7; padding:20px;">
                 <div class="row">
-                    <div class="col text-center">
+                    <div class="col text-center" style="padding: 0px 50px">
                         This allows you to create a past event of a <b>{{ $event->name }}</b> so you can manually check-in students/volunteers.<br><br>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group {!! fieldHasError('pastdate', $errors) !!}">
-                            {!! Form::label('pastdate', 'Date', ['class' => 'control-label']) !!}
+                            <label for="pastdate" class="form-control-label">Date {!! REQUIRED_FIELD !!}</label>
                             <div class="input-group date">
                                 {!! Form::text('pastdate', null, ['class' => 'form-control m-input datepicker', 'style' => 'background:#FFF', 'placeholder' => session('df-datepicker'), 'required', 'id' => 'pastdate']) !!}
                             </div>
@@ -33,7 +33,7 @@
                 {{-- Name --}}
                 <div class="row">
                     <div class="col">
-                        <div class="form-group m-form__group {!! fieldHasError('name', $errors) !!}">
+                        <div class="form-group {!! fieldHasError('name', $errors) !!}">
                             {!! Form::label('name', 'Event Name', ['class' => 'form-control-label']) !!}
                             {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => $event->name]) !!}
                             {!! fieldErrorMessage('name', $errors) !!}

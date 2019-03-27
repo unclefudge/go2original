@@ -18,8 +18,8 @@
                         @if (!$event->status)
                             <a class="dropdown-item" href="{{ ($event->status) ? '#' : "/event/$event->id/status/1" }}"><i class="fa fa-eye" style="width: 25px"></i> Make active</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" id="but_del_event"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
-                            @else
+                            <a class="dropdown-item" href="#" data-eid="{{ $event->id }}" data-name="{{ $event->name }}" id="but_del_event"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
+                        @else
                             <a class="dropdown-item" href="{{ (!$event->status) ? '#' : "/event/$event->id/status/0" }}"><i class="fa fa-eye-slash" style="width: 25px"></i> Make inactive</a>
                         @endif
                     </div>

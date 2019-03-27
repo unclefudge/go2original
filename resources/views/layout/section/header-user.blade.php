@@ -30,14 +30,14 @@
                 <div class="kt-notification__item-icon"><i class="flaticon2-calendar-3 kt-font-primary"></i></div>
                 <div class="kt-notification__item-details">
                     <div class="kt-notification__item-title kt-font-bold">My Profile</div>
-                    <div class="kt-notification__item-time">Account settings and more</div>
+                    <div class="kt-notification__item-time">Account settings and localisation</div>
                 </div>
             </a>
             <a href="/account" class="kt-notification__item">
                 <div class="kt-notification__item-icon"><i class="flaticon2-hourglass kt-font-brand"></i></div>
                 <div class="kt-notification__item-details">
                     <div class="kt-notification__item-title kt-font-bold">Account</div>
-                    <div class="kt-notification__item-time">Settings & Config</div>
+                    <div class="kt-notification__item-time">Account settings and more</div>
                 </div>
             </a>
             <div class="kt-notification__custom">

@@ -24,6 +24,16 @@ class Account extends Model
     }
 
     /**
+     * A Account has many Admins
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function admins()
+    {
+        return $this->belongsToMany('App\User', 'accounts_security', 'aid', 'uid');
+    }
+
+    /**
      * A Account has many Schools
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -16,8 +16,8 @@
                 <div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="">
                     <a href="#" class="btn kt-subheader__btn-secondary kt-subheader__btn-options" style="padding: 1.4rem 1rem;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog" style="font-size: 18px !important; color: #fff"></i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" onclick="uSet('show_inactive_events', 0)" id="but_hide_archived"><i class="fa fa-eye-slash" style="width: 25px"></i> Hide inactive events</button>
-                        <button class="dropdown-item" onclick="uSet('show_inactive_events', 1)" id="but_show_archived"><i class="fa fa-eye" style="width: 25px"></i> Show inactive events</button>
+                        <button class="dropdown-item" onclick="uSet('show_inactive_events', 0)" id="but_hide_inactive"><i class="fa fa-eye-slash" style="width: 25px"></i> Hide inactive events</button>
+                        <button class="dropdown-item" onclick="uSet('show_inactive_events', 1)" id="but_show_inactive"><i class="fa fa-eye" style="width: 25px"></i> Show inactive events</button>
                     </div>
                 </div>
             </div>
@@ -52,6 +52,9 @@
                                                 </a>
                                             </li>
                                         </ul>
+                                    </div>
+                                    <div class="pull-right" style="padding: 15px">
+                                        <span style="" id="inactive_status"></span>
                                     </div>
                                 </div>
                                 <div class="kt-portlet__body">
@@ -138,6 +141,7 @@
                     $("#but_create_event").show();
             });
 
+            // Link card to event
             $(".card").click(function () {
                 var split = this.id.split("-");
                 var id = split[1];
@@ -145,6 +149,12 @@
             });
 
         });
+
+        function uSetReturn(result, val) {
+            if (result)
+                show_inactive_events = val;
+            display_fields();
+        }
 
         function display_fields() {
             var event_type = $("#event_type").val();
@@ -158,12 +168,15 @@
 
 
             // Hide / Show Inactive events
-            $('#but_show_archived').hide();
-            $('#but_hide_archived').hide();
-            if (show_inactive_events == 1)
-                $('#but_hide_archived').show();
-            else
-                $('#but_show_archived').show();
+            $('#but_show_inactive').hide();
+            $('#but_hide_inactive').hide();
+            if (show_inactive_events == 1) {
+                $('#but_hide_inactive').show();
+                $('#inactive_status').html('Inactive shown');
+            } else {
+                $('#but_show_inactive').show();
+                $('#inactive_status').html('');
+            }
             var archived_events = document.getElementsByClassName('event-archived');
             for (var i = 0; i < archived_events.length; ++i) {
                 var item = archived_events[i];

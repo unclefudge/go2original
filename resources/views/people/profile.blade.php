@@ -53,8 +53,8 @@
 
 {{-- Metronic + custom Page Scripts --}}
 @section('page-scripts')
+    <script src="/js/people-shared-functions.js"></script>
     <script type="text/javascript">
-
 
         // Form errors - show modal
         if ($('#formerrors').val() == 'personal')
@@ -125,17 +125,6 @@
             }
         }
 
-        $("#avatar").click(function () {
-            //$("#modal_avatar_show").modal('show');
-            $("#modal_avatar_edit").modal('show');
-        });
-
-        $("#avatar-edit").click(function (e) {
-            e.stopPropagation();
-            $("#modal_avatar_edit").modal('show');
-        });
-
-
         $("#type").change(function () {
             display_fields();
         });
@@ -148,29 +137,6 @@
         $("#dob").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});
         // WWC Exp
         $("#wwc_exp").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});
-
-        //
-        // Delete Person
-        //
-        $("#but_del_person").click(function (e) {
-            Swal.fire({
-                title: "Are you sure?",
-                html: "All information and check-ins will be deleted for<br><b>" + "{{ $user->name }}" + "</b><br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i>You will not be able to recover this person!</span> ",
-                cancelButtonText: "Cancel!",
-                cancelButtonClass: "btn btn-secondary",
-                confirmButtonText: "Yes, delete it!",
-                confirmButtonClass: "btn btn-danger",
-                showCancelButton: true,
-                reverseButtons: true,
-                allowOutsideClick: true,
-                animation: false,
-                customClass: {popup: 'animated tada'}
-            }).then(function (result) {
-                if (result.value) {
-                    window.location.href = "/people/" + "{{ $user->id }}" + '/del';
-                }
-            });
-        });
 
         $(".household-link").click(function (e) {
             var split = this.id.split("-u");

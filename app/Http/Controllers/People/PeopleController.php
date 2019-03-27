@@ -43,6 +43,16 @@ class PeopleController extends Controller {
     /**
      * Display the specified resource.
      */
+    public function medical($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('people/medical', compact('user'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
     public function activity($id)
     {
         $user = User::findOrFail($id);
@@ -50,6 +60,16 @@ class PeopleController extends Controller {
         asort($events);
 
         return view('people/activity', compact('user', 'events'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function notes($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('people/notes', compact('user'));
     }
 
     /**
@@ -67,10 +87,17 @@ class PeopleController extends Controller {
     public function store()
     {
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
+        $rules = [
+            'firstname' => 'required',
+            'lastname'  => 'required',
+            'email'     => 'required_if:login,1|max:255|nullable|unique:users,email,NULL',
+            'dob'       => 'sometimes|nullable|date_format:' . session('df'),
+            'wwc_exp'   => 'sometimes|nullable|date_format:' . session('df')
+        ];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
+            'email.required_if'  => 'The email is required.',
             'dob.date_format'    => 'The birthday format needs to be ' . session('df-datepicker'),
             'wwc.date_format'    => 'The expiry format needs to be ' . session('df-datepicker'),
         ];
@@ -127,24 +154,32 @@ class PeopleController extends Controller {
     {
         $user = User::findOrFail($id);
         $userBefore = User::findOrFail($id);
+        $user_request = request()->all();
 
+        // User login enabled? - used for email required validation rule
+        $user_request['login'] = $user->login;
+
+        //dd($user_request);
         // Validate
-        $rules = ['firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'), 'wwc_exp' => 'sometimes|nullable|date_format:' . session('df')];
+        $rules = ['firstname' => 'required',
+                  'lastname'  => 'required',
+                  'email'     => 'required_if:login,1|max:255|nullable|unique:users,email,' . $user->id . ',id',
+                  'dob'       => 'sometimes|nullable|date_format:' . session('df'),
+                  'wwc_exp'   => 'sometimes|nullable|date_format:' . session('df')];
         $mesgs = [
             'firstname.required' => 'The first name is required.',
             'lastname.required'  => 'The last name is required.',
+            'email.required_if'  => 'The email is required.',
             'dob.date_format'    => 'The birthday format needs to be ' . session('df-datepicker'),
             'wwc.date_format'    => 'The expiry format needs to be ' . session('df-datepicker'),
         ];
-        $validator = Validator::make(request()->all(), $rules, $mesgs);
+        $validator = Validator::make($user_request, $rules, $mesgs);
 
         if ($validator->fails()) {
             $validator->errors()->add('FORM', 'personal');
 
             return back()->withErrors($validator)->withInput();
         }
-
-        $user_request = request()->all();
 
         // Empty State field if rest of address fields are empty
         if (!request('address') && !request('suburb') && !request('postcode'))
@@ -393,7 +428,8 @@ class PeopleController extends Controller {
             //    return '<div class="text-center"><a href="/people/' . $user->id . '"><i class="fa fa-search"></i></a></div>';
             //})
             ->editColumn('full_name', function ($user) {
-                $string = "<a href='/people/$user->id'>$user->firstname $user->lastname</a>";
+                //$string = "<a href='/people/$user->id'>$user->firstname $user->lastname</a>";
+                $string = "$user->firstname $user->lastname";
                 if (!$user->status)
                     $string .= "<br>** INACTIVE **";
 
@@ -409,12 +445,12 @@ class PeopleController extends Controller {
                 return $address;
             })
             ->editColumn('media_consent', function ($user) {
-                if (!in_array($user->type, ['Student', 'Student/Volenteer'])) return "<i class='fa fa-user m--font-metal'>";
+                if (!in_array($user->type, ['Student', 'Student/Volunteer'])) return "<i class='fa fa-user font-metal'>";
 
-                return ($user->media_consent == 'y') ? "<i class='fa fa-user m--font-success'>" : " <i class='fa fa-user-slash m--font-danger'>";
+                return ($user->media_consent == 'y') ? "<i class='fa fa-user kt-font-success'>" : " <i class='fa fa-user-slash kt-font-danger'>";
             })
             ->editColumn('wwc_exp2', function ($user) {
-                return ($user->wwc_verified) ? $user->wwc_exp2 : $user->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash m--font-danger'>";
+                return ($user->wwc_verified) ? $user->wwc_exp2 : $user->wwc_exp2 . " &nbsp; <i class='fa fa-eye-slash kt-font-danger'>";
             })
             ->addColumn('action', function ($user) {
                 $actions = '';

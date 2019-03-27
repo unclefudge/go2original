@@ -34,7 +34,10 @@
                         df-datepicker: {{ session('df-datepicker') }}<br>
                         df-moment: {{ session('df-moment') }}<br>
                         username: {{ Auth::user()->username }}<br>
+                        events: {{ session('show_inactive_events') }}<br>
+                        people: {{ session('show_inactive_people') }}
 
+                        <br><br>
                         <?php
 
                         $utc = \Carbon\Carbon::createFromDate('2019', '03', '11', 'UTC');

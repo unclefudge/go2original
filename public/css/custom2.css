@@ -33,14 +33,38 @@
     color: #fd397a;
 }
 
+.font-dark-purple {
+    color: #670090;
+}
+
+.font-metal {
+    color: #c4c5d6;
+}
+
+.bg-dark-purple {
+    background: #670090;
+}
+
 /***************************************************************************
 * Table Headers - purple
 ***************************************************************************/
 .table--head-bg-primary thead th {
     background: #716aca;
-    color: #fff;
+    color: #fff !important;
     border-bottom: 0;
     border-top: 0;
+}
+
+.table--head-separator-primary thead th {
+    border-top: 0;
+    border-bottom: 1px solid #5867dd
+}
+
+tr.table__row--primary th, tr.m-table__row--primary td {
+    background: #716aca;
+    color: #fff;
+    border-bottom: 0;
+    border-top: 0
 }
 
 /* Vuejs sort headers */
@@ -111,6 +135,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #toast-container>div {
     opacity: .95;
+}
+#toast-container .toast-message, #toast-container .toast-title {
+    color: #fff;
 }
 
 /*
@@ -438,7 +465,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /***************************************************************************
-* Households
+* Households + accounts
 ***************************************************************************/
 .member-star-head {
     padding: 5px;

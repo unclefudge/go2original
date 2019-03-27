@@ -18,7 +18,7 @@
                 <a class="dropdown-item" href="{{ (!$event->status) ? '#' : "/event/$event->id/status/0" }}">Inactive</a>
                 @if (!$event->status)
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-name="{{ $event->name }}" id="but_del_event">Delete</a>
+                    <a class="dropdown-item" href="#" data-eid={{ $event->id }}data-name="{{ $event->name }}" id="but_del_event">Delete</a>
                 @endif
             </div>
         </span>

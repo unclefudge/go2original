@@ -297,7 +297,6 @@
 {{-- Metronic + custom Page Scripts --}}
 @section('page-scripts')
     <script src="/js/event-shared-functions.js" type="text/javascript"></script>
-    <script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
     <script type="text/javascript">
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 

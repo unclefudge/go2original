@@ -59,7 +59,6 @@
 
     <!--begin::Global Theme Styles(used by all pages) -->
     <link href="/massets/demo/demo4/base/style.bundle.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="/css/custom2.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles -->
 
@@ -107,7 +106,7 @@
 
 <!-- end:: Page -->
 
-@include('layout/section/quickpanel')
+{{--@include('layout/section/quickpanel')--}}
 @include('layout/section/scrolltop-stickytoolbar')
 
 <!-- begin::Global Config(global config for global JS sciprts) -->

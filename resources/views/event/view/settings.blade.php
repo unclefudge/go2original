@@ -54,7 +54,7 @@
                                                 {!! Form::label('grades', 'Grades', ['class' => 'col-md-2 control-label']) !!}
                                                 <div class="col-md-10">
                                                     <div class="kt-checkbox-inline">
-                                                        <?php $grade_list = explode('<>', $event->grades) ?>
+                                                        <?php $grade_list = explode(',', $event->grades) ?>
                                                         @foreach (Auth::user()->account->grades->where('status', 1)->pluck('name', 'id')->toArray() as $id => $name)
                                                             <label class="kt-checkbox">
                                                                 <input type="checkbox" name="grades[]" value="{{ $id }}" {{ (in_array($id, $grade_list)) ? 'checked' : '' }}> {{ $name }} <span></span>

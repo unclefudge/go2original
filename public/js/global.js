@@ -5,12 +5,12 @@ function uSet(name, val) {
         method: "POST",
         data: {name: name, val: val},
         success: function (result) {
-            show_inactive_events = val;
-            display_fields();
+            //alert('uset');
+            uSetReturn(true, val);
         },
         error: function (result) {
             alert("Something went wrong. Please try refresh screen");
-            display_fields();
+            uSetReturn(false, val)
         }
     });
 }

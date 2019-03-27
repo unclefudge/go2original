@@ -24,12 +24,31 @@ class SchoolController extends Controller {
         return view('settings/school/index', compact('events'));
     }
 
+    public function show($id)
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store()
     {
-        $school = School::create(request()->all());
+        if (request()->ajax()) {
+            $school = School::create(request()->all());
+
+            // Temporary adds grades array to record for ajax return
+            $grade_array = [];
+            $grades = $school->account->grades->sortBy('order');
+            foreach ($grades as $grade) {
+                $students = User::where('school_id', $school->id)->where('grade_id', $grade->id)->count();
+                $linked = (DB::table('schools_grades')->where('sid', $school->id)->where('gid', $grade->id)->first()) ? 1 : 0;
+                $grade_array[] = (object) ['id' => $grade->id, 'name' => $grade->name, 'students' => $students, 'linked' => $linked, 'status' => $grade->status];
+            }
+            $school->grades = $grade_array;
+            return $school;
+        }
+        return abort(404);
     }
 
     /**
@@ -54,6 +73,17 @@ class SchoolController extends Controller {
     public function destroy($id)
     {
         if (request()->ajax()) {
+            //echo "deleting: $id<br>";
+
+            // Clear the school field for any Students in this school
+            $students = User::where('aid', session('aid'))->where('school_id', $id)->get();
+            $other = School::where('aid', session('aid'))->where('name', 'Other')->first();
+            if ($students) {
+                foreach ($students as $student) {
+                    $student->school_id = ($other) ? $other-> id : null;
+                    $student->save();
+                }
+            }
             $school = School::findOrFail($id)->delete();
 
             return response()->json(['success', '200']);

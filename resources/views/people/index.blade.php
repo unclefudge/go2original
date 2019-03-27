@@ -17,8 +17,8 @@
                 <div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="">
                     <a href="#" class="btn kt-subheader__btn-secondary kt-subheader__btn-options" style="padding: 1.4rem 1rem;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog" style="font-size: 18px !important; color: #fff"></i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" onclick="uSet('show_inactive_people', 0)" id="but_hide_archived"><i class="fa fa-eye-slash" style="width: 25px"></i> Hide inactive people</button>
-                        <button class="dropdown-item" onclick="uSet('show_inactive_people', 1)" id="but_show_archived"><i class="fa fa-eye" style="width: 25px"></i> Show inactive people</button>
+                        <button class="dropdown-item" onclick="uSet('show_inactive_people', 0)" id="but_hide_inactive"><i class="fa fa-eye-slash" style="width: 25px"></i> Hide inactive people</button>
+                        <button class="dropdown-item" onclick="uSet('show_inactive_people', 1)" id="but_show_inactive"><i class="fa fa-eye" style="width: 25px"></i> Show inactive people</button>
                     </div>
                 </div>
             </div>
@@ -59,17 +59,15 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="pull-right" style="min-width:150px; padding:10px">
-                        <button type="button" class="btn btn-secondary pull-right" style="margin-left: 10px" id="but_show_inactive"><i class="fa fa-eye"></i></button>
-                        <button type="button" class="btn btn-sm pull-right" style="margin-left: 10px; color: #000000; background: #eee" id="but_hide_inactive"><i class="fa fa-eye-slash" style="padding-right: 5px"></i> Hide Inactive</button>
-                        <button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#modal_create_person">Add</button>
+                    <div class="pull-right" style="padding: 15px">
+                        <span style="" id="inactive_status"></span>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
                     {!! Form::hidden('show_type', null, ['id' => 'show_type']) !!}
                     {!! Form::hidden('pagelength', ($agent->isMobile() ? 100 : 25), ['id' => 'pagelength']) !!}
                     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
-                    {!! Form::hidden('show_inactive', '0', ['id' => 'show_inactive']) !!}
+                    {!! Form::hidden('show_inactive', session('show_inactive_people'), ['id' => 'show_inactive']) !!}
                     {!! Form::hidden('count_all', count($users->where('status', 1)), ['id' => 'count_all']) !!}
                     {!! Form::hidden('count_students', count($users->where('status', 1)->whereIn('type', ['Student', 'Student/Volunteer'])), ['id' => 'count_students']) !!}
                     {!! Form::hidden('count_parents', count($users->where('status', 1)->whereIn('type', ['Parent', 'Parent/Volunteer'])), ['id' => 'count_parents']) !!}
@@ -85,7 +83,7 @@
                             background-color: #F8F9FB;
                         }
 
-                        .person_inactive {
+                        tr.person_inactive td{
                             color: #fff !important;
                             background: #777 !important;
                         }
@@ -95,22 +93,21 @@
                             color: #FF0000;
                         }
                     </style>
-                    <table class="table table-hover table-checkable table-bordered table-responsive" id="datatable1" width="100%">
-
+                    <table class="table table-hover table-checkable table-bordered table-responsive table--head-bg-primary" id="datatable1" width="100%">
                         <thead>
                         <tr>
                             <th width="5%"> #</th>
-                            <th> Name</th>
-                            <th> Type</th>
-                            <th> Phone</th>
-                            <th> Email</th>
-                            <th> Address</th>
-                            <th> Grade</th>
-                            <th> School</th>
-                            <th> Media</th>
-                            <th width="10%"> WWC Expiry</th>
+                            <th class="text-white"> Name</th>
+                            <th class="text-white"> Type</th>
+                            <th class="text-white"> Phone</th>
+                            <th class="text-white"> Email</th>
+                            <th class="text-white"> Address</th>
+                            <th class="text-white"> Grade</th>
+                            <th class="text-white"> School</th>
+                            <th class="text-white"> Media</th>
+                            <th class="text-white" width="10%"> WWC Expiry</th>
                             <th width="5%"> Actions</th>
-                            <th>status</th>
+                            <th class="text-white">status</th>
                         </tr>
                         </thead>
                     </table>
@@ -235,14 +232,16 @@
                 title: "Are you sure?",
                 html: "All information and check-ins will be archived for<br><b>" + name + "</b><br>",
                 cancelButtonText: "Cancel!",
-                cancelButtonClass: "btn btn-secondary",
-                confirmButtonText: "Yes, delete it!",
-                confirmButtonClass: "btn btn-danger",
+                confirmButtonText: "Yes, delete!",
                 showCancelButton: true,
                 reverseButtons: true,
                 allowOutsideClick: true,
                 animation: false,
-                customClass: {popup: 'animated tada'}
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-secondary',
+                    popup: 'animated tada'
+                }
             }).then(function (result) {
                 if (result.value) {
                     $.ajax({
@@ -272,14 +271,16 @@
                 title: "Are you sure?",
                 html: "All information and check-ins will be deleted for<br><b>" + name + "</b><br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i>You will not be able to recover this person!</span> ",
                 cancelButtonText: "Cancel!",
-                cancelButtonClass: "btn btn-secondary",
-                confirmButtonText: "Yes, delete it!",
-                confirmButtonClass: "btn btn-danger",
+                confirmButtonText: "Yes, delete!",
                 showCancelButton: true,
                 reverseButtons: true,
                 allowOutsideClick: true,
                 animation: false,
-                customClass: {popup: 'animated tada'}
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-secondary',
+                    popup: 'animated tada'
+                }
             }).then(function (result) {
                 if (result.value) {
                     $.ajax({
@@ -369,88 +370,6 @@
 
             display_fields();
 
-            function display_fields() {
-                var type = $("#type").val();
-                $('#fields_student').hide();
-                $('#fields_volunteer').hide();
-                $('#but_show_inactive').hide();
-                $('#but_hide_inactive').hide();
-
-                if (type == 'Student' || type == 'Student/Volunteer') {
-                    $('#fields_student').show();
-                }
-                if (type == 'Volunteer' || type == 'Student/Volunteer' || type == 'Parent/Volunteer') {
-                    $('#fields_volunteer').show();
-                }
-
-                // Hide / Show Inactive records
-                var show_inactive = $("#show_inactive").val();
-                if (show_inactive == 0) {
-                    $('#but_show_inactive').show();
-                    $('#count_all_num').html('(' + $('#count_all').val() + ')');
-                    $('#count_students_num').html('(' + $('#count_students').val() + ')');
-                    $('#count_parents_num').html('(' + $('#count_parents').val() + ')');
-                    $('#count_volunteers_num').html('(' + $('#count_volunteers').val() + ')');
-                } else {
-                    $('#but_hide_inactive').show();
-                    $('#count_all_num').html('(' + $('#counti_all').val() + ')');
-                    $('#count_students_num').html('(' + $('#counti_students').val() + ')');
-                    $('#count_parents_num').html('(' + $('#counti_parents').val() + ')');
-                    $('#count_volunteers_num').html('(' + $('#counti_volunteers').val() + ')');
-                }
-
-                // Dynamic School dropdown from Grade
-                $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
-                var gid = $("#grade_id").val();
-                var school = $("#school_id").val();
-                if (gid) {
-                    $.ajax({
-                        url: '/data/schools-by-grade/' + gid,
-                        type: "GET",
-                        dataType: "json",
-                        beforeSend: function () {
-                            $('#loader').css("visibility", "visible");
-                        },
-
-                        success: function (data) {
-                            $("#school_id").empty();
-                            $("#school_id").append('<option value="">Select school</option>');
-
-                            var school_names = [];
-                            $.each(data, function (key, value) {
-                                school_names.push(value);
-                            });
-                            school_names.sort();
-                            console.log(school_names);
-                            var other_key = 0;
-                            for (var i = 0; i < school_names.length; i++) {
-                                var val = school_names[i];
-                                var key = Object.keys(data)[Object.values(data).indexOf(school_names[i])];
-                                if (val == 'Other') {
-                                    other_key = key;
-                                } else {
-                                    if (school == key)
-                                        $("#school_id").append('<option value="' + key + '" selected>' + val + '</option>');
-                                    else
-                                        $("#school_id").append('<option value="' + key + '">' + val + '</option>');
-                                }
-                            }
-                            // Append Other to end of list
-                            if (school == 'Other')
-                                $("#school_id").append('<option value="' + other_key + '" selected>Other</option>');
-                            else
-                                $("#school_id").append('<option value="' + other_key + '">Other</option>');
-                        },
-                        complete: function () {
-                            $('#loader').css("visibility", "hidden");
-                        }
-                    });
-                } else {
-                    $("#school_id").empty();
-                    $("#school_id").append('<option value="">Select grade first</option>');
-                }
-            }
-
             $("#type").change(function () {
                 display_fields();
             });
@@ -462,20 +381,100 @@
             $("#dob").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});
             // WWC Exp
             $("#wwc_exp").datepicker({todayHighlight: !0, orientation: "bottom left", autoclose: true, clearBtn: true, format: "{{ session('df-datepicker') }}"});
-
-            // Show Inactive
-            $("#but_show_inactive").click(function () {
-                $("#show_inactive").val(1);
-                display_fields();
-                datatable1.ajax.reload();
-            });
-            // Hide Inactive
-            $("#but_hide_inactive").click(function () {
-                $("#show_inactive").val(0);
-                display_fields();
-                datatable1.ajax.reload();
-            });
         });
+
+        function uSetReturn(result, val) {
+            if (result) {
+                //alert('reloaded');
+                $("#show_inactive").val(val)
+                display_fields();
+                datatable1.ajax.reload();
+            }
+        }
+
+        function display_fields() {
+            var type = $("#type").val();
+            $('#fields_student').hide();
+            $('#fields_volunteer').hide();
+            $('#but_show_inactive').hide();
+            $('#but_hide_inactive').hide();
+
+            if (type == 'Student' || type == 'Student/Volunteer') {
+                $('#fields_student').show();
+            }
+            if (type == 'Volunteer' || type == 'Student/Volunteer' || type == 'Parent/Volunteer') {
+                $('#fields_volunteer').show();
+            }
+
+            // Hide / Show Inactive records
+            var show_inactive = $("#show_inactive").val();
+            if (show_inactive == 0) {
+                $('#but_show_inactive').show('kk');
+                $('#inactive_status').html('');
+                $('#count_all_num').html('(' + $('#count_all').val() + ')');
+                $('#count_students_num').html('(' + $('#count_students').val() + ')');
+                $('#count_parents_num').html('(' + $('#count_parents').val() + ')');
+                $('#count_volunteers_num').html('(' + $('#count_volunteers').val() + ')');
+            } else {
+                $('#but_hide_inactive').show();
+                $('#inactive_status').html('Inactive shown');
+                $('#count_all_num').html('(' + $('#counti_all').val() + ')');
+                $('#count_students_num').html('(' + $('#counti_students').val() + ')');
+                $('#count_parents_num').html('(' + $('#counti_parents').val() + ')');
+                $('#count_volunteers_num').html('(' + $('#counti_volunteers').val() + ')');
+            }
+
+            // Dynamic School dropdown from Grade
+            $("#school_id").select2({width: '100%', minimumResultsForSearch: -1});
+            var gid = $("#grade_id").val();
+            var school = $("#school_id").val();
+            if (gid) {
+                $.ajax({
+                    url: '/data/schools-by-grade/' + gid,
+                    type: "GET",
+                    dataType: "json",
+                    beforeSend: function () {
+                        $('#loader').css("visibility", "visible");
+                    },
+
+                    success: function (data) {
+                        $("#school_id").empty();
+                        $("#school_id").append('<option value="">Select school</option>');
+
+                        var school_names = [];
+                        $.each(data, function (key, value) {
+                            school_names.push(value);
+                        });
+                        school_names.sort();
+                        console.log(school_names);
+                        var other_key = 0;
+                        for (var i = 0; i < school_names.length; i++) {
+                            var val = school_names[i];
+                            var key = Object.keys(data)[Object.values(data).indexOf(school_names[i])];
+                            if (val == 'Other') {
+                                other_key = key;
+                            } else {
+                                if (school == key)
+                                    $("#school_id").append('<option value="' + key + '" selected>' + val + '</option>');
+                                else
+                                    $("#school_id").append('<option value="' + key + '">' + val + '</option>');
+                            }
+                        }
+                        // Append Other to end of list
+                        if (school == 'Other')
+                            $("#school_id").append('<option value="' + other_key + '" selected>Other</option>');
+                        else
+                            $("#school_id").append('<option value="' + other_key + '">Other</option>');
+                    },
+                    complete: function () {
+                        $('#loader').css("visibility", "hidden");
+                    }
+                });
+            } else {
+                $("#school_id").empty();
+                $("#school_id").append('<option value="">Select grade first</option>');
+            }
+        }
 
         /*
          var Typeahead = function () {

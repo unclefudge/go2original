@@ -17,11 +17,14 @@ class CreateAccountsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('aid')->nullable();
             $table->unsignedInteger('uid')->nullable();
-            $table->tinyInteger('users')->nullable();
+            $table->tinyInteger('admin')->nullable();
+            $table->tinyInteger('billing')->nullable();
+            $table->tinyInteger('people')->nullable();
+            $table->tinyInteger('checkin')->nullable();
             $table->tinyInteger('events')->nullable();
             $table->tinyInteger('groups')->nullable();
-            $table->tinyInteger('settings')->nullable();
-            $table->tinyInteger('billing')->nullable();
+            $table->tinyInteger('registrations')->nullable();
+            $table->tinyInteger('payments')->nullable();
 
             // Foreign keys
             $table->foreign('aid')->references('id')->on('accounts')->onDelete('cascade');

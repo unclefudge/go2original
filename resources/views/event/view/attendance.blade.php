@@ -51,59 +51,61 @@
                 {{-- Main Content --}}
                 <div class="col" style="height: 100% !important; min-height: 100% !important;">
                     @include('event/view/_sidebar-mobile')
-                    <div class="row">
-                        <div class="col-lg-8">
-                            {{-- Overview --}}
-                            <div class="kt-portlet">
-                                <div class="kt-portlet__head kt-portlet__head--noborder">
-                                    <div class="kt-portlet__head-label">
-                                        <h3 class="kt-portlet__head-title">Summary</h3>
+                    @if ($date && false)
+                        <div class="row">
+                            <div class="col-lg-8">
+                                {{-- Overview --}}
+                                <div class="kt-portlet">
+                                    <div class="kt-portlet__head kt-portlet__head--noborder">
+                                        <div class="kt-portlet__head-label">
+                                            <h3 class="kt-portlet__head-title">Summary</h3>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="kt-portlet__body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h5>Genders</h5>
-                                            <div class="progress" id="gender-bar"></div>
-                                            <div>
-                                                <span id="male-stats"></span>
-                                                <span id="female-stats" class="pull-right"></span>
+                                    <div class="kt-portlet__body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5>Genders</h5>
+                                                <div class="progress" id="gender-bar"></div>
+                                                <div>
+                                                    <span id="male-stats"></span>
+                                                    <span id="female-stats" class="pull-right"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div id="grade_chart" style="height: 170px;"></div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div id="grade_legend" align=""></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div id="grade_chart" style="height: 170px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                {{-- Schools --}}
+                                <div class="kt-portlet">
+                                    <div class="kt-portlet__head kt-portlet__head--noborder">
+                                        <div class="kt-portlet__head-label">
+                                            <h3 class="kt-portlet__head-title">Schools</h3>
                                         </div>
-                                        <div class="col-6">
-                                            <div id="grade_legend" align=""></div>
+                                    </div>
+                                    <div class="kt-portlet__body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div id="school_chart" style="height: 170px;"></div>
+                                            </div>
+                                            {{--}}
+                                            <div class="col-6">
+                                                <div id="school_legend" align=""></div>
+                                            </div>--}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            {{-- Schools --}}
-                            <div class="kt-portlet">
-                                <div class="kt-portlet__head kt-portlet__head--noborder">
-                                    <div class="kt-portlet__head-label">
-                                        <h3 class="kt-portlet__head-title">Schools</h3>
-                                    </div>
-                                </div>
-                                <div class="kt-portlet__body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div id="school_chart" style="height: 170px;"></div>
-                                        </div>
-                                        {{--}}
-                                        <div class="col-6">
-                                            <div id="school_legend" align=""></div>
-                                        </div>--}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
 
                     {{-- Attendance --}}
                     <div class="row">
@@ -136,9 +138,15 @@
                                             <input v-model="xx.count_female" type="hidden" value="">
 
                                             <div v-if="xx.date == 0">
-                                                <br>No {{ $event->name }} events have occured yet. Please add one.
-                                                <a href="#" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modal_attendance">Add Past Event</a>
-                                                &nbsp; or &nbsp; <a href="/checkin/{{ $event->id }}" class="btn btn-sm btn-outline-primary">Check-in one for today</a>
+                                                <br><br>
+                                                <div class="alert alert-warning" role="alert">
+                                                    <div class="alert-text">No <b>{{ $event->name }}</b> events have occured yet.
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_create_instance">Add Past Event</a>
+                                                &nbsp; or &nbsp; <a href="/checkin/{{ $event->id }}" class="btn btn-sm btn-primary">Check-in one for today</a>
+                                                <br><br><br><br><br><br><br><br>
                                             </div>
                                             <div v-if="xx.date">
                                                 <div class="row" style="padding: 20px 0px 10px 0px">
@@ -207,8 +215,7 @@
                                                     <div class="loadSpinner"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom"></i> Loading...</div>
                                                 </div>
                                             </div>
-
-                                            <pre>@{{ $data }}</pre>
+                                            <!--<pre>@{{ $data }}</pre>
                                             -->
                                         </div>
                                     </div>
@@ -273,7 +280,7 @@
                     {{-- Remaining Columns --}}
                     <td style="padding: 10px">
                         @{{user.name}}
-                        <span v-if="user.new == 1" class="m-badge m-badge--warning m-badge--wide">NEW</span>
+                        <span v-if="user.new == 1" class="kt-badge kt-badge--warning kt-badge--inline">NEW</span>
                         <span v-if="!user.status" style="padding-left: 20px">** INACTIVE **</span>
                     </td>
                     <td style="padding: 10px">@{{user.type}}</td>
@@ -309,7 +316,7 @@
                 name: "{{ ($instance) ? $instance->name : '' }}",
             },
             count_all: 0, count_students: 0, count_volunteers: 0, count_male: 0, count_male_percent: 0, count_female: 0, count_female_percent: 0,
-            count_grades: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}, count_schools: {},
+            count_grades: {}, count_schools: {},
             searchQuery: "{!! app('request')->input('query') !!}", searching: false,
             edit_name: false, show_photos: false, show_checked: true, show_inactive: true,
             users: [], columns: ['in', 'name', 'type', 'grade', 'school'],
@@ -345,14 +352,16 @@
                     title: "Are you sure?",
                     html: "You will not be able to recover this event<br><b>" + xx.instance.name + " - " + xx.date_format + "</b><br>and all check-ins will be lost!",
                     cancelButtonText: "Cancel!",
-                    cancelButtonClass: "btn btn-secondary",
-                    confirmButtonText: "Yes, delete it!",
-                    confirmButtonClass: "btn btn-danger",
+                    confirmButtonText: "Yes, delete!",
                     showCancelButton: true,
                     reverseButtons: true,
                     allowOutsideClick: true,
                     animation: false,
-                    customClass: {popup: 'animated tada'}
+                    customClass: {
+                        confirmButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-secondary',
+                        popup: 'animated tada'
+                    }
                 }).then(function (result) {
                     if (result.value) {
                         window.location.href = "/event/instance/" + xx.instance.id + '/del';
@@ -523,7 +532,7 @@
             this.xx.count_volunteers = 0;
             this.xx.count_male = 0;
             this.xx.count_female = 0;
-            this.xx.count_grades = {'1': 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, "8": 0, "9": 0, '10': 0, 11: 0, 12: 0, Unknown: 0};
+            this.xx.count_grades = {Unknown: 0};
             this.xx.count_schools = {Other: 0};
             this.xx.users.forEach(function (user) {
                 if (user.in) {
@@ -537,7 +546,10 @@
                             this.xx.count_female++;
                         // Grade
                         if (user.grade)
-                            this.xx.count_grades[user.grade]++;
+                            if (user.grade in this.xx.count_grades)
+                                this.xx.count_grades[user.grade]++;
+                            else
+                                this.xx.count_grades[user.grade] = 1;
                         else
                             this.xx.count_grades['Unknown']++;
 
@@ -555,9 +567,9 @@
                         this.xx.count_volunteers++;
                 }
             });
-            drawGenderChart();
+            //drawGenderChart();
             //drawGradeChart();
-            drawSchoolChart();
+            //drawSchoolChart();
         }
 
 
@@ -595,8 +607,8 @@
             $('#male-stats').html('Male &nbsp; ' + this.xx.count_male + ' | ' + Math.round(this.xx.count_male_percent) + '%');
             $('#female-stats').html(Math.round(this.xx.count_female_percent) + '% | ' + this.xx.count_female + ' &nbsp; Female');
         }
-
-        function drawGradeChart() {
+/*
+        function drawGradeChart2() {
             $("#grade_chart").empty();
             gradeChart = new Morris.Donut({
                 element: 'grade_chart',
@@ -626,8 +638,44 @@
                 $('#grade_legend').append(legendItem);
                 $('#grade_legend').append(legendLabel);
             })
-        }
+        }*/
 
+        function drawGradeChart() {
+            $("#grade_chart").empty();
+
+            // Set data
+            var data = [];
+            var labels = [];
+            var colours = ['#73BEE0', '#739EE1', '#717CE0', '#8B72E0', '#AC72E0', '#CF72E0', '#E072D5', '#E072B4', '#E17294', '#E07473', '#E09772', '#DFB873'];
+
+            Object.keys(this.xx.count_grades).forEach(function (key, index) {
+                data.push({y: key, a: this.xx.count_grades[key]});
+                labels.push(key);
+            });
+
+            gradeChart = new Morris.Bar({
+                element: 'grade_chart',
+                barGap: 3,         // sets the space between bars in a single bar group. Default 3:
+                barSizeRatio: 0.75, // proportion of the width of the entire graph given to bars. Default 0.75
+                stacked: true,
+                resize: true,
+                data: data,
+                xkey: 'y',
+                ykeys: ['a'],
+                //xLabelAngle: '70',
+                axes: 'y',
+                barColors: colours,
+                labels: labels,
+            });
+
+            $('#grade_legend').empty();
+            gradeChart.options.labels.forEach(function (label, i) {
+                var legendLabel = $('<span>' + label + '</span><br>');
+                var legendItem = $('<span class="legendColour"></span>').css('background-color', gradeChart.options.barColors[i]);
+                $('#grade_legend').append(legendItem);
+                $('#grade_legend').append(legendLabel);
+            })
+        }
 
         function drawSchoolChart() {
             $("#school_chart").empty();

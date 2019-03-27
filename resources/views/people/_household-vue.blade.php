@@ -43,16 +43,18 @@
                 if (person.uid == this.xx.person.id) {
                     Swal.fire({
                         title: "Are you sure?",
-                        html: "You are able to remove <b>" + this.xx.person.name + "</b> from this household.</b>",
+                        html: "You are about to remove <b>" + this.xx.person.name + "</b> from this household.</b>",
                         cancelButtonText: "Cancel!",
-                        cancelButtonClass: "btn btn-secondary",
-                        confirmButtonText: "Yes, delete it!",
-                        confirmButtonClass: "btn btn-danger",
+                        confirmButtonText: "Yes, delete!",
                         showCancelButton: true,
                         reverseButtons: true,
                         allowOutsideClick: true,
                         animation: false,
-                        customClass: {popup: 'animated tada'}
+                        customClass: {
+                            confirmButton: 'btn btn-danger',
+                            cancelButton: 'btn btn-secondary',
+                            popup: 'animated tada'
+                        }
                     }).then(function (result) {
                         if (result.value)
                             this.xx.household.members.splice(removeIndex, 1); // delete object

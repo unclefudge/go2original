@@ -64,23 +64,16 @@
                                                 </div>
                                             </div>
                                             <div class="input-group" style="padding-bottom: 20px">
-                                                <input v-model="xx.addItem" type="text" class="form-control form-control m-input" placeholder="Add new school">
+                                                <input v-model="xx.add_school" type="text" class="form-control form-control" placeholder="Add new school">
                                                 <div class="input-group-append">
-                                                    <span v-on:click="add()" class="input-group-text" style="color: #FFFFFF; background: #666; padding: 0px 20px; cursor: pointer">Add</span>
+                                                    <span v-on:click="addSchool()" class="input-group-text" style="color: #FFFFFF; background: #666; padding: 0px 20px; cursor: pointer">Add</span>
                                                 </div>
                                                 <span></span>
-                                            </div>
-                                            <div class="d-none d-md-block">
-                                                <button v-on:click="save()" class="btn btn-primary" id="saveList1">Save</button>
                                             </div>
                                         </div>
                                         <div class="col-md-7" style="padding-bottom: 30px">
                                             <h5 class="text-center">Schools</h5>
                                             <school-list :data="xx.users" :columns="xx.columns" :filter-key="xx.searchQuery"></school-list>
-                                            <div class="d-md-none">
-                                                <br><br>
-                                                <button v-on:click="save()" class="btn btn-primary">Save</button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +194,7 @@
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
         var xx = {
-            edit_name: 0, new_name: '',
+            add_school: '', edit_name: 0, new_name: '',
             schools: [],
         };
 
@@ -253,20 +246,28 @@
                         title: "Are you sure?",
                         html: "You currently have <b>" + school.students + " students</b> in this school.<br><br><span class='m--font-danger'><i class='fa fa-exclamation-triangle'></i> All these students will be moved to 'Other' school</span> ",
                         cancelButtonText: "Cancel!",
-                        cancelButtonClass: "btn btn-secondary",
-                        confirmButtonText: "Yes, delete it!",
-                        confirmButtonClass: "btn btn-danger",
+                        confirmButtonText: "Yes, delete!",
                         showCancelButton: true,
                         reverseButtons: true,
                         allowOutsideClick: true,
                         animation: false,
-                        customClass: {popup: 'animated tada'}
+                        customClass: {
+                            confirmButton: 'btn btn-danger',
+                            cancelButton: 'btn btn-secondary',
+                            popup: 'animated tada'
+                        }
                     }).then(function (result) {
                         if (result.value) {
-                            // Delete grade
-                            this.xx.schools = this.xx.schools.filter(function (obj) {
-                                return obj.id !== school.id;
-                            });
+                            // Delete school
+                            delSchoolDB(school).then(function (result) {
+                                if (result) {
+                                    toastr.error('Deleted school', {timeOut: 9000})
+                                    this.xx.schools = this.xx.schools.filter(function (obj) {
+                                        return obj.id !== school.id;
+                                    });
+                                }
+                            }.bind(this));
+
                         }
                     }.bind(this));
 
@@ -299,18 +300,69 @@
                         this.xx.searching = false;
                     }.bind(this));
                 },
+                addSchool: function () {
+                    addSchoolDB(this.xx.add_school).then(function (result) {
+                        if (result) {
+                            toastr.success('Added school', {timeOut: 9000})
+                            this.xx.schools.push({id: result.id, name: result.name, students: 0, status: 1, grades: result.grades});
+                        }
+                    }.bind(this));
+                    this.xx.add_school = '';
+                }
             }
         });
 
 
-        // Update Event Instance in Database Attendance and return a 'promise'
+        // Add School to Database and return a 'promise'
+        function addSchoolDB(name) {
+            return new Promise(function (resolve, reject) {
+                var record = {name: name};
+                $.ajax({
+                    url: '/settings/school/',
+                    type: 'POST',
+                    data: record,
+                    success: function (result) {
+                        //console.log('DB added school:[' + result.id + '] ' + result.name);
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        alert("Something went wrong updating school " + name + '. Please refresh the page to resync.');
+                        //console.log('DB added school grade FAILED:[' + result.id + '] ' + result.name);
+                        reject(false);
+                    }
+                });
+            });
+        }
+
+        // Delete school from Database and return a 'promise'
+        function delSchoolDB(school) {
+            //console.log('Deleting user:[' + user.eid + '] ' + user.name);
+            return new Promise(function (resolve, reject) {
+                school._method = 'delete';
+                $.ajax({
+                    url: '/settings/school/' + school.id,
+                    type: 'POST',
+                    data: school,
+                    success: function (result) {
+                        delete school._method;
+                        //console.log('DB deleted school:[' + school.id + '] ' + school.name);
+                        resolve(school);
+                    },
+                    error: function (result) {
+                        alert("Something went wrong deleting " + school.name + '. Please refresh the page to resync.');
+                        //console.log('DB deleted school FAILED:[' + school.id + '] ' + school.name);
+                        reject(false);
+                    }
+                });
+            });
+        }
+
+        // Update School in Database and return a 'promise'
         function updateSchoolDB(school, new_name) {
             return new Promise(function (resolve, reject) {
                 var record = {id: school.id, name: new_name, _method: 'patch'};
-                //school._method = 'patch';
-                //school.name = new_name;
                 $.ajax({
-                    url: '/settings/schools/' + school.id,
+                    url: '/settings/school/' + school.id,
                     type: 'POST',
                     data: record,
                     success: function (result) {
@@ -326,7 +378,7 @@
             });
         }
 
-        // Update Event Instance in Database Attendance and return a 'promise'
+        // Update School Grade in Database Attendance and return a 'promise'
         function updateSchoolGradeDB(school, grade) {
             return new Promise(function (resolve, reject) {
                 $.ajax({

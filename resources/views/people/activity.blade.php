@@ -26,10 +26,13 @@
                         <div class="col-lg-6">
                             {{-- Overview --}}
                             <div class="kt-portlet">
-                                <div class="kt-portlet__body">
-                                    <div class="row" style="padding-bottom: 10px">
-                                        <div class="col-12"><h4>Overview</h4></div>
+                                <div class="kt-portlet__head kt-portlet__head--noborder">
+                                    <div class="kt-portlet__head-label">
+                                        <h3 class="kt-portlet__head-title">Overview</h3>
                                     </div>
+                                    <div class="kt-portlet__head-toolbar"></div>
+                                </div>
+                                <div class="kt-portlet__body">
                                     <div class="row">
                                         <div class="col-12">
                                             {!! Form::select('event_id', $events, (session('aid') == 2) ? 2 : null, ['class' => 'form-control kt-selectpicker', 'id' => 'event_id']) !!}
@@ -112,6 +115,7 @@
 
 {{-- Metronic + custom Page Scripts --}}
 @section('page-scripts')
+    <script src="/js/people-shared-functions.js"></script>
     <script type="text/javascript">
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
@@ -172,17 +176,6 @@
                     }
                 });
             }
-
-
-            $("#avatar").click(function () {
-                $("#modal_avatar_edit").modal('show');
-            });
-
-            $("#avatar-edit").click(function (e) {
-                e.stopPropagation();
-                $("#modal_avatar_edit").modal('show');
-            });
-
         });
     </script>
 @endsection

@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="mbar-fullname">
-                    {{ $user->firstname }} {{ $user->lastname }} <a href="/people" class="btn btn-secondary mbar-btn" style="margin-left: 15px"  data-toggle="modal" data-target="#modal_personal"> Edit</a>
+                    {{ $user->firstname }} {{ $user->lastname }} <a href="/people" class="btn btn-secondary mbar-btn" style="margin-left: 15px" data-toggle="modal" data-target="#modal_personal"> Edit</a>
                 </div>
                 <span class="mbar-type">{{ $user->type }}</span>
                 @if ($user->phone)
@@ -35,8 +35,9 @@
                         @if (!$user->status)
                             <a class="dropdown-item" href="{{ ($user->status) ? '#' : "/people/$user->id/status/1" }}"><i class="fa fa-eye" style="width: 25px"></i> Make active</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" id="but_del_person"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
-                            @else<a class="dropdown-item" href="{{ (!$user->status) ? '#' : "/people/$user->id/status/0" }}"><i class="fa fa-eye-slash" style="width: 25px"></i> Make inactive</a>
+                            <a class="dropdown-item" href="#" data-uid="{{ $user->id }}" data-name="{{ $user->name }}" id="but_del_person"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
+                        @else
+                            <a class="dropdown-item" href="{{ (!$user->status) ? '#' : "/people/$user->id/status/0" }}"><i class="fa fa-eye-slash" style="width: 25px"></i> Make inactive</a>
                         @endif
                     </div>
                 </div>
@@ -45,10 +46,6 @@
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#"><i class="fa fa-lock" style="width: 25px"></i> Permissions</a>
                         <a class="dropdown-item" href="#"><i class="fa fa-user-friends" style="width: 25px"></i> Merge this profile</a>
-                        @if (!$user->status)
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" id="but_del_person"><i class="fa fa-trash-alt" style="width: 25px"></i> Delete</a>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -111,3 +108,5 @@
         </div>
     </div>
 </div>
+
+

@@ -109,6 +109,7 @@ class EventController extends Controller {
             $event_request['recur'] = 1;
 
         $event_request['start'] = Carbon::now()->toDateTimeString();
+        $event_request['grades'] = implode(',', Auth::user()->account->grades->where('status', 1)->pluck('id')->toArray());
         $event = Event::create($event_request);
 
         Toastr::success("Event created");
@@ -140,8 +141,8 @@ class EventController extends Controller {
         if (request('grades')) {
             $string = '';
             foreach (request('grades') as $grade)
-                $string .= "$grade<>";
-            $event_request['grades'] = rtrim($string, '<>');
+                $string .= "$grade,";
+            $event_request['grades'] = rtrim($string, ',');
         }
 
         //dd($event_request);
