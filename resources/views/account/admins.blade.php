@@ -60,25 +60,7 @@
                                 <div class="kt-portlet__body">
                                     {{-- Organisation Admins --}}
                                     <div class="row">
-                                        <div class="col-lg-5" style="margin-bottom: 30px">
-                                            <h5>Organisation Administrators &nbsp;
-                                                <i class="flaticon2-information" data-container="body" data-toggle="kt-popover" data-placement="bottom"
-                                                   data-content="As an organisation administrator, you can access and control nearly every aspect of the Go2Youth. Every organisation needs at least one organisation admin. These should be trusted staff members of your organisation. Note: Organisation admins have automatic access to every permission."></i>
-                                            </h5>
-                                            These people can access and control nearly every part of your account.<br><br>
-
-                                            {{-- Admin Grid --}}
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div style="padding-bottom: 10px;">
-                                                        <input v-model="xx.searchAdminQuery" type="search" class="form-control search-input" placeholder="Add new organisation administrator" name="query">
-                                                        <search-admin :data="xx.people" :list="xx.admin" :filter-key="xx.searchAdminQuery"></search-admin>
-                                                    </div>
-                                                    <admin-table :members="xx.admin"></admin-table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7">
+                                        <div class="col-lg-7 order-sm-first order-lg-last">
                                             <div class="alert alert-secondary" role="alert">
                                                 <div class="alert-text">
                                                     <h5>Permissions</h5>
@@ -104,13 +86,31 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-5 order-sm-last order-lg-first" style="margin-bottom: 30px">
+                                            <h5>Organisation Administrators &nbsp;
+                                                <i class="flaticon2-information" data-container="body" data-toggle="kt-popover" data-placement="bottom"
+                                                   data-content="As an organisation administrator, you can access and control nearly every aspect of the Go2Youth. Every organisation needs at least one organisation admin. These should be trusted staff members of your organisation. Note: Organisation admins have automatic access to every permission."></i>
+                                            </h5>
+                                            These people can access and control nearly every part of your account.<br><br>
+
+                                            {{-- Admin Grid --}}
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div style="padding-bottom: 10px;">
+                                                        <input v-model="xx.searchAdminQuery" type="search" class="form-control search-input" placeholder="Add new organisation administrator" name="query">
+                                                        <search-admin :data="xx.people" :list="xx.admin" :filter-key="xx.searchAdminQuery"></search-admin>
+                                                    </div>
+                                                    <admin-table :members="xx.admin"></admin-table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div style="padding: 30px"></div>
 
                                     {{-- Regular Admins --}}
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col">
                                             <h5>Administrators &nbsp;
                                                 <i class="flaticon2-information" data-container="body" data-toggle="kt-popover" data-placement="bottom"
                                                    data-content="These people have basic access to allocated areas of Go2Youth."></i>
@@ -119,7 +119,7 @@
 
                                             {{-- Regular Grid --}}
                                             <div class="row">
-                                                <div class="col">
+                                                <div class="col-lg-6">
                                                     <div style="padding-bottom: 10px;">
                                                         <input v-model="xx.searchQuery" type="search" class="form-control search-input" placeholder="Add new administrator" name="query">
                                                         <search-regular :data="xx.people" :list="xx.others" :filter-key="xx.searchQuery"></search-regular>

@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <pre>@{{ $data }}</pre>
+        <!--<pre>@{{ $data }}</pre>
         -->
     </div>
 
@@ -194,7 +194,7 @@
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
         var xx = {
-            add_school: '', edit_name: 0, new_name: '',
+            searching: false, add_school: '', edit_name: 0, new_name: '',
             schools: [],
         };
 
