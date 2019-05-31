@@ -243,7 +243,7 @@
                                 </div>
                             </div>
 
-                            <!--<pre>@{{ $data }}</pre> -->
+                            <pre>@{{ $data }}</pre> -->
 
                         </div>
                         <hr>
@@ -331,9 +331,9 @@
 @stop
 
 @section('page-scripts')  {{-- Metronic + custom Page Scripts --}}
-<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
+{{--}}<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
 <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
-<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datetimepicker.js" type="text/javascript"></script>--}}
 <script src="/js/slim.kickstart.min.js"></script>
 <script src="/js/vue.min.js"></script>
 <script type="text/javascript">
