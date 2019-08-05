@@ -31,11 +31,12 @@ class ActivityController extends Controller {
             $event_name = $attend->event->name;
             $instance_name = $attend->instance->name;
             $instance_startLocal =  $attend->instance->startLocal;
+            $attend_date = ($attend->method == 'check-in') ? $attend->inLocal->format('d M Y') : $instance_startLocal->format('d M Y');
             $attend_time = ($attend->method == 'check-in') ? $attend->inLocal->format('g:i a') : $instance_startLocal->format('g:i a');
             $array['datetime'] = Timezone::convertFromUTC($attend->instance->start, session('tz'));
             $array['icon'] = "<i class='fa fa-map-marker-alt' style='color: #32c5d2'></i>";
-            $array['title'] = "Checked in to $event_name";
-            $array['title'] .= ($instance_name && $instance_name != $event_name) ? " <small> - $instance_name</small>" : '';
+            $array['title'] = "<span style='width:100px'>$attend_date</span> $event_name ";
+            $array['title'] .= ($instance_name && $instance_name != $event_name) ? " &nbsp;<small> - $instance_name</small>" : '';
             $array['date'] = $instance_startLocal->format('F jS, Y');
             $array['data'] = "<div class='row'><div class='col-3'>Event</div><div class='col'>$instance_name</div><div class='col-2'><a href='/event/". $attend->event->id."/attendance/".$instance_startLocal->format('Y-m-d')."'><i class='fa fa-external-link-alt icon-edit'></i></a></div></div>";
             $array['data'] .= "<div class='row'><div class='col-3'>Time</div><div class='col'>$attend_time</div></div>";
