@@ -17,15 +17,27 @@
 @section('content')
     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
+    <style>
+        .image{
+            position:relative;
+            overflow:hidden;
+            padding-bottom:100%;
+        }
+        .image img{
+            position:absolute;
+        }
+    </style>
     <div class="kt-content kt-grid__item kt-grid__item--fluid">
         <div class="container-fluid">
             <div class="row">
 
                 <div class="col-6 col-md-3">
                     <div class="kt-portlet">
-                        <a href="/checkin">
+                        <a href="/checkin" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <img src="/img/button-checkin.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="image d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-checkin.png" class="img img-responsive full-width" />
+                                </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="flaticon2-laptop" style="font-size:40px; padding-right: 30px"></i>Checkin</h2>
                                 </div>
