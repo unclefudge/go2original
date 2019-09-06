@@ -41,7 +41,22 @@
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="260" column="25" selection-start-line="260" selection-start-column="25" selection-end-line="260" selection-end-column="25" />
+              <caret line="164" column="114" selection-start-line="164" selection-start-column="114" selection-end-line="164" selection-end-column="114" />
+              <folding>
+                <element signature="e#4634#4731#0#HTML" expanded="true" />
+                <element signature="e#4782#4826#0#HTML" expanded="true" />
+                <element signature="e#5014#5039#0#HTML" expanded="true" />
+                <element signature="e#5086#5161#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="register_student.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/checkin/register_student.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="422" column="49" selection-start-line="422" selection-start-column="49" selection-end-line="422" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -50,13 +65,11 @@
       <file leaf-file-name="_header.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/checkin/_header.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.12931034">
-              <caret line="6" column="251" selection-start-line="6" selection-start-column="251" selection-end-line="6" selection-end-column="251" />
+            <state vertical-scroll-proportion="0.0862069">
+              <caret line="4" column="78" selection-start-line="4" selection-start-column="78" selection-end-line="4" selection-end-column="78" />
               <folding>
-                <element signature="n#style#0;n#i#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -998,14 +1011,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/checkin/register_student.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.022182787">
-          <caret line="268" column="14" selection-start-line="266" selection-start-column="9" selection-end-line="267" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/People/PeopleController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.022182787">
@@ -1106,23 +1111,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/checkin/register_student.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="422" column="49" selection-start-line="422" selection-start-column="49" selection-end-line="422" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="260" column="25" selection-start-line="260" selection-start-column="25" selection-end-line="260" selection-end-column="25" />
-          <folding />
+          <caret line="164" column="114" selection-start-line="164" selection-start-column="114" selection-end-line="164" selection-end-column="114" />
+          <folding>
+            <element signature="e#4634#4731#0#HTML" expanded="true" />
+            <element signature="e#4782#4826#0#HTML" expanded="true" />
+            <element signature="e#5014#5039#0#HTML" expanded="true" />
+            <element signature="e#5086#5161#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/checkin/_header.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12931034">
-          <caret line="6" column="251" selection-start-line="6" selection-start-column="251" selection-end-line="6" selection-end-column="251" />
+        <state vertical-scroll-proportion="0.0862069">
+          <caret line="4" column="78" selection-start-line="4" selection-start-column="78" selection-end-line="4" selection-end-column="78" />
           <folding>
-            <element signature="n#style#0;n#i#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
