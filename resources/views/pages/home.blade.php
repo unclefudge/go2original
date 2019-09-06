@@ -21,7 +21,7 @@
         .image111{
             position:relative;
             overflow:hidden;
-            padding-bottom:100%;
+            /*padding-bottom:100%;*/
         }
         .image111 img111{
             position: absolute;
@@ -53,9 +53,11 @@
 
                 <div class="col-6 col-md-3">
                     <div class="kt-portlet">
-                        <a href="/event">
+                        <a href="/event" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <img src="/img/button-events.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="image111 d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-events.png" class="img111 img-fluid full-width" />
+                                </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="flaticon2-calendar-4" style="font-size:40px; padding-right: 30px"></i>Events</h2>
                                 </div>
