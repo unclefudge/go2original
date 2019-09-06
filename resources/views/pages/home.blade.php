@@ -24,7 +24,12 @@
             padding-bottom:100%;
         }
         .image111 img111{
-            position:absolute;
+            position: absolute;
+            max-width: 100%;
+            max-height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
         }
     </style>
     <div class="kt-content kt-grid__item kt-grid__item--fluid">
