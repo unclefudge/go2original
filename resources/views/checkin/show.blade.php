@@ -163,8 +163,8 @@
         <div class="row" style="height:70px; background-image: url(/img/head-purple.jpg); border-bottom: 1px solid rgba(255, 255, 255, 0.1)">
             <div class="col text-center">
                 <a href="/checkin"><img src="/img/logo-med.png" style="float: left; padding:5px 0px 5px 20px"></a>
-                <h1 v-if="!xx.edit_name" class="text-white">@{{ xx.instance.name }} <i v-if="xx.estatus != 0" v-on:click="toggleEditName" class="fa fa-edit" style="color: #9eacb4; font-size: 13px; padding: 7px 20px ; vertical-align: top; cursor: pointer"></i>
-                    <span class="pull-right" style="font-size: 14px; padding-right: 20px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
+                <h1 v-if="!xx.edit_name" class="text-white pt-1 ">@{{ xx.instance.name }} <i v-if="xx.estatus != 0" v-on:click="toggleEditName" class="fa fa-edit" style="color: #9eacb4; font-size: 13px; padding: 7px 20px ; vertical-align: top; cursor: pointer"></i>
+                    <span class="pull-right" style="font-size: 14px; padding-right: 20px; padding-top: 10px">{!! \Carbon\Carbon::now()->timezone(session('tz'))->format(session('df'). " g:i a") !!}</span></h1>
 
                 {{-- Edit Instance Name --}}
                 <div v-if="xx.edit_name" style="padding-left: 5px">
