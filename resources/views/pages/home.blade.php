@@ -18,12 +18,12 @@
     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
     <style>
-        .image111{
+        .dashbutt{
             position:relative;
             overflow:hidden;
             /*padding-bottom:100%;*/
         }
-        .image111 img111{
+        .dashbutt dashimg{
             position: absolute;
             max-width: 100%;
             max-height: 100%;
@@ -36,12 +36,13 @@
         <div class="container-fluid">
             <div class="row">
 
+                {{-- Checkin button --}}
                 <div class="col-6 col-md-3">
                     <div class="kt-portlet">
                         <a href="/checkin" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <div class="image111 d-block d-md-none"> {{--- mobile only --}}
-                                    <img src="/img/button-checkin.png" class="img111 img-fluid full-width" />
+                                <div class="dashbutt d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-checkin.png" class="dashimg img-fluid full-width" />
                                 </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="flaticon2-laptop" style="font-size:40px; padding-right: 30px"></i>Checkin</h2>
@@ -50,13 +51,13 @@
                         </a>
                     </div>
                 </div>
-
+                {{-- Events button --}}
                 <div class="col-6 col-md-3">
                     <div class="kt-portlet">
                         <a href="/event" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <div class="image111 d-block d-md-none"> {{--- mobile only --}}
-                                    <img src="/img/button-events.png" class="img111 img-fluid full-width" />
+                                <div class="dashbutt d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-events.png" class="dashimg img-fluid full-width" />
                                 </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="flaticon2-calendar-4" style="font-size:40px; padding-right: 30px"></i>Events</h2>
@@ -65,12 +66,14 @@
                         </a>
                     </div>
                 </div>
-
+                {{-- People button --}}
                 <div class="col-6 col-md-3">
                     <div class="kt-portlet">
-                        <a href="/people">
+                        <a href="/people" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <img src="/img/button-people.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="dashbutt d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-people.png" class="dashimg img-fluid full-width" />
+                                </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="fa fa-user" style="font-size:40px; padding-right: 30px"></i>People</h2>
                                 </div>
@@ -78,12 +81,14 @@
                         </a>
                     </div>
                 </div>
-
+                {{-- Groups button --}}
                 <div class="col-6 col-md-3">
                     <div class="kt-portlet">
-                        <a href="/group">
+                        <a href="/group" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <img src="/img/button-groups.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="dashbutt d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-groups.png" class="dashimg img-fluid full-width" />
+                                </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="fa fa-users" style="font-size:40px; padding-right: 30px"></i>Groups</h2>
                                 </div>
@@ -91,8 +96,6 @@
                         </a>
                     </div>
                 </div>
-
-
             </div>
 
             {{-- Dashboard --}}
