@@ -18,12 +18,12 @@
     {!! Form::hidden('formerrors', ($errors && $errors->first('FORM')) ? $errors->first('FORM') : null, ['id' => 'formerrors']) !!}
 
     <style>
-        .image{
+        .image111{
             position:relative;
             overflow:hidden;
             padding-bottom:100%;
         }
-        .image img{
+        .image111 img111{
             position:absolute;
         }
     </style>
@@ -35,8 +35,8 @@
                     <div class="kt-portlet">
                         <a href="/checkin" class="thumbnail">
                             <div class="kt-portlet__body kt-portlet__body--fluid">
-                                <div class="image d-block d-md-none"> {{--- mobile only --}}
-                                    <img src="/img/button-checkin.png" class="img img-responsive full-width" />
+                                <div class="image111 d-block d-md-none"> {{--- mobile only --}}
+                                    <img src="/img/button-checkin.png" class="img111 img-fluid full-width" />
                                 </div>
                                 <div class="d-none d-md-block">
                                     <h2><i class="flaticon2-laptop" style="font-size:40px; padding-right: 30px"></i>Checkin</h2>
