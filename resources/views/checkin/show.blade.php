@@ -168,7 +168,7 @@
 
                 {{-- Edit Instance Name --}}
                 <div v-if="xx.edit_name" style="padding-left: 5px">
-                    <div class="input-group" style="width: 50%; margin-left: auto; margin-right: auto; padding-top: 5px">
+                    <div class="input-group" style="width: 50%; margin-left: auto; margin-right: auto; padding-top: 15px">
                         <input v-model="xx.instance.name" type="text" class="form-control">
                         <div class="input-group-append">
                             <span v-on:click="saveName" class="input-group-text" style="color: #FFFFFF; background: #34bfa3; padding: 0px 20px; cursor: pointer">Save</span>
