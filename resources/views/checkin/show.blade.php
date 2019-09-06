@@ -254,6 +254,11 @@
     var xx = {
         student_count: 0, volunteer_count: 0,
         people: [], instance_id: {{ $instance->id }}, searchQuery: "{!! app('request')->input('query') !!}",
+        instance: {
+            id: "{{ ($instance) ? $instance->id : 0 }}",
+            name: "{{ ($instance) ? $instance->name : '' }}",
+        },
+        edit_name: false,
     };
 
     // register the grid component
@@ -335,6 +340,15 @@
                     count_attendance();
                 }.bind(this));
             },
+            saveName: function () {
+                updateInstancetDB(this.xx.instance).then(function (result) {
+                    if (result)
+                        this.xx.edit_name = !this.xx.edit_name;
+                }.bind(this));
+            },
+            toggleEditName: function () {
+                this.xx.edit_name = !this.xx.edit_name;
+            },
         },
     });
 
@@ -346,6 +360,28 @@
                 xx.student_count++;
             if (value.in && (value.type == 'Volunteer' || value.type == 'Parent/Volunteer'))
                 xx.volunteer_count++;
+        });
+    }
+
+    // Update Event Instance in Database Attendance and return a 'promise'
+    function updateInstancetDB(instance) {
+        return new Promise(function (resolve, reject) {
+            instance._method = 'patch';
+            $.ajax({
+                url: '/event/instance/' + instance.id,
+                type: 'POST',
+                data: instance,
+                success: function (result) {
+                    delete instance._method;
+                    console.log('DB updated instance:[' + instance.id + '] ' + instance.name);
+                    resolve(instance);
+                },
+                error: function (result) {
+                    alert("failed updating event instance " + instance.name + '. Please refresh the page to resync event');
+                    console.log('DB updated event instance FAILED:[' + instance.id + '] ' + instance.name);
+                    reject(false);
+                }
+            });
         });
     }
 </script>
