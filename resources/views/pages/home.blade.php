@@ -19,56 +19,71 @@
 
     <div class="kt-content kt-grid__item kt-grid__item--fluid">
         <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-6 col-md-3">
+                    <div class="kt-portlet">
+                        <a href="/checkin">
+                            <div class="kt-portlet__body kt-portlet__body--fluid">
+                                <img src="/img/button-checkin.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="d-none d-md-block">
+                                    <h2><i class="flaticon2-laptop" style="font-size:40px; padding-right: 30px"></i>Checkin</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="kt-portlet">
+                        <a href="/event">
+                            <div class="kt-portlet__body kt-portlet__body--fluid">
+                                <img src="/img/button-events.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="d-none d-md-block">
+                                    <h2><i class="flaticon2-calendar-4" style="font-size:40px; padding-right: 30px"></i>Events</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="kt-portlet">
+                        <a href="/people">
+                            <div class="kt-portlet__body kt-portlet__body--fluid">
+                                <img src="/img/button-people.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="d-none d-md-block">
+                                    <h2><i class="fa fa-user" style="font-size:40px; padding-right: 30px"></i>People</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="kt-portlet">
+                        <a href="/group">
+                            <div class="kt-portlet__body kt-portlet__body--fluid">
+                                <img src="/img/button-groups.png" class="img-fluid d-block d-md-none"> {{--- mobile only --}}
+                                <div class="d-none d-md-block">
+                                    <h2><i class="fa fa-users" style="font-size:40px; padding-right: 30px"></i>Groups</h2>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+
             {{-- Dashboard --}}
             <div class="kt-portlet">
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
-                        <h4 class="kt-portlet__head-title">Dashboard</h4>
+                        <h4 class="kt-portlet__head-title">Summary</h4>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <div>
-                        aid: {{ session('aid') }}<br>
-                        tz: {{ session('tz') }}<br>
-                        df: {{ session('df') }}<br>
-                        df-datepicker: {{ session('df-datepicker') }}<br>
-                        df-moment: {{ session('df-moment') }}<br>
-                        username: {{ Auth::user()->username }}<br>
-                        events: {{ session('show_inactive_events') }}<br>
-                        people: {{ session('show_inactive_people') }}
-
-                        <br><br>
-                        <?php
-
-                        $utc = \Carbon\Carbon::createFromDate('2019', '03', '11', 'UTC');
-                        $tas = \Carbon\Carbon::createFromDate('2019', '03', '11', 'Australia/Hobart');
-                        $today = \Carbon\Carbon::today();
-                        $todayEnd = \Carbon\Carbon::today(session('tz'))->endOfDay()->timezone('UTC');
-                        $now = \Carbon\Carbon::now();
-                        $utcTodayStart = \Carbon\Carbon::today(session('tz'))->timezone('UTC');
-                        $utcTodayEnd = \Carbon\Carbon::today(session('tz'))->endOfDay()->timezone('UTC');
-
-                        echo "UTC: " . $utc->toDateTimeString() . "<br>";
-                        echo "TAS: " . $tas->toDateTimeString() . "<br>";
-                        echo "today: " . $today->toDateTimeString() . "<br>";
-                        echo "todayEnd: " . $todayEnd->toDateTimeString() . "<br>";
-                        echo "now: " . $now->toDateTimeString() . "<br>";
-                        echo "nowTAS: " . $now->timezone(session('tz'))->toDateTimeString() . "<br>";
-                        echo "utcTodayStart: " . $utcTodayStart->toDateTimeString() . "<br>";
-                        echo "utcTodayEnd: " . $utcTodayEnd->toDateTimeString() . "<br>";
-                        ?>
-
-                        <br><br>Testing1<br>
-                        @foreach (\App\Models\Event\EventInstance::whereDate('start', '2019-03-11')->get() as $instance)
-                            {{ $instance->name }} - {{ $instance->start }} - {{ $instance->start->timezone(session('tz'))->toDateTimeString() }}<br>
-                        @endforeach
-
-                        <br><br>Testing2<br>
-                        @foreach (\App\Models\Event\EventInstance::whereBetween('start', [$utcTodayStart, $utcTodayEnd])->get() as $instance)
-                            {{ $instance->name }} - {{ $instance->start }} - {{ $instance->start->timezone(session('tz'))->toDateTimeString() }}<br>
-                        @endforeach
-                    </div>
-
                 </div>
             </div>
         </div>

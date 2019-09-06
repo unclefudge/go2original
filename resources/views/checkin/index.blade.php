@@ -70,7 +70,7 @@
                                                             </div>
                                                             <div class="col text-center align-items-center rgba-black-strong" style="padding: 30px 30px 30px 0px; color: #FFF;">
                                                                 <div class="card-block px-2">
-                                                                    <h3 class="card-title pt-2 text-white" data-container="body" data-toggle="kt-tooltip" data-placement="bottom" title="" data-original-title="Check-in"><strong>{{ $event->name }}</strong></h3>
+                                                                    <h3 class="card-title pt-2 text-white"><strong>{{ $event->name }}</strong></h3>
                                                                 </div>
                                                             </div>
                                                         </div>
