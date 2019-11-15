@@ -27,6 +27,7 @@ class CheckinController extends Controller {
     {
         // Check authorisation
         $events = Event::where('aid', session('aid'))->get()->sortBy('name');
+
         //$agent = new Agent();
 
         return view('checkin/index', compact('events'));
@@ -91,11 +92,12 @@ class CheckinController extends Controller {
             'firstname'        => 'required',
             'lastname'         => 'required',
             'dob'              => 'sometimes|nullable|date_format:' . session('df'),
+            'email'            => 'sometimes|max:255|nullable|unique:users,email,',
             'parent_id'        => 'required|not_in:0',
             'parent_firstname' => 'required_if:parent_id,add',
             'parent_lastname'  => 'required_if:parent_id,add',
             'parent_phone'     => 'required_if:parent_id,add',
-            'parent_email'     => 'required_if:parent_id,add',
+            'parent_email'     => 'required_if:parent_id,add|max:255|unique:users,email,',
         ];
 
         // Require photo for tablets/mobile devices only
@@ -113,6 +115,7 @@ class CheckinController extends Controller {
             'parent_lastname.required_if'  => 'The parents last name is required.',
             'parent_phone.required_if'     => 'The parents phone is required.',
             'parent_email.required_if'     => 'The parents email is required.',
+            'parent_email.different'       => 'The parent email and student email must be different.',
         ];
         request()->validate($rules, $mesgs);
 
@@ -188,7 +191,8 @@ class CheckinController extends Controller {
         // Validate
         $rules = [
             'firstname' => 'required', 'lastname' => 'required', 'dob' => 'sometimes|nullable|date_format:' . session('df'),
-            'wwc_no'    => 'required', 'wwc_exp' => 'required|date_format:' . session('df')];
+            'wwc_no'    => 'required', 'wwc_exp' => 'required|date_format:' . session('df'),
+            'email'     => 'max:255|nullable|unique:users,email,',];
         $mesgs = [
             'firstname.required'  => 'The first name is required.',
             'lastname.required'   => 'The last name is required.',
