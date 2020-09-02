@@ -128,29 +128,31 @@
             });
 
             function getStats() {
-                $.ajax({
-                    url: '/stats/event/' + $("#event_id").val() + '/student/' + "{{ $user->id }}",
-                    method: "GET",
-                    data: {uid: "{{ $user->id }}", eid: $("#event_id").val()},
-                    success: function (result) {
-                        console.log(result.attended_last);
-                        $("#attended_first").html(result.attended_first);
-                        if (result.attended_first != 'Never') {
-                            $("#attended_last").html(result.attended_last);
-                            $("#attended_month").html(result.attended_month);
-                            $("#attended_year").html(result.attended_year);
-                        } else {
-                            $("#attended_last").html('');
-                            $("#attended_month").html('');
-                            $("#attended_year").html('');
+                if ($("#event_id").val()) {
+                    $.ajax({
+                        url: '/stats/event/' + $("#event_id").val() + '/student/' + "{{ $user->id }}",
+                        method: "GET",
+                        data: {uid: "{{ $user->id }}", eid: $("#event_id").val()},
+                        success: function (result) {
+                            console.log(result.attended_last);
+                            $("#attended_first").html(result.attended_first);
+                            if (result.attended_first != 'Never') {
+                                $("#attended_last").html(result.attended_last);
+                                $("#attended_month").html(result.attended_month);
+                                $("#attended_year").html(result.attended_year);
+                            } else {
+                                $("#attended_last").html('');
+                                $("#attended_month").html('');
+                                $("#attended_year").html('');
+                            }
+
+
+                        },
+                        error: function (result) {
+                            alert("Error loading overview stats. Please try refresh screen");
                         }
-
-
-                    },
-                    error: function (result) {
-                        alert("Error loading overview stats. Please try refresh screen");
-                    }
-                });
+                    });
+                }
             }
 
             $(document).on('click', '#btn-more', function () {
