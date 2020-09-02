@@ -33,28 +33,35 @@
                                     <div class="kt-portlet__head-toolbar"></div>
                                 </div>
                                 <div class="kt-portlet__body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            {!! Form::select('event_id', $events, (session('aid') == 2) ? 2 : null, ['class' => 'form-control kt-selectpicker', 'id' => 'event_id']) !!}
+                                    @if ($events)
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {!! Form::select('event_id', $events, (session('aid') == 2) ? 2 : null, ['class' => 'form-control kt-selectpicker', 'id' => 'event_id']) !!}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <br><br>
-                                    <div class="row">
-                                        <div class="col-7">First Attended</div>
-                                        <div class="col text-right" id="attended_first"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-7">Last Attended</div>
-                                        <div class="col text-right" id="attended_last"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-7">Past Month</div>
-                                        <div class="col text-right" id="attended_month"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-7">Past Year</div>
-                                        <div class="col text-right" id="attended_year"></div>
-                                    </div>
+                                        <br><br>
+                                        <div class="row">
+                                            <div class="col-7">First Attended</div>
+                                            <div class="col text-right" id="attended_first"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-7">Last Attended</div>
+                                            <div class="col text-right" id="attended_last"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-7">Past Month</div>
+                                            <div class="col text-right" id="attended_month"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-7">Past Year</div>
+                                            <div class="col text-right" id="attended_year"></div>
+                                        </div>
+                                    @else
+                                        <div class="row">
+                                            <div class="col-12">No events found</div>
+                                        </div>
+
+                                    @endif
                                 </div>
                             </div>
                         </div>
