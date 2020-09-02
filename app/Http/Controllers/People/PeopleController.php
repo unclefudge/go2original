@@ -57,10 +57,7 @@ class PeopleController extends Controller {
     {
         $user = User::findOrFail($id);
         $events = Event::where('recur', 1)->where('aid', session('aid'))->pluck('name', 'id')->toArray();
-        //if ($events)
-            asort($events);
-        //else
-            //$events = ['' => 'No events found'];
+        asort($events);
 
         return view('people/activity', compact('user', 'events'));
     }

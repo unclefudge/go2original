@@ -106,6 +106,9 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
+                    <div class="row">
+                        <div class="col-12">An unrealised dream...</div>
+                    </div>
                 </div>
             </div>
         </div>
