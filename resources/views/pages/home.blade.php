@@ -107,7 +107,7 @@
                 </div>
                 <div class="kt-portlet__body">
                     <div class="row">
-                        <div class="col-12">An unrealised dream...</div>
+                        <div class="col-12">An unrealised dream...<br><br><br><br><br></div>
                     </div>
                 </div>
             </div>
