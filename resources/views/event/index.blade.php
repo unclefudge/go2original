@@ -63,30 +63,34 @@
                                     {!! Form::hidden('show_archived', session('show_inactive_events'), ['id' => 'show_archived']) !!}
                                     <div id="events_recur">
                                         <div class="row">
-                                            @foreach ($events->where('recur', 1) as $event)
-                                                <div class="col-md-4 col-sm-6 {{ ($event->status) ? 'event-active' : 'event-archived' }}">
-                                                    <div class="card card-image" style="height: 120px;
-                                                            background-size:100% auto; cursor: pointer; {!!  ($event->status) ?   "background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url($event->backgroundMedPath)"  : 'background: #777'!!};
-                                                            margin-bottom:20px;" id="event-{{ $event->id }}">
-                                                        <div>
-                                                            @if (!$event->status)
-                                                                <span class="pull-right" style="color: #FFF; padding: 5px"><i class="fa fa-archive"></i> Inactive</span>
-                                                                <!-- <a href="/event/{{ $event->id }}/del" class="btn text-white waves-effect waves-light pull-right event-del" style="padding: 5px"><i class="fa fa-archive"></i></a>-->
-                                                            @else
-                                                                <span class="pull-right" style="padding: 5px">&nbsp;</span>
-                                                            @endif
-                                                        </div>
-                                                        <div class="text-center align-items-center rgba-black-strong">
-                                                            <div><h3 class="card-title pt-2 text-white"><strong>{{ $event->name }}</strong></h3></div>
+                                            @if ($events->where('recur', 1)->count())
+                                                @foreach ($events->where('recur', 1) as $event)
+                                                    <div class="col-md-4 col-sm-6 {{ ($event->status) ? 'event-active' : 'event-archived' }}">
+                                                        <div class="card card-image" style="height: 120px;
+                                                                background-size:100% auto; cursor: pointer; {!!  ($event->status) ?   "background-image: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, 0.2)), url($event->backgroundMedPath)"  : 'background: #777'!!};
+                                                                margin-bottom:20px;" id="event-{{ $event->id }}">
+                                                            <div>
+                                                                @if (!$event->status)
+                                                                    <span class="pull-right" style="color: #FFF; padding: 5px"><i class="fa fa-archive"></i> Inactive</span>
+                                                                    <!-- <a href="/event/{{ $event->id }}/del" class="btn text-white waves-effect waves-light pull-right event-del" style="padding: 5px"><i class="fa fa-archive"></i></a>-->
+                                                                @else
+                                                                    <span class="pull-right" style="padding: 5px">&nbsp;</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="text-center align-items-center rgba-black-strong">
+                                                                <div><h3 class="card-title pt-2 text-white"><strong>{{ $event->name }}</strong></h3></div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
+                                            @else
+                                                No recurring events found.... maybe you should create one.
+                                            @endif
                                         </div>
                                     </div>
 
                                     <div id="events_onetime">
-                                        One time
+                                        One time events - An unrealised dream...
                                     </div>
                                 </div>
                             </div>
