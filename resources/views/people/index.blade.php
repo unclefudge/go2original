@@ -161,13 +161,13 @@
                 {
                     text: "<i class='fa fa-cloud-download-alt' style='padding-right: 5px'></i> Export",
                     action: function (e, dt, node, config) {
-                        alert('Export');
+                        alert('Export - An unrealised dream...');
                     }
                 },
                 {
                     text: "<i class='fa fa-cloud-upload-alt' style='padding-right: 5px'></i> Import",
                     action: function (e, dt, node, config) {
-                        alert('Import');
+                        alert('Import - An unrealised dream...');
                     }
                 },
                     @endif
