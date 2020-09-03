@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="kt-portlet__body">
                                     <div class="row" style="padding-bottom: 10px">
-                                        <div class="col">An unrealised dream...</div>
+                                        <div class="col">An unrealised dream...<br><br><br><br></div>
                                     </div>
                                 </div>
                             </div>
