@@ -102,6 +102,13 @@
             </div>
         </div>
     </div>
+
+    <!-- loading Spinner -->
+    <div id="spinner" style="background-color: #FFF; padding: 20px;">
+        <div class="loadSpinnerOverlay">
+            <div class="loadSpinner"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom"></i> Loading...</div>
+        </div>
+    </div>
 @endsection
 
 @section('page-styles')
@@ -191,6 +198,8 @@
                 else
                     item.classList.add("kt-hide");
             }
+
+            $("#spinner").hide();
         }
     </script>
 @endsection
