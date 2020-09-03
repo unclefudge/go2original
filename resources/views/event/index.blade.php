@@ -84,13 +84,13 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                No recurring events found.... maybe you should create one.
+                                                No recurring events found.... maybe you should create one.<br><br><br><br>
                                             @endif
                                         </div>
                                     </div>
 
                                     <div id="events_onetime">
-                                        One time events - An unrealised dream...
+                                        One time events - An unrealised dream...<br><br><br><br>
                                     </div>
                                 </div>
                             </div>
